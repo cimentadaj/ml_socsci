@@ -1,8 +1,7 @@
 ---
 title: "Machine Learning for Social Sciences"
 author:
-  - Jorge Cimentada^[Laboratory of Digital and Computational Demography, Max Planck Institute of Demographic Research]
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+  - Jorge Cimentada^[Laboratory of Digital and Computational Demography, Max Planck Institute of Demographic Research. Correspondence to cimentadaj@gmail.com]
 output: pdf_document
 urlcolor: blue
 ---
