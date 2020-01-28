@@ -181,6 +181,7 @@ In R, you can fit a ridge regression (and nearly all other machine learning mode
 ```{r}
 library(caret) # Fitting machine learning models
 library(rsample) # Create data partitions
+library(vip) # For figuring out important variables for prediction
 
 pisa <- read.csv("./data/pisa_us_2018.csv")
 ```
@@ -194,6 +195,7 @@ set.seed(23141)
 split_pisa <- initial_split(data = pisa, prop = .7)
 pisa_test <- testing(split_pisa)
 pisa_train <- training(split_pisa)
+
 ```
 
 The ridge regression has a parameter called alpha which needs to be set by us. alpha is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty". If this lambda is 0, it means we attach **no** weight to the penalty term and we will get the same result over OLS. Let's try that:
@@ -207,7 +209,7 @@ ridge_grid <- data.frame(
 )
 
 # The train function accepts several arguments
-penalized_mod <- train(
+ridge_mod <- train(
   # math_score is the dependen variable and all other are independent variables
   math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
   # The training data
@@ -224,7 +226,7 @@ penalized_mod <- train(
 )
 
 # Get ridge coefficients
-res <- penalized_mod$finalModel
+res <- ridge_mod$finalModel
 ridge_coef <- predict(res, s = 0, type = "coefficients")
 
 # Get linear model coefficients
@@ -257,7 +259,7 @@ ridge_grid <- data.frame(
   alpha = 0
 )
 
-penalized_mod <- train(
+ridge_mod <- train(
   math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
   data = pisa_train,
   method = "glmnet",
@@ -267,250 +269,220 @@ penalized_mod <- train(
   trControl = trainControl(method = "cv")
 )
 
-plot(penalized_mod$finalModel, xvar = "lambda", label = TRUE)
+plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
-Here we can see how our coefficients are affected by increasing weight of the lamba parameter. And we can figure out the best lambda inspecting `bestTune` inside `penalized_mod`:
+Here we can see how our coefficients are affected by increasing weight of the lamba parameter. And we can figure out the best lambda inspecting `bestTune` inside `ridge_mod`:
 
 ```{r}
-best_lambda <- penalized_mod$bestTune$lambda
+best_lambda_ridge <- ridge_mod$bestTune$lambda
 ```
 
 However, there's no need to rerun the model with this optimal value; since `train` **had** to run that model, it saves it as the most optimal:
 
 ```{r}
 
-holdout <-
+holdout_ridge <-
   RMSE(
-    predict(penalized_mod, pisa_test, s = best_lambda),
+    predict(ridge_mod, pisa_test, s = best_lambda_ridge),
     pisa_test$math_score
   )
 
-train_rmse <-
-  penalized_mod$results %>%
-  filter(lambda == best_lambda) %>%
-  select(RMSE)
+train_rmse_ridge <-
+  ridge_mod$results %>%
+  filter(lambda == best_lambda_ridge) %>%
+  pull(RMSE)
 
-c(holdout_rmse = holdout, train_rmse = train_rmse)
+c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+The holdout RMSE will always be higher than the training as the training set nearly always **memorizes** the data slightly better for the training.
 
-mid <- function(x) {
-  x <- sort(x)
-  even <- (length(x) %% 2) == 0
 
-  if (even) x[length(x) / 2] else x[round(length(x) / 2)]
-}
+## Lasso regularization
 
-library(tidymodels)
-library(haven)
-library(tidyverse)
-library(dials)
-library(tune)
-library(broom)
+The Lasso regularization is very similar to the ridge regularization where only one thing changes: the penalty term. Instead of squaring the coefficients in the penalty term, the lasso regularization takes the absolute value of the coefficient.
 
-pisa <- read_spss("./data/pisa_us_2018.sav")
+\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}
 
-# Get indidices of 10 math plausible columns
-pv_ind <- grepl("PV[0-9]MATH", names(pisa))
+Althought it might not be self-evident from this, the lasso reguralization has an important distinction: it can force a coefficient to be zero. This means that lasso does a selection of variables which have big coefficients while not compromising the RSS of the model. 
 
-# Calculate the average test score in mathematics as the average of all
-# 10 plausible columns
-pisa$math_score <- rowMeans(pisa[pv_ind])
+For example, if we define the same model from above using a lasso, you'll see that it forces coefficients to be **exactly zero** if they don't add anything relative to the RSS of the model:
 
-# Calculate training/testing split
-set.seed(23141)
-split_pisa <- initial_split(data = pisa, prop = .7)
+```{r}
+set.seed(663421)
 
-pisa_test <- testing(split_pisa)
-pisa_train <- training(split_pisa)
+lasso_grid <- data.frame(
+  # Here we specify the lambda to several possible values
+  lambda = seq(0, 3, length.out = 300),
+  # 1 is equal to lasso
+  alpha = 1
+)
 
-pisa_recipe <-
-  pisa_train %>%
-  recipe(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ + STUBMI,
-         data = pisa_train) %>%
-  step_zv(all_predictors()) %>%
-  step_mutate(IMMIG = as.factor(IMMIG)) %>% 
-  step_meanimpute(all_predictors(), -all_nominal()) %>%
-  step_center(all_predictors(), -all_nominal()) %>% 
-  step_dummy(IMMIG, one_hot = TRUE) %>% 
-  prep(retain = TRUE)
+lasso_mod <- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  tuneGrid = lasso_grid,
+  preProc = c("center", "scale"),
+  trControl = trainControl(method = "cv")
+)
 
-lm_mod <-
-  linear_reg() %>%
-  set_engine("lm") %>%
-  fit(formula(pisa_recipe), data = juice(pisa_recipe))
-
-ridge_mod <-
-  # Ridge reg
-  linear_reg(mixture = 0) %>%
-  set_engine("glmnet") %>%
-  fit(formula(pisa_recipe), data = juice(pisa_recipe))
-
-lasso_mod <-
-  # Ridge reg
-  linear_reg(mixture = 1) %>%
-  set_engine("glmnet") %>%
-  fit(formula(pisa_recipe), data = juice(pisa_recipe))
-
-elnet_mod <-
-  # Ridge reg
-  linear_reg(mixture = 0.5) %>%
-  set_engine("glmnet") %>%
-  fit(formula(pisa_recipe), data = juice(pisa_recipe))
-
-size_fun <- max
-
-all_models <- bind_rows(
-
-  lm_mod %>%
-    tidy() %>%
-    mutate(model = "lm"),
-  
-  ridge_mod %>%
-    tidy() %>%
-    filter(lambda == size_fun(.$lambda)) %>%
-    mutate(model = "ridge"),
-  
-  lasso_mod %>%
-    tidy() %>%
-    filter(lambda == size_fun(.$lambda)) %>%
-    mutate(model = "lasso"),
-
-  elnet_mod %>%
-    tidy() %>%
-    filter(lambda == size_fun(.$lambda)) %>%
-    mutate(model = "elnet")
-  
-) %>%
-  select(term, estimate, model) %>%
-  mutate(model = factor(model, levels = c("lm", "ridge", "lasso", "elnet")))
-
-all_models %>%
-  ggplot(aes(term, estimate, fill = model)) +
-  geom_col(position = "dodge", alpha = 1/2) +
-  theme_minimal()
-
-ridge_mod %>%
-  tidy() %>%
-  filter(term != "(Intercept)") %>% 
-  ggplot(aes(lambda, estimate, group = term, color = term)) +
-  geom_line()
-
-lasso_mod %>%
-  tidy() %>%
-  filter(term != "(Intercept)") %>% 
-  ggplot(aes(lambda, estimate, group = term, color = term)) +
-  geom_line()
-
+plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
-OLS has low bias because it optimizes the loss function of SSR if the sample is representative.
-However, it can have a huge variance. Specifically, this happens when:
+See that at some point the coefficient actually go to zero, meaning that the lasso makes a selection of the variables with the higher coefficients and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).
 
-* The predictor variables are highly correlated with each other;
-* There are many predictors.
+The lasso actually works exactly as the ridge in the `caret` package, meaning that it automatically checks the most optimal value for lambda:
 
-In particular OLS, can have a lot of variance due to overfitting the current dataset and don't have good generalization.
-
-```{r, eval = FALSE, echo = FALSE}
-
-r2 <- function(model) {
-  model_summary <- summary(model)
-  out <- list(R2 = model_summary$r.squared, R2_adjusted = model_summary$adj.r.squared)
-  names(out$R2) <- "R2"
-  names(out$R2_adjusted) <- "adjusted R2"
-
-  out <- lapply(out, round, 3)
-
-  out
-}
-
-# Our model is always **over-optimistic** about our results
-r2(lm_mod$fit)
-
-pisa_test <- bake(pisa_recipe, new_data = pisa_test)
-lm_mod_test <-
-  linear_reg() %>%
-  set_engine("lm") %>%
-  fit(formula(pisa_recipe), data = pisa_test)
-
-r2(lm_mod_test$fit)
-
+```{r}
+best_lambda_lasso <- lasso_mod$bestTune$lambda
+best_lambda_lasso
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+To actually check the final model and which variables are kept, we can access it:
 
-pisa_recipe
+```{r}
 
-```
-
-```{r, eval = FALSE, echo = FALSE}
-library(tidyverse)
-library(tidymodels)
-library(haven)
-library(tune)
-library(doParallel)
-
-registerDoParallel(detectCores())
-
-pisa <- read_spss("./data/pisa_us_2018.sav")
-
-# Get indidices of 10 math plausible columns
-pv_ind <- grepl("PV[0-9]MATH", names(pisa))
-
-# Calculate the average test score in mathematics as the average of all
-# 10 plausible columns
-pisa$math_score <- rowMeans(pisa[pv_ind])
-
-# Calculate training/testing split
-set.seed(23141)
-split_pisa <- initial_split(data = pisa, prop = .7)
-pisa_test <- testing(split_pisa)
-pisa_train <- training(split_pisa)
-pisa_cv <- vfold_cv(pisa_train, v = 10)
-
-pisa_recipe <-
-  pisa_train %>%
-  recipe(math_score ~ MISCED + FISCED + HISEI + REPEAT,
-         data = pisa_train) %>%
-  # Remove all cols without variance
-  step_zv(all_predictors()) %>%
-  step_nzv(all_predictors()) %>%
-  ## step_mutate(IMMIG = as.factor(IMMIG)) %>% 
-  ## step_center(has_role("predictor")) %>% 
-  ## step_dummy(IMMIG, one_hot = TRUE) %>% 
-  # Center all variables
-  # Impute all variables
-  step_meanimpute(all_predictors())
-
-mod1 <-
-  linear_reg(penalty = tune(), mixture = tune()) %>%
-  set_engine("glmnet")
-
-grid_vals <- grid_regular(penalty(), mixture(), levels = c(10, 10))
-
-tuned_mod1 <-
-  tune_grid(
-    pisa_recipe,
-    model = mod1,
-    resamples = pisa_cv,
-    grid = grid_vals,
-    metrics = metric_set(rmse),
-    control = control_grid(verbose = FALSE,
-                           extract = function (x) extract_model(x)
-                           )
+holdout_lasso <-
+  RMSE(
+    predict(lasso_mod, pisa_test, s = best_lambda_lasso),
+    pisa_test$math_score
   )
 
-tuned_mod1 %>%
-  collect_metrics() %>%
-  ggplot(aes(mean)) +
-  geom_histogram(bins = 100)
+train_rmse_lasso <-
+  lasso_mod$results %>%
+  filter(lambda == best_lambda_lasso) %>%
+  pull(RMSE)
 
-select_by_one_std_err(tuned_mod1,
-                      metric = "rmse",
-                      penalty,
-                      maximize = FALSE)
+c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
 
 ```
+
+So far, we can check which model is performing better:
+
+```{r}
+model_comparison <-
+  data.frame(
+    type = c("test RMSE", "training RMSE"),
+    ridge = c(holdout_ridge, train_rmse_ridge),
+    lasso = c(holdout_lasso, train_rmse_lasso)
+  )
+
+model_comparison
+```
+
+Currently the ridge regression has a very minor advantaged over the lasso yet the difference is probably within the margin of error. Depending on your aim, you might want to choose either if the models. If your aim is to interpret the model well, then lasso might be a better choice because it could contain lower.
+
+## Elastic Net regularization
+
+If you're aware of ridge and lasso, then you can elastic net is a logical step. Elastic Net (the name sounds fancy, as if there's something complex and mathematical to it) combines both penalties to form one equation.
+
+Here we define our ridge penalty:
+
+$$ridge = \lambda \sum_{k = 1}^n |\beta_j|$$
+
+And here we define our lasso penalty:
+
+$$lasso = \lambda \sum_{k = 1}^n \beta_j^2$$
+
+Elastic net regularization is the addition of these two penalties in comparison to the RSS:
+
+$$RSS + lasso + ridge$$
+
+I think the best explanation for elastic net reguarlization comes from Boehmke & Greenwell (2019):
+
+> Although lasso models perform feature selection, when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically handling correlated features together. Consequently, the advantage of the elastic net penalty is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+
+Essentially, you now have two 'lambdas'. In R, instead of specifying an alpha of `0` (ridge) or `1` (lasso), `caret` will slide through several values ranging from 0 to 1 and compare that to several values of lambda.
+
+However, `train` can already take of it and calculate the most optimal value automatically:
+
+```{r }
+set.seed(663421)
+
+elnet_mod <- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  preProc = c("center", "scale"),
+  trControl = trainControl(method = "cv"),
+  tuneLength = 25
+)
+
+best_lambda_elnet <- elnet_mod$bestTune$lambda
+
+holdout_elnet <-
+  RMSE(
+    predict(elnet_mod, pisa_test),
+    pisa_test$math_score
+  )
+
+train_rmse_elnet <-
+  elnet_mod$results %>%
+  filter(alpha == elnet_mod$bestTune$alpha, lambda == best_lambda_elnet) %>%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_elnet, train_rmse = train_rmse_elnet)
+```
+
+The RMSE of the elastic net is somewhat lower than then ridge and lasso but also probably within the margin of error. Let's compare it visually:
+
+```{r}
+
+model_comparison$elnet <- c(holdout_elnet, train_rmse_elnet)
+model_comparison
+
+model_comparison %>%
+  pivot_longer(-type) %>%
+  ggplot(aes(name, value, color = type, group = type)) +
+  geom_point(position = "dodge") +
+  geom_line() +
+  scale_y_continuous(name = "RMSE") +
+  scale_x_discrete(name = "Models") +
+  theme_minimal()
+
+```
+
+
+## Exercises
+
+### 1) How can we improve accuracy?
+
+The current accuracy of the model is around 79 points in mathematics. In the previous analysis we concentrated on a few selected variables. However, the strength of regularized methods is to use all available information and the model takes care of finding the optimal values of regularization and do a subset selection on the best variables.
+
+- Run a model using `train` which excludes 
+
+```{r, echo = FALSE}
+
+elnet_mod <- train(
+  math_score ~ .,
+  data = pisa_train[!grepl("PV.+MATH", names(pisa_train))],
+  method = "glmnet",
+  preProc = c("zv", "center", "scale"),
+  trControl = trainControl(method = "cv", allowParallel = TRUE),
+  tuneLength = 10
+)
+
+best_lambda_elnet <- elnet_mod$bestTune$lambda
+
+holdout_elnet <-
+  RMSE(
+    predict(elnet_mod, pisa_test),
+    pisa_test$math_score
+  )
+
+train_rmse_elnet <-
+  elnet_mod$results %>%
+  filter(alpha == elnet_mod$bestTune$alpha, lambda == best_lambda_elnet) %>%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_elnet, train_rmse = train_rmse_elnet)
+```
+
+
+## Bibliography
+
+Boehmke, B., & Greenwell, B. M. (2019). Hands-On Machine Learning with R. CRC Press.

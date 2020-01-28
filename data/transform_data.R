@@ -14,11 +14,12 @@ pisa_us <-
 
 # Calculate the average test score in mathematics as the average of all
 # 10 plausible columns
-pv_ind <- grepl("PV[0-9]MATH", names(pisa_us))
+pv_ind <- grepl("PV.+MATH", names(pisa_us))
 pisa_us$math_score <- rowMeans(pisa_us[pv_ind])
 
 pisa_us_ready <-
-  pisa_us %>% 
+  pisa_us %>%
+  select(-matches("PV.+MATH")) %>% 
   recipe(math_score ~ ., data = .) %>%
   step_zv(all_predictors()) %>% 
   step_meanimpute(all_predictors(), -all_nominal()) %>% 
