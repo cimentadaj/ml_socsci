@@ -1,16 +1,6 @@
-# Regularization
+# Regularizatino
 
-```{r knitr-setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      message = FALSE,
-                      warning = FALSE,
-                      fig.path = "../figs/",
-                      fig.align = "center",
-                      fig.asp = 0.618,
-                      out.width = "80%")
 
-eval_chnk <- FALSE
-```
 
 Regularization is a common topic in machine learning and bayesian statistics. In this document, we will describe the three most common regularized linear models in the machine learning literature and introduce them in the context of the PISA data set. At the end of the document you'll find exercises that will put your knowledge to the test. Most of this material is built upon Boehmke & Greenwell (2019) and Friedman et al. (2001).
 
@@ -40,126 +30,7 @@ An intuitive example is to think of RSS and $\sum_{k = 1}^n \beta^2_j$ as to sep
 
 Why is there a need to "limit" how well the model fits the data? Because we, social scientists and data scientists, very commonly **overfit** the data. The plot below shows a simulation from [Simon Jackson](https://drsimonj.svbtle.com/ridge-regression-with-glmnet) where we can see that when tested on a training set, OLS and Ridge tend to overfit the data. However, when tested on the test data, Ridge regression has lower out of sample error as the $R2$ is higher for models with different observations.
 
-```{r, echo = FALSE}
-# This chunk was taken and adapted from https://drsimonj.svbtle.com/ridge-regression-with-glmnet
-library(broom)
-library(glmnet)
-library(dplyr)
-library(purrr)
-library(tidyr)
-library(ggplot2)
-
-# Compute R^2 from true and predicted values
-rsquare <- function(true, predicted) {
-  sse <- sum((predicted - true)^2)
-  sst <- sum((true - mean(true))^2)
-  rsq <- 1 - sse / sst
-
-  # For this post, impose floor...
-  if (rsq < 0) rsq <- 0
-
-  return (rsq)
-}
-
-# Train ridge and OLS regression models on simulated data set with `n_train`
-# observations and a number of features as a proportion to `n_train`,
-# `p_features`. Return R squared for both models on:
-#   - y values of the training set
-#   - y values of a simualted test data set of `n_test` observations
-#   - The beta coefficients used to simulate the data
-ols_vs_ridge <- function(n_train, p_features, n_test = 200) {
-  ## Simulate datasets
-  n_features <- floor(n_train * p_features)
-  betas <- rnorm(n_features)
-
-  x <- matrix(rnorm(n_train * n_features), nrow = n_train)
-  y <- x %*% betas + rnorm(n_train)
-  train <- data.frame(y = y, x)
-
-  x <- matrix(rnorm(n_test * n_features), nrow = n_test)
-  y <- x %*% betas + rnorm(n_test)
-  test <- data.frame(y = y, x)
-
-  ## OLS
-  lm_fit <- lm(y ~ ., train)
-
-  # Match to beta coefficients
-  lm_betas <- tidy(lm_fit) %>%
-    filter(term != "(Intercept)") %>%
-    {.$estimate}
-  lm_betas_rsq <- rsquare(betas, lm_betas)
-
-  # Fit to training data
-  lm_train_rsq <- glance(lm_fit)$r.squared
-
-  # Fit to test data
-  lm_test_yhat <- predict(lm_fit, newdata = test)
-  lm_test_rsq  <- rsquare(test$y, lm_test_yhat)
-
-  ## Ridge regression
-  lambda_vals <- 10^seq(3, -2, by = -.1)  # Lambda values to search
-  cv_glm_fit  <- cv.glmnet(as.matrix(train[,-1]), train$y, alpha = 0, lambda = lambda_vals, nfolds = 5)
-  opt_lambda  <- cv_glm_fit$lambda.min  # Optimal Lambda
-  glm_fit     <- cv_glm_fit$glmnet.fit
-
-  # Match to beta coefficients
-  glm_betas <- tidy(glm_fit) %>%
-    filter(term != "(Intercept)", lambda == opt_lambda) %>% 
-    {.$estimate}
-  glm_betas_rsq <- rsquare(betas, glm_betas)
-
-  # Fit to training data
-  glm_train_yhat <- predict(glm_fit, s = opt_lambda, newx = as.matrix(train[,-1]))
-  glm_train_rsq  <- rsquare(train$y, glm_train_yhat)
-
-  # Fit to test data
-  glm_test_yhat <- predict(glm_fit, s = opt_lambda, newx = as.matrix(test[,-1]))
-  glm_test_rsq  <- rsquare(test$y, glm_test_yhat)
-
-  data.frame(
-    model = c("OLS", "Ridge"),
-    betas_rsq  = c(lm_betas_rsq, glm_betas_rsq),
-    train_rsq = c(lm_train_rsq, glm_train_rsq),
-    test_rsq = c(lm_test_rsq, glm_test_rsq)
-  )
-
-}
-
-# Function to run `ols_vs_ridge()` `n_replications` times
-repeated_comparisons <- function(n_train, p_features, n_replications = 1) {
-  map(seq(n_replications), ~ ols_vs_ridge(n_train, p_features)) %>% 
-    map2(seq(.), ~ mutate(.x, replicate = .y)) %>% 
-    reduce(rbind)
-}
-
-set.seed(23141)
-d <- purrr::cross_df(list(
-  n_train = seq(20, 200, 20),
-  p_features = .95
-))
-
-d <-
-  d %>% 
-  mutate(results = map2(n_train, p_features, repeated_comparisons))
-
-d %>%
-  unnest() %>% 
-  group_by(model, n_train) %>%
-  summarise(
-    train_rsq = mean(train_rsq),
-    test_rsq = mean(test_rsq)) %>% 
-  gather(data, rsq, contains("rsq")) %>%
-  ungroup() %>% 
-  mutate(data = factor(gsub("_rsq", "", data), levels = c("train", "test"))) %>% 
-  ggplot(aes(n_train, rsq, color = model)) +
-  geom_line() +
-  geom_point(size = 4, alpha = .3) +
-  facet_wrap(~ data) +
-  theme_minimal() +
-  labs(x = "Number of training observations",
-       y = "R squared")
-
-```
+<img src="../figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" />
 
 The strength of the ridge regression comes from the fact that it compromises fitting the training data really well for improved generalization. In other words, we increase **bias** (because we force the coefficients to be smaller) for lower **variance** (but we make it more general). In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization. 
 
@@ -167,7 +38,8 @@ Having that intuition in mind, the predictors of the ridge regression need to be
 
 In R, you can fit a ridge regression (and nearly all other machine learning models) through the `caret` package. Let's load the packages that we will work with and read the data:
 
-```{r}
+
+```r
 library(caret) # Fitting machine learning models
 library(rsample) # Create data partitions
 library(vip) # For figuring out important variables for prediction
@@ -178,7 +50,8 @@ pisa <- read.csv(data_link)
 
 First thing we do is separate the training and test data. All of our modelling will be performed on the training data and the test data is saved for later (the test data must be completely ignored until you have your final tuned model).
 
-```{r}
+
+```r
 # Separate training/testing split
 
 # Place a seed for reproducing the results
@@ -186,13 +59,12 @@ set.seed(23141)
 split_pisa <- initial_split(data = pisa, prop = .7)
 pisa_test <- testing(split_pisa)
 pisa_train <- training(split_pisa)
-
 ```
 
 The ridge regression has a parameter called `lambda` which needs to be set by us. `lambda` is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty". If this lambda is 0, it means we attach **no** weight to the penalty term and swe will get the same result over OLS. Let's try that:
 
-```{r}
 
+```r
 ############################# Ridge regression ################################
 ###############################################################################
 
@@ -247,9 +119,23 @@ comparison <-
 knitr::kable(comparison)
 ```
 
+
+
+coefs          Linear.coefficients   Ridge.coefficients
+------------  --------------------  -------------------
+(Intercept)                 473.05               473.05
+MISCED                        2.94                 2.94
+FISCED                       11.78                11.78
+HISEI                        18.07                18.07
+REPEAT                      -22.09               -22.09
+IMMIG                         6.01                 6.01
+DURECEC                       0.55                 0.55
+BSMJ                         10.62                10.62
+
 Coming from a social science background, it might seem counterintuitive that the researcher has to specify tuning parameters for the model. In traditional social science statistics, models usually estimate similar values internally and the user doesn't have to think about them. However, there are strategies already implemented to explore the combination of many possible values. With our previous example, we just have to add a number of lambda values and `train` will find the best one:
 
-```{r}
+
+```r
 set.seed(663421)
 
 ridge_grid <- data.frame(
@@ -272,17 +158,24 @@ ridge_mod <- train(
 plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
+<img src="../figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
+
 Here we can see how our coefficients are affected by increasing weight of the `lambda` parameter. And we can figure out the best lambda inspecting `bestTune` inside `ridge_mod`:
 
-```{r}
+
+```r
 best_lambda_ridge <- ridge_mod$bestTune$lambda
 best_lambda_ridge
 ```
 
+```
+## [1] 2.67893
+```
+
 However, there's no need to rerun the model with this optimal value; since `train` **had** to run that model, it saves it as the most optimal:
 
-```{r}
 
+```r
 holdout_ridge <-
   RMSE(
     predict(ridge_mod, pisa_test, s = best_lambda_ridge),
@@ -295,6 +188,11 @@ train_rmse_ridge <-
   pull(RMSE)
 
 c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
+```
+
+```
+## holdout_rmse   train_rmse 
+##     79.11585     76.37490
 ```
 
 The holdout RMSE will always be higher than the training RMSE as the training set nearly always **memorizes** the data better for the training.
@@ -312,7 +210,8 @@ Althought it might not be self-evident from this, the lasso reguralization has a
 For example, if we define the same model from above using a lasso, you'll see that it forces coefficients to be **exactly zero** if they don't add anything relative to the RSS of the model. This means that variables which do not add anything to the model will be excluded unless they add explanatory power that compensates the size of their coefficient. Here's the same lasso example:
 
 
-```{r}
+
+```r
 set.seed(663421)
 
 lasso_grid <- data.frame(
@@ -334,18 +233,26 @@ lasso_mod <- train(
 plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
+<img src="../figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" />
+
 In contrast to the ridge regression, where coefficients are forced to be close to zero, the lasso penalty actually forces some coefficients **to be zero**. This property means that the lasso makes a **selection of the variables with the higher coefficients** and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).
 
 The lasso actually works exactly as the ridge in the `caret` package, meaning that it automatically checks the most optimal value for lambda:
 
-```{r}
+
+```r
 best_lambda_lasso <- lasso_mod$bestTune$lambda
 best_lambda_lasso
 ```
 
+```
+## [1] 0.1906355
+```
+
 To actually check the final model and which variables are kept, we can access it:
 
-```{r}
+
+```r
 holdout_lasso <-
   RMSE(
     predict(lasso_mod, pisa_test, s = best_lambda_lasso),
@@ -360,9 +267,15 @@ train_rmse_lasso <-
 c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
 ```
 
+```
+## holdout_rmse   train_rmse 
+##     79.13141     76.31036
+```
+
 So far, we can check which model is performing better:
 
-```{r}
+
+```r
 model_comparison <-
   data.frame(
     type = c("test RMSE", "training RMSE"),
@@ -371,6 +284,12 @@ model_comparison <-
   )
 
 model_comparison
+```
+
+```
+##            type    ridge    lasso
+## 1     test RMSE 79.11585 79.13141
+## 2 training RMSE 76.37490 76.31036
 ```
 
 Currently the ridge regression has a very minor advantaged over the lasso yet the difference is probably within the margin of error. Depending on your aim, you might want to choose either of the models. For example, if our models contained a lot of variables, lasso might be more interpretable as it reduces the number of variables. However, if you have reasons to believe that keeping all variables in the model is important, then ridge provides an advantage.
@@ -399,7 +318,8 @@ Essentially, you now have two tuning parameters. In the grid of values, instead 
 
 However, `train` can already take care of this and calculate the most optimal value automatically with specifying a grid of values:
 
-```{r}
+
+```r
 set.seed(663421)
 
 elnet_mod <- train(
@@ -429,12 +349,26 @@ train_rmse_elnet <-
 c(holdout_rmse = holdout_elnet, train_rmse = train_rmse_elnet)
 ```
 
+```
+## holdout_rmse   train_rmse 
+##     79.12763     76.31005
+```
+
 The RMSE of the elastic net is somewhat lower than then ridge and lasso but also probably within the margin of error. Let's compare it visually:
 
-```{r}
+
+```r
 model_comparison$elnet <- c(holdout_elnet, train_rmse_elnet)
 model_comparison
+```
 
+```
+##            type    ridge    lasso    elnet
+## 1     test RMSE 79.11585 79.13141 79.12763
+## 2 training RMSE 76.37490 76.31036 76.31005
+```
+
+```r
 model_comparison %>%
   pivot_longer(-type) %>%
   ggplot(aes(name, value, color = type, group = type)) +
@@ -443,8 +377,9 @@ model_comparison %>%
   scale_y_continuous(name = "RMSE") +
   scale_x_discrete(name = "Models") +
   theme_minimal()
-
 ```
+
+<img src="../figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" />
 
 ## Exercises
 
@@ -465,18 +400,14 @@ In these series of exercises you will have to try different models that predict 
 
 Remember to set the seed to `2341` so that everyone can compare their results.
 
-```{r, echo = FALSE}
-set.seed(2341)
-split_pisa <- initial_split(data = pisa, prop = .7)
-pisa_test <- testing(split_pisa)
-pisa_train <- training(split_pisa)
-```
+
 
 ### Run a ridge regression with non-cognitive as the dependent variable
 
 Use as many variables as you want (you can reuse the previous variables from the examples or pick all of them). A formula of the like `noncogn ~ .` will regress `noncogn` on all variables.
 
-```{r, eval = FALSE}
+
+```r
 # 1) Define ridge grid of values for lambda
 ridge_grid <- data.frame(
   lambda = 
@@ -490,56 +421,20 @@ ridge_grid <- data.frame(
 # 4) Extract the RMSE of the training set
 
 # 5) Compare both holdout and training RMSE
-
 ```
 
-```{r, echo = FALSE, eval = eval_chnk}
-# Define ridge grid of values for lambda
-ridge_grid <- data.frame(
-  lambda = seq(0, 3, length.out = 100),
-  alpha = 0
-)
 
-# Use the train function to train the model on the *training set*
-ridge_mod <- train(
-  form = noncogn ~ .,
-  data = pisa_train,
-  method = "glmnet",
-  preProc = c("center", "scale"),
-  tuneGrid = ridge_grid,
-  trControl = trainControl(method = "cv", number = 5)
-)
-
-# Extract the best lambda and calculate the RMSE
-# on the test set
-best_lambda_ridge <- ridge_mod$bestTune$lambda
-holdout_ridge <-
-  RMSE(
-    predict(ridge_mod, pisa_test),
-    pisa_test$noncogn
-  )
-
-# Extract the RMSE of the training set
-train_rmse_ridge <-
-  ridge_mod$results %>%
-  filter(alpha == ridge_mod$bestTune$alpha, lambda == best_lambda_ridge) %>%
-  pull(RMSE)
-
-# Compare both holdout and training RMSE
-c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
-```
 
 ### Which are the most important variables?
 
 Comment on their coefficients and whether they make sense to be included in the model.
 
-```{r, eval = FALSE, echo = FALSE}
-vip(ridge_mod)
-```
+
 
 ### Run a lasso regression with the same specification as above
 
-```{r, eval = FALSE}
+
+```r
 # Define ridge grid of values for lambda
 lasso_grid <- data.frame(
   lambda = 
@@ -547,44 +442,9 @@ lasso_grid <- data.frame(
 )
 
 # Reproduce previous steps
-
 ```
 
-```{r, echo = FALSE, eval = eval_chnk}
-# Define ridge grid of values for lambda
-lasso_grid <- data.frame(
-  lambda = seq(0, 3, length.out = 100),
-  alpha = 0
-)
 
-# Use the train function to train the model on the *training set*
-lasso_mod <- train(
-  form = noncogn ~ .,
-  data = pisa_train,
-  method = "glmnet",
-  preProc = c("center", "scale"),
-  tuneGrid = lasso_grid,
-  trControl = trainControl(method = "cv", number = 5)
-)
-
-# Extract the best lambda and calculate the RMSE
-# on the test set
-best_lambda_lasso <- lasso_mod$bestTune$lambda
-holdout_lasso <-
-  RMSE(
-    predict(lasso_mod, pisa_test),
-    pisa_test$noncogn
-  )
-
-# Extract the RMSE of the training set
-train_rmse_lasso <-
-  lasso_mod$results %>%
-  filter(alpha == lasso_mod$bestTune$alpha, lambda == best_lambda_lasso) %>%
-  pull(RMSE)
-
-# Compare both holdout and training RMSE
-c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
-```
 
 Which model is performing better? Ridge or Lasso? Are the same variables the strongest predictors across models? Which variables are the strongest predictors?
 
@@ -592,35 +452,7 @@ Which model is performing better? Ridge or Lasso? Are the same variables the str
 
 Since `train` already takes care of trying all possible values, there's no need to pass a grid of lambda values. It is only needed to set the `tuneLength` to a number of alpha values.
 
-```{r, eval = eval_chnk, echo = FALSE}
-# Use the train function to train the model on the *training set*
-elnet_mod <- train(
-  form = noncogn ~ .,
-  data = pisa_train,
-  method = "glmnet",
-  preProc = c("center", "scale"),
-  trControl = trainControl(method = "cv", number = 5),
-  tuneLength = 5
-)
 
-# Extract the best lambda and calculate the RMSE
-# on the test set
-best_lambda_elnet <- elnet_mod$bestTune$lambda
-holdout_elnet <-
-  RMSE(
-    predict(elnet_mod, pisa_test),
-    pisa_test$noncogn
-  )
-
-# Extract the RMSE of the training set
-train_rmse_elnet <-
-  elnet_mod$results %>%
-  filter(alpha == elnet_mod$bestTune$alpha, lambda == best_lambda_elnet) %>%
-  pull(RMSE)
-
-# Compare both holdout and training RMSE
-c(holdout_rmse = holdout_elnet, train_rmse = train_rmse_elnet)
-```
 
 ## Bibliography
 

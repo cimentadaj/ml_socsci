@@ -1,22 +1,8 @@
----
-title: "Machine Learning for Social Sciences"
-author:
-  - Jorge Cimentada^[Laboratory of Digital and Computational Demography, Max Planck Institute of Demographic Research. Correspondence to cimentadaj@gmail.com]
-output: pdf_document
-urlcolor: blue
----
+# Syllabus
 
-```{r knitr-setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      message = FALSE,
-                      warning = FALSE,
-                      fig.path = "../figs/",
-                      fig.align = "center",
-                      fig.asp = 0.618,
-                      out.width = "80%")
-```
 
-# Course description
+
+## Course description
 
 With the increasing amounts of data being collected on a daily basis, the field of machine learning has gained mainstream attention. By shifting away from focusing on inference, machine learning is a field at the intersection of statistics and computer science that is focused on maximizing predictive performance by learning patterns from data. That is, the goal of machine learning is to predict something -- and predict it very well, regardless of whether you understand it. These techniques are common in business settings where, for example, stakeholders are interested in knowing the probability of a client leaving a company or the propensity of a client for buying a particular product. The field can be intimidating as it is vast and growing every year. 
 
@@ -26,7 +12,7 @@ In particular, we will introduce predictive algorithms such as regularized regre
 
 We will end the course with a prediction challenge that will put to test all of your acquired knowledge. Starting with a discussion on the role of predictive challenges such as the [Fragile Families Challenge](http://www.fragilefamilieschallenge.org/) in the social sciences, our predictive challenge will require the student to run machine learning algorithms, test their out-of-sample error rate and discuss strategies on how the results are useful. This will give the class a real hands-on example of how to incorporate machine learning into their research right away. Below is a detailed description of the syllabus.
 
-# Schedule
+## Schedule
 
 **Session 1**  
 **July 6th 09:00h-10:45h**
@@ -199,17 +185,16 @@ We will end the course with a prediction challenge that will put to test all of 
   + Salganik, M. J., Lundberg, I., Kindel, A. T., & McLanahan, S. (2019). Introduction to the Special Collection on the Fragile Families Challenge. Socius, 5, 2378023119871580. Accessible at https://www.researchgate.net/publication/335733962_Introduction_to_the_Special_Collection_on_the_Fragile_Families_Challenge
 
 
-# Software:
+## Software:
 
 We will be using the R software together with the Rstudio interface. No laptop is required as the seminars will take place in the RECSM facilities. Any packages we plan to use will be already downloaded previous to the session.
 
-# Prerequisites:
+## Prerequisites:
 
 - The course assumes that the student is familiar with R and should be familiar with reading, manipulating and cleaning data frames. Ideally, the student has conducted some type of research using the software.
 
 - Students should have solid knowledge of basic statistics such as linear and logistic regression, ideally with more advanced concepts such as multilevel modelling.
 
-
-# Instructor:
+## About the author
 
 Jorge Cimentada has a PhD in Sociology from Pompeu Fabra University and is currently a Research Scientist at the Laboratory of Digital and Computational Demography at the Max Planck Institute for Demographic Research. His research is mainly focused on the study of educational inequality, inequality in spatial mobility and computational social science. He has worked on data science projects both in the private sector and in academic research and is interested in merging cutting edge machine learning techniques with classical social statistics. You can check out his blog at [cimentadaj.github.io](https://cimentadaj.github.io/about/) or contact him through twitter at [\@cimentadaj](https://twitter.com/cimentadaj/).

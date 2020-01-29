@@ -1,0 +1,7 @@
+book_filename: "ml_socsci"
+chapter_name: "Chapter "
+repo: https://github.com/cimentadaj/ml_socsci
+output_dir: _docs/
+rmd_files: ["index.Rmd", "01_regularization.Rmd", "04_syllabus.Rmd"]
+clean: [packages.bib, bookdown.bbl]
+new_session: yes

@@ -1,0 +1,5 @@
+Package: placeholder
+Title: Does not matter.
+Version: 0.0.1
+Imports: bookdown, caret, vip, broom, glmnet, dplyr, tidyr, purrr, ggplot2, rsample
+Remotes: rstudio/bookdown

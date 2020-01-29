@@ -1,5 +1,8 @@
-packrat/lib*/
-data/pisa_2018.sav
 .Rproj.user
 .Rhistory
 .RData
+_bookdown_files
+.DS_Store
+*.rds
+.Rapp.history
+data/pisa_2018.sav
