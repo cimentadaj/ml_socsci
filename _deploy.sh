@@ -7,12 +7,21 @@ git clone -b gh-pages \
   https://${GITHUB_PAT}@github.com/${TRAVIS_REPO_SLUG}.git \
   book-output
 
+# Move to the bookoutput
 cd book-output
+
+# Remove everything there is there
+git rm -rf *
+
+# Create a figs directory
 mkdir /figs
 
-git rm -rf *
+# Copy the docs file to the directoy
 cp -r ../docs/* ./
+
+# Copy the figures to the created figs folder
 cp -r ../figs/* ./figs/
+
 git add --all *
 git commit -m "Update the book"
 git push -q origin gh-pages
