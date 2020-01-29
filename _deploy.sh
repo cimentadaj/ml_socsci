@@ -8,7 +8,7 @@ git clone -b gh-pages \
   book-output
 
 cd book-output
-mkdir book-output/figs
+mkdir /figs
 
 git rm -rf *
 cp -r ../docs/* ./
