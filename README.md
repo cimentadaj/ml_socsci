@@ -1,4 +1,4 @@
-# Machine Learning
+# Machine Learning for Social Scientists
 
 [![Travis-CI Build Status](https://travis-ci.org/cimentadaj/ml_socsci.svg?branch=master)](https://travis-ci.org/cimentadaj/ml_socsci)
 
