@@ -30,7 +30,7 @@ An intuitive example is to think of RSS and $\sum_{k = 1}^n \beta^2_j$ as to sep
 
 Why is there a need to "limit" how well the model fits the data? Because we, social scientists and data scientists, very commonly **overfit** the data. The plot below shows a simulation from [Simon Jackson](https://drsimonj.svbtle.com/ridge-regression-with-glmnet) where we can see that when tested on a training set, OLS and Ridge tend to overfit the data. However, when tested on the test data, Ridge regression has lower out of sample error as the $R2$ is higher for models with different observations.
 
-<img src="../figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" />
 
 The strength of the ridge regression comes from the fact that it compromises fitting the training data really well for improved generalization. In other words, we increase **bias** (because we force the coefficients to be smaller) for lower **variance** (but we make it more general). In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization. 
 
@@ -158,7 +158,7 @@ ridge_mod <- train(
 plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
-<img src="../figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
 
 Here we can see how our coefficients are affected by increasing weight of the `lambda` parameter. And we can figure out the best lambda inspecting `bestTune` inside `ridge_mod`:
 
@@ -233,7 +233,7 @@ lasso_mod <- train(
 plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
-<img src="../figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" />
 
 In contrast to the ridge regression, where coefficients are forced to be close to zero, the lasso penalty actually forces some coefficients **to be zero**. This property means that the lasso makes a **selection of the variables with the higher coefficients** and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).
 
@@ -379,7 +379,7 @@ model_comparison %>%
   theme_minimal()
 ```
 
-<img src="../figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" />
 
 ## Exercises
 

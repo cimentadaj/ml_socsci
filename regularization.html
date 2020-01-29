@@ -168,7 +168,7 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 <p>The new term is called a <em>shrinkage penalty</em> because it forces each coefficient <span class="math inline">\(\beta_j\)</span> closer to zero by squaring it. The shrinkage part is clearer once you think of this term as forcing each coefficient to be as small as possible but also considering having the smallest Residual Sum of Squares (RSS). In other words, we want the smallest coefficients that don’t affect the fit of the line (RSS).</p>
 <p>An intuitive example is to think of RSS and <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> as to separate things. RSS estimates how the model fits the data and <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> limits how much you overfit the data. Finally, the little <span class="math inline">\(\lambda\)</span> between these two terms can be interpreted as a “weight”. The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If <span class="math inline">\(\lambda\)</span> is 0, then multiplying 0 by <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> will always return zero, forcing our previous equation to simply be reduced to the single term <span class="math inline">\(RSS\)</span>.</p>
 <p>Why is there a need to “limit” how well the model fits the data? Because we, social scientists and data scientists, very commonly <strong>overfit</strong> the data. The plot below shows a simulation from <a href="https://drsimonj.svbtle.com/ridge-regression-with-glmnet">Simon Jackson</a> where we can see that when tested on a training set, OLS and Ridge tend to overfit the data. However, when tested on the test data, Ridge regression has lower out of sample error as the <span class="math inline">\(R2\)</span> is higher for models with different observations.</p>
-<p><img src="../figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>The strength of the ridge regression comes from the fact that it compromises fitting the training data really well for improved generalization. In other words, we increase <strong>bias</strong> (because we force the coefficients to be smaller) for lower <strong>variance</strong> (but we make it more general). In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization.</p>
 <p>Having that intuition in mind, the predictors of the ridge regression need to be standardized. Why is this the case? Because due to the scale of a predictor, its coefficient can be more penalized than other predictors. Suppose that you have the income of a particular person (measured in thousands per months) and time spent with their families (measured in seconds) and you’re trying to predict happiness. A one unit increase in salary could be penalized much more than a one unit increase in time spent with their families <strong>just</strong> because a one unit increase in salary can be much bigger due to it’s metric.</p>
 <p>In R, you can fit a ridge regression (and nearly all other machine learning models) through the <code>caret</code> package. Let’s load the packages that we will work with and read the data:</p>
@@ -311,7 +311,7 @@ ridge_mod &lt;-<span class="st"> </span><span class="kw">train</span>(
 )
 
 <span class="kw">plot</span>(ridge_mod<span class="op">$</span>finalModel, <span class="dt">xvar =</span> <span class="st">&quot;lambda&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="../figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>Here we can see how our coefficients are affected by increasing weight of the <code>lambda</code> parameter. And we can figure out the best lambda inspecting <code>bestTune</code> inside <code>ridge_mod</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">best_lambda_ridge &lt;-<span class="st"> </span>ridge_mod<span class="op">$</span>bestTune<span class="op">$</span>lambda
 best_lambda_ridge</code></pre></div>
@@ -360,7 +360,7 @@ lasso_mod &lt;-<span class="st"> </span><span class="kw">train</span>(
 )
 
 <span class="kw">plot</span>(lasso_mod<span class="op">$</span>finalModel, <span class="dt">xvar =</span> <span class="st">&quot;lambda&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="../figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>In contrast to the ridge regression, where coefficients are forced to be close to zero, the lasso penalty actually forces some coefficients <strong>to be zero</strong>. This property means that the lasso makes a <strong>selection of the variables with the higher coefficients</strong> and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).</p>
 <p>The lasso actually works exactly as the ridge in the <code>caret</code> package, meaning that it automatically checks the most optimal value for lambda:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">best_lambda_lasso &lt;-<span class="st"> </span>lasso_mod<span class="op">$</span>bestTune<span class="op">$</span>lambda
@@ -453,7 +453,7 @@ model_comparison</code></pre></div>
 <span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;RMSE&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">name =</span> <span class="st">&quot;Models&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">theme_minimal</span>()</code></pre></div>
-<p><img src="../figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p><img src="figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercises" class="section level2">
 <h2><span class="header-section-number">1.4</span> Exercises</h2>
