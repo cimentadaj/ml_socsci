@@ -8,9 +8,11 @@ git clone -b gh-pages \
   book-output
 
 cd book-output
+mkdir book-output/figs
+
 git rm -rf *
 cp -r ../docs/* ./
-cp -r ../figs/* ./
+cp -r ../figs/* ./figs/
 git add --all *
 git commit -m "Update the book"
 git push -q origin gh-pages
