@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Syllabus | Machine Learning for Social Scientists</title>
+  <meta name="description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
+  <meta name="generator" content="bookdown 0.17.2 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Syllabus | Machine Learning for Social Scientists" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://cimentadaj.github.io/ml_socsci/" />
+  
+  <meta property="og:description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
+  <meta name="github-repo" content="cimentadaj/ml_socsci" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Syllabus | Machine Learning for Social Scientists" />
+  
+  <meta name="twitter:description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
+  
+
+<meta name="author" content="Jorge Cimentada" />
+
+
+<meta name="date" content="2020-01-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="regularization.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Machine Learning for Social Scientists</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="regularization.html"><a href="regularization.html"><i class="fa fa-check"></i><b>1</b> Regularization</a><ul>
+<li class="chapter" data-level="1.1" data-path="regularization.html"><a href="regularization.html#ridge-regularization"><i class="fa fa-check"></i><b>1.1</b> Ridge regularization</a></li>
+<li class="chapter" data-level="1.2" data-path="regularization.html"><a href="regularization.html#lasso-regularization"><i class="fa fa-check"></i><b>1.2</b> Lasso regularization</a></li>
+<li class="chapter" data-level="1.3" data-path="regularization.html"><a href="regularization.html#elastic-net-regularization"><i class="fa fa-check"></i><b>1.3</b> Elastic Net regularization</a></li>
+<li class="chapter" data-level="1.4" data-path="regularization.html"><a href="regularization.html#exercises"><i class="fa fa-check"></i><b>1.4</b> Exercises</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="regularization.html"><a href="regularization.html#split-the-data-into-testtraining-data"><i class="fa fa-check"></i><b>1.4.1</b> Split the data into test/training data</a></li>
+<li class="chapter" data-level="1.4.2" data-path="regularization.html"><a href="regularization.html#run-a-ridge-regression-with-non-cognitive-as-the-dependent-variable"><i class="fa fa-check"></i><b>1.4.2</b> Run a ridge regression with non-cognitive as the dependent variable</a></li>
+<li class="chapter" data-level="1.4.3" data-path="regularization.html"><a href="regularization.html#which-are-the-most-important-variables"><i class="fa fa-check"></i><b>1.4.3</b> Which are the most important variables?</a></li>
+<li class="chapter" data-level="1.4.4" data-path="regularization.html"><a href="regularization.html#run-a-lasso-regression-with-the-same-specification-as-above"><i class="fa fa-check"></i><b>1.4.4</b> Run a lasso regression with the same specification as above</a></li>
+<li class="chapter" data-level="1.4.5" data-path="regularization.html"><a href="regularization.html#run-an-elastic-net-regression-on-non-cognitive-skills"><i class="fa fa-check"></i><b>1.4.5</b> Run an elastic net regression on non cognitive skills</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="regularization.html"><a href="regularization.html#bibliography"><i class="fa fa-check"></i><b>1.5</b> Bibliography</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>2</b> Syllabus</a><ul>
+<li class="chapter" data-level="2.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>2.1</b> Course description</a></li>
+<li class="chapter" data-level="2.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>2.2</b> Schedule</a></li>
+<li class="chapter" data-level="2.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>2.3</b> Software:</a></li>
+<li class="chapter" data-level="2.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>2.4</b> Prerequisites:</a></li>
+<li class="chapter" data-level="2.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>2.5</b> About the author</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Machine Learning for Social Scientists</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="syllabus" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Syllabus</h1>
+<div id="course-description" class="section level2">
+<h2><span class="header-section-number">2.1</span> Course description</h2>
+<p>With the increasing amounts of data being collected on a daily basis, the field of machine learning has gained mainstream attention. By shifting away from focusing on inference, machine learning is a field at the intersection of statistics and computer science that is focused on maximizing predictive performance by learning patterns from data. That is, the goal of machine learning is to predict something – and predict it very well, regardless of whether you understand it. These techniques are common in business settings where, for example, stakeholders are interested in knowing the probability of a client leaving a company or the propensity of a client for buying a particular product. The field can be intimidating as it is vast and growing every year.</p>
+<p>However, scholars in the social sciences are beginning to understand the importance of the machine learning framework and how it can unlock new knowledge in fields such as sociology, political science, economics and psychology. On this course we will introduce students to the basic ideas of the machine learning framework and touch upon the basic algorithms used for prediction and discussing the potential it can have in the social sciences.</p>
+<p>In particular, we will introduce predictive algorithms such as regularized regressions, classification trees and clustering techniques through basic examples. We will discuss their advantages and disadvantages while paying great attention to how it’s been used in research. Although many social scientists do not see how predictive models can help explain social phenomena, we will also focus on how machine learning can play a role as a tool for discovery, improving causal inference and generalizing our classical models through cross validation.</p>
+<p>We will end the course with a prediction challenge that will put to test all of your acquired knowledge. Starting with a discussion on the role of predictive challenges such as the <a href="http://www.fragilefamilieschallenge.org/">Fragile Families Challenge</a> in the social sciences, our predictive challenge will require the student to run machine learning algorithms, test their out-of-sample error rate and discuss strategies on how the results are useful. This will give the class a real hands-on example of how to incorporate machine learning into their research right away. Below is a detailed description of the syllabus.</p>
+</div>
+<div id="schedule" class="section level2">
+<h2><span class="header-section-number">2.2</span> Schedule</h2>
+<p><strong>Session 1</strong><br />
+<strong>July 6th 09:00h-10:45h</strong></p>
+<ul>
+<li>Introduction to the Machine Learning Framework</li>
+<li>Inference vs Prediction</li>
+<li>Can inference and prediction complement each other?</li>
+<li>“<a href="http://www.fragilefamilieschallenge.org/">The Fragile Families Challenge</a>”</li>
+<li>Bias-variance / Interpretability-prediction tradeoffs</li>
+<li>Resampling methods: validation, k-fold CV</li>
+</ul>
+<p><strong>Readings</strong>:</p>
+<ul>
+<li><p>Sections 2.1 and 2.2 from James, Gareth, et al. An Introduction To Statistical Learning. Vol. 112. New York: springer, 2013</p></li>
+<li><p>Molina, M., &amp; Garip, F. (2019). Machine Learning for Sociology. Annual Review of Sociology, 45.</p></li>
+<li><p>Mullainathan, S., &amp; Spiess, J. (2017). Machine learning: an applied econometric approach. Journal of Economic Perspectives, 31(2), 87-106.</p></li>
+<li><p>Breiman, L. (2001). Statistical modeling: The two cultures (with comments and a rejoinder by the author). Statistical science, 16(3), 199-231.</p></li>
+</ul>
+<hr />
+<p><strong>Break 10:45h-11:15h</strong></p>
+<hr />
+<p><strong>Session 2</strong><br />
+<strong>July 6th 11:15h-13:00h</strong></p>
+<ul>
+<li>Linear regression and regularization</li>
+<li>Continuous predictions and loss functions</li>
+<li>Lasso
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Ridge regression
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Elastic Net
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Exercises</li>
+</ul>
+<p><strong>Readings</strong>:</p>
+<ul>
+<li><p>For a theoretical introduction to Lasso/Ridge, sections 6.1, 6.2 and 6.6 from <em>James, Gareth, et al. (2013) An Introduction To Statistical Learning. Vol. 112. New York: springer</em></p></li>
+<li><p>For hands-on examples, Chapter 6 of *Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series. Accessible at: <a href="https://bradleyboehmke.github.io/HOML/*" class="uri">https://bradleyboehmke.github.io/HOML/*</a></p></li>
+</ul>
+<p><strong>Session 3</strong><br />
+<strong>July 7th 09:00h-10:45h</strong></p>
+<ul>
+<li>Supervised Regression</li>
+<li>Introduction to supervised regression</li>
+<li>Classification
+<ul>
+<li>Confusion matrices</li>
+<li>ROC Curves</li>
+</ul></li>
+<li>Classification Trees
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example<br />
+</li>
+</ul></li>
+<li>Exercises</li>
+</ul>
+<p><strong>Readings</strong>:</p>
+<ul>
+<li><p>For an introduction to classification trees, Section 8.1, 8.3.1 and 8.3.2 from <em>James, Gareth, et al. An Introduction To Statistical Learning. Vol. 112. New York: springer, 2013</em></p></li>
+<li><p>For hands-on examples, chapter 9 from *Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series. Accessible at: <a href="https://bradleyboehmke.github.io/HOML/*" class="uri">https://bradleyboehmke.github.io/HOML/*</a></p></li>
+<li>For real-world applications of Classification Trees:</li>
+<li><p>Billari, F. C., Fürnkranz, J., &amp; Prskawetz, A. (2006). Timing, sequencing, and quantum of life course events: A machine learning approach. European Journal of Population/Revue Européenne de Démographie, 22(1), 37-65.</p></li>
+<li><p>Chapter 3 of Nolan, D., &amp; Lang, D. T. (2015). Data science in R: a case studies approach to computational reasoning and problem solving. CRC Press.</p></li>
+</ul>
+<hr />
+<p><strong>Break 10:45h-11:15h</strong></p>
+<hr />
+<p><strong>Session 4</strong><br />
+<strong>July 7th 11:15h-13:00h</strong></p>
+<ul>
+<li>Supervised Regression</li>
+<li>Bagging
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Random Forest
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Gradient Boosting
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Exercises</li>
+</ul>
+<p><strong>Readings</strong>:</p>
+<ul>
+<li><p>For an introduction to bagging/random forests/boosting, Chapter 8 from <em>James, Gareth, et al. An Introduction To Statistical Learning. Vol. 112. New York: springer, 2013</em></p></li>
+<li><p>For hands-on examples, chapter 10, 11 and 12 from *Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series. Accessible at: <a href="https://bradleyboehmke.github.io/HOML/*" class="uri">https://bradleyboehmke.github.io/HOML/*</a></p></li>
+<li>For real-world applications of Random Forests:</li>
+<li><p>Perry, C. (2013). Machine learning and conflict prediction: a use case. Stability: International Journal of Security and Development, 2(3), 56.</p></li>
+<li><p>Berk, R. A., Sorenson, S. B., &amp; Barnes, G. (2016). Forecasting domestic violence: A machine learning approach to help inform arraignment decisions. Journal of Empirical Legal Studies, 13(1), 94-115.</p></li>
+</ul>
+<p><strong>Session 5</strong><br />
+<strong>July 8th 09h-10:45h</strong></p>
+<ul>
+<li>Unsupervised Regression</li>
+<li>Introduction to unsupervised learning</li>
+<li>Principal Component Analysis (PCA)
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>K-Means clustering
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Exercises</li>
+</ul>
+<p><strong>Readings</strong>:</p>
+<ul>
+<li><p>For an introduction to unsupervised learning, Section 10.1 from <em>James, Gareth, et al. An Introduction To Statistical Learning. Vol. 112. New York: springer, 2013</em></p></li>
+<li>For an introduction to PCA</li>
+<li><p>Section 10.2 and 10.4 from <em>James, Gareth, et al. An Introduction To Statistical Learning. 112. New York: springer, 2013</em></p></li>
+<li><p>For hands-on examples, chapter 17 from *Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series. Accessible at: <a href="https://bradleyboehmke.github.io/HOML/*" class="uri">https://bradleyboehmke.github.io/HOML/*</a></p></li>
+<li>For an introduction to K-Means clustering</li>
+<li><p>Section 10.5 from <em>James, Gareth, et al. An Introduction To Statistical Learning. Vol. 112. New York: springer, 2013</em></p></li>
+<li><p>For hands-on examples, chapter 20 from *Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series. Accessible at: <a href="https://bradleyboehmke.github.io/HOML/*" class="uri">https://bradleyboehmke.github.io/HOML/*</a></p></li>
+<li><p>For real-world applications of K-means clustering:</p></li>
+<li><p>Garip, F. (2012). Discovering diverse mechanisms of migration: The Mexico–US Stream 1970–2000. Population and Development Review, 38(3), 393-433.</p></li>
+<li><p>Bail, C. A. (2008). The configuration of symbolic boundaries against immigrants in Europe. American Sociological Review, 73(1), 37-59.</p></li>
+</ul>
+<hr />
+<p><strong>Break 10:45h-11:15h</strong></p>
+<hr />
+<p><strong>Session 6</strong><br />
+<strong>July 8th 11:15h-13:00h</strong></p>
+<ul>
+<li>Unsupervised Regression</li>
+<li>Hierarchical clustering
+<ul>
+<li>Advantages/Disadvantages</li>
+<li>R example</li>
+</ul></li>
+<li>Final challenge: Prediction competition</li>
+<li>Explanation of strategies</li>
+<li>No free lunch theorem</li>
+<li>Presentation of results</li>
+</ul>
+<p><strong>Readings</strong>:</p>
+<ul>
+<li><p>For an introduction to hierarchical clustering, sections 10.3.2, 10.3.3, 10.5.2 from <em>James, Gareth, et al. An Introduction To Statistical Learning. Vol. 112. New York: springer, 2013</em></p></li>
+<li><p>For hands-on examples, chapter 21 from *Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series. Accessible at: <a href="https://bradleyboehmke.github.io/HOML/*" class="uri">https://bradleyboehmke.github.io/HOML/*</a></p></li>
+<li>For examples on prediction competitions:</li>
+<li><p>Glaeser, E. L., Hillis, A., Kominers, S. D., &amp; Luca, M. (2016). Crowdsourcing city government: Using tournaments to improve inspection accuracy. American Economic Review, 106(5), 114-18.</p></li>
+<li><p>Salganik, M. J., Lundberg, I., Kindel, A. T., &amp; McLanahan, S. (2019). Introduction to the Special Collection on the Fragile Families Challenge. Socius, 5, 2378023119871580. Accessible at <a href="https://www.researchgate.net/publication/335733962_Introduction_to_the_Special_Collection_on_the_Fragile_Families_Challenge" class="uri">https://www.researchgate.net/publication/335733962_Introduction_to_the_Special_Collection_on_the_Fragile_Families_Challenge</a></p></li>
+</ul>
+</div>
+<div id="software" class="section level2">
+<h2><span class="header-section-number">2.3</span> Software:</h2>
+<p>We will be using the R software together with the Rstudio interface. No laptop is required as the seminars will take place in the RECSM facilities. Any packages we plan to use will be already downloaded previous to the session.</p>
+</div>
+<div id="prerequisites" class="section level2">
+<h2><span class="header-section-number">2.4</span> Prerequisites:</h2>
+<ul>
+<li><p>The course assumes that the student is familiar with R and should be familiar with reading, manipulating and cleaning data frames. Ideally, the student has conducted some type of research using the software.</p></li>
+<li><p>Students should have solid knowledge of basic statistics such as linear and logistic regression, ideally with more advanced concepts such as multilevel modelling.</p></li>
+</ul>
+</div>
+<div id="about-the-author" class="section level2">
+<h2><span class="header-section-number">2.5</span> About the author</h2>
+<p>Jorge Cimentada has a PhD in Sociology from Pompeu Fabra University and is currently a Research Scientist at the Laboratory of Digital and Computational Demography at the Max Planck Institute for Demographic Research. His research is mainly focused on the study of educational inequality, inequality in spatial mobility and computational social science. He has worked on data science projects both in the private sector and in academic research and is interested in merging cutting edge machine learning techniques with classical social statistics. You can check out his blog at <a href="https://cimentadaj.github.io/about/">cimentadaj.github.io</a> or contact him through twitter at <a href="https://twitter.com/cimentadaj/">@cimentadaj</a>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="regularization.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["ml_socsci.pdf", "ml_socsci.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
