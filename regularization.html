@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-01-29" />
+<meta name="date" content="2020-01-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -467,6 +467,8 @@ model_comparison</code></pre></div>
 </ul>
 <p>The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills.</p>
 <p>In these series of exercises you will have to try different models that predict this index of non-cognitive skills, choose the best model and look at the most important variables.</p>
+<p>First, read in the data with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></code></pre></div>
 <div id="split-the-data-into-testtraining-data" class="section level3">
 <h3><span class="header-section-number">1.4.1</span> Split the data into test/training data</h3>
 <p>Remember to set the seed to <code>2341</code> so that everyone can compare their results.</p>
