@@ -401,6 +401,7 @@ First, read in the data with:
 
 ```r
 data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
 ```
 
 ### Split the data into test/training data
