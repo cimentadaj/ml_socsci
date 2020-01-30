@@ -461,6 +461,13 @@ The scale of the index goes from 1 to 4, where 4 the student strongly agrees and
 
 In these series of exercises you will have to try different models that predict this index of non-cognitive skills, choose the best model and look at the most important variables.
 
+First, read in the data with:
+
+```{r, eval = FALSE}
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
+
 ### Split the data into test/training data
 
 Remember to set the seed to `2341` so that everyone can compare their results.
