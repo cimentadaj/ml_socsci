@@ -431,11 +431,12 @@ ridge_grid <- data.frame(
 # 5) Compare both holdout and training RMSE
 ```
 
-<details><summary>Answer</summary>
-
-
-
+<details>
+  <summary>Toggle answer</summary>
+  
 </details>
+
+
 
 ### Which are the most important variables?
 
