@@ -1,4 +1,4 @@
-# Regularizatino
+# Regularization
 
 
 
@@ -26,11 +26,11 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 
 The new term is called a *shrinkage penalty* because it forces each coefficient $\beta_j$ closer to zero by squaring it. The shrinkage part is clearer once you think of this term as forcing each coefficient to be as small as possible but also considering having the smallest Residual Sum of Squares (RSS). In other words, we want the smallest coefficients that don't affect the fit of the line (RSS).
 
-An intuitive example is to think of RSS and $\sum_{k = 1}^n \beta^2_j$ as to separate things. RSS estimates how the model fits the data and $\sum_{k = 1}^n \beta^2_j$ limits how much you overfit the data. Finally, the little $\lambda$ between these two terms can be interpreted as a "weight". The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If $\lambda$ is 0, then multiplying 0 by $\sum_{k = 1}^n \beta^2_j$ will always return zero, forcing our previous equation to simply be reduced to the single term $RSS$.
+An intuitive example is to think of RSS and $\sum_{k = 1}^n \beta^2_j$ as two separate things. RSS estimates how the model fits the data and $\sum_{k = 1}^n \beta^2_j$ limits how much you overfit the data. Finally, the little $\lambda$ between these two terms can be interpreted as a "weight". The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If $\lambda$ is 0, then multiplying 0 by $\sum_{k = 1}^n \beta^2_j$ will always return zero, forcing our previous equation to simply be reduced to the single term $RSS$.
 
 Why is there a need to "limit" how well the model fits the data? Because we, social scientists and data scientists, very commonly **overfit** the data. The plot below shows a simulation from [Simon Jackson](https://drsimonj.svbtle.com/ridge-regression-with-glmnet) where we can see that when tested on a training set, OLS and Ridge tend to overfit the data. However, when tested on the test data, Ridge regression has lower out of sample error as the $R2$ is higher for models with different observations.
 
-<img src="../figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" />
 
 The strength of the ridge regression comes from the fact that it compromises fitting the training data really well for improved generalization. In other words, we increase **bias** (because we force the coefficients to be smaller) for lower **variance** (but we make it more general). In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization. 
 
@@ -61,7 +61,7 @@ pisa_test <- testing(split_pisa)
 pisa_train <- training(split_pisa)
 ```
 
-The ridge regression has a parameter called `lambda` which needs to be set by us. `lambda` is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty". If this lambda is 0, it means we attach **no** weight to the penalty term and swe will get the same result over OLS. Let's try that:
+The ridge regression has a parameter called `lambda` which needs to be set by us. `lambda` is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty". If this lambda is 0, it means we attach **no** weight to the penalty term and we will get the same result over OLS. Let's try that:
 
 
 ```r
@@ -77,7 +77,7 @@ ridge_grid <- data.frame(
 
 # The train function accepts several arguments
 ridge_mod <- train(
-  # math_score is the dependen variable and all other are independent variables
+  # math_score is the dependent variable and all other are independent variables
   math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
   # The training data
   data = pisa_train,
@@ -158,7 +158,7 @@ ridge_mod <- train(
 plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
-<img src="../figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" />
 
 Here we can see how our coefficients are affected by increasing weight of the `lambda` parameter. And we can figure out the best lambda inspecting `bestTune` inside `ridge_mod`:
 
@@ -233,7 +233,7 @@ lasso_mod <- train(
 plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
 ```
 
-<img src="../figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" />
 
 In contrast to the ridge regression, where coefficients are forced to be close to zero, the lasso penalty actually forces some coefficients **to be zero**. This property means that the lasso makes a **selection of the variables with the higher coefficients** and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).
 
@@ -379,7 +379,7 @@ model_comparison %>%
   theme_minimal()
 ```
 
-<img src="../figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-13-1.png" width="80%" style="display: block; margin: auto;" />
 
 ## Exercises
 
@@ -392,9 +392,17 @@ Using a similarly constructed non-cognitive proxy, I've created a non-cognitive 
 - ST182Q05HA - Part of the enjoyment I get from doing things is when I improve on my past performance.
 - ST182Q06HA - If I am not good at something, I would rather keep struggling to master it than move on to something I may [...]
 
-The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills.
+The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills. You can check out the complete PISA codebook [here](https://docs.google.com/spreadsheets/d/12--3vD737rcu6olviKutRLEiyKNZ2bynXcJ4CpwtNsQ/edit?usp=sharing).
 
 In these series of exercises you will have to try different models that predict this index of non-cognitive skills, choose the best model and look at the most important variables.
+
+First, read in the data with:
+
+
+```r
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
 
 ### Split the data into test/training data
 
@@ -425,6 +433,7 @@ ridge_grid <- data.frame(
 
 
 
+
 ### Which are the most important variables?
 
 Comment on their coefficients and whether they make sense to be included in the model.
@@ -452,6 +461,14 @@ Which model is performing better? Ridge or Lasso? Are the same variables the str
 
 Since `train` already takes care of trying all possible values, there's no need to pass a grid of lambda values. It is only needed to set the `tuneLength` to a number of alpha values.
 
+
+
+### Compare the three models graphically
+
+* Comment on which models is better in out-of-sample fit
+* Is it better to keep the most accurate model or a model that includes relevant confounders (even if they're relationship is somewhat weak)?
+
+You can find the answer to all problems [here](./answers/01_regularization.R)
 
 
 ## Bibliography
