@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-01-30" />
+<meta name="date" content="2020-02-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -117,6 +117,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1.4.3" data-path="regularization.html"><a href="regularization.html#which-are-the-most-important-variables"><i class="fa fa-check"></i><b>1.4.3</b> Which are the most important variables?</a></li>
 <li class="chapter" data-level="1.4.4" data-path="regularization.html"><a href="regularization.html#run-a-lasso-regression-with-the-same-specification-as-above"><i class="fa fa-check"></i><b>1.4.4</b> Run a lasso regression with the same specification as above</a></li>
 <li class="chapter" data-level="1.4.5" data-path="regularization.html"><a href="regularization.html#run-an-elastic-net-regression-on-non-cognitive-skills"><i class="fa fa-check"></i><b>1.4.5</b> Run an elastic net regression on non cognitive skills</a></li>
+<li class="chapter" data-level="1.4.6" data-path="regularization.html"><a href="regularization.html#compare-the-three-models-graphically"><i class="fa fa-check"></i><b>1.4.6</b> Compare the three models graphically</a></li>
 </ul></li>
 <li class="chapter" data-level="1.5" data-path="regularization.html"><a href="regularization.html#bibliography"><i class="fa fa-check"></i><b>1.5</b> Bibliography</a></li>
 </ul></li>
@@ -166,7 +167,7 @@ RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
 RSS + \lambda \sum_{k = 1}^n \beta^2_j
 \end{equation}\]</span>
 <p>The new term is called a <em>shrinkage penalty</em> because it forces each coefficient <span class="math inline">\(\beta_j\)</span> closer to zero by squaring it. The shrinkage part is clearer once you think of this term as forcing each coefficient to be as small as possible but also considering having the smallest Residual Sum of Squares (RSS). In other words, we want the smallest coefficients that don’t affect the fit of the line (RSS).</p>
-<p>An intuitive example is to think of RSS and <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> as to separate things. RSS estimates how the model fits the data and <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> limits how much you overfit the data. Finally, the little <span class="math inline">\(\lambda\)</span> between these two terms can be interpreted as a “weight”. The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If <span class="math inline">\(\lambda\)</span> is 0, then multiplying 0 by <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> will always return zero, forcing our previous equation to simply be reduced to the single term <span class="math inline">\(RSS\)</span>.</p>
+<p>An intuitive example is to think of RSS and <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> as two separate things. RSS estimates how the model fits the data and <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> limits how much you overfit the data. Finally, the little <span class="math inline">\(\lambda\)</span> between these two terms can be interpreted as a “weight”. The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If <span class="math inline">\(\lambda\)</span> is 0, then multiplying 0 by <span class="math inline">\(\sum_{k = 1}^n \beta^2_j\)</span> will always return zero, forcing our previous equation to simply be reduced to the single term <span class="math inline">\(RSS\)</span>.</p>
 <p>Why is there a need to “limit” how well the model fits the data? Because we, social scientists and data scientists, very commonly <strong>overfit</strong> the data. The plot below shows a simulation from <a href="https://drsimonj.svbtle.com/ridge-regression-with-glmnet">Simon Jackson</a> where we can see that when tested on a training set, OLS and Ridge tend to overfit the data. However, when tested on the test data, Ridge regression has lower out of sample error as the <span class="math inline">\(R2\)</span> is higher for models with different observations.</p>
 <p><img src="figs/unnamed-chunk-1-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>The strength of the ridge regression comes from the fact that it compromises fitting the training data really well for improved generalization. In other words, we increase <strong>bias</strong> (because we force the coefficients to be smaller) for lower <strong>variance</strong> (but we make it more general). In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization.</p>
@@ -186,7 +187,7 @@ pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</
 split_pisa &lt;-<span class="st"> </span><span class="kw">initial_split</span>(<span class="dt">data =</span> pisa, <span class="dt">prop =</span> .<span class="dv">7</span>)
 pisa_test &lt;-<span class="st"> </span><span class="kw">testing</span>(split_pisa)
 pisa_train &lt;-<span class="st"> </span><span class="kw">training</span>(split_pisa)</code></pre></div>
-<p>The ridge regression has a parameter called <code>lambda</code> which needs to be set by us. <code>lambda</code> is the “weight” term in the ridge equation, which controls how much weight do we want to give to the “shrinkage penalty”. If this lambda is 0, it means we attach <strong>no</strong> weight to the penalty term and swe will get the same result over OLS. Let’s try that:</p>
+<p>The ridge regression has a parameter called <code>lambda</code> which needs to be set by us. <code>lambda</code> is the “weight” term in the ridge equation, which controls how much weight do we want to give to the “shrinkage penalty”. If this lambda is 0, it means we attach <strong>no</strong> weight to the penalty term and we will get the same result over OLS. Let’s try that:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">############################# Ridge regression ################################
 ###############################################################################
 
@@ -199,7 +200,7 @@ ridge_grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 
 <span class="co"># The train function accepts several arguments</span>
 ridge_mod &lt;-<span class="st"> </span><span class="kw">train</span>(
-  <span class="co"># math_score is the dependen variable and all other are independent variables</span>
+  <span class="co"># math_score is the dependent variable and all other are independent variables</span>
   math_score <span class="op">~</span><span class="st"> </span>MISCED <span class="op">+</span><span class="st"> </span>FISCED <span class="op">+</span><span class="st"> </span>HISEI <span class="op">+</span><span class="st"> </span>REPEAT <span class="op">+</span><span class="st"> </span>IMMIG <span class="op">+</span><span class="st"> </span>DURECEC <span class="op">+</span><span class="st"> </span>BSMJ,
   <span class="co"># The training data</span>
   <span class="dt">data =</span> pisa_train,
@@ -490,6 +491,8 @@ ridge_grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <span class="co"># 4) Extract the RMSE of the training set</span>
 
 <span class="co"># 5) Compare both holdout and training RMSE</span></code></pre></div>
+<p><details><summary>Answer</summary></p>
+<p></details></p>
 </div>
 <div id="which-are-the-most-important-variables" class="section level3">
 <h3><span class="header-section-number">1.4.3</span> Which are the most important variables?</h3>
@@ -509,6 +512,13 @@ lasso_grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <div id="run-an-elastic-net-regression-on-non-cognitive-skills" class="section level3">
 <h3><span class="header-section-number">1.4.5</span> Run an elastic net regression on non cognitive skills</h3>
 <p>Since <code>train</code> already takes care of trying all possible values, there’s no need to pass a grid of lambda values. It is only needed to set the <code>tuneLength</code> to a number of alpha values.</p>
+</div>
+<div id="compare-the-three-models-graphically" class="section level3">
+<h3><span class="header-section-number">1.4.6</span> Compare the three models graphically</h3>
+<ul>
+<li>Comment on which models is better in out-of-sample fit</li>
+<li>Is it better to keep the most accurate model or a model that includes relevant confounders (even if they’re relationship is somewhat weak)?</li>
+</ul>
 </div>
 </div>
 <div id="bibliography" class="section level2">
