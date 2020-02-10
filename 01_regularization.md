@@ -392,7 +392,7 @@ Using a similarly constructed non-cognitive proxy, I've created a non-cognitive 
 - ST182Q05HA - Part of the enjoyment I get from doing things is when I improve on my past performance.
 - ST182Q06HA - If I am not good at something, I would rather keep struggling to master it than move on to something I may [...]
 
-The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills.
+The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills. You can check out the complete PISA codebook [here](https://docs.google.com/spreadsheets/d/12--3vD737rcu6olviKutRLEiyKNZ2bynXcJ4CpwtNsQ/edit?usp=sharing).
 
 In these series of exercises you will have to try different models that predict this index of non-cognitive skills, choose the best model and look at the most important variables.
 
@@ -431,10 +431,6 @@ ridge_grid <- data.frame(
 # 5) Compare both holdout and training RMSE
 ```
 
-<details>
-  <summary>Toggle answer</summary>
-  
-</details>
 
 
 
@@ -471,6 +467,9 @@ Since `train` already takes care of trying all possible values, there's no need 
 
 * Comment on which models is better in out-of-sample fit
 * Is it better to keep the most accurate model or a model that includes relevant confounders (even if they're relationship is somewhat weak)?
+
+You can find the answer to all problems [here](./answers/01_regularization.R)
+
 
 ## Bibliography
 

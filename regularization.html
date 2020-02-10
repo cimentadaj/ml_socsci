@@ -466,7 +466,7 @@ model_comparison</code></pre></div>
 <li>ST182Q05HA - Part of the enjoyment I get from doing things is when I improve on my past performance.</li>
 <li>ST182Q06HA - If I am not good at something, I would rather keep struggling to master it than move on to something I may […]</li>
 </ul>
-<p>The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills.</p>
+<p>The scale of the index goes from 1 to 4, where 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills. You can check out the complete PISA codebook <a href="https://docs.google.com/spreadsheets/d/12--3vD737rcu6olviKutRLEiyKNZ2bynXcJ4CpwtNsQ/edit?usp=sharing">here</a>.</p>
 <p>In these series of exercises you will have to try different models that predict this index of non-cognitive skills, choose the best model and look at the most important variables.</p>
 <p>First, read in the data with:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span>
@@ -491,8 +491,6 @@ ridge_grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <span class="co"># 4) Extract the RMSE of the training set</span>
 
 <span class="co"># 5) Compare both holdout and training RMSE</span></code></pre></div>
-<p><details> <summary>Toggle answer</summary></p>
-<p></details></p>
 </div>
 <div id="which-are-the-most-important-variables" class="section level3">
 <h3><span class="header-section-number">1.4.3</span> Which are the most important variables?</h3>
@@ -519,6 +517,7 @@ lasso_grid &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
 <li>Comment on which models is better in out-of-sample fit</li>
 <li>Is it better to keep the most accurate model or a model that includes relevant confounders (even if they’re relationship is somewhat weak)?</li>
 </ul>
+<p>You can find the answer to all problems <a href="./answers/01_regularization.R">here</a></p>
 </div>
 </div>
 <div id="bibliography" class="section level2">
