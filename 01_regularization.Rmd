@@ -500,45 +500,46 @@ ridge_grid <- data.frame(
 
 ```
 
-<details><summary>Answer</summary>
-
-```{r, echo = FALSE, eval = eval_chnk}
-# Define ridge grid of values for lambda
-ridge_grid <- data.frame(
-  lambda = seq(0, 3, length.out = 100),
-  alpha = 0
-)
-
-# Use the train function to train the model on the *training set*
-ridge_mod <- train(
-  form = noncogn ~ .,
-  data = pisa_train,
-  method = "glmnet",
-  preProc = c("center", "scale"),
-  tuneGrid = ridge_grid,
-  trControl = trainControl(method = "cv", number = 5)
-)
-
-# Extract the best lambda and calculate the RMSE
-# on the test set
-best_lambda_ridge <- ridge_mod$bestTune$lambda
-holdout_ridge <-
-  RMSE(
-    predict(ridge_mod, pisa_test),
-    pisa_test$noncogn
+<details>
+  <summary>Toggle answer</summary>
+  ```{r, echo = FALSE, eval = eval_chnk}
+  # Define ridge grid of values for lambda
+  ridge_grid <- data.frame(
+    lambda = seq(0, 3, length.out = 100),
+    alpha = 0
   )
-
-# Extract the RMSE of the training set
-train_rmse_ridge <-
-  ridge_mod$results %>%
-  filter(alpha == ridge_mod$bestTune$alpha, lambda == best_lambda_ridge) %>%
-  pull(RMSE)
-
-# Compare both holdout and training RMSE
-c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
-```
-
+  
+  # Use the train function to train the model on the *training set*
+  ridge_mod <- train(
+    form = noncogn ~ .,
+    data = pisa_train,
+    method = "glmnet",
+    preProc = c("center", "scale"),
+    tuneGrid = ridge_grid,
+    trControl = trainControl(method = "cv", number = 5)
+  )
+  
+  # Extract the best lambda and calculate the RMSE
+  # on the test set
+  best_lambda_ridge <- ridge_mod$bestTune$lambda
+  holdout_ridge <-
+    RMSE(
+      predict(ridge_mod, pisa_test),
+      pisa_test$noncogn
+    )
+  
+  # Extract the RMSE of the training set
+  train_rmse_ridge <-
+    ridge_mod$results %>%
+    filter(alpha == ridge_mod$bestTune$alpha, lambda == best_lambda_ridge) %>%
+    pull(RMSE)
+  
+  # Compare both holdout and training RMSE
+  c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
+  ```
 </details>
+
+
 
 ### Which are the most important variables?
 
