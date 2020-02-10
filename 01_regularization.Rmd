@@ -36,7 +36,7 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 
 The new term is called a *shrinkage penalty* because it forces each coefficient $\beta_j$ closer to zero by squaring it. The shrinkage part is clearer once you think of this term as forcing each coefficient to be as small as possible but also considering having the smallest Residual Sum of Squares (RSS). In other words, we want the smallest coefficients that don't affect the fit of the line (RSS).
 
-An intuitive example is to think of RSS and $\sum_{k = 1}^n \beta^2_j$ as to separate things. RSS estimates how the model fits the data and $\sum_{k = 1}^n \beta^2_j$ limits how much you overfit the data. Finally, the little $\lambda$ between these two terms can be interpreted as a "weight". The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If $\lambda$ is 0, then multiplying 0 by $\sum_{k = 1}^n \beta^2_j$ will always return zero, forcing our previous equation to simply be reduced to the single term $RSS$.
+An intuitive example is to think of RSS and $\sum_{k = 1}^n \beta^2_j$ as two separate things. RSS estimates how the model fits the data and $\sum_{k = 1}^n \beta^2_j$ limits how much you overfit the data. Finally, the little $\lambda$ between these two terms can be interpreted as a "weight". The higher the lambda, the higher the weight that will be given to the shrinkage term of the equation. If $\lambda$ is 0, then multiplying 0 by $\sum_{k = 1}^n \beta^2_j$ will always return zero, forcing our previous equation to simply be reduced to the single term $RSS$.
 
 Why is there a need to "limit" how well the model fits the data? Because we, social scientists and data scientists, very commonly **overfit** the data. The plot below shows a simulation from [Simon Jackson](https://drsimonj.svbtle.com/ridge-regression-with-glmnet) where we can see that when tested on a training set, OLS and Ridge tend to overfit the data. However, when tested on the test data, Ridge regression has lower out of sample error as the $R2$ is higher for models with different observations.
 
@@ -189,7 +189,7 @@ pisa_train <- training(split_pisa)
 
 ```
 
-The ridge regression has a parameter called `lambda` which needs to be set by us. `lambda` is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty". If this lambda is 0, it means we attach **no** weight to the penalty term and swe will get the same result over OLS. Let's try that:
+The ridge regression has a parameter called `lambda` which needs to be set by us. `lambda` is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty". If this lambda is 0, it means we attach **no** weight to the penalty term and we will get the same result over OLS. Let's try that:
 
 ```{r}
 
@@ -205,7 +205,7 @@ ridge_grid <- data.frame(
 
 # The train function accepts several arguments
 ridge_mod <- train(
-  # math_score is the dependen variable and all other are independent variables
+  # math_score is the dependent variable and all other are independent variables
   math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
   # The training data
   data = pisa_train,
@@ -500,6 +500,8 @@ ridge_grid <- data.frame(
 
 ```
 
+<details><summary>Answer</summary>
+
 ```{r, echo = FALSE, eval = eval_chnk}
 # Define ridge grid of values for lambda
 ridge_grid <- data.frame(
@@ -535,6 +537,8 @@ train_rmse_ridge <-
 # Compare both holdout and training RMSE
 c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
 ```
+
+</details>
 
 ### Which are the most important variables?
 
@@ -628,6 +632,11 @@ train_rmse_elnet <-
 # Compare both holdout and training RMSE
 c(holdout_rmse = holdout_elnet, train_rmse = train_rmse_elnet)
 ```
+
+### Compare the three models graphically
+
+* Comment on which models is better in out-of-sample fit
+* Is it better to keep the most accurate model or a model that includes relevant confounders (even if they're relationship is somewhat weak)?
 
 ## Bibliography
 
