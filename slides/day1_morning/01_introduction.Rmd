@@ -1,0 +1,68 @@
+---
+title: "Machine Learning for Social Scientists"
+subtitle: "Introduction"
+author: "Jorge Cimentada"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # css: [./upf.css, "rutgers-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+layout: true
+
+<!-- background-image: url(./figs/upf.png) -->
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+```{r, echo = FALSE}
+
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE, 
+                      fig.width = 10.5,
+                      fig.height = 4, 
+                      comment = NA,
+                      rows.print = 16)
+
+```
+
+---
+
+# 
+
+.center[
+Welcome!
+]
+
+
+---
+
+
+.center[
+## Data
+```{r, echo = FALSE, out.width = "30%"}
+knitr::include_graphics("img/train_df.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("img/train_testing_df.svg")
+```
+]
+
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "40%"}
+knitr::include_graphics("img/testing_df.svg")
+```
+]
