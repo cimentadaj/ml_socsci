@@ -252,17 +252,22 @@ Run a simple regression `income ~ age` and plot predicted value
 ```{r, echo = FALSE}
 mod1 <- lm(income ~ age, data = train_df)
 
-pred_df <-
-  bind_cols(
-    train_df,
-    pred_income = predict(mod1)
-  )
+pred_income <- function(mod, trn_df) {
+  pred_df <-
+    bind_cols(
+      trn_df,
+      pred_income = predict(mod)
+    )
 
-train_df %>%
-  ggplot(aes(age, income)) +
-  geom_point() +
-  geom_line(data = pred_df, aes(y = pred_income), color = "red") +
-  theme_linedraw()
+  train_df %>%
+    ggplot(aes(age, income)) +
+    geom_point() +
+    geom_line(data = pred_df, aes(y = pred_income), color = "red") +
+    theme_linedraw()
+}
+
+pred_income(mod1, train_df)
+
 ```
 
 ---
@@ -270,18 +275,6 @@ train_df %>%
 # Example
 
 $$ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{n}}} $$
-
-
-```{r}
-calc_rmse <- function(truth, pred) {
-  sqrt(
-    sum(
-    (truth - pred)^2 / length(pred) # (y_hat - y)^2 / n
-    )
-  )
-}
-```
-
 
 ```{r}
 library(tidymodels)
@@ -300,7 +293,7 @@ wflow <-
   add_recipe(rcp_train) %>%
   add_model(mod)
 
-grid_vals <- data.frame(degree = 1:10)
+grid_vals <- data.frame(degree = 2:10)
 
 res_tuning <- tune_grid(wflow,
                         vfold_train,
@@ -312,9 +305,30 @@ res_tuning %>%
   mutate(uc_low = mean - 1.96 * std_err,
          uc_high = mean + 1.96 * std_err) %>% 
   ggplot(aes(degree, mean)) +
-  geom_point() +
-  geom_line() +
-  geom_errorbar(aes(ymin = uc_low, ymax = uc_high), width = 0.05) +
+  geom_point(alpha = 1/2) +
+  geom_line(alpha = 1/2) +
+  geom_errorbar(aes(ymin = uc_low, ymax = uc_high), width = 0.1) +
+  scale_x_continuous(name = "Polynomial Degrees (e.g age^2, age^3, etc..age^10)",
+                     breaks = 1:10, 
+                     labels = as.integer) +
+  scale_y_continuous(name = "Root Mean Square Error (RMSE)",
+                     label = dollar_format(suffix = "€", prefix = "")) +
   theme_linedraw()
+```
 
+---
+
+```{r }
+mod1 <- lm(income ~ poly(age, 3), data = train_df)
+pred_income(mod1, train_df)
+```
+
+
+---
+# Example
+
+Let's predict on new data
+
+```{r }
+rmse_vec(test_df$income, predict(mod1, newdata = test_df))
 ```
