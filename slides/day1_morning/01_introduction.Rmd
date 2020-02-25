@@ -41,6 +41,63 @@ Welcome!
 
 
 ---
+<br>
+<br>
+<br>
+.center[
+```{r, warnings = FALSE, echo = FALSE, out.height = "90%", dpi = 300}
+library(ggplot2)
+library(patchwork)
+library(scales)
+
+set.seed(2313)
+n <- 500
+x <- rnorm(n)
+y <- x^3 + rnorm(n, sd = 3)
+age <- rescale(x, to = c(0, 100))
+income <- rescale(y, to = c(0, 5000))
+
+age_inc <- data.frame(age = age, income = income)
+
+y_axis <- scale_y_continuous(labels = dollar_format(suffix = "€", prefix = ""),
+                             limits = c(0, 5000),
+                             name = "Income")
+
+x_axis <- scale_x_continuous(name = "Age")
+
+underfit <-
+  ggplot(age_inc, aes(age, income)) +
+  geom_point() +
+  theme_linedraw() +
+  geom_smooth(method = "lm") +
+  y_axis +
+  x_axis +  
+  ggtitle("Underfit")
+
+overfit <-
+  ggplot(age_inc, aes(age, income)) +
+  geom_point() +
+  theme_linedraw() +
+  geom_smooth(method = "loess", span = 0.015) +
+  y_axis +
+  x_axis +  
+  ggtitle("Overfit")
+
+goodfit <-
+  ggplot(age_inc, aes(age, income)) +
+  geom_point() +
+  theme_linedraw() +
+  geom_smooth(method = "loess", span = 0.9) +
+  y_axis +
+  x_axis +  
+  ggtitle("Ideal fit")
+
+
+underfit + overfit + goodfit
+```
+]
+
+---
 
 
 .center[
@@ -131,3 +188,133 @@ knitr::include_graphics("./img/socsci_wflow3.svg")
 knitr::include_graphics("./img/socsci_wflow4.svg")
 ```
 ]
+
+
+---
+
+```{r, echo = FALSE}
+tmp_age_inc <- age_inc
+age_inc$age <- round(age_inc$age)
+knitr::kable(head(age_inc), format = "html")
+```
+
+
+---
+
+# Read data
+
+```{r, echo = FALSE}
+knitr::kable(age_inc[1:10, ], format = "html")
+```
+
+
+---
+
+```{r, echo = FALSE}
+library(tidyverse)
+
+age_inc %>%
+  ggplot(aes(age, income)) +
+  geom_point() +
+  theme_linedraw()
+```
+
+---
+
+# Partition training/testing
+```{r, echo = FALSE}
+set.seed(213151)
+training_rows <- sample(1:nrow(age_inc), size = nrow(age_inc) * 0.75)
+train_df <- age_inc[training_rows, ]
+test_df <- age_inc[-training_rows, ]
+```
+
+<br>
+
+.pull-left[
+```{r, echo = FALSE}
+knitr::kable(head(train_df), format = "html", caption = "Training")
+```
+]
+
+.pull-right[
+```{r, echo = FALSE}
+knitr::kable(head(test_df), format = "html", caption = "Testing")
+```
+]
+
+---
+
+# Example
+
+Run a simple regression `income ~ age` and plot predicted value
+
+```{r, echo = FALSE}
+mod1 <- lm(income ~ age, data = train_df)
+
+pred_df <-
+  bind_cols(
+    train_df,
+    pred_income = predict(mod1)
+  )
+
+train_df %>%
+  ggplot(aes(age, income)) +
+  geom_point() +
+  geom_line(data = pred_df, aes(y = pred_income), color = "red") +
+  theme_linedraw()
+```
+
+---
+
+# Example
+
+$$ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{n}}} $$
+
+
+```{r}
+calc_rmse <- function(truth, pred) {
+  sqrt(
+    sum(
+    (truth - pred)^2 / length(pred) # (y_hat - y)^2 / n
+    )
+  )
+}
+```
+
+
+```{r}
+library(tidymodels)
+
+vfold_train <- vfold_cv(train_df)
+
+rcp_train <-
+  recipe(income ~ age, data = train_df) %>%
+  step_poly(age, degree = tune())
+
+mod <- set_engine(linear_reg(), "lm")
+
+wflow <-
+  train_df %>%
+  workflow() %>%
+  add_recipe(rcp_train) %>%
+  add_model(mod)
+
+grid_vals <- data.frame(degree = 1:10)
+
+res_tuning <- tune_grid(wflow,
+                        vfold_train,
+                        grid = grid_vals,
+                        metrics = metric_set(rmse))
+
+res_tuning %>%
+  collect_metrics() %>%
+  mutate(uc_low = mean - 1.96 * std_err,
+         uc_high = mean + 1.96 * std_err) %>% 
+  ggplot(aes(degree, mean)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = uc_low, ymax = uc_high), width = 0.05) +
+  theme_linedraw()
+
+```
