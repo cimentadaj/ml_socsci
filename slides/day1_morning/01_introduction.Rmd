@@ -46,7 +46,7 @@ Welcome!
 .center[
 ## Data
 ```{r, echo = FALSE, out.width = "30%"}
-knitr::include_graphics("img/train_df.svg")
+knitr::include_graphics("img/raw_data.svg")
 ```
 ]
 
@@ -64,5 +64,70 @@ knitr::include_graphics("img/train_testing_df.svg")
 .center[
 ```{r, echo = FALSE, out.width = "40%"}
 knitr::include_graphics("img/testing_df.svg")
+```
+]
+
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("img/train_cv1.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("img/train_cv2.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("img/train_cv3.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("img/train_cv4.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("./img/socsci_wflow1.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("./img/socsci_wflow2.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("./img/socsci_wflow3.svg")
+```
+]
+
+---
+
+.center[
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics("./img/socsci_wflow4.svg")
 ```
 ]
