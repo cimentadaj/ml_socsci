@@ -16,13 +16,11 @@ That sounds somewhat familiar to us social scientists. Perhaps our goal is not t
 
 The difference between the two cultures (breiman) is the problem of inference versus prediction. That is the fundamental difference between the approach used by social scientists and practitioners of machine learning. However, for having such drastic differences in our objective, we share a lot of common strategies. For example, here's the typical workflow of a social scientist:
 
-
-\begin{center}\includegraphics[width=0.99\linewidth]{./img/socsci_wflow1_smaller} \end{center}
+<img src="./img/socsci_wflow1_smaller.svg" width="99%" style="display: block; margin: auto;" />
 
 This is our safe zone: we understand these steps and we've exercised them many times. We begin by importing our data and inmediately start to clean it. This involves, for example, collapsing fine grained groups into bigger categories, transforming variables using logarithms and creating new variables which reflect important concepts from our theoretical model. Once we're confident with our set of variables, we begin the iterative process of visualizing our data, fitting statistical models and evaluating the fit of the model. This is an iterative process because the results of our model might give us ideas on new variables or how to recode an existing variable. This prompts us to repeat the same process again with the aim of carefully building a model that fits the data well. Well,  let me break it to you but this same process is very familiar to the machine learning process:
 
-
-\begin{center}\includegraphics[width=0.99\linewidth]{./img/socsci_wflow3_smaller} \end{center}
+<img src="./img/socsci_wflow3_smaller.svg" width="99%" style="display: block; margin: auto;" />
 
 They import their data, they wrangle their data, they fit statistical models and they evaluate the fit of their models. They might have different names for the same things but in essence, they are more or less the same. For example, here are some common terms in the machine learning literature which have exact equivalents in social statistics:
 
@@ -35,8 +33,7 @@ They import their data, they wrangle their data, they fit statistical models and
  
  and you'll find more around. These are the common steps which you'll find between both fields. However, machine Learning practioners have developed extra steps:
  
-
-\begin{center}\includegraphics[width=0.99\linewidth]{./img/socsci_wflow4_smaller} \end{center}
+<img src="./img/socsci_wflow4_smaller.svg" width="99%" style="display: block; margin: auto;" />
 
 * Training/Testing data --> Unknown to us
 * Cross-validation --> Unknown to us
@@ -99,60 +96,50 @@ goodfit <-
 underfit + overfit + goodfit
 ```
 
-
-
-\begin{center}\includegraphics[width=0.99\linewidth]{./figs/unnamed-chunk-4-1} \end{center}
+<img src="./figs/unnamed-chunk-4-1.png" width="99%" style="display: block; margin: auto;" />
 
 The first plot shows a model which is not flexible, as it fits a straight line without capturing the subtle non-linearities of the data. The second plot is **too** flexible as it captures much of the random noise of the non-linear relationship. Finally, the third plot shows the ideal fit, where the fitted line is flexible enough to capture the non-linear relationship in the data yet it it is mainly unaffected by the random noise in the data. How would social scientists fit a model? They would take the entire data
 
-
-\begin{center}\includegraphics[width=0.4\linewidth]{./img/raw_data_wnote} \end{center}
+<img src="./img/raw_data_wnote.svg" width="40%" style="display: block; margin: auto;" />
 
 and fit the model on it. How do you know you're overfitting? Is there a metric? Is there a method? Well, one very easy and naive approach is to randomly divide your data into two chunks called training and testing:
 
-
-\begin{center}\includegraphics[width=0.8\linewidth]{./img/train_testing_df} \end{center}
+<img src="./img/train_testing_df.svg" width="80%" style="display: block; margin: auto;" />
 
 The training data usually consists of a random sample of around ~70% of the initial data and the testing data a random sample of ~30% of the initial data. If a particular row is in the training data, it **must not** be on the testing data. If a particular row is in the testing data, it shouldn't be in the training data either. Let me clarify this: being in one chunk should mean that that specific row should **not** be in the other chunk. These two chunks should be completely independent of each other.  Why should splitting the data help us fix the problem of overfitting? Because you can elaborate your model in the training set as much as you want, and when you're confident enough, the testing set can serve as an **unseen, pristine source of data** on which you can evaluate your model. 
 
 In the training chunk
 
-
-\begin{center}\includegraphics[width=0.5\linewidth]{./img/training_df} \end{center}
+<img src="./img/training_df.svg" width="50%" style="display: block; margin: auto;" />
 
 fit your model and tweak it enough such that you can evaluate whether it's making accurate predictions. You can think of this chunk as the complete data to perform your analysis. It is the equivalent of the initial data where social scientists fit their data (that is, without partitiong).  Once you're very comfortable with your model, the best recipe for checking whether your model was overfit is to use this fitted model to predict on **the other chunk of data** (the testing data):
 
-
-\begin{center}\includegraphics[width=0.5\linewidth]{./img/testing_df} \end{center}
+<img src="./img/testing_df.svg" width="50%" style="display: block; margin: auto;" />
 
 If you tweaked your model in such a way that it learned the noise of your training data, it will perform poorly on the testing data, since you the model didn't capture the overall trend in the data but rather the noise. 
 
-For the sake of an example, let's suppose that you fit your model several times on the \textcolor{red}{training} data, tweaking it to improve performance. When you think you're ready, you use this model to predict on the \textcolor{#D4FF2A}{testing} data and find out that the model was indeed overfitting the data. You go back to the \textcolor{red}{training} data, tweak some more, run some models again and when you think you're model is ready again, you predict on your \textcolor{#D4FF2A}{testing} data again and find that it improved. Then you repeate the process again, $3$, $4$, $5$, etc... times. If you do that, you will, in very subtle ways, start to **overfit** your model on the \textcolor{#D4FF2A}{testing} data! Think about it: you're fitting a model N times on your \textcolor{red}{training} data, evaluating its fit on the \textcolor{#D4FF2A}{testing} data and then **tweaking** again to improve the prediction on the \textcolor{#D4FF2A}{testing} data. The \textcolor{#D4FF2A}{testing} data should serve as the final dataset to compare your model: you should not tweak the model again after seeing how your model fits the **unseen** \textcolor{#D4FF2A}{testing} data. 
+For the sake of an example, let's suppose that you fit your model several times on the <span style='color: red;'>training</span> data, tweaking it to improve performance. When you think you're ready, you use this model to predict on the <span style='color: #D4FF2A;'>testing</span> data and find out that the model was indeed overfitting the data. You go back to the <span style='color: red;'>training</span> data, tweak some more, run some models again and when you think you're model is ready again, you predict on your <span style='color: #D4FF2A;'>testing</span> data again and find that it improved. Then you repeate the process again, $3$, $4$, $5$, etc... times. If you do that, you will, in very subtle ways, start to **overfit** your model on the <span style='color: #D4FF2A;'>testing</span> data! Think about it: you're fitting a model N times on your <span style='color: red;'>training</span> data, evaluating its fit on the <span style='color: #D4FF2A;'>testing</span> data and then **tweaking** again to improve the prediction on the <span style='color: #D4FF2A;'>testing</span> data. The <span style='color: #D4FF2A;'>testing</span> data should serve as the final dataset to compare your model: you should not tweak the model again after seeing how your model fits the **unseen** <span style='color: #D4FF2A;'>testing</span> data. 
 
-How can we evaluate whether we're overfitting with the \textcolor{red}{training} data alone, then? **Enter cross-validation**
+How can we evaluate whether we're overfitting with the <span style='color: red;'>training</span> data alone, then? **Enter cross-validation**
 
 ## Cross-validation
 
-The idea behind cross-validation is to allow the analyst check whether they're overfitting the data without predicting on the \textcolor{#D4FF2A}{testing} data. How does it work? First, we **only** select our \textcolor{red}{training} data
+The idea behind cross-validation is to allow the analyst check whether they're overfitting the data without predicting on the <span style='color: #D4FF2A;'>testing</span> data. How does it work? First, we **only** select our <span style='color: red;'>training</span> data
 
-
-\begin{center}\includegraphics[width=0.5\linewidth]{./img/training_df} \end{center}
+<img src="./img/training_df.svg" width="50%" style="display: block; margin: auto;" />
 
 and replicate the data 10 times
 
+<img src="./img/train_cv2_smaller.svg" width="95%" style="display: block; margin: auto;" />
 
-\begin{center}\includegraphics[width=0.95\linewidth]{./img/train_cv2_smaller} \end{center}
+The 10 rectangular red rows below the <span style='color: red;'>training</span> data, contain an exact replica of the initial <span style='color: red;'>training</span> data. That is, if the initial <span style='color: red;'>training</span> data has 500 rows and 10 columns, then each of these red rectangle rows also has 500 rows and 10 columns. The idea behind this approach is that you now have 10 different chances of tweaking your model:
 
-The 10 rectangular red rows below the \textcolor{red}{training} data, contain an exact replica of the initial \textcolor{red}{training} data. That is, if the initial \textcolor{red}{training} data has 500 rows and 10 columns, then each of these red rectangle rows also has 500 rows and 10 columns. The idea behind this approach is that you now have 10 different chances of tweaking your model:
-
-
-\begin{center}\includegraphics[width=0.95\linewidth]{./img/train_cv3_smaller} \end{center}
+<img src="./img/train_cv3_smaller.svg" width="95%" style="display: block; margin: auto;" />
 
 and then
 
+<img src="./img/train_cv4_smaller.svg" width="95%" style="display: block; margin: auto;" />
 
-\begin{center}\includegraphics[width=0.95\linewidth]{./img/train_cv4_smaller} \end{center}
+This approach offers a way to iterate as many times as you want on tweaking your model and predicting on the cross-validated <span style='color: #D4FF2A;'>testing</span> data without actually predicting on the initial <span style='color: #D4FF2A;'>testing</span> dataset. This is the least bad approach that is currently accepted in the literature. Why is it the least bad approach? Because if we tweak the model on these 10 replicas one time, then a second time, then a third time, etc..., we'll also start overfitting on each of these 10 slots. The superiority of this approach over tweaking on the <span style='color: red;'>training</span> data is that since we have 10 replicas, we can take the average of our model fit and also obtain standard errors. This allows to have a somewhat balanced account of how our model fit is doing and the uncertainty around it.
 
-This approach offers a way to iterate as many times as you want on tweaking your model and predicting on the cross-validated \textcolor{#D4FF2A}{testing} data without actually predicting on the initial \textcolor{#D4FF2A}{testing} dataset. This is the least bad approach that is currently accepted in the literature. Why is it the least bad approach? Because if we tweak the model on these 10 replicas one time, then a second time, then a third time, etc..., we'll also start overfitting on each of these 10 slots. The superiority of this approach over tweaking on the \textcolor{red}{training} data is that since we have 10 replicas, we can take the average of our model fit and also obtain standard errors. This allows to have a somewhat balanced account of how our model fit is doing and the uncertainty around it.
-
-That said, since we will always overfit in someway using a cross-validation approach, the final error of your model fit on the \textcolor{red}{training} data will always be over optimistic (lower error than what you will actually have, if you predicted on the **pristine** \textcolor{#D4FF2A}{testing} data.
+That said, since we will always overfit in someway using a cross-validation approach, the final error of your model fit on the <span style='color: red;'>training</span> data will always be over optimistic (lower error than what you will actually have, if you predicted on the **pristine** <span style='color: #D4FF2A;'>testing</span> data.
