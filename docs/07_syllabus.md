@@ -20,10 +20,9 @@ We will end the course with a prediction challenge that will put to test all of 
 * Introduction to the Machine Learning Framework
   + Inference vs Prediction
   + Can inference and prediction complement each other?
-  + "[The Fragile Families Challenge](http://www.fragilefamilieschallenge.org/)"
   + Bias-variance / Interpretability-prediction tradeoffs
-  + Resampling methods: validation, k-fold CV
-
+  + Resampling for understtanding your model
+  + "[The Fragile Families Challenge](http://www.fragilefamilieschallenge.org/)"
 
 **Readings**:  
 

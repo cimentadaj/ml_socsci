@@ -635,7 +635,7 @@ c(holdout_rmse = holdout_elnet, train_rmse = train_rmse_elnet)
 * Comment on which models is better in out-of-sample fit
 * Is it better to keep the most accurate model or a model that includes relevant confounders (even if they're relationship is somewhat weak)?
 
-You can find the answer to all problems [here](./answers/01_regularization.R)
+You can find the answer to all problems [here](./answers/02_regularization.R)
 
 
 ## Bibliography

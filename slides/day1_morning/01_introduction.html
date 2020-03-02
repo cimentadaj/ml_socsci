@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-02-26" />
+    <meta name="date" content="2020-03-02" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
@@ -24,7 +24,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Introduction
 ### Jorge Cimentada
-### 2020-02-26
+### 2020-03-02
 
 ---
 
@@ -73,7 +73,7 @@ class: center, middle
 
 # How do social scientists work?
 
-&lt;img src="./img/socsci_wflow1.svg" width="90%" /&gt;
+&lt;img src="../../img/socsci_wflow1.svg" width="90%" /&gt;
 
 
 ---
@@ -101,7 +101,7 @@ class: center, middle
 ---
 name: fat
 class: inverse, top, center
-background-image: url(img/bart_replicability.png)
+background-image: url(../../img/bart_replicability.png)
 background-size: cover
 
 ---
@@ -120,7 +120,7 @@ background-size: cover
 ---
 class: center, middle
 
-# Where Social Scientists have gone wrong
+# Where social scientists have gone wrong
 
 Tell me a strategy that you were taught to make sure your results are replicable on a new dataset
 
@@ -130,20 +130,20 @@ Tell me a strategy that you were taught to make sure your results are replicable
 
 ---
 
-&lt;img src="./img/socsci_wflow1.svg" width="90%" /&gt;
+&lt;img src="../../img/socsci_wflow1.svg" width="90%" /&gt;
 
 
 ---
 
-&lt;img src="./img/socsci_wflow2.svg" width="90%" /&gt;
+&lt;img src="../../img/socsci_wflow2.svg" width="90%" /&gt;
 
 ---
 
-&lt;img src="./img/socsci_wflow3.svg" width="90%" /&gt;
+&lt;img src="../../img/socsci_wflow3.svg" width="90%" /&gt;
 
 ---
 
-&lt;img src="./img/socsci_wflow4.svg" width="90%" /&gt;
+&lt;img src="../../img/socsci_wflow4.svg" width="90%" /&gt;
 
 ---
 # Difference in workflow
@@ -187,7 +187,7 @@ Tell me a strategy that you were taught to make sure your results are replicable
 .center[
 ## Data
 
-&lt;img src="img/raw_data.svg" width="70%" /&gt;
+&lt;img src="../../img/raw_data.svg" width="70%" /&gt;
 
 ]
 ]
@@ -215,7 +215,7 @@ Tell me a strategy that you were taught to make sure your results are replicable
 # Testing/Training data
 
 .center[
-&lt;img src="img/train_testing_df.svg" width="80%" /&gt;
+&lt;img src="../../img/train_testing_df.svg" width="80%" /&gt;
 ]
 
 ---
@@ -229,7 +229,7 @@ Tell me a strategy that you were taught to make sure your results are replicable
  * Fit your model on **testing** data
  * Compare model fit from **training** and **testing**
  
-&gt; If you train/test on the same data you'll inadvertently tweake the model to overfit both training/testing
+&gt; If you train/test on the same data you'll inadvertently tweak the model to overfit both training/testing
 
 &lt;br&gt;
 &lt;br&gt;
@@ -246,16 +246,16 @@ Let's run an example
 
 .pull-left[
 .center[
-&lt;img src="img/training_df.svg" width="95%" /&gt;
+&lt;img src="../../img/training_df.svg" width="95%" /&gt;
 ]
 &gt; Fit model here, tweak and refit until happy.
 ]
 
 .pull-right[
 .center[
-&lt;img src="img/testing_df.svg" width="95%" /&gt;
+&lt;img src="../../img/testing_df.svg" width="95%" /&gt;
 ]
-&gt; Test final model here, go back to training data, refit, achieve final model and repeat
+&gt; Test final model here and compare model fit between training/testing
 ]
 
 --
@@ -270,7 +270,7 @@ Let's run an example
 
 .pull-left[
 .center[
-&lt;img src="img/train_cv1.svg" width="95%" /&gt;
+&lt;img src="../../img/train_cv1.svg" width="95%" /&gt;
 ]
 ]
 ---
@@ -278,7 +278,7 @@ Let's run an example
 
 .pull-left[
 .center[
-&lt;img src="img/train_cv2.svg" width="95%" /&gt;
+&lt;img src="../../img/train_cv2.svg" width="95%" /&gt;
 ]
 ]
 
@@ -287,7 +287,7 @@ Let's run an example
 
 .pull-left[
 .center[
-&lt;img src="img/train_cv3.svg" width="95%" /&gt;
+&lt;img src="../../img/train_cv3.svg" width="95%" /&gt;
 ]
 ]
 ---
@@ -295,7 +295,7 @@ Let's run an example
 
 .pull-left[
 .center[
-&lt;img src="img/train_cv4.svg" width="95%" /&gt;
+&lt;img src="../../img/train_cv4.svg" width="95%" /&gt;
 ]
 ]
 ---
@@ -304,7 +304,7 @@ Let's run an example
 
 .pull-left[
 .center[
-&lt;img src="img/train_cv4.svg" width="95%" /&gt;
+&lt;img src="../../img/train_cv4.svg" width="95%" /&gt;
 ]
 ]
 
@@ -332,7 +332,7 @@ Let's run an example
 - I know what you're thinking... we'll also overfit on these 10 slots if we repeat this 2, 3, 4, ... times.
 - That's why I said: **it's the least bad approach**
 
-&gt; So yes, the model fitted on the training data (in any way, be it the whole data or through cross-validation), will always have a lower error than the training set.
+&gt; The model fitted on the training data (in any way, be it the whole data or through cross-validation), will always have a lower error than the testing data.
 
 ---
 # Loss functions
@@ -365,7 +365,7 @@ These are the topic of the next class!
 # Bias-Variance tradeoff
 
 .pull-left[
-![](img/bias_variance.svg)&lt;!-- --&gt;
+![](../../img/bias_variance.svg)&lt;!-- --&gt;
 ]
 
 .pull-right[
@@ -436,7 +436,7 @@ The current `\(RMSE\)` of our model is 388.08. This means that on average our pr
 
 &lt;br&gt;
 
-- It seems that the relationship is non-linear, so we would need to add non-linear terms to the model ($age^2$, `\(age^3\)`, ..., `\(age^10\)`, for example). 
+- It seems that the relationship is non-linear, so we would need to add non-linear terms to the model, for example `\(age^2\)`, `\(age^3\)`, ..., `\(age^{10}\)`. 
 
 &lt;br&gt;
 
@@ -473,7 +473,7 @@ The current `\(RMSE\)` of our model is 388.08. This means that on average our pr
 
 .pull-right[
 .center[
-&lt;img src="img/train_cv4.svg" width="95%" /&gt;
+&lt;img src="../../img/train_cv4.svg" width="95%" /&gt;
 ]
 ]
 
@@ -482,20 +482,20 @@ The current `\(RMSE\)` of our model is 388.08. This means that on average our pr
 
 
 .center[
-&lt;img src="img/train_cv5.svg" width="50%" /&gt;
+&lt;img src="../../img/train_cv5.svg" width="50%" /&gt;
 ]
 
 ---
 # A unified example
 .center[
-&lt;img src="img/train_cv6.svg" width="50%" /&gt;
+&lt;img src="../../img/train_cv6.svg" width="50%" /&gt;
 ]
 
 ---
 
 # A unified example
 .center[
-&lt;img src="img/train_cv7.svg" width="50%" /&gt;
+&lt;img src="../../img/train_cv7.svg" width="50%" /&gt;
 ]
 
 ---
@@ -515,7 +515,7 @@ The `\(RMSE\)` on the training data for the three polynomial model is 283.32.
 ---
 # A unified example
 
-Finally, once our model final model has been fit and we're finished, we use the fitted model to predict on the **testing** data:
+Finally, once our model final model has been fit and we're finished, we use the fitted model on the training data to predict on the **testing** data:
 
 .center[
 &lt;img src="01_introduction_files/figure-html/unnamed-chunk-36-1.png" height="70%" /&gt;

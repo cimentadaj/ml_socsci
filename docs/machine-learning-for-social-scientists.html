@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Machine Learning for Social Scientists | Machine Learning for Social Scientists</title>
+  <meta name="description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
+  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Machine Learning for Social Scientists | Machine Learning for Social Scientists" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://cimentadaj.github.io/ml_socsci/" />
+  
+  <meta property="og:description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
+  <meta name="github-repo" content="cimentadaj/ml_socsci" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Machine Learning for Social Scientists | Machine Learning for Social Scientists" />
+  
+  <meta name="twitter:description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
+  
+
+<meta name="author" content="Jorge Cimentada" />
+
+
+<meta name="date" content="2020-03-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="regularization.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Machine Learning for Social Scientists</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html"><i class="fa fa-check"></i><b>1</b> Machine Learning for Social Scientists</a><ul>
+<li class="chapter" data-level="1.1" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#a-different-way-of-thinking"><i class="fa fa-check"></i><b>1.1</b> A different way of thinking</a></li>
+<li class="chapter" data-level="1.2" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#split-your-data-into-trainingtesting"><i class="fa fa-check"></i><b>1.2</b> Split your data into training/testing</a></li>
+<li class="chapter" data-level="1.3" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#cross-validation"><i class="fa fa-check"></i><b>1.3</b> Cross-validation</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="regularization.html"><a href="regularization.html"><i class="fa fa-check"></i><b>2</b> Regularization</a><ul>
+<li class="chapter" data-level="2.1" data-path="regularization.html"><a href="regularization.html#ridge-regularization"><i class="fa fa-check"></i><b>2.1</b> Ridge regularization</a></li>
+<li class="chapter" data-level="2.2" data-path="regularization.html"><a href="regularization.html#lasso-regularization"><i class="fa fa-check"></i><b>2.2</b> Lasso regularization</a></li>
+<li class="chapter" data-level="2.3" data-path="regularization.html"><a href="regularization.html#elastic-net-regularization"><i class="fa fa-check"></i><b>2.3</b> Elastic Net regularization</a></li>
+<li class="chapter" data-level="2.4" data-path="regularization.html"><a href="regularization.html#exercises"><i class="fa fa-check"></i><b>2.4</b> Exercises</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="regularization.html"><a href="regularization.html#split-the-data-into-testtraining-data"><i class="fa fa-check"></i><b>2.4.1</b> Split the data into test/training data</a></li>
+<li class="chapter" data-level="2.4.2" data-path="regularization.html"><a href="regularization.html#run-a-ridge-regression-with-non-cognitive-as-the-dependent-variable"><i class="fa fa-check"></i><b>2.4.2</b> Run a ridge regression with non-cognitive as the dependent variable</a></li>
+<li class="chapter" data-level="2.4.3" data-path="regularization.html"><a href="regularization.html#which-are-the-most-important-variables"><i class="fa fa-check"></i><b>2.4.3</b> Which are the most important variables?</a></li>
+<li class="chapter" data-level="2.4.4" data-path="regularization.html"><a href="regularization.html#run-a-lasso-regression-with-the-same-specification-as-above"><i class="fa fa-check"></i><b>2.4.4</b> Run a lasso regression with the same specification as above</a></li>
+<li class="chapter" data-level="2.4.5" data-path="regularization.html"><a href="regularization.html#run-an-elastic-net-regression-on-non-cognitive-skills"><i class="fa fa-check"></i><b>2.4.5</b> Run an elastic net regression on non cognitive skills</a></li>
+<li class="chapter" data-level="2.4.6" data-path="regularization.html"><a href="regularization.html#compare-the-three-models-graphically"><i class="fa fa-check"></i><b>2.4.6</b> Compare the three models graphically</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="regularization.html"><a href="regularization.html#bibliography"><i class="fa fa-check"></i><b>2.5</b> Bibliography</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>3</b> Syllabus</a><ul>
+<li class="chapter" data-level="3.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>3.1</b> Course description</a></li>
+<li class="chapter" data-level="3.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>3.2</b> Schedule</a></li>
+<li class="chapter" data-level="3.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>3.3</b> Software:</a></li>
+<li class="chapter" data-level="3.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>3.4</b> Prerequisites:</a></li>
+<li class="chapter" data-level="3.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>3.5</b> About the author</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Machine Learning for Social Scientists</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="machine-learning-for-social-scientists" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Machine Learning for Social Scientists</h1>
+<p>Machine Learning practitioners and Social Scientists share many things in common. These shared traits are mostly related to the transformation, analysis and evaluation of statistical models. In fact, when many of my fellow social scientists take any introductory course on machine learning, I often hear that many of the things they get taught are very common in traditional statistics classes, if not the same. This is good news! This means that you already have a foot inside the field without even knowing it. Machine Learning practitioners use many of the same statistical model we use and also many of transformation techniques that we use. However, there are important differences on how we analyze data and how we answer our questions. In this chapter I will elaborate on how machine learning practitioners have developed strategies different from social scientists for analyzing their data, how their analysis workflow compares to ours and finally, a tour around their way of thinking, which has evolved to be very different from ours.</p>
+<p>I hope that by understanding the strategies and techniques that machine learning practitioners use, social scientists would expand their analysis toolbox, allowing us to complement their way of thinking with our strong research design skills and modelling techniques.</p>
+<div id="a-different-way-of-thinking" class="section level2">
+<h2><span class="header-section-number">1.1</span> A different way of thinking</h2>
+<p>The first question we want to ask ourselves is, what is machine learning? Machine Learning bears indeed a fancy name which brings to mind thoughts related to artificial intelligence and robots. However, as you’ll see throughout the course, most terms and models used in machine learning are actually what we know as <strong>statistical models</strong>. The overaching difference in the definition of machine learning and social statistics is not the models or new strategies for analyzing data. It is the main objective of the analysis. What is Machine Learning after all?</p>
+<blockquote>
+<p>Using statistical methods to learn the data enough to be able to predict it accurately on new data</p>
+</blockquote>
+<p>That sounds somewhat familiar to us social scientists. Perhaps our goal is not to predict our data but it is certainly to <strong>learn it</strong> and <strong>understand it</strong>. In particular, social scientists are interested in figuring out if our theoretical description of the problem fits the data we have collected it. We do that by carefully build a model that explains the problem, we try to learn it really well and finally understand it enough such that if we collected the exact same data again, our explanation would replicate. How does this differ from the way of thinking of machine learning practitioners? The main objective in a machine learning problem is accurate predictions; that is, regardless of how well we understand a problem, we want learn the data well enough to predict it well. Prediction problems are usually concerned with <strong>building and tweaking</strong> a model that predicts a dependent variable accurately on your data, such that when <strong>new data</strong> arrives, the model can predict it just as accurately.</p>
+<p>The difference between the two cultures (breiman) is the problem of inference versus prediction. That is the fundamental difference between the approach used by social scientists and practitioners of machine learning. However, for having such drastic differences in our objective, we share a lot of common strategies. For example, here’s the typical workflow of a social scientist:</p>
+<p><img src="img/socsci_wflow1_smaller.svg" width="99%" style="display: block; margin: auto;" /></p>
+<p>This is our safe zone: we understand these steps and we’ve exercised them many times. We begin by importing our data and inmediately start to clean it. This involves, for example, collapsing fine grained groups into bigger categories, transforming variables using logarithms and creating new variables which reflect important concepts from our theoretical model. Once we’re confident with our set of variables, we begin the iterative process of visualizing our data, fitting statistical models and evaluating the fit of the model. This is an iterative process because the results of our model might give us ideas on new variables or how to recode an existing variable. This prompts us to repeat the same process again with the aim of carefully building a model that fits the data well. Well, let me break it to you but this same process is very familiar to the machine learning process:</p>
+<p><img src="img/socsci_wflow3_smaller.svg" width="99%" style="display: block; margin: auto;" /></p>
+<p>They import their data, they wrangle their data, they fit statistical models and they evaluate the fit of their models. They might have different names for the same things but in essence, they are more or less the same. For example, here are some common terms in the machine learning literature which have exact equivalents in social statistics:</p>
+<ul>
+<li>Features –&gt; Variables</li>
+<li>Feature Engineering –&gt; Creating Variables</li>
+<li>Learning Algorithms –&gt; Statistical Models</li>
+<li>Supervised Learning –&gt; Models that have a dependent variable</li>
+<li>Unsupervised Learning –&gt; Models that don’t have a dependent variable, such as clustering</li>
+<li>Classifiers –&gt; Models for predicting categorical variables, such as logistic regression</li>
+</ul>
+<p>and you’ll find more around. These are the common steps which you’ll find between both fields. However, machine Learning practioners have developed extra steps:</p>
+<p><img src="img/socsci_wflow4_smaller.svg" width="99%" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Training/Testing data –&gt; Unknown to us</li>
+<li>Cross-validation –&gt; Unknown to us</li>
+<li>Loss functions –&gt; Model fit –&gt; Known to us but are not predominant (<span class="math inline">\(RMSE\)</span>, <span class="math inline">\(R^2\)</span>, etc…)</li>
+</ul>
+<p>These are very useful concepts and we’ll focus on those in this introduction. In this introduction I won’t delve into the statistical models (learning algorithms) used in machine learning these will be discussed in later chapters but I wanted to highlight that although they share similarities with the models used in social statistics, there are many models used in the meachine learning literature which are unknown to us.</p>
+</div>
+<div id="split-your-data-into-trainingtesting" class="section level2">
+<h2><span class="header-section-number">1.2</span> Split your data into training/testing</h2>
+<p>Since the main objective in machine learning is to predict data accurately, all of their strategies are geared toward avoiding overfitting/underfitting. In other words, they want to capture all the signal and ignore the noise:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="machine-learning-for-social-scientists.html#cb1-1"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="machine-learning-for-social-scientists.html#cb1-2"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb1-3"><a href="machine-learning-for-social-scientists.html#cb1-3"></a><span class="kw">library</span>(scales)</span>
+<span id="cb1-4"><a href="machine-learning-for-social-scientists.html#cb1-4"></a></span>
+<span id="cb1-5"><a href="machine-learning-for-social-scientists.html#cb1-5"></a><span class="kw">set.seed</span>(<span class="dv">2313</span>)</span>
+<span id="cb1-6"><a href="machine-learning-for-social-scientists.html#cb1-6"></a>n &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb1-7"><a href="machine-learning-for-social-scientists.html#cb1-7"></a>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)</span>
+<span id="cb1-8"><a href="machine-learning-for-social-scientists.html#cb1-8"></a>y &lt;-<span class="st"> </span>x<span class="op">^</span><span class="dv">3</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb1-9"><a href="machine-learning-for-social-scientists.html#cb1-9"></a>age &lt;-<span class="st"> </span><span class="kw">rescale</span>(x, <span class="dt">to =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb1-10"><a href="machine-learning-for-social-scientists.html#cb1-10"></a>income &lt;-<span class="st"> </span><span class="kw">rescale</span>(y, <span class="dt">to =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>))</span>
+<span id="cb1-11"><a href="machine-learning-for-social-scientists.html#cb1-11"></a></span>
+<span id="cb1-12"><a href="machine-learning-for-social-scientists.html#cb1-12"></a>age_inc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">age =</span> age, <span class="dt">income =</span> income)</span>
+<span id="cb1-13"><a href="machine-learning-for-social-scientists.html#cb1-13"></a></span>
+<span id="cb1-14"><a href="machine-learning-for-social-scientists.html#cb1-14"></a>y_axis &lt;-<span class="st"> </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> <span class="kw">dollar_format</span>(<span class="dt">suffix =</span> <span class="st">&quot;€&quot;</span>, <span class="dt">prefix =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb1-15"><a href="machine-learning-for-social-scientists.html#cb1-15"></a>                             <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>),</span>
+<span id="cb1-16"><a href="machine-learning-for-social-scientists.html#cb1-16"></a>                             <span class="dt">name =</span> <span class="st">&quot;Income&quot;</span>)</span>
+<span id="cb1-17"><a href="machine-learning-for-social-scientists.html#cb1-17"></a></span>
+<span id="cb1-18"><a href="machine-learning-for-social-scientists.html#cb1-18"></a>x_axis &lt;-<span class="st"> </span><span class="kw">scale_x_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;Age&quot;</span>)</span>
+<span id="cb1-19"><a href="machine-learning-for-social-scientists.html#cb1-19"></a></span>
+<span id="cb1-20"><a href="machine-learning-for-social-scientists.html#cb1-20"></a>underfit &lt;-</span>
+<span id="cb1-21"><a href="machine-learning-for-social-scientists.html#cb1-21"></a><span class="st">  </span><span class="kw">ggplot</span>(age_inc, <span class="kw">aes</span>(age, income)) <span class="op">+</span></span>
+<span id="cb1-22"><a href="machine-learning-for-social-scientists.html#cb1-22"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb1-23"><a href="machine-learning-for-social-scientists.html#cb1-23"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-24"><a href="machine-learning-for-social-scientists.html#cb1-24"></a><span class="st">  </span>y_axis <span class="op">+</span></span>
+<span id="cb1-25"><a href="machine-learning-for-social-scientists.html#cb1-25"></a><span class="st">  </span>x_axis <span class="op">+</span><span class="st">  </span></span>
+<span id="cb1-26"><a href="machine-learning-for-social-scientists.html#cb1-26"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Underfit&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-27"><a href="machine-learning-for-social-scientists.html#cb1-27"></a><span class="st">  </span><span class="kw">theme_linedraw</span>()</span>
+<span id="cb1-28"><a href="machine-learning-for-social-scientists.html#cb1-28"></a></span>
+<span id="cb1-29"><a href="machine-learning-for-social-scientists.html#cb1-29"></a>overfit &lt;-</span>
+<span id="cb1-30"><a href="machine-learning-for-social-scientists.html#cb1-30"></a><span class="st">  </span><span class="kw">ggplot</span>(age_inc, <span class="kw">aes</span>(age, income)) <span class="op">+</span></span>
+<span id="cb1-31"><a href="machine-learning-for-social-scientists.html#cb1-31"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb1-32"><a href="machine-learning-for-social-scientists.html#cb1-32"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">span =</span> <span class="fl">0.015</span>) <span class="op">+</span></span>
+<span id="cb1-33"><a href="machine-learning-for-social-scientists.html#cb1-33"></a><span class="st">  </span>y_axis <span class="op">+</span></span>
+<span id="cb1-34"><a href="machine-learning-for-social-scientists.html#cb1-34"></a><span class="st">  </span>x_axis <span class="op">+</span><span class="st">  </span></span>
+<span id="cb1-35"><a href="machine-learning-for-social-scientists.html#cb1-35"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Overfit&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-36"><a href="machine-learning-for-social-scientists.html#cb1-36"></a><span class="st">  </span><span class="kw">theme_linedraw</span>()</span>
+<span id="cb1-37"><a href="machine-learning-for-social-scientists.html#cb1-37"></a></span>
+<span id="cb1-38"><a href="machine-learning-for-social-scientists.html#cb1-38"></a>goodfit &lt;-</span>
+<span id="cb1-39"><a href="machine-learning-for-social-scientists.html#cb1-39"></a><span class="st">  </span><span class="kw">ggplot</span>(age_inc, <span class="kw">aes</span>(age, income)) <span class="op">+</span></span>
+<span id="cb1-40"><a href="machine-learning-for-social-scientists.html#cb1-40"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb1-41"><a href="machine-learning-for-social-scientists.html#cb1-41"></a><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;loess&quot;</span>, <span class="dt">span =</span> <span class="fl">0.9</span>) <span class="op">+</span></span>
+<span id="cb1-42"><a href="machine-learning-for-social-scientists.html#cb1-42"></a><span class="st">  </span>y_axis <span class="op">+</span></span>
+<span id="cb1-43"><a href="machine-learning-for-social-scientists.html#cb1-43"></a><span class="st">  </span>x_axis <span class="op">+</span><span class="st">  </span></span>
+<span id="cb1-44"><a href="machine-learning-for-social-scientists.html#cb1-44"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Ideal fit&quot;</span>) <span class="op">+</span></span>
+<span id="cb1-45"><a href="machine-learning-for-social-scientists.html#cb1-45"></a><span class="st">  </span><span class="kw">theme_linedraw</span>()</span>
+<span id="cb1-46"><a href="machine-learning-for-social-scientists.html#cb1-46"></a></span>
+<span id="cb1-47"><a href="machine-learning-for-social-scientists.html#cb1-47"></a>underfit <span class="op">+</span><span class="st"> </span>overfit <span class="op">+</span><span class="st"> </span>goodfit</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-4-1.png" width="99%" style="display: block; margin: auto;" /></p>
+<p>The first plot shows a model which is not flexible, as it fits a straight line without capturing the subtle non-linearities of the data. The second plot is <strong>too</strong> flexible as it captures much of the random noise of the non-linear relationship. Finally, the third plot shows the ideal fit, where the fitted line is flexible enough to capture the non-linear relationship in the data yet it it is mainly unaffected by the random noise in the data. How would social scientists fit a model? They would take the entire data</p>
+<p><img src="img/raw_data_wnote.svg" width="40%" style="display: block; margin: auto;" /></p>
+<p>and fit the model on it. How do you know you’re overfitting? Is there a metric? Is there a method? Well, one very easy and naive approach is to randomly divide your data into two chunks called training and testing:</p>
+<p><img src="img/train_testing_df.svg" width="80%" style="display: block; margin: auto;" /></p>
+<p>The training data usually consists of a random sample of around ~70% of the initial data and the testing data a random sample of ~30% of the initial data. If a particular row is in the training data, it <strong>must not</strong> be on the testing data. If a particular row is in the testing data, it shouldn’t be in the training data either. Let me clarify this: being in one chunk should mean that that specific row should <strong>not</strong> be in the other chunk. These two chunks should be completely independent of each other. Why should splitting the data help us fix the problem of overfitting? Because you can elaborate your model in the training set as much as you want, and when you’re confident enough, the testing set can serve as an <strong>unseen, pristine source of data</strong> on which you can evaluate your model.</p>
+<p>In the training chunk</p>
+<p><img src="img/training_df.svg" width="50%" style="display: block; margin: auto;" /></p>
+<p>fit your model and tweak it enough such that you can evaluate whether it’s making accurate predictions. You can think of this chunk as the complete data to perform your analysis. It is the equivalent of the initial data where social scientists fit their data (that is, without partitiong). Once you’re very comfortable with your model, the best recipe for checking whether your model was overfit is to use this fitted model to predict on <strong>the other chunk of data</strong> (the testing data):</p>
+<p><img src="img/testing_df.svg" width="50%" style="display: block; margin: auto;" /></p>
+<p>If you tweaked your model in such a way that it learned the noise of your training data, it will perform poorly on the testing data, since you the model didn’t capture the overall trend in the data but rather the noise.</p>
+<p>For the sake of an example, let’s suppose that you fit your model several times on the <span style="color: red;">training</span> data, tweaking it to improve performance. When you think you’re ready, you use this model to predict on the <span style="color: #D4FF2A;">testing</span> data and find out that the model was indeed overfitting the data. You go back to the <span style="color: red;">training</span> data, tweak some more, run some models again and when you think you’re model is ready again, you predict on your <span style="color: #D4FF2A;">testing</span> data again and find that it improved. Then you repeate the process again, <span class="math inline">\(3\)</span>, <span class="math inline">\(4\)</span>, <span class="math inline">\(5\)</span>, etc… times. If you do that, you will, in very subtle ways, start to <strong>overfit</strong> your model on the <span style="color: #D4FF2A;">testing</span> data! Think about it: you’re fitting a model N times on your <span style="color: red;">training</span> data, evaluating its fit on the <span style="color: #D4FF2A;">testing</span> data and then <strong>tweaking</strong> again to improve the prediction on the <span style="color: #D4FF2A;">testing</span> data. The <span style="color: #D4FF2A;">testing</span> data should serve as the final dataset to compare your model: you should not tweak the model again after seeing how your model fits the <strong>unseen</strong> <span style="color: #D4FF2A;">testing</span> data.</p>
+<p>How can we evaluate whether we’re overfitting with the <span style="color: red;">training</span> data alone, then? <strong>Enter cross-validation</strong></p>
+</div>
+<div id="cross-validation" class="section level2">
+<h2><span class="header-section-number">1.3</span> Cross-validation</h2>
+<p>The idea behind cross-validation is to allow the analyst check whether they’re overfitting the data without predicting on the <span style="color: #D4FF2A;">testing</span> data. How does it work? First, we <strong>only</strong> select our <span style="color: red;">training</span> data</p>
+<p><img src="img/training_df.svg" width="50%" style="display: block; margin: auto;" /></p>
+<p>and replicate the data 10 times</p>
+<p><img src="img/train_cv2_smaller.svg" width="95%" style="display: block; margin: auto;" /></p>
+<p>The 10 rectangular red rows below the <span style="color: red;">training</span> data, contain an exact replica of the initial <span style="color: red;">training</span> data. That is, if the initial <span style="color: red;">training</span> data has 500 rows and 10 columns, then each of these red rectangle rows also has 500 rows and 10 columns. The idea behind this approach is that you now have 10 different chances of tweaking your model:</p>
+<p><img src="img/train_cv3_smaller.svg" width="95%" style="display: block; margin: auto;" /></p>
+<p>and then</p>
+<p><img src="img/train_cv4_smaller.svg" width="95%" style="display: block; margin: auto;" /></p>
+<p>This approach offers a way to iterate as many times as you want on tweaking your model and predicting on the cross-validated <span style="color: #D4FF2A;">testing</span> data without actually predicting on the initial <span style="color: #D4FF2A;">testing</span> dataset. This is the least bad approach that is currently accepted in the literature. Why is it the least bad approach? Because if we tweak the model on these 10 replicas one time, then a second time, then a third time, etc…, we’ll also start overfitting on each of these 10 slots. The superiority of this approach over tweaking on the <span style="color: red;">training</span> data is that since we have 10 replicas, we can take the average of our model fit and also obtain standard errors. This allows to have a somewhat balanced account of how our model fit is doing and the uncertainty around it.</p>
+<p>That said, since we will always overfit in someway using a cross-validation approach, the final error of your model fit on the <span style="color: red;">training</span> data will always be over optimistic (lower error than what you will actually have, if you predicted on the <strong>pristine</strong> <span style="color: #D4FF2A;">testing</span> data.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="regularization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
