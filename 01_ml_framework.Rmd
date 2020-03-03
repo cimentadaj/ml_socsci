@@ -69,7 +69,7 @@ These are very useful concepts and we'll focus on those in this introduction. In
 
 Since the main objective in machine learning is to predict data accurately, all of their strategies are geared toward avoiding overfitting/underfitting. In other words, they want to capture all the signal and ignore the noise:
 
-```{r, out.width = "99%"}
+```{r overfitplots, out.width = "99%", fig.cap = "Different ways of fitting your data"}
 library(ggplot2)
 library(patchwork)
 library(scales)
@@ -89,7 +89,7 @@ y_axis <- scale_y_continuous(labels = dollar_format(suffix = "€", prefix = "")
 
 x_axis <- scale_x_continuous(name = "Age")
 
-underfit <-
+bad_fit <-
   ggplot(age_inc, aes(age, income)) +
   geom_point() +
   geom_smooth(method = "lm") +
@@ -116,7 +116,7 @@ goodfit <-
   ggtitle("Ideal fit") +
   theme_linedraw()
 
-underfit + overfit + goodfit
+bad_fit + overfit + goodfit
 ```
 
 The first plot shows a model which is not flexible, as it fits a straight line without capturing the subtle non-linearities of the data. The second plot is **too** flexible as it captures much of the random noise of the non-linear relationship. Finally, the third plot shows the ideal fit, where the fitted line is flexible enough to capture the non-linear relationship in the data yet it it is mainly unaffected by the random noise in the data. How would social scientists fit a model? They would take the entire data
@@ -135,13 +135,13 @@ The training data usually consists of a random sample of around ~70% of the init
 
 In the training chunk
 
-```{r, echo = FALSE, out.width = "50%"}
+```{r, echo = FALSE, out.width = "40%"}
 knitr::include_graphics("./img/training_df.svg")
 ```
 
 fit your model and tweak it enough such that you can evaluate whether it's making accurate predictions. You can think of this chunk as the complete data to perform your analysis. It is the equivalent of the initial data where social scientists fit their data (that is, without partitiong).  Once you're very comfortable with your model, the best recipe for checking whether your model was overfit is to use this fitted model to predict on **the other chunk of data** (the testing data):
 
-```{r, echo = FALSE, out.width = "50%"}
+```{r, echo = FALSE, out.width = "40%"}
 knitr::include_graphics("./img/testing_df.svg")
 ``` 
 
@@ -155,28 +155,58 @@ How can we evaluate whether we're overfitting with the `r colorize("training", "
 
 The idea behind cross-validation is to allow the analyst check whether they're overfitting the data without predicting on the `r colorize("testing", "#D4FF2A")` data. How does it work? First, we **only** select our `r colorize("training", "red")` data
 
-```{r, echo = FALSE, out.width = "50%"}
+```{r, echo = FALSE, out.width = "40%"}
 knitr::include_graphics("./img/training_df.svg")
 ```
 
-and replicate the data 10 times
+and replicate the `r colorize("training", "red")` data 10 times
 
-```{r, echo = FALSE, out.width = "95%"}
+```{r, echo = FALSE, out.width = "75%"}
 knitr::include_graphics("./img/train_cv2_smaller.svg")
 ```
 
-The 10 rectangular red rows below the `r colorize("training", "red")` data, contain an exact replica of the initial `r colorize("training", "red")` data. That is, if the initial `r colorize("training", "red")` data has 500 rows and 10 columns, then each of these red rectangle rows also has 500 rows and 10 columns. The idea behind this approach is that you now have 10 different chances of tweaking your model:
+The 10 rectangular red rows below the `r colorize("training", "red")` data, contain an exact replica of the initial `r colorize("training", "red")` data. That is, if the initial `r colorize("training", "red")` data has 500 rows and 10 columns, then each of these red rectangled rows also have 500 rows and 10 columns. The idea behind this approach is that for each rectangled row, you can use 70% of the data to fit your model and then predict on the remaining 30%. For example, for the first rectangled row, you would fit your initial model model with some tweak (let's say, adding a squared term to the age variable to check if that improves fit) on the `r colorize("training", "red")` data and then predict on the `r colorize("testing", "#D4FF2A")` data to evaluate the fit:
 
-```{r, echo = FALSE, out.width = "95%"}
+```{r, echo = FALSE, out.width = "75%"}
 knitr::include_graphics("./img/train_cv3_smaller.svg")
 ```
 
-and then
+For the second rectangled row, fit the exact same model (that is, including the age squared term) on 70% of the `r colorize("training", "red")` data and predict on the `r colorize("testing", "#D4FF2A")` data. And then repeat the same iteration until the end of rectangled rows:
 
-```{r, echo = FALSE, out.width = "95%"}
-knitr::include_graphics("./img/train_cv4_smaller.svg")
+```{r, echo = FALSE, out.width = "75%"}
+knitr::include_graphics("./img/train_cv6_smaller.svg")
 ```
 
-This approach offers a way to iterate as many times as you want on tweaking your model and predicting on the cross-validated `r colorize("testing", "#D4FF2A")` data without actually predicting on the initial `r colorize("testing", "#D4FF2A")` dataset. This is the least bad approach that is currently accepted in the literature. Why is it the least bad approach? Because if we tweak the model on these 10 replicas one time, then a second time, then a third time, etc..., we'll also start overfitting on each of these 10 slots. The superiority of this approach over tweaking on the `r colorize("training", "red")` data is that since we have 10 replicas, we can take the average of our model fit and also obtain standard errors. This allows to have a somewhat balanced account of how our model fit is doing and the uncertainty around it.
+In each iteration, measure the $RMSE$ (you could record other metrics of fit, such as the $R^2$, $AIC$, $BIC$, etc...) of the predictions on the `r colorize("testing", "#D4FF2A")` data such that after you've fitted the model and evaluated the model 10 times, you have 10 values of the $RMSE$. With these 10 values you can calculate the average $RMSE$ and standard errors of your model performance.
+
+Note that with this approach, the `r colorize("testing", "#D4FF2A")` data changes in each rectangled row, making sure that each ~30% chunk of the data passes through the `r colorize("testing", "#D4FF2A")` dataset at some point during the predictions. This is done to ensure the predictions are as balanced as possible.
+
+This approach offers a way to iterate as many times as you want on tweaking your model and predicting on the cross-validated `r colorize("testing", "#D4FF2A")` data without actually predicting on the initial `r colorize("testing", "#D4FF2A")` dataset. This is the least bad approach that is **currently** accepted in the literature. 
+
+Why is it the least bad approach? Because if we tweak the model on these 10 replicas one time, then a second time, then a third time, etc..., we'll also start overfitting on each of these 10 slots. The superiority of this approach over tweaking on the `r colorize("training", "red")` data is that since we have 10 replicas, we can take the average of model fit metrics and also obtain standard errors. This allows to have a somewhat balanced account of how our model fit is doing and the uncertainty around it.
 
 That said, since we will always overfit in someway using a cross-validation approach, the final error of your model fit on the `r colorize("training", "red")` data will always be over optimistic (lower error than what you will actually have, if you predicted on the **pristine** `r colorize("testing", "#D4FF2A")` data.
+
+## Bias-Variance Tradeoff
+
+Before we elaborate a complete coded example, it's important to talk about the famous bias-variance tradeoff, used in machine learning problems. As was shown in figure \@ref(fig:overfitplots), we want the ideal fit without overfitting or underfitting the data. In some instances, fitting the data that well is very difficult because we don't have variables that reflect the data generating process or because the relationship is too complex. In that case, for machine learning problems, you might want to either underfit or overfit slightly, depending on your problem. 
+
+Overfitting your data has some value, which is that we learn the data very well. This is often called a model with a lot of flexibility. A model that can learn all the small intricacies of the data is often called a **flexible** model.  There is **very** little bias in a model like this one, since we learn the data very very well. However, at the expense of bias, overfitting has **a lot** of variance. If we predict on a new dataset using the overfitted model, we'll find a completely different result from the initial model. If we repeat the same on another dataset, we'll find another different result. That is why models which can be very flexible are considered to have very little bias and a lot of variance:
+
+```{r echo = FALSE, fig.show = "hold", out.width = "50%", fig.align = "default"}
+library(magick)
+flex_model <- image_read_svg("./img/flexible_models.svg", width = 350)
+print(flex_model, info = FALSE)
+overfit
+```
+
+On the other hand, models which are **not** flexible, have more bias and less variance. One familiar example of this is the linear model. By fitting a straight line through the data, the variance is very small: if we run the same exact model on a new data, the fitted line is robust to slight changes in the data. However, the fitted line doesn't really capture the subtle trends in the data (assuming the relationship is non-linear, which is the case in most cases). That is why non-flexible models are often called to have high bias and low variance:
+
+```{r echo = FALSE, fig.show = "hold", out.width = "50%", fig.align = "default"}
+library(magick)
+unflex_model <- image_read_svg("./img/unflexible_models.svg", width = 350)
+print(unflex_model, info = FALSE)
+bad_fit
+```
+
+In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too unflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data.
