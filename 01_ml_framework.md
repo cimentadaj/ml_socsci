@@ -159,8 +159,10 @@ Before we elaborate a complete coded example, it's important to talk about the f
 
 Overfitting your data has some value, which is that we learn the data very well. This is often called a model with a lot of flexibility. A model that can learn all the small intricacies of the data is often called a **flexible** model.  There is **very** little bias in a model like this one, since we learn the data very very well. However, at the expense of bias, overfitting has **a lot** of variance. If we predict on a new dataset using the overfitted model, we'll find a completely different result from the initial model. If we repeat the same on another dataset, we'll find another different result. That is why models which can be very flexible are considered to have very little bias and a lot of variance:
 
-<img src="./figs/unnamed-chunk-12-1.png" width="50%" /><img src="./figs/unnamed-chunk-12-3.png" width="50%" />
+<img src="./figs/unnamed-chunk-12-1.png" width="50%" />
 
 On the other hand, models which are **not** flexible, have more bias and less variance. One familiar example of this is the linear model. By fitting a straight line through the data, the variance is very small: if we run the same exact model on a new data, the fitted line is robust to slight changes in the data. However, the fitted line doesn't really capture the subtle trends in the data (assuming the relationship is non-linear, which is the case in most cases). That is why non-flexible models are often called to have high bias and low variance:
 
-<img src="./figs/unnamed-chunk-13-1.png" width="50%" /><img src="./figs/unnamed-chunk-13-3.png" width="50%" />
+<img src="./figs/unnamed-chunk-13-1.png" width="50%" />
+
+In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too unflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data.
