@@ -159,8 +159,247 @@ Before we elaborate a complete coded example, it's important to talk about the f
 
 Overfitting your data has some value, which is that we learn the data very well. This is often called a model with a lot of flexibility. A model that can learn all the small intricacies of the data is often called a **flexible** model.  There is **very** little bias in a model like this one, since we learn the data very very well. However, at the expense of bias, overfitting has **a lot** of variance. If we predict on a new dataset using the overfitted model, we'll find a completely different result from the initial model. If we repeat the same on another dataset, we'll find another different result. That is why models which can be very flexible are considered to have very little bias and a lot of variance:
 
-<img src="./figs/unnamed-chunk-12-1.png" width="50%" /><img src="./figs/unnamed-chunk-12-3.png" width="50%" />
+<img src="./figs/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" />
+
+The model above fits the criteria:
+
+<img src="./figs/unnamed-chunk-13-1.png" width="50%" style="display: block; margin: auto;" />
 
 On the other hand, models which are **not** flexible, have more bias and less variance. One familiar example of this is the linear model. By fitting a straight line through the data, the variance is very small: if we run the same exact model on a new data, the fitted line is robust to slight changes in the data. However, the fitted line doesn't really capture the subtle trends in the data (assuming the relationship is non-linear, which is the case in most cases). That is why non-flexible models are often called to have high bias and low variance:
 
-<img src="./figs/unnamed-chunk-13-1.png" width="50%" /><img src="./figs/unnamed-chunk-13-3.png" width="50%" />
+<img src="./figs/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" />
+
+or in other words:
+
+<img src="./figs/unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" />
+
+In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too unflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data.
+
+## An example
+
+Let's combine all the new steps into a complete pipeline of machine learning. Let's say we have the age of a person and their income and we want to predict their income based on their age. The rectangular data looks like this:
+
+<!--html_preserve--><div id="htmlwidget-4c09a4ce4c01f2b64aad" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4c09a4ce4c01f2b64aad">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],[44,29,66,66,57,39],[2203,2162,2441,2938,2574,2091]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>income<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+
+The relationship between these two variables is non-linear, showing the common mintzer equation where income increases with age up to a certain age:
+
+
+```r
+library(tidyverse)
+library(tidymodels)
+library(scales)
+
+set.seed(2313)
+n <- 500
+x <- rnorm(n)
+y <- x^3 + rnorm(n, sd = 3)
+age <- rescale(x, to = c(0, 100))
+income <- rescale(y, to = c(0, 5000))
+
+age_inc <- data.frame(age = age, income = income)
+
+age_inc %>%
+  ggplot(aes(age, income)) +
+  geom_point() +
+  theme_linedraw()
+```
+
+<img src="./figs/unnamed-chunk-17-1.png" width="80%" height="90%" style="display: block; margin: auto;" />
+
+To analyze the data, we must first partition it into <span style='color: red;'>training</span> an <span style='color: #D4FF2A;'>testing</span>. We can do that with `initial_split`:
+
+
+```r
+set.seed(213151)
+split_age_inc <- initial_split(age_inc)
+train_df <- training(split_age_inc)
+test_df <- testing(split_age_inc)
+```
+
+The <span style='color: red;'>training</span> and <span style='color: #D4FF2A;'>testing</span>  data should be, on average, the same, given that the rows were picked randomly. However, the rows present in the <span style='color: red;'>training</span> set must **not** be in the <span style='color: #D4FF2A;'>testing</span> set.
+
+
+```r
+head(train_df)
+```
+
+```
+##        age   income
+## 1 44.25888 2203.475
+## 3 65.80879 2440.691
+## 5 56.85766 2574.268
+## 7 62.84881 2327.790
+## 8 74.35803 2583.404
+## 9 84.94890 3548.240
+```
+
+
+```r
+head(test_df)
+```
+
+```
+##         age   income
+## 2  29.49615 2162.250
+## 4  66.28708 2938.295
+## 6  38.90431 2090.921
+## 14 93.83987 3866.429
+## 22 44.31070 2635.062
+## 25 71.72728 2424.363
+```
+
+Now, let's begin running some models. The first model we'd like run is a simple regression `income ~ age` on the **<span style='color: red;'>training</span>** data and plot the fitted values:
+
+
+```r
+mod1 <- lm(income ~ age, data = train_df)
+
+pred_vals <- function(mod, trn_df) {
+  pred_df <-
+    bind_cols(
+      trn_df,
+      pred_income = predict(mod, newdata = trn_df)
+    )
+  
+  pred_df
+}
+
+pred_df <- pred_vals(mod1, train_df)
+rmse_pred <- rmse_vec(pred_df$income, pred_df$pred_income)
+
+pred_income <- function(mod, trn_df) {
+
+  pred_df <- pred_vals(mod, trn_df)
+  
+  train_df %>%
+    ggplot(aes(age, income)) +
+    geom_point() +
+    geom_line(data = pred_df, aes(y = pred_income), color = "red") +
+    scale_x_continuous(name = "Age") +
+    scale_y_continuous(name = "Income",
+                       label = dollar_format(suffix = "€", prefix = "")) +
+    theme_linedraw()
+}
+
+pred_income(mod1, train_df)
+```
+
+<img src="./figs/unnamed-chunk-21-1.png" width="80%" height="80%" style="display: block; margin: auto;" />
+
+It seems we're underfitting the relationship. To measure the **fit** of the model, we'll use the Root Mean Square Error (RMSE). Remember it?
+
+$$ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{N}}} $$
+
+The current $RMSE$ of our model is 387.48. This means that on average our predictions are off by around 387.48 euros. The fitted line is underfitting the relationship because it cannot capture the non-linear trend in the data. How do we increase the fit? We could add non-linear terms to the model, for example $age^2$, $age^3$, ..., $age^{10}$. 
+
+However, remember, by fitting very high non-linear terms to the data, we might get lower error from the model but that's because the model is **learning** the data so much that it starts to capture noise rather than the signal. This means that when we predict on the **unseen** <span style='color: #D4FF2A;'>testing</span> data, our model would not know how to identify the signal in the data. How can we be sure we're picking the best model specification?
+
+**This is where cross-validation comes in!**
+
+We can use the function `vfold_cv` to separate the <span style='color: red;'>training</span> data into 10 cross-validation sets, which each one has a <span style='color: red;'>training</span> and <span style='color: #D4FF2A;'>testing</span> data.
+
+
+```
+## #  10-fold cross-validation 
+## # A tibble: 10 x 2
+##    splits           id    
+##    <named list>     <chr> 
+##  1 <split [337/38]> Fold01
+##  2 <split [337/38]> Fold02
+##  3 <split [337/38]> Fold03
+##  4 <split [337/38]> Fold04
+##  5 <split [337/38]> Fold05
+##  6 <split [338/37]> Fold06
+##  7 <split [338/37]> Fold07
+##  8 <split [338/37]> Fold08
+##  9 <split [338/37]> Fold09
+## 10 <split [338/37]> Fold10
+```
+
+Each of those `split` objects (there are 10) contains a <span style='color: red;'>training</span> and <span style='color: #D4FF2A;'>testing</span> set. This is the equivalent of the image we saw before:
+
+
+
+<img src="img/train_cv4_smaller.svg" width="75%" style="display: block; margin: auto;" />
+
+<br>
+
+The next thing we have to do is train the same model on the <span style='color: red;'>training</span> data of each of these cross-validated sets, use these trained models to predict on the 10 <span style='color: #D4FF2A;'>testing</span> sets and record the error rate using our $RMSE$ metric. But don't worry, you don't have to do that all that model fitting manually. There are already several packages that do this automatically:
+
+
+```r
+# Define the formula of your model and specify that the polynomial
+# value will be 'tuned'. That is, we will try several values
+# instead of only one.
+rcp_train <-
+  recipe(income ~ age, data = train_df) %>%
+  step_poly(age, degree = tune())
+
+# Define the linear model
+mod <- set_engine(linear_reg(), "lm")
+
+# Join everything into a complete pipeline
+wflow <-
+  workflow() %>%
+  add_recipe(rcp_train) %>%
+  add_model(mod)
+
+# Specify the number of polynoymials we want to try:
+# age^2, age^3, ..., age^10
+grid_vals <- data.frame(degree = 2:10)
+res_tuning <- tune_grid(wflow,
+                        vfold_train,
+                        grid = grid_vals)
+
+# Visualize the result
+res_tuning %>%
+  collect_metrics() %>%
+  filter(.metric == "rmse") %>% 
+  mutate(uc_low = mean - 1.96 * std_err,
+         uc_high = mean + 1.96 * std_err) %>%
+  ggplot(aes(degree, mean)) +
+  geom_point(alpha = 1 / 2) +
+  geom_line(alpha = 1 / 2) +
+  geom_errorbar(aes(ymin = uc_low, ymax = uc_high), width = 0.1) +
+  scale_x_continuous(name = "Polynomial Degrees (e.g age^2, age^3, etc..age^10)",
+                     breaks = 1:10,
+                     labels = as.integer) +
+  scale_y_continuous(name = "Root Mean Square Error (RMSE)",
+                     label = dollar_format(suffix = "€", prefix = "")) +
+  theme_linedraw()
+```
+
+<img src="./figs/unnamed-chunk-25-1.png" width="80%" height="80%" style="display: block; margin: auto;" />
+
+The resulting error terms show that any polynomial above 2 has very similar error rates. However, there is a point in which adding $age^8$, $age^9$ and $age^10$, increases the error rate. This is a good example where a lot of flexibility (fitting the non-linear trend **very** well), increases accuracy on the <span style='color: red;'>training</span> set but show a lot variability on the <span style='color: #D4FF2A;'>testing</span> set. The $RMSE$ that we saw in the figure is the recorded $RMESE$ from the <span style='color: #D4FF2A;'>testing</span> set.
+
+Given that most of the polynomial terms have similar error terms, we usually would go for the most simple model, that is, the model with $age^3$. We can run the model on the entire **<span style='color: red;'>training</span>** data with 3 non-linear terms and check the fit:
+
+
+```r
+mod1 <- lm(income ~ poly(age, 3), data = train_df)
+
+pred_df <- pred_vals(mod1, train_df)
+rmse_pred <- round(rmse_vec(pred_df$income, pred_df$pred_income), 2)
+
+pred_income(mod1, train_df)
+```
+
+<img src="./figs/unnamed-chunk-26-1.png" width="80%" height="80%" style="display: block; margin: auto;" />
+
+The $RMSE$ on the **<span style='color: red;'>training</span>** data for the three polynomial model is 282.81. We need to compare that to our **<span style='color: #D4FF2A;'>testing</span>** $RMSE$. 
+
+
+```r
+rmse_pred2 <- round(rmse_vec(test_df$income, predict(mod1, newdata = test_df)), 2)
+
+pred_income(mod1, test_df)
+```
+
+<img src="./figs/unnamed-chunk-27-1.png" width="80%" height="70%" style="display: block; margin: auto;" />
+
+* <span style='color: red;'>training</span> $RMSE$ is 282.81
+* <span style='color: #D4FF2A;'>testing</span> $RMSE$ is 303.08
+
+<span style='color: #D4FF2A;'>testing</span> $RMSE$ will almost always be higher, since we always overfit the data in some way through cross-validation.

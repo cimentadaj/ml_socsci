@@ -50,6 +50,14 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.12/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
@@ -139,6 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#split-your-data-into-trainingtesting"><i class="fa fa-check"></i><b>1.2</b> Split your data into training/testing</a></li>
 <li class="chapter" data-level="1.3" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#cross-validation"><i class="fa fa-check"></i><b>1.3</b> Cross-validation</a></li>
 <li class="chapter" data-level="1.4" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#bias-variance-tradeoff"><i class="fa fa-check"></i><b>1.4</b> Bias-Variance Tradeoff</a></li>
+<li class="chapter" data-level="1.5" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#an-example"><i class="fa fa-check"></i><b>1.5</b> An example</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="regularization.html"><a href="regularization.html"><i class="fa fa-check"></i><b>2</b> Regularization</a><ul>
 <li class="chapter" data-level="2.1" data-path="regularization.html"><a href="regularization.html#ridge-regularization"><i class="fa fa-check"></i><b>2.1</b> Ridge regularization</a></li>
@@ -303,9 +312,176 @@ Figure 1.1: Different ways of fitting your data
 <h2><span class="header-section-number">1.4</span> Bias-Variance Tradeoff</h2>
 <p>Before we elaborate a complete coded example, it’s important to talk about the famous bias-variance tradeoff, used in machine learning problems. As was shown in figure <a href="machine-learning-for-social-scientists.html#fig:overfitplots">1.1</a>, we want the ideal fit without overfitting or underfitting the data. In some instances, fitting the data that well is very difficult because we don’t have variables that reflect the data generating process or because the relationship is too complex. In that case, for machine learning problems, you might want to either underfit or overfit slightly, depending on your problem.</p>
 <p>Overfitting your data has some value, which is that we learn the data very well. This is often called a model with a lot of flexibility. A model that can learn all the small intricacies of the data is often called a <strong>flexible</strong> model. There is <strong>very</strong> little bias in a model like this one, since we learn the data very very well. However, at the expense of bias, overfitting has <strong>a lot</strong> of variance. If we predict on a new dataset using the overfitted model, we’ll find a completely different result from the initial model. If we repeat the same on another dataset, we’ll find another different result. That is why models which can be very flexible are considered to have very little bias and a lot of variance:</p>
-<p><img src="figs/unnamed-chunk-12-1.png" width="50%" /><img src="figs/unnamed-chunk-12-3.png" width="50%" /></p>
+<p><img src="figs/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>The model above fits the criteria:</p>
+<p><img src="figs/unnamed-chunk-13-1.png" width="50%" style="display: block; margin: auto;" /></p>
 <p>On the other hand, models which are <strong>not</strong> flexible, have more bias and less variance. One familiar example of this is the linear model. By fitting a straight line through the data, the variance is very small: if we run the same exact model on a new data, the fitted line is robust to slight changes in the data. However, the fitted line doesn’t really capture the subtle trends in the data (assuming the relationship is non-linear, which is the case in most cases). That is why non-flexible models are often called to have high bias and low variance:</p>
-<p><img src="figs/unnamed-chunk-13-1.png" width="50%" /><img src="figs/unnamed-chunk-13-3.png" width="50%" /></p>
+<p><img src="figs/unnamed-chunk-14-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>or in other words:</p>
+<p><img src="figs/unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" /></p>
+<p>In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too unflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model’s performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data.</p>
+</div>
+<div id="an-example" class="section level2">
+<h2><span class="header-section-number">1.5</span> An example</h2>
+<p>Let’s combine all the new steps into a complete pipeline of machine learning. Let’s say we have the age of a person and their income and we want to predict their income based on their age. The rectangular data looks like this:</p>
+<div id="htmlwidget-4c09a4ce4c01f2b64aad" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4c09a4ce4c01f2b64aad">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],[44,29,66,66,57,39],[2203,2162,2441,2938,2574,2091]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>income<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>The relationship between these two variables is non-linear, showing the common mintzer equation where income increases with age up to a certain age:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="machine-learning-for-social-scientists.html#cb2-1"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="machine-learning-for-social-scientists.html#cb2-2"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb2-3"><a href="machine-learning-for-social-scientists.html#cb2-3"></a><span class="kw">library</span>(scales)</span>
+<span id="cb2-4"><a href="machine-learning-for-social-scientists.html#cb2-4"></a></span>
+<span id="cb2-5"><a href="machine-learning-for-social-scientists.html#cb2-5"></a><span class="kw">set.seed</span>(<span class="dv">2313</span>)</span>
+<span id="cb2-6"><a href="machine-learning-for-social-scientists.html#cb2-6"></a>n &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb2-7"><a href="machine-learning-for-social-scientists.html#cb2-7"></a>x &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n)</span>
+<span id="cb2-8"><a href="machine-learning-for-social-scientists.html#cb2-8"></a>y &lt;-<span class="st"> </span>x<span class="op">^</span><span class="dv">3</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd =</span> <span class="dv">3</span>)</span>
+<span id="cb2-9"><a href="machine-learning-for-social-scientists.html#cb2-9"></a>age &lt;-<span class="st"> </span><span class="kw">rescale</span>(x, <span class="dt">to =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">100</span>))</span>
+<span id="cb2-10"><a href="machine-learning-for-social-scientists.html#cb2-10"></a>income &lt;-<span class="st"> </span><span class="kw">rescale</span>(y, <span class="dt">to =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5000</span>))</span>
+<span id="cb2-11"><a href="machine-learning-for-social-scientists.html#cb2-11"></a></span>
+<span id="cb2-12"><a href="machine-learning-for-social-scientists.html#cb2-12"></a>age_inc &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">age =</span> age, <span class="dt">income =</span> income)</span>
+<span id="cb2-13"><a href="machine-learning-for-social-scientists.html#cb2-13"></a></span>
+<span id="cb2-14"><a href="machine-learning-for-social-scientists.html#cb2-14"></a>age_inc <span class="op">%&gt;%</span></span>
+<span id="cb2-15"><a href="machine-learning-for-social-scientists.html#cb2-15"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(age, income)) <span class="op">+</span></span>
+<span id="cb2-16"><a href="machine-learning-for-social-scientists.html#cb2-16"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb2-17"><a href="machine-learning-for-social-scientists.html#cb2-17"></a><span class="st">  </span><span class="kw">theme_linedraw</span>()</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-17-1.png" width="80%" height="90%" style="display: block; margin: auto;" /></p>
+<p>To analyze the data, we must first partition it into <span style="color: red;">training</span> an <span style="color: #D4FF2A;">testing</span>. We can do that with <code>initial_split</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="machine-learning-for-social-scientists.html#cb3-1"></a><span class="kw">set.seed</span>(<span class="dv">213151</span>)</span>
+<span id="cb3-2"><a href="machine-learning-for-social-scientists.html#cb3-2"></a>split_age_inc &lt;-<span class="st"> </span><span class="kw">initial_split</span>(age_inc)</span>
+<span id="cb3-3"><a href="machine-learning-for-social-scientists.html#cb3-3"></a>train_df &lt;-<span class="st"> </span><span class="kw">training</span>(split_age_inc)</span>
+<span id="cb3-4"><a href="machine-learning-for-social-scientists.html#cb3-4"></a>test_df &lt;-<span class="st"> </span><span class="kw">testing</span>(split_age_inc)</span></code></pre></div>
+<p>The <span style="color: red;">training</span> and <span style="color: #D4FF2A;">testing</span> data should be, on average, the same, given that the rows were picked randomly. However, the rows present in the <span style="color: red;">training</span> set must <strong>not</strong> be in the <span style="color: #D4FF2A;">testing</span> set.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="machine-learning-for-social-scientists.html#cb4-1"></a><span class="kw">head</span>(train_df)</span></code></pre></div>
+<pre><code>##        age   income
+## 1 44.25888 2203.475
+## 3 65.80879 2440.691
+## 5 56.85766 2574.268
+## 7 62.84881 2327.790
+## 8 74.35803 2583.404
+## 9 84.94890 3548.240</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="machine-learning-for-social-scientists.html#cb6-1"></a><span class="kw">head</span>(test_df)</span></code></pre></div>
+<pre><code>##         age   income
+## 2  29.49615 2162.250
+## 4  66.28708 2938.295
+## 6  38.90431 2090.921
+## 14 93.83987 3866.429
+## 22 44.31070 2635.062
+## 25 71.72728 2424.363</code></pre>
+<p>Now, let’s begin running some models. The first model we’d like run is a simple regression <code>income ~ age</code> on the <strong><span style="color: red;">training</span></strong> data and plot the fitted values:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="machine-learning-for-social-scientists.html#cb8-1"></a>mod1 &lt;-<span class="st"> </span><span class="kw">lm</span>(income <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> train_df)</span>
+<span id="cb8-2"><a href="machine-learning-for-social-scientists.html#cb8-2"></a></span>
+<span id="cb8-3"><a href="machine-learning-for-social-scientists.html#cb8-3"></a>pred_vals &lt;-<span class="st"> </span><span class="cf">function</span>(mod, trn_df) {</span>
+<span id="cb8-4"><a href="machine-learning-for-social-scientists.html#cb8-4"></a>  pred_df &lt;-</span>
+<span id="cb8-5"><a href="machine-learning-for-social-scientists.html#cb8-5"></a><span class="st">    </span><span class="kw">bind_cols</span>(</span>
+<span id="cb8-6"><a href="machine-learning-for-social-scientists.html#cb8-6"></a>      trn_df,</span>
+<span id="cb8-7"><a href="machine-learning-for-social-scientists.html#cb8-7"></a>      <span class="dt">pred_income =</span> <span class="kw">predict</span>(mod, <span class="dt">newdata =</span> trn_df)</span>
+<span id="cb8-8"><a href="machine-learning-for-social-scientists.html#cb8-8"></a>    )</span>
+<span id="cb8-9"><a href="machine-learning-for-social-scientists.html#cb8-9"></a>  </span>
+<span id="cb8-10"><a href="machine-learning-for-social-scientists.html#cb8-10"></a>  pred_df</span>
+<span id="cb8-11"><a href="machine-learning-for-social-scientists.html#cb8-11"></a>}</span>
+<span id="cb8-12"><a href="machine-learning-for-social-scientists.html#cb8-12"></a></span>
+<span id="cb8-13"><a href="machine-learning-for-social-scientists.html#cb8-13"></a>pred_df &lt;-<span class="st"> </span><span class="kw">pred_vals</span>(mod1, train_df)</span>
+<span id="cb8-14"><a href="machine-learning-for-social-scientists.html#cb8-14"></a>rmse_pred &lt;-<span class="st"> </span><span class="kw">rmse_vec</span>(pred_df<span class="op">$</span>income, pred_df<span class="op">$</span>pred_income)</span>
+<span id="cb8-15"><a href="machine-learning-for-social-scientists.html#cb8-15"></a></span>
+<span id="cb8-16"><a href="machine-learning-for-social-scientists.html#cb8-16"></a>pred_income &lt;-<span class="st"> </span><span class="cf">function</span>(mod, trn_df) {</span>
+<span id="cb8-17"><a href="machine-learning-for-social-scientists.html#cb8-17"></a></span>
+<span id="cb8-18"><a href="machine-learning-for-social-scientists.html#cb8-18"></a>  pred_df &lt;-<span class="st"> </span><span class="kw">pred_vals</span>(mod, trn_df)</span>
+<span id="cb8-19"><a href="machine-learning-for-social-scientists.html#cb8-19"></a>  </span>
+<span id="cb8-20"><a href="machine-learning-for-social-scientists.html#cb8-20"></a>  train_df <span class="op">%&gt;%</span></span>
+<span id="cb8-21"><a href="machine-learning-for-social-scientists.html#cb8-21"></a><span class="st">    </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(age, income)) <span class="op">+</span></span>
+<span id="cb8-22"><a href="machine-learning-for-social-scientists.html#cb8-22"></a><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb8-23"><a href="machine-learning-for-social-scientists.html#cb8-23"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">data =</span> pred_df, <span class="kw">aes</span>(<span class="dt">y =</span> pred_income), <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-24"><a href="machine-learning-for-social-scientists.html#cb8-24"></a><span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;Age&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-25"><a href="machine-learning-for-social-scientists.html#cb8-25"></a><span class="st">    </span><span class="kw">scale_y_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;Income&quot;</span>,</span>
+<span id="cb8-26"><a href="machine-learning-for-social-scientists.html#cb8-26"></a>                       <span class="dt">label =</span> <span class="kw">dollar_format</span>(<span class="dt">suffix =</span> <span class="st">&quot;€&quot;</span>, <span class="dt">prefix =</span> <span class="st">&quot;&quot;</span>)) <span class="op">+</span></span>
+<span id="cb8-27"><a href="machine-learning-for-social-scientists.html#cb8-27"></a><span class="st">    </span><span class="kw">theme_linedraw</span>()</span>
+<span id="cb8-28"><a href="machine-learning-for-social-scientists.html#cb8-28"></a>}</span>
+<span id="cb8-29"><a href="machine-learning-for-social-scientists.html#cb8-29"></a></span>
+<span id="cb8-30"><a href="machine-learning-for-social-scientists.html#cb8-30"></a><span class="kw">pred_income</span>(mod1, train_df)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-21-1.png" width="80%" height="80%" style="display: block; margin: auto;" /></p>
+<p>It seems we’re underfitting the relationship. To measure the <strong>fit</strong> of the model, we’ll use the Root Mean Square Error (RMSE). Remember it?</p>
+<p><span class="math display">\[ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{N}}} \]</span></p>
+<p>The current <span class="math inline">\(RMSE\)</span> of our model is 387.48. This means that on average our predictions are off by around 387.48 euros. The fitted line is underfitting the relationship because it cannot capture the non-linear trend in the data. How do we increase the fit? We could add non-linear terms to the model, for example <span class="math inline">\(age^2\)</span>, <span class="math inline">\(age^3\)</span>, …, <span class="math inline">\(age^{10}\)</span>.</p>
+<p>However, remember, by fitting very high non-linear terms to the data, we might get lower error from the model but that’s because the model is <strong>learning</strong> the data so much that it starts to capture noise rather than the signal. This means that when we predict on the <strong>unseen</strong> <span style="color: #D4FF2A;">testing</span> data, our model would not know how to identify the signal in the data. How can we be sure we’re picking the best model specification?</p>
+<p><strong>This is where cross-validation comes in!</strong></p>
+<p>We can use the function <code>vfold_cv</code> to separate the <span style="color: red;">training</span> data into 10 cross-validation sets, which each one has a <span style="color: red;">training</span> and <span style="color: #D4FF2A;">testing</span> data.</p>
+<pre><code>## #  10-fold cross-validation 
+## # A tibble: 10 x 2
+##    splits           id    
+##    &lt;named list&gt;     &lt;chr&gt; 
+##  1 &lt;split [337/38]&gt; Fold01
+##  2 &lt;split [337/38]&gt; Fold02
+##  3 &lt;split [337/38]&gt; Fold03
+##  4 &lt;split [337/38]&gt; Fold04
+##  5 &lt;split [337/38]&gt; Fold05
+##  6 &lt;split [338/37]&gt; Fold06
+##  7 &lt;split [338/37]&gt; Fold07
+##  8 &lt;split [338/37]&gt; Fold08
+##  9 &lt;split [338/37]&gt; Fold09
+## 10 &lt;split [338/37]&gt; Fold10</code></pre>
+<p>Each of those <code>split</code> objects (there are 10) contains a <span style="color: red;">training</span> and <span style="color: #D4FF2A;">testing</span> set. This is the equivalent of the image we saw before:</p>
+<p><img src="img/train_cv4_smaller.svg" width="75%" style="display: block; margin: auto;" /></p>
+<p><br></p>
+<p>The next thing we have to do is train the same model on the <span style="color: red;">training</span> data of each of these cross-validated sets, use these trained models to predict on the 10 <span style="color: #D4FF2A;">testing</span> sets and record the error rate using our <span class="math inline">\(RMSE\)</span> metric. But don’t worry, you don’t have to do that all that model fitting manually. There are already several packages that do this automatically:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="machine-learning-for-social-scientists.html#cb10-1"></a><span class="co"># Define the formula of your model and specify that the polynomial</span></span>
+<span id="cb10-2"><a href="machine-learning-for-social-scientists.html#cb10-2"></a><span class="co"># value will be &#39;tuned&#39;. That is, we will try several values</span></span>
+<span id="cb10-3"><a href="machine-learning-for-social-scientists.html#cb10-3"></a><span class="co"># instead of only one.</span></span>
+<span id="cb10-4"><a href="machine-learning-for-social-scientists.html#cb10-4"></a>rcp_train &lt;-</span>
+<span id="cb10-5"><a href="machine-learning-for-social-scientists.html#cb10-5"></a><span class="st">  </span><span class="kw">recipe</span>(income <span class="op">~</span><span class="st"> </span>age, <span class="dt">data =</span> train_df) <span class="op">%&gt;%</span></span>
+<span id="cb10-6"><a href="machine-learning-for-social-scientists.html#cb10-6"></a><span class="st">  </span><span class="kw">step_poly</span>(age, <span class="dt">degree =</span> <span class="kw">tune</span>())</span>
+<span id="cb10-7"><a href="machine-learning-for-social-scientists.html#cb10-7"></a></span>
+<span id="cb10-8"><a href="machine-learning-for-social-scientists.html#cb10-8"></a><span class="co"># Define the linear model</span></span>
+<span id="cb10-9"><a href="machine-learning-for-social-scientists.html#cb10-9"></a>mod &lt;-<span class="st"> </span><span class="kw">set_engine</span>(<span class="kw">linear_reg</span>(), <span class="st">&quot;lm&quot;</span>)</span>
+<span id="cb10-10"><a href="machine-learning-for-social-scientists.html#cb10-10"></a></span>
+<span id="cb10-11"><a href="machine-learning-for-social-scientists.html#cb10-11"></a><span class="co"># Join everything into a complete pipeline</span></span>
+<span id="cb10-12"><a href="machine-learning-for-social-scientists.html#cb10-12"></a>wflow &lt;-</span>
+<span id="cb10-13"><a href="machine-learning-for-social-scientists.html#cb10-13"></a><span class="st">  </span><span class="kw">workflow</span>() <span class="op">%&gt;%</span></span>
+<span id="cb10-14"><a href="machine-learning-for-social-scientists.html#cb10-14"></a><span class="st">  </span><span class="kw">add_recipe</span>(rcp_train) <span class="op">%&gt;%</span></span>
+<span id="cb10-15"><a href="machine-learning-for-social-scientists.html#cb10-15"></a><span class="st">  </span><span class="kw">add_model</span>(mod)</span>
+<span id="cb10-16"><a href="machine-learning-for-social-scientists.html#cb10-16"></a></span>
+<span id="cb10-17"><a href="machine-learning-for-social-scientists.html#cb10-17"></a><span class="co"># Specify the number of polynoymials we want to try:</span></span>
+<span id="cb10-18"><a href="machine-learning-for-social-scientists.html#cb10-18"></a><span class="co"># age^2, age^3, ..., age^10</span></span>
+<span id="cb10-19"><a href="machine-learning-for-social-scientists.html#cb10-19"></a>grid_vals &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">degree =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">10</span>)</span>
+<span id="cb10-20"><a href="machine-learning-for-social-scientists.html#cb10-20"></a>res_tuning &lt;-<span class="st"> </span><span class="kw">tune_grid</span>(wflow,</span>
+<span id="cb10-21"><a href="machine-learning-for-social-scientists.html#cb10-21"></a>                        vfold_train,</span>
+<span id="cb10-22"><a href="machine-learning-for-social-scientists.html#cb10-22"></a>                        <span class="dt">grid =</span> grid_vals)</span>
+<span id="cb10-23"><a href="machine-learning-for-social-scientists.html#cb10-23"></a></span>
+<span id="cb10-24"><a href="machine-learning-for-social-scientists.html#cb10-24"></a><span class="co"># Visualize the result</span></span>
+<span id="cb10-25"><a href="machine-learning-for-social-scientists.html#cb10-25"></a>res_tuning <span class="op">%&gt;%</span></span>
+<span id="cb10-26"><a href="machine-learning-for-social-scientists.html#cb10-26"></a><span class="st">  </span><span class="kw">collect_metrics</span>() <span class="op">%&gt;%</span></span>
+<span id="cb10-27"><a href="machine-learning-for-social-scientists.html#cb10-27"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;rmse&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-28"><a href="machine-learning-for-social-scientists.html#cb10-28"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">uc_low =</span> mean <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std_err,</span>
+<span id="cb10-29"><a href="machine-learning-for-social-scientists.html#cb10-29"></a>         <span class="dt">uc_high =</span> mean <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std_err) <span class="op">%&gt;%</span></span>
+<span id="cb10-30"><a href="machine-learning-for-social-scientists.html#cb10-30"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(degree, mean)) <span class="op">+</span></span>
+<span id="cb10-31"><a href="machine-learning-for-social-scientists.html#cb10-31"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb10-32"><a href="machine-learning-for-social-scientists.html#cb10-32"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">alpha =</span> <span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb10-33"><a href="machine-learning-for-social-scientists.html#cb10-33"></a><span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> uc_low, <span class="dt">ymax =</span> uc_high), <span class="dt">width =</span> <span class="fl">0.1</span>) <span class="op">+</span></span>
+<span id="cb10-34"><a href="machine-learning-for-social-scientists.html#cb10-34"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;Polynomial Degrees (e.g age^2, age^3, etc..age^10)&quot;</span>,</span>
+<span id="cb10-35"><a href="machine-learning-for-social-scientists.html#cb10-35"></a>                     <span class="dt">breaks =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,</span>
+<span id="cb10-36"><a href="machine-learning-for-social-scientists.html#cb10-36"></a>                     <span class="dt">labels =</span> as.integer) <span class="op">+</span></span>
+<span id="cb10-37"><a href="machine-learning-for-social-scientists.html#cb10-37"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;Root Mean Square Error (RMSE)&quot;</span>,</span>
+<span id="cb10-38"><a href="machine-learning-for-social-scientists.html#cb10-38"></a>                     <span class="dt">label =</span> <span class="kw">dollar_format</span>(<span class="dt">suffix =</span> <span class="st">&quot;€&quot;</span>, <span class="dt">prefix =</span> <span class="st">&quot;&quot;</span>)) <span class="op">+</span></span>
+<span id="cb10-39"><a href="machine-learning-for-social-scientists.html#cb10-39"></a><span class="st">  </span><span class="kw">theme_linedraw</span>()</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-25-1.png" width="80%" height="80%" style="display: block; margin: auto;" /></p>
+<p>The resulting error terms show that any polynomial above 2 has very similar error rates. However, there is a point in which adding <span class="math inline">\(age^8\)</span>, <span class="math inline">\(age^9\)</span> and <span class="math inline">\(age^10\)</span>, increases the error rate. This is a good example where a lot of flexibility (fitting the non-linear trend <strong>very</strong> well), increases accuracy on the <span style="color: red;">training</span> set but show a lot variability on the <span style="color: #D4FF2A;">testing</span> set. The <span class="math inline">\(RMSE\)</span> that we saw in the figure is the recorded <span class="math inline">\(RMESE\)</span> from the <span style="color: #D4FF2A;">testing</span> set.</p>
+<p>Given that most of the polynomial terms have similar error terms, we usually would go for the most simple model, that is, the model with <span class="math inline">\(age^3\)</span>. We can run the model on the entire <strong><span style="color: red;">training</span></strong> data with 3 non-linear terms and check the fit:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="machine-learning-for-social-scientists.html#cb11-1"></a>mod1 &lt;-<span class="st"> </span><span class="kw">lm</span>(income <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(age, <span class="dv">3</span>), <span class="dt">data =</span> train_df)</span>
+<span id="cb11-2"><a href="machine-learning-for-social-scientists.html#cb11-2"></a></span>
+<span id="cb11-3"><a href="machine-learning-for-social-scientists.html#cb11-3"></a>pred_df &lt;-<span class="st"> </span><span class="kw">pred_vals</span>(mod1, train_df)</span>
+<span id="cb11-4"><a href="machine-learning-for-social-scientists.html#cb11-4"></a>rmse_pred &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rmse_vec</span>(pred_df<span class="op">$</span>income, pred_df<span class="op">$</span>pred_income), <span class="dv">2</span>)</span>
+<span id="cb11-5"><a href="machine-learning-for-social-scientists.html#cb11-5"></a></span>
+<span id="cb11-6"><a href="machine-learning-for-social-scientists.html#cb11-6"></a><span class="kw">pred_income</span>(mod1, train_df)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-26-1.png" width="80%" height="80%" style="display: block; margin: auto;" /></p>
+<p>The <span class="math inline">\(RMSE\)</span> on the <strong><span style="color: red;">training</span></strong> data for the three polynomial model is 282.81. We need to compare that to our <strong><span style="color: #D4FF2A;">testing</span></strong> <span class="math inline">\(RMSE\)</span>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="machine-learning-for-social-scientists.html#cb12-1"></a>rmse_pred2 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rmse_vec</span>(test_df<span class="op">$</span>income, <span class="kw">predict</span>(mod1, <span class="dt">newdata =</span> test_df)), <span class="dv">2</span>)</span>
+<span id="cb12-2"><a href="machine-learning-for-social-scientists.html#cb12-2"></a></span>
+<span id="cb12-3"><a href="machine-learning-for-social-scientists.html#cb12-3"></a><span class="kw">pred_income</span>(mod1, test_df)</span></code></pre></div>
+<p><img src="figs/unnamed-chunk-27-1.png" width="80%" height="70%" style="display: block; margin: auto;" /></p>
+<ul>
+<li><span style="color: red;">training</span> <span class="math inline">\(RMSE\)</span> is 282.81</li>
+<li><span style="color: #D4FF2A;">testing</span> <span class="math inline">\(RMSE\)</span> is 303.08</li>
+</ul>
+<p><span style="color: #D4FF2A;">testing</span> <span class="math inline">\(RMSE\)</span> will almost always be higher, since we always overfit the data in some way through cross-validation.</p>
 
 </div>
 </div>

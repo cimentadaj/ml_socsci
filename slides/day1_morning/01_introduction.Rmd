@@ -667,7 +667,6 @@ wflow <-
   add_model(mod)
 
 grid_vals <- data.frame(degree = 2:10)
-
 res_tuning <- tune_grid(wflow,
                         vfold_train,
                         grid = grid_vals,
@@ -687,6 +686,7 @@ res_tuning %>%
   scale_y_continuous(name = "Root Mean Square Error (RMSE)",
                      label = dollar_format(suffix = "€", prefix = "")) +
   theme_linedraw()
+
 ```
 
 ---
