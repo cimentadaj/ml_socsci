@@ -1,5 +1,5 @@
 Package: placeholder
 Title: Does not matter.
 Version: 0.0.1
-Imports: broom, caret, dplyr, DT, ggplot2, ggpubr, glmnet, knitr, magick, patchwork, purrr, rmarkdown, scales, tidyr, vip, tidymodels
+Imports: broom, caret, dplyr, DT, ggplot2, ggpubr, glmnet, knitr, magick, patchwork, purrr, rmarkdown, scales, tidyr, vip, tidymodels, bookdown
 Remotes: rstudio/bookdown
