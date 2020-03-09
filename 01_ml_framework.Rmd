@@ -238,7 +238,8 @@ DT::datatable(head(age_inc))
 The relationship between these two variables is non-linear, showing the common Mintzer equation (mintzer citation) where income increases with age up to a certain age:
 
 ```{r, out.height = "90%", dpi = 300}
-library(tidyverse)
+library(ggplot2)
+library(purrr)
 library(tidymodels)
 library(scales)
 
