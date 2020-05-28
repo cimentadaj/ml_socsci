@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Machine Learning for Social Scientists</title>
   <meta name="description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
-  <meta name="generator" content="bookdown 0.16 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Machine Learning for Social Scientists" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-03-03" />
+<meta name="date" content="2020-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +33,7 @@
   
 
 <link rel="next" href="machine-learning-for-social-scientists.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,21 +51,28 @@
 
 
 
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.13/datatables.js"></script>
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -84,7 +92,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -134,17 +142,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
-<li class="chapter" data-level="1" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html"><i class="fa fa-check"></i><b>1</b> Machine Learning for Social Scientists</a><ul>
+<li class="chapter" data-level="1" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html"><i class="fa fa-check"></i><b>1</b> Machine Learning for Social Scientists</a>
+<ul>
 <li class="chapter" data-level="1.1" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#a-different-way-of-thinking"><i class="fa fa-check"></i><b>1.1</b> A different way of thinking</a></li>
 <li class="chapter" data-level="1.2" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#split-your-data-into-trainingtesting"><i class="fa fa-check"></i><b>1.2</b> Split your data into training/testing</a></li>
 <li class="chapter" data-level="1.3" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#cross-validation"><i class="fa fa-check"></i><b>1.3</b> Cross-validation</a></li>
 <li class="chapter" data-level="1.4" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#bias-variance-tradeoff"><i class="fa fa-check"></i><b>1.4</b> Bias-Variance Tradeoff</a></li>
+<li class="chapter" data-level="1.5" data-path="machine-learning-for-social-scientists.html"><a href="machine-learning-for-social-scientists.html#an-example"><i class="fa fa-check"></i><b>1.5</b> An example</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="regularization.html"><a href="regularization.html"><i class="fa fa-check"></i><b>2</b> Regularization</a><ul>
+<li class="chapter" data-level="2" data-path="regularization.html"><a href="regularization.html"><i class="fa fa-check"></i><b>2</b> Regularization</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="regularization.html"><a href="regularization.html#ridge-regularization"><i class="fa fa-check"></i><b>2.1</b> Ridge regularization</a></li>
 <li class="chapter" data-level="2.2" data-path="regularization.html"><a href="regularization.html#lasso-regularization"><i class="fa fa-check"></i><b>2.2</b> Lasso regularization</a></li>
 <li class="chapter" data-level="2.3" data-path="regularization.html"><a href="regularization.html#elastic-net-regularization"><i class="fa fa-check"></i><b>2.3</b> Elastic Net regularization</a></li>
-<li class="chapter" data-level="2.4" data-path="regularization.html"><a href="regularization.html#exercises"><i class="fa fa-check"></i><b>2.4</b> Exercises</a><ul>
+<li class="chapter" data-level="2.4" data-path="regularization.html"><a href="regularization.html#exercises"><i class="fa fa-check"></i><b>2.4</b> Exercises</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="regularization.html"><a href="regularization.html#split-the-data-into-testtraining-data"><i class="fa fa-check"></i><b>2.4.1</b> Split the data into test/training data</a></li>
 <li class="chapter" data-level="2.4.2" data-path="regularization.html"><a href="regularization.html#run-a-ridge-regression-with-non-cognitive-as-the-dependent-variable"><i class="fa fa-check"></i><b>2.4.2</b> Run a ridge regression with non-cognitive as the dependent variable</a></li>
 <li class="chapter" data-level="2.4.3" data-path="regularization.html"><a href="regularization.html#which-are-the-most-important-variables"><i class="fa fa-check"></i><b>2.4.3</b> Which are the most important variables?</a></li>
@@ -154,11 +166,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="regularization.html"><a href="regularization.html#bibliography"><i class="fa fa-check"></i><b>2.5</b> Bibliography</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>3</b> Syllabus</a><ul>
+<li class="chapter" data-level="3" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>3</b> Syllabus</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>3.1</b> Course description</a></li>
 <li class="chapter" data-level="3.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>3.2</b> Schedule</a></li>
-<li class="chapter" data-level="3.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>3.3</b> Software:</a></li>
-<li class="chapter" data-level="3.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>3.4</b> Prerequisites:</a></li>
+<li class="chapter" data-level="3.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>3.3</b> Software</a></li>
+<li class="chapter" data-level="3.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>3.4</b> Prerequisites</a></li>
 <li class="chapter" data-level="3.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>3.5</b> About the author</a></li>
 </ul></li>
 <li class="divider"></li>
@@ -184,9 +197,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Machine Learning for Social Scientists</h1>
 <p class="author"><em>Jorge Cimentada</em></p>
-<p class="date"><em>2020-03-03</em></p>
+<p class="date"><em>2020-05-28</em></p>
 </div>
-<div id="preface" class="section level1 unnumbered">
+<div id="preface" class="section level1 unnumbered" number="">
 <h1>Preface</h1>
 <p>Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists. These are intended to introduce social scientists to concepts in machine learning using traditional social science examples and datasets. Currently, it is not intended to be a book but rather supporting material for the course. Perhaps it evolves enough to be a book some day.</p>
 

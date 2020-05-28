@@ -381,11 +381,11 @@ If you're aware of ridge and lasso, then elastic net regularization is a logical
 
 Here we define our ridge penalty:
 
-$$ridge = \lambda \sum_{k = 1}^n |\beta_j|$$
+$$ridge = \lambda \sum_{k = 1}^n \beta_j^2$$
 
 And here we define our lasso penalty:
 
-$$lasso = \lambda \sum_{k = 1}^n \beta_j^2$$
+$$lasso = \lambda \sum_{k = 1}^n |\beta_j|$$
 
 Elastic net regularization is the addition of these two penalties in comparison to the RSS:
 

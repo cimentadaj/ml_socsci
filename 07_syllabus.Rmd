@@ -192,11 +192,11 @@ We will end the course with a prediction challenge that will put to test all of 
   + Salganik, M. J., Lundberg, I., Kindel, A. T., & McLanahan, S. (2019). Introduction to the Special Collection on the Fragile Families Challenge. Socius, 5, 2378023119871580. Accessible at https://www.researchgate.net/publication/335733962_Introduction_to_the_Special_Collection_on_the_Fragile_Families_Challenge
 
 
-## Software:
+## Software
 
 We will be using the R software together with the Rstudio interface. No laptop is required as the seminars will take place in the RECSM facilities. Any packages we plan to use will be already downloaded previous to the session.
 
-## Prerequisites:
+## Prerequisites
 
 - The course assumes that the student is familiar with R and should be familiar with reading, manipulating and cleaning data frames. Ideally, the student has conducted some type of research using the software.
 

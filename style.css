@@ -12,3 +12,8 @@ pre {
 pre code {
   white-space: inherit;
 }
+
+.GFG { 
+    -webkit-text-stroke-width: 1px; 
+    -webkit-text-stroke-color: black; 
+} 
