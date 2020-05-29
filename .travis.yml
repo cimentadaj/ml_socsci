@@ -1,19 +1,19 @@
 language: r
-# cache: packages
+cache: packages
 pandoc_version: 1.19.2.1
 
 before_script:
   - chmod +x ./_build.sh
   - chmod +x ./_deploy.sh
 
-addons:
-  apt:
-    update: true
-    sources:
-      - sourceline: 'ppa:opencpu/imagemagick'
-    packages:
-      - libmagick++-dev
-      - librsvg2-dev
+# addons:
+#   apt:
+#     update: true
+#     sources:
+#       - sourceline: 'ppa:opencpu/imagemagick'
+#     packages:
+#       - libmagick++-dev
+#       - librsvg2-dev
 
 script:
   - ./_build.sh
