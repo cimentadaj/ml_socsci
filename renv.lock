@@ -485,13 +485,6 @@
       "Repository": "CRAN",
       "Hash": "911561e07da928345f1ae2d69f97f3ea"
     },
-    "ggpubr": {
-      "Package": "ggpubr",
-      "Version": "0.3.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "f4b724f63931ed1978447de0a4f7f74f"
-    },
     "ggrepel": {
       "Package": "ggrepel",
       "Version": "0.8.2",
@@ -817,13 +810,6 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "6c04c31012c1be39783bebbbfc27b3a3"
-    },
-    "magick": {
-      "Package": "magick",
-      "Version": "2.3",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "c84d4acbc7da7638dbd0076d5b069330"
     },
     "magrittr": {
       "Package": "magrittr",
