@@ -1,19 +1,16 @@
 language: r
-cache: packages
+cache:
+  directories:
+  - $HOME/.local/share/renv
+  - $TRAVIS_BUILD_DIR/renv/library
 pandoc_version: 1.19.2.1
 
 before_script:
   - chmod +x ./_build.sh
   - chmod +x ./_deploy.sh
 
-# addons:
-#   apt:
-#     update: true
-#     sources:
-#       - sourceline: 'ppa:opencpu/imagemagick'
-#     packages:
-#       - libmagick++-dev
-#       - librsvg2-dev
+install:
+  Rscript -e "'install.packages('renv'); renv::restore()"
 
 script:
   - ./_build.sh
