@@ -16,9 +16,9 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install rmarkdown
-        run: Rscript -e 'install.packages(c("rmarkdown","bookdown"))'
+        run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "renv"))'
       - name: Render Book
-        run: Rscript -e 'bookdown::render_book("index.Rmd")'
+        run: Rscript -e 'renv::restore(); bookdown::render_book("index.Rmd")'
       - uses: actions/upload-artifact@v1
         with:
           name: _book
@@ -26,7 +26,7 @@ jobs:
   
 # Need to first create an empty gh-pages branch
 # see https://pkgdown.r-lib.org/reference/deploy_site_github.html
-# and also add secrets for a GITHUB_PAT and EMAIL to the repository
+# and also add secrets for a UNIQUE_PAT and EMAIL to the repository
 # gh-action from Cecilapp/GitHub-Pages-deploy
   checkout-and-deploy:
    runs-on: ubuntu-latest
@@ -45,7 +45,7 @@ jobs:
        uses: Cecilapp/GitHub-Pages-deploy@master
        env:
           EMAIL: ${{ secrets.EMAIL }}               # must be a verified email
-          GH_TOKEN: ${{ secrets.GITHUB_PAT }} # https://github.com/settings/tokens
+          GH_TOKEN: ${{ secrets.UNIQUE_PAT }} # https://github.com/settings/tokens
           BUILD_DIR: _book/                     # "_site/" by default
     
  
