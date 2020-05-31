@@ -3,8 +3,6 @@ on:
      branches:
        - master
 
-  
-
 name: renderbook
 
 jobs:
@@ -19,8 +17,10 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "renv"))'
+      - name: Install packages
+        run: Rscript -e 'renv::restore()'
       - name: Render Book
-        run: Rscript -e 'renv::restore(); bookdown::render_book("index.Rmd")'
+        run: Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "_book")'
       - uses: actions/upload-artifact@v1
         with:
           name: _book
