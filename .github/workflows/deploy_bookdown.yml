@@ -18,8 +18,7 @@ jobs:
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "renv"))'
       - name: Install system deps
-        run: |
-          brew install imagemagick
+        run: brew install imagemagick
       - name: Install packages
         run: Rscript -e 'renv::restore()'
       - name: Render Book
