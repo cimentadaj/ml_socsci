@@ -367,10 +367,10 @@
     },
     "dplyr": {
       "Package": "dplyr",
-      "Version": "0.8.5",
+      "Version": "1.0.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "57a42ddf80f429764ff7987128c3fd0a"
+      "Hash": "4011f62581a34080e44105d4aa05a97f"
     },
     "dygraphs": {
       "Package": "dygraphs",
@@ -480,10 +480,10 @@
     },
     "ggplot2": {
       "Package": "ggplot2",
-      "Version": "3.3.0",
+      "Version": "3.3.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "911561e07da928345f1ae2d69f97f3ea"
+      "Hash": "dd6dc5b9ef202cef18c5200d76e1634c"
     },
     "ggrepel": {
       "Package": "ggrepel",
@@ -991,22 +991,10 @@
     },
     "pkgload": {
       "Package": "pkgload",
-      "Version": "1.0.2",
+      "Version": "1.1.0",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "5e655fb54cceead0f095f22d7be33da3"
-    },
-    "plogr": {
-      "Package": "plogr",
-      "Version": "0.2.0",
-      "Source": "CRAN",
-      "Repository": "CRAN",
-      "RemoteType": "standard",
-      "RemoteRef": "plogr",
-      "RemoteRepos": "https://cloud.r-project.org",
-      "RemotePkgType": "source",
-      "RemoteSha": "0.2.0",
-      "Hash": "09eb987710984fc2905c7129c7d85e65"
+      "Hash": "b6b150cd4709e0c0c9b5d51ac4376282"
     },
     "plyr": {
       "Package": "plyr",
@@ -1186,10 +1174,10 @@
     },
     "rsample": {
       "Package": "rsample",
-      "Version": "0.0.6",
+      "Version": "0.0.7",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "b98117693cf327f50dc07fcbc85e2de6"
+      "Hash": "94abd030ce82d3f7f49139c3d3b457da"
     },
     "rsconnect": {
       "Package": "rsconnect",
@@ -1378,8 +1366,8 @@
       "RemoteRepo": "tidyflow",
       "RemoteUsername": "cimentadaj",
       "RemoteRef": "master",
-      "RemoteSha": "a90c2844da517061c7d04316bdd05886bbf28919",
-      "Hash": "e6a4f7bd0e54f566d3309152bac06096"
+      "RemoteSha": "ee3147858bc64cc00075a63cd75c0db644431861",
+      "Hash": "e5c5f637b551c10126d0f83c50e5a738"
     },
     "tidymodels": {
       "Package": "tidymodels",

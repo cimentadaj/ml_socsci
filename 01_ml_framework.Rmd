@@ -405,9 +405,8 @@ Given that most of the polynomial terms have similar error terms, we usually wou
 
 ```{r, out.height = "80%", dpi = 300}
 
-res_m2 <-
-  m2 %>%
-  complete_tflow(data.frame(degree = 3)) # Fit the final model with degrees = 3
+# Fit the final model with degrees = 3
+res_m2 <- complete_tflow(m2, best_params = data.frame(degree = 3))
 
 res_m2 %>%
   predict_training() %>% 
