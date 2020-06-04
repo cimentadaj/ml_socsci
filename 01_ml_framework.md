@@ -8,11 +8,11 @@ I hope that by understanding the strategies and techniques that machine learning
 
 ## A different way of thinking
 
-The first question we want to ask ourselves is, what is machine learning? Machine Learning bears indeed a fancy name which brings to mind thoughts related to artificial intelligence and robots. However, as you'll see throughout the course, most terms and models used in machine learning are actually what we know as **statistical models**. The overaching difference in the definition of machine learning and social statistics is not the models or new strategies for analyzing data. It is the main objective of the analysis. What is Machine Learning after all?
+The first question we want to ask ourselves is, what is machine learning? Machine Learning bears indeed a fancy name which brings to mind thoughts related to artificial intelligence and robots. However, as you'll see throughout the course, most terms and models used in machine learning are actually what we know as **statistical models**. The overaching difference in the definition of machine learning and social statistics is not the models or new strategies for analyzing data. It is the main objective of the analysis. What is machine learning after all?
 
 > Using statistical methods to learn the data enough to be able to predict it accurately on new data
 
-That sounds somewhat familiar to us social scientists. Perhaps our goal is not to predict our data but it is certainly to **learn it** and **understand it**. In particular, social scientists are interested in figuring out if our theoretical description of a problem fits the data we have collected or have at hand. We do that by carefully building a model that explains the problem really well such that we can extrapolate an explanation for the problem from the data. Our gold standard to check whether we did a good job is to collect the exact same data again and see if our final models replicates. How does this differ from the way of thinking of machine learning practitioners? The main objective in a machine learning problem is accurate predictions; that is, regardless of how well they **understand** a problem, they want to learn the data well enough to predict it well. Prediction problems are usually concerned with **building and tweaking** a model that predicts a dependent variable accurately on your data, such that when **new data** arrives, the model can predict it just as accurately. This does not mean that machine learning practitioners don't have domain-specific knowledge of what they're trying to predict (they have to select variables to include in a model just as we do). However, 'parsimonious models' (that is, simple and interpretable models) are not something they're limited to (in contrast, social scientists hardly experiment with non-interpretable models). They might use models which contain up to hundreds of variables if that increases predictive accuracy.
+That sounds somewhat familiar to us social scientists. Perhaps our goal is not to predict our data but it is certainly to **learn it** and **understand it**. In particular, social scientists are interested in figuring out if our theoretical description of a problem fits the data we have collected or have at hand. We do that by carefully building a model that explains the problem really well such that we can extrapolate an explanation for the problem from the data. Our gold standard to check whether we did a good job is to collect the exact same data again and see if our final models replicates. How does this differ from the way of thinking of machine learning practitioners? The main objective in a machine learning problem is accurate predictions; that is, regardless of how well they **understand** a problem, they want to learn the data enough to predict it well. Prediction problems are usually concerned with **building and tweaking** a model that predicts a dependent variable accurately on your data, such that when **new data** arrives, the model can predict it just as accurately. This does not mean that machine learning practitioners don't have domain-specific knowledge of what they're trying to predict (they have to select variables to include in a model just as we do). However, 'parsimonious models' (that is, simple and interpretable models) are not something they're limited to (in contrast, social scientists hardly experiment with non-interpretable models). They might use models which contain up to hundreds of variables if that increases predictive accuracy. Although that might sound counter-intuitive to social scientists, more and more ground is being gained by this type of thinking in the social sciences [@watts2014; @yarkoni2017].
 
 The difference between how we both approach research questions is the problem of inference versus prediction [@breiman2001]. That is the fundamental difference between the approach used by social scientists and practitioners of machine learning. However, for having such drastic differences in our objective, we share a lot of common strategies. For example, here's the typical workflow of a social scientist:
 
@@ -31,12 +31,13 @@ They import their data, they wrangle their data, they fit statistical models, an
  * Unsupervised Learning --> Models that don't have a dependent variable, such as clustering
  * Classifiers --> Models for predicting categorical variables, such as logistic regression
  
- and you'll find more around. These are the common steps which you'll find between both fields. However, machine Learning practioners have developed extra steps which help them achieve their goal of predicting new data well:
+ and you'll find more around. These are the common steps which you'll find between both fields. However, machine learning practioners have developed extra steps which help them achieve their goal of predicting new data well:
  
 <img src="./img/socsci_wflow4_smaller.svg" width="99%" style="display: block; margin: auto;" />
 
 * Training/Testing data --> Unknown to us
 * Cross-validation --> Unknown to us
+* Grid search --> Unknown to us
 * Loss functions --> Model fit --> Known to us but are not predominant ($RMSE$, $R^2$, etc...)
 
 These are very useful concepts and we'll focus on those in this introduction. In this introduction I won't delve into the statistical models (learning algorithms) used in machine learning as these will be discussed in later chapters but I wanted to highlight that although they share similarities with the models used in social statistics, there are many models used in the machine learning literature which are unknown to us. Let's delve into each of these three new concepts.
@@ -114,7 +115,7 @@ For example, how would social scientists fit a model? They would take the entire
 
 <img src="./img/raw_data_wnote.svg" width="40%" style="display: block; margin: auto;" />
 
-and fit the model on it. How do you know you're overfitting? Is there a metric? Is there a method? Well, one very easy and naive approach is to randomly divide your data into two chunks called training and testing:
+and fit the model on it. How do you know you're overfitting?  Well, one very easy and naive approach is to randomly divide your data into two chunks called training and testing:
 
 <img src="./img/train_testing_df.svg" width="80%" style="display: block; margin: auto;" />
 
@@ -164,13 +165,13 @@ ml_flow
 
 `tidyflow` already knows that `age_inc` is the main data source and that we need to apply the training/testing split with `initial_split`. You can think of this as plan that will be executed once you tell it to.
 
-Let's get back to our example and suppose that you fit your model several times on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, tweaking it to improve performance (when I say tweaking I mean applying transformations, including new variables, recoding old variables, including polynomials, etc..). When you think you're ready, you use this model to predict on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data and find out that the model was indeed overfitting the data because you cannot predict the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data as well as the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data. You then go back to the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, tweak some more, run some models again and when you think the model is ready again, you predict on your <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data again and find that it improved. Then you repeate the process again, $3$, $4$, $5$, etc... times. If you do that, you will, in very subtle ways, start to **overfit** your model on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data! In other words, you're fitting a model $N$ times on your <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, evaluating its fit on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data and then **tweaking** again to improve the prediction on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data. The <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data should serve as the final dataset to compare your model: you should not tweak the model again after seeing how your model fits the **unseen** <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data.
+Let's get back to our example and suppose that you fit your model several times on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, tweaking it to improve performance (when I say tweaking I mean applying transformations, including new variables, recoding old variables, including polynomials, etc..). When you think you're ready, you use this model to predict on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data and find out that the model was indeed overfitting the data because you cannot predict the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data as well as the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data. You then go back to the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, tweak some more, run some models again and when you think the model is ready again, you predict on your <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data again and find that it improved. Then you repeate the process again, $3$, $4$, $5$ $N$ times. If you do that, you will, in very subtle ways, start to **overfit** your model on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data! In other words, you're fitting a model $N$ times on your <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, evaluating its fit on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data and then **tweaking** again to improve the prediction on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data. The <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data should serve as the final dataset to compare your model: you should not tweak the model again after seeing how your model fits the **unseen** <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data.
 
-It seems we have too few "degrees of freedom" to test the accuracy of our model. We can tweak the model in the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data as much as we want but we only have **one** attempt at testing our model against the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data. How can we evaluate, then, whether we're overfitting with the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data alone, then? **Enter cross-validation**
+That doesn't sound right. It seems we have too few "degrees of freedom" to test the accuracy of our model. We can tweak the model in the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data as much as we want but we only have **one** attempt at testing our model against the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data. How can we evaluate, then, whether we're overfitting with the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data alone, then? **Enter cross-validation**
 
 ## Cross-validation
 
-The idea behind cross-validation is to allow the analyst check whether they're overfitting the data without predicting on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data. How does it work? First, we **only** work with our <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data
+The idea behind cross-validation is to allow the user to check whether they're overfitting the data without predicting on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data. How does it work? First, we **only** work with our <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data
 
 <img src="./img/training_df.svg" width="40%" style="display: block; margin: auto;" />
 
@@ -182,13 +183,13 @@ The 10 rectangular red rows below the <b><span style='color: red; -webkit-text-s
 
 <img src="./img/train_cv3_smaller.svg" width="75%" style="display: block; margin: auto;" />
 
-This means that our model fit for each. For example, for the first row we record the $RMSE$ of the prediction on the testing data. For the second rectangled row, fit the exact same model (that is, including the age squared term) on 70% of the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, predict on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data and record the $RMSE$. And then repeat the same iteration for every rectangled row:
+Since we fit a model to the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b>data of each rectangled row and then predict on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data of each rectangled row, we can record how well our model is doing for each of our replicate data sets. For example, for the first row we record the $RMSE$ of the prediction on the testing data. For the second rectangled row, fit the exact same model (that is, including the age squared term) on 70% of the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data, predict on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data and record the $RMSE$. And then repeat the same iteration for every rectangled row:
 
 <img src="./img/train_cv6_smaller.svg" width="75%" style="display: block; margin: auto;" />
 
 After you've fitted the model and evaluated the model 10 times, you have 10 values of the $RMSE$. With these 10 values you can calculate the average $RMSE$ and standard error of your model's performance.
 
-Note that with this approach, the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data changes in each rectangled row, making sure that each $~30%$ chunk of the data passes through the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> dataset at some point during the predictions. This is done to ensure the predictions are as balanced as possible.
+Note that with this approach, the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data changes in each rectangled row, making sure that each ~30% chunk of the data passes through the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> dataset at some point during the predictions. This is done to ensure the predictions are as balanced as possible.
 
 This approach offers a way to iterate as many times as you want on tweaking your model and predicting on the cross-validated <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data without actually predicting on the initial <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> dataset. This is the least bad approach that is **currently** accepted in the literature. 
 
@@ -238,7 +239,7 @@ or in other words:
 
 <img src="./figs/unnamed-chunk-19-1.png" width="50%" style="display: block; margin: auto;" />
 
-In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too unflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data.
+In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too unflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data. Even experiencied machine learning practitioners can build models that overfit the data (one notable example is the results from the Fragile Families Challenge, see **HEREEE** put the plot of the paper where overfitting is huge).
 
 ## An example
 
@@ -317,7 +318,7 @@ m1_res
 ## # … with 365 more rows
 ```
 
-The result of `predict_training` is the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data from `age_inc` with one new column: the predicted values of the model. Let's visualize them:
+The result of `predict_training` is the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data from `age_inc` with one new column: the predicted values of the model. Let's visualize the predictions:
 
 
 ```r
@@ -340,7 +341,7 @@ It seems we're underfitting the relationship. To measure the **fit** of the mode
 
 $$ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{N}}} $$
 
-The current $RMSE$ of our model is 379.59. This means that on average our predictions are off by around 379.59 euros. The fitted line is underfitting the relationship because it cannot capture the non-linear trend in the data. How do we increase the fit? We could add non-linear terms to the model, for example $age^2$, $age^3$, ..., $age^{10}$. 
+Without going into too many details, it is the average difference between each dot from the plot from the value same value in the fitted line. The current $RMSE$ of our model is 379.59. This means that on average our predictions are off by around 379.59 euros. The fitted line is underfitting the relationship because it cannot capture the non-linear trend in the data. How do we increase the fit? We could add non-linear terms to the model, for example $age^2$, $age^3$, ..., $age^{10}$. 
 
 However, remember, by fitting very high non-linear terms to the data, we might get lower error from the model on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data but that's because the model is **learning** the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data so much that it starts to capture noise rather than the signal.  This means that when we predict on the **unseen** <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data, our model would not know how to identify the signal in the data and have a higher $RMSE$ error. How can we be sure we're picking the best model specification?
 
@@ -353,7 +354,7 @@ We can use the function `vfold_cv` to separate the <b><span style='color: red; -
 ## #  10-fold cross-validation 
 ## # A tibble: 10 x 2
 ##    splits           id    
-##    <named list>     <chr> 
+##    <list>           <chr> 
 ##  1 <split [337/38]> Fold01
 ##  2 <split [337/38]> Fold02
 ##  3 <split [337/38]> Fold03
@@ -408,15 +409,14 @@ m2 %>%
 <p class="caption">(\#fig:metricslm)Average evaluation metrics of predicting on the testing data through the 10 cross-validation sets</p>
 </div>
 
-Figure \@ref(fig:metricslm) shows the error rate for the $RMSE$ and the $R^2$. For the $RMSE$ (left panel), the resulting error terms show that any polynomial above 2 has very similar error rates. However, there is a point in which adding $age^8$, $age^9$ and $age^{10}$, even increases the error rate. This decrease in fit as complexity increases can also been see with the $R^2$ (right panel), as it decreases with higher polynomials. This is a good example where a lot of flexibility (fitting the non-linear trend **very** well), increases accuracy on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> set but shows a lot variability on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> set. The $RMSE$ that we see in figure \@ref(fig:metricslm) is the average $RMSE$ from predicting on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> set using the model fitted on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data in the 10 cross validated sets.
+Figure \@ref(fig:metricslm) shows the error rate for the $RMSE$ and the $R^2$. For the $RMSE$ (left panel), the resulting error terms show that any polynomial above 2 has very similar error rates. However, there is a point in which adding $age^9$ and $age^{10}$ increases the error rate. This decrease in fit as complexity increases can also been see with the $R^2$ (right panel), as it decreases with higher polynomials. This is a good example where a lot of flexibility (fitting the non-linear trend **very** well), increases accuracy on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> set but shows a lot variability on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> set. The $RMSE$ that we see in figure \@ref(fig:metricslm) is the average $RMSE$ from predicting on the <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> set using the model fitted on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data in the 10 cross validated sets.
 
 Given that most of the polynomial terms have similar error terms, we usually would go for the simplest model, that is, the model with $age^3$. We can run the model on the entire <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data with 3 non-linear terms and check the fit:
 
 
 ```r
-res_m2 <-
-  m2 %>%
-  complete_tflow(data.frame(degree = 3)) # Fit the final model with degrees = 3
+# Fit the final model with degrees = 3
+res_m2 <- complete_tflow(m2, best_params = data.frame(degree = 3))
 
 res_m2 %>%
   predict_training() %>% 
