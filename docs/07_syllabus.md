@@ -30,7 +30,11 @@ We will end the course with a prediction challenge that will put to test all of 
 
 * Molina, M., & Garip, F. (2019). Machine Learning for Sociology. Annual Review of Sociology, 45.
 
+* Hofman, J. M., Sharma, A., & Watts, D. J. (2017). Prediction and explanation in social systems. Science, 355(6324), 486-488.
+
 * Mullainathan, S., & Spiess, J. (2017). Machine learning: an applied econometric approach. Journal of Economic Perspectives, 31(2), 87-106.
+
+* Watts, D. J. (2014). Common sense and sociological explanations. American Journal of Sociology, 120(2), 313-351.
 
 * Breiman, L. (2001). Statistical modeling: The two cultures (with comments and a rejoinder by the author). Statistical science, 16(3), 199-231.
 
