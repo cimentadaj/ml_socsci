@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-04" />
+<meta name="date" content="2020-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -298,12 +298,12 @@ Figure 1.1: Different ways of fitting your data
 <span id="cb4-7"><a href="machine-learning-for-social-scientists.html#cb4-7"></a></span>
 <span id="cb4-8"><a href="machine-learning-for-social-scientists.html#cb4-8"></a>ml_flow</span></code></pre></div>
 <pre><code>## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 500 rows x 2 columns; 0% NA
-## Preprocessor: None
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
-## Split: initial_split w/ default args</code></pre>
+## Data: 500 rows x 2 columns
+## Split: initial_split w/ default args
+## Recipe/Formula: None
+## Resample: None
+## Grid: None
+## Model: None</code></pre>
 <p><code>tidyflow</code> already knows that <code>age_inc</code> is the main data source and that we need to apply the training/testing split with <code>initial_split</code>. You can think of this as plan that will be executed once you tell it to.</p>
 <p>Let’s get back to our example and suppose that you fit your model several times on the <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data, tweaking it to improve performance (when I say tweaking I mean applying transformations, including new variables, recoding old variables, including polynomials, etc..). When you think you’re ready, you use this model to predict on the <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data and find out that the model was indeed overfitting the data because you cannot predict the <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data as well as the <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data. You then go back to the <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data, tweak some more, run some models again and when you think the model is ready again, you predict on your <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data again and find that it improved. Then you repeate the process again, <span class="math inline">\(3\)</span>, <span class="math inline">\(4\)</span>, <span class="math inline">\(5\)</span> <span class="math inline">\(N\)</span> times. If you do that, you will, in very subtle ways, start to <strong>overfit</strong> your model on the <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data! In other words, you’re fitting a model <span class="math inline">\(N\)</span> times on your <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data, evaluating its fit on the <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data and then <strong>tweaking</strong> again to improve the prediction on the <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data. The <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data should serve as the final dataset to compare your model: you should not tweak the model again after seeing how your model fits the <strong>unseen</strong> <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data.</p>
 <p>That doesn’t sound right. It seems we have too few “degrees of freedom” to test the accuracy of our model. We can tweak the model in the <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data as much as we want but we only have <strong>one</strong> attempt at testing our model against the <b><span style="color: #D4FF2A; -webkit-text-stroke: 0.3px black;">testing</span></b> data. How can we evaluate, then, whether we’re overfitting with the <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data alone, then? <strong>Enter cross-validation</strong></p>
@@ -330,13 +330,12 @@ Figure 1.1: Different ways of fitting your data
 <span id="cb6-4"><a href="machine-learning-for-social-scientists.html#cb6-4"></a></span>
 <span id="cb6-5"><a href="machine-learning-for-social-scientists.html#cb6-5"></a>ml_flow</span></code></pre></div>
 <pre><code>## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 500 rows x 2 columns; 0% NA
-## Preprocessor: None
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
+## Data: 500 rows x 2 columns
 ## Split: initial_split w/ default args
-## Resample: vfold_cv w/ default args</code></pre>
+## Recipe/Formula: None
+## Resample: vfold_cv w/ default args
+## Grid: None
+## Model: None</code></pre>
 </div>
 <div id="bias-variance-tradeoff" class="section level2">
 <h2><span class="header-section-number">1.4</span> Bias-Variance Tradeoff</h2>
@@ -370,12 +369,12 @@ Figure 1.1: Different ways of fitting your data
 <span id="cb9-4"><a href="machine-learning-for-social-scientists.html#cb9-4"></a></span>
 <span id="cb9-5"><a href="machine-learning-for-social-scientists.html#cb9-5"></a>ml_flow</span></code></pre></div>
 <pre><code>## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 500 rows x 2 columns; 0% NA
-## Preprocessor: None
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
-## Split: initial_split w/ default args</code></pre>
+## Data: 500 rows x 2 columns
+## Split: initial_split w/ default args
+## Recipe/Formula: None
+## Resample: None
+## Grid: None
+## Model: None</code></pre>
 <p>Let’s begin running some models. The first model we’d like run is a simple regression <code>income ~ age</code> on the <b><span style="color: red; -webkit-text-stroke: 0.3px black;">training</span></b> data and plot the fitted values.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="machine-learning-for-social-scientists.html#cb11-1"></a><span class="co"># Run the model</span></span>
 <span id="cb11-2"><a href="machine-learning-for-social-scientists.html#cb11-2"></a>m1 &lt;-</span>

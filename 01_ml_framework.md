@@ -155,12 +155,12 @@ ml_flow
 
 ```
 ## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 500 rows x 2 columns; 0% NA
-## Preprocessor: None
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
+## Data: 500 rows x 2 columns
 ## Split: initial_split w/ default args
+## Recipe/Formula: None
+## Resample: None
+## Grid: None
+## Model: None
 ```
 
 `tidyflow` already knows that `age_inc` is the main data source and that we need to apply the training/testing split with `initial_split`. You can think of this as plan that will be executed once you tell it to.
@@ -210,13 +210,12 @@ ml_flow
 
 ```
 ## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 500 rows x 2 columns; 0% NA
-## Preprocessor: None
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
+## Data: 500 rows x 2 columns
 ## Split: initial_split w/ default args
+## Recipe/Formula: None
 ## Resample: vfold_cv w/ default args
+## Grid: None
+## Model: None
 ```
 
 ## Bias-Variance Tradeoff
@@ -274,12 +273,12 @@ ml_flow
 
 ```
 ## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 500 rows x 2 columns; 0% NA
-## Preprocessor: None
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
+## Data: 500 rows x 2 columns
 ## Split: initial_split w/ default args
+## Recipe/Formula: None
+## Resample: None
+## Grid: None
+## Model: None
 ```
 
 Let's begin running some models. The first model we'd like run is a simple regression `income ~ age` on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data and plot the fitted values.

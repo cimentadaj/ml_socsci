@@ -70,12 +70,12 @@ tflow
 
 ```
 ## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 4838 rows x 565 columns; 0% NA
-## Preprocessor: Recipe
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
+## Data: 4.84K rows x 503 columns
 ## Split: initial_split w/ prop = ~0.7
+## Recipe: available
+## Resample: None
+## Grid: None
+## Model: None
 ```
 
 The argument `prop` controls the proportion of the sample that will be in the training data. Here we specify it to be `.7`, 70% of the data. The third step is specifying the **tuning** parameters. The ridge regression has a parameter called `penalty` which needs to be set by us. `penalty` is the "weight" term in the ridge equation, which controls how much weight do we want to give to the "shrinkage penalty" (this is the $\lambda$ from the equation). If this penalty is set to 0, it means we attach **no** weight to the penalty term and we will get the same result over OLS. Let's try that:

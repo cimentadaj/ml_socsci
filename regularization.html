@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-04" />
+<meta name="date" content="2020-06-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -229,12 +229,12 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 <span id="cb19-14"><a href="regularization.html#cb19-14"></a></span>
 <span id="cb19-15"><a href="regularization.html#cb19-15"></a>tflow</span></code></pre></div>
 <pre><code>## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 4838 rows x 565 columns; 0% NA
-## Preprocessor: Recipe
-## Model: None
-## 
-## ── Preprocessor ────────────────────────────────────────────────────────────────
-## Split: initial_split w/ prop = ~0.7</code></pre>
+## Data: 4.84K rows x 503 columns
+## Split: initial_split w/ prop = ~0.7
+## Recipe: available
+## Resample: None
+## Grid: None
+## Model: None</code></pre>
 <p>The argument <code>prop</code> controls the proportion of the sample that will be in the training data. Here we specify it to be <code>.7</code>, 70% of the data. The third step is specifying the <strong>tuning</strong> parameters. The ridge regression has a parameter called <code>penalty</code> which needs to be set by us. <code>penalty</code> is the “weight” term in the ridge equation, which controls how much weight do we want to give to the “shrinkage penalty” (this is the <span class="math inline">\(\lambda\)</span> from the equation). If this penalty is set to 0, it means we attach <strong>no</strong> weight to the penalty term and we will get the same result over OLS. Let’s try that:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="regularization.html#cb21-1"></a><span class="co">############################# Ridge regression ################################</span></span>
 <span id="cb21-2"><a href="regularization.html#cb21-2"></a><span class="co">###############################################################################</span></span>
