@@ -12,10 +12,20 @@ pisa_us <-
   mutate_if(is.labelled, zap_labels) %>% 
   mutate_at(vars(MISCED, FISCED, REPEAT, IMMIG, DURECEC), as.character)
 
+
+calculate_pv <- function(dt, type) {
+  pv_ind <- grepl(paste0("PV.+", type), names(dt))
+  dt[[paste0(tolower(type), "_score")]] <- rowMeans(dt[pv_ind])
+  dt
+}
+
 # Calculate the average test score in mathematics as the average of all
 # 10 plausible columns
-pv_ind <- grepl("PV.+MATH", names(pisa_us))
-pisa_us$math_score <- rowMeans(pisa_us[pv_ind])
+pisa_us <-
+  pisa_us %>%
+  calculate_pv("MATH") %>%
+  calculate_pv("READ") %>%
+  calculate_pv("SCIE")
 
 noncogn_questions <- c("ST182Q03HA",
                        "ST182Q04HA",
@@ -27,7 +37,13 @@ pisa_us$noncogn <- rowMeans(pisa_us[noncogn_questions], na.rm = TRUE)
 pisa_us_ready <-
   pisa_us %>%
   # WORKMAST is a index that has the noncogn questions
-  select(-matches("PV.+MATH"), -noncogn_questions, -WORKMAST, -COMPETE) %>%
+  select(-starts_with("PV"),
+         -starts_with("W_"),
+         -noncogn_questions,
+         -WORKMAST,
+         -COMPETE,
+         -RESILIENCE,
+         -MASTGOAL) %>%
   recipe(math_score ~ ., data = .) %>%
   step_zv(all_predictors()) %>%
   step_nzv(all_predictors()) %>% 

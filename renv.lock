@@ -114,10 +114,10 @@
     },
     "SQUAREM": {
       "Package": "SQUAREM",
-      "Version": "2020.2",
+      "Version": "2020.3",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "274007cf21ffabcbc2e5f0bf73abcb3d"
+      "Hash": "e08d8c8eec7eb52ff6c12bd2cd0897b6"
     },
     "SnowballC": {
       "Package": "SnowballC",
@@ -595,10 +595,22 @@
     },
     "haven": {
       "Package": "haven",
-      "Version": "2.3.0",
+      "Version": "2.3.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "25ce9f1a04f8960105a4dbf49f908776"
+      "Hash": "221d0ad75dfa03ebf17b1a4cc5c31dfc"
+    },
+    "here": {
+      "Package": "here",
+      "Version": "0.1",
+      "Source": "CRAN",
+      "Repository": "CRAN",
+      "RemoteType": "standard",
+      "RemoteRef": "here",
+      "RemoteRepos": "https://cran.rstudio.com/",
+      "RemotePkgType": "source",
+      "RemoteSha": "0.1",
+      "Hash": "2c0406b8e0a4c3516ab37be62da74e3c"
     },
     "highr": {
       "Package": "highr",
@@ -1165,6 +1177,13 @@
       "Repository": "CRAN",
       "Hash": "9787c1fcb680e655d062e7611cadf78e"
     },
+    "rpart.plot": {
+      "Package": "rpart.plot",
+      "Version": "3.0.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2875d540fb4b5ef80dc1b5a796d488ec"
+    },
     "rprojroot": {
       "Package": "rprojroot",
       "Version": "1.3-2",
@@ -1366,8 +1385,8 @@
       "RemoteRepo": "tidyflow",
       "RemoteUsername": "cimentadaj",
       "RemoteRef": "master",
-      "RemoteSha": "ee3147858bc64cc00075a63cd75c0db644431861",
-      "Hash": "e5c5f637b551c10126d0f83c50e5a738"
+      "RemoteSha": "f659cb6d656fc701a551f837ec377f67221fb419",
+      "Hash": "344bfc58b9a06354677b07f00e5173de"
     },
     "tidymodels": {
       "Package": "tidymodels",
@@ -1455,10 +1474,10 @@
     },
     "vctrs": {
       "Package": "vctrs",
-      "Version": "0.3.0",
+      "Version": "0.3.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "fbf7ee297936697ec8404a22859da129"
+      "Hash": "1739235995f08583db4095a28c357207"
     },
     "vip": {
       "Package": "vip",
