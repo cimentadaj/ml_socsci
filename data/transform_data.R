@@ -39,8 +39,9 @@ pisa_us_ready <-
   # WORKMAST is a index that has the noncogn questions
   select(-starts_with("PV"),
          -starts_with("W_"),
-         -noncogn_questions,
+         -all_of(noncogn_questions),
          -WORKMAST,
+         -STRATUM,
          -COMPETE,
          -RESILIENCE,
          -MASTGOAL) %>%
