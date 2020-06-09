@@ -156,11 +156,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.4" data-path="regularization.html"><a href="regularization.html#exercises"><i class="fa fa-check"></i><b>2.4</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="tree-based-methods.html"><a href="tree-based-methods.html"><i class="fa fa-check"></i><b>3</b> Tree-based methods</a><ul>
-<li class="chapter" data-level="3.1" data-path="tree-based-methods.html"><a href="tree-based-methods.html#decision-trees"><i class="fa fa-check"></i><b>3.1</b> Decision trees</a></li>
-<li class="chapter" data-level="3.2" data-path="tree-based-methods.html"><a href="tree-based-methods.html#todo"><i class="fa fa-check"></i><b>3.2</b> TODO</a></li>
-<li class="chapter" data-level="3.3" data-path="tree-based-methods.html"><a href="tree-based-methods.html#left-off-here"><i class="fa fa-check"></i><b>3.3</b> LEFT OFF HERE</a><ul>
-<li class="chapter" data-level="3.3.1" data-path="tree-based-methods.html"><a href="tree-based-methods.html#how-do-they-really-work"><i class="fa fa-check"></i><b>3.3.1</b> How do they really work?</a></li>
+<li class="chapter" data-level="3.1" data-path="tree-based-methods.html"><a href="tree-based-methods.html#decision-trees"><i class="fa fa-check"></i><b>3.1</b> Decision trees</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="tree-based-methods.html"><a href="tree-based-methods.html#advanced-how-do-trees-choose-where-to-split"><i class="fa fa-check"></i><b>3.1.1</b> Advanced: how do trees choose where to split?</a></li>
 </ul></li>
+<li class="chapter" data-level="3.2" data-path="tree-based-methods.html"><a href="tree-based-methods.html#exercises-1"><i class="fa fa-check"></i><b>3.2</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>4</b> Syllabus</a><ul>
 <li class="chapter" data-level="4.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>4.1</b> Course description</a></li>
@@ -202,12 +201,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="decision-trees" class="section level2">
 <h2><span class="header-section-number">3.1</span> Decision trees</h2>
 <p>Decision trees are simple models. In fact, they are even simpler than linear models. They require little statistical background and are in fact among the simplest models to communicate to a general audience. In particular, the visualizations used for decision trees are very powerful in conveying information and can even serve as an exploratory avenue for social research.</p>
-</div>
-<div id="todo" class="section level2">
-<h2><span class="header-section-number">3.2</span> TODO</h2>
-<p>Add here that there are no coefficients. WHAT? Yes, you heard it right!</p>
 <p>Throughout this chapter, we’ll be using the PISA data set from the regularization chapter. On this example we’ll be focusing on predicting the <code>math_score</code> of students in the United States, based on the socio economic status of the parents (named <code>HISEI</code> in the data; the higher the <code>HISEI</code> variable, the higher the socio economic status), the father’s education (named <code>FISCED</code> in the data; coded as several categories from 0 to 6 where 6 is high education) and whether the child repeated a grade (named <code>REPEAT</code> in the data). On the other hand, <code>REPEAT</code> is a dummy variable where <code>1</code> means the child repeated a grade and <code>0</code> no repetition.</p>
-<p>Decision trees, as their name conveys, are tree-like diagrams. The work by defining yes-or-no rules based on the data to try to predict the most common value in each final branch. Let’s begin learning about decision trees by looking at one:</p>
+<p>Decision trees, as their name conveys, are tree-like diagrams. The work by defining yes-or-no rules based on the data to try to predict the most common value in each final branch. The best way to learn about decision trees is by looking at one. Let’s do that:</p>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>In this example the top-most box which says <code>HISEI &lt; 56</code> is the <strong>root node</strong>. This is the most important variable that predicts <code>math_score</code>. Inside the blue box you can see two numbers: <span class="math inline">\(100\%\)</span> which means that the entire sample is present in this <strong>node</strong> and the number <code>474</code>, the average test score for mathematics for the entire sample:</p>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
@@ -230,6 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="03_trees_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>This is the case because it comes first in the tree. Substantially, this might be due to the fact that there is higher variation in education credentials for parents of high SES background than for those of low SES background. We can see that those with the highest father’s education (<code>FISCED</code> above <span class="math inline">\(5.5\)</span>), the average math score is <span class="math inline">\(524\)</span> whereas those with father’s education below <span class="math inline">\(5.5\)</span> have a math score of <span class="math inline">\(478\)</span>:</p>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>Did you notice that we haven’t interpreted any coefficients? That’s right. Decision trees have no coefficients and many other machine learning algorithms also don’t produce coefficients. Although for the case of decision trees this is because the model produces information in another way (through visualization of trees), lack of coefficients is common in machine learning models because they are too complex to generate coefficients for single predictors. These models are non-linear, non-parametric in nature, produce extremely complex relationships that we difficult to summarize in coefficients. Instead, the only produce predictions. We’ll be delving into this topic in future sections in detail.</p>
 <p>I hope that these examples show that decision trees are a great tool for exploratory analysis and I strongly believe they have an inmense potential for exploring interactions in social science research. In case you didn’t notice it, we literally just interpreted an interaction term that social scientists would routinely use in linear models. Without having to worry about statistical significance or plotting marginal effects, social scientists can use decision trees as an exploratory medium to understand interactions in an intuitive way.</p>
 <p>You might be asking yourself, how do we fit these models and visualize them? <code>tidyflow</code> and <code>tidymodels</code> have got you covered. For example, for fitting the model from above, we can begin our <code>tidyflow</code>, add a split, a formula and define the decision tree:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="tree-based-methods.html#cb44-1"></a><span class="co"># Define the decision tree and tell it the the dependent</span></span>
@@ -252,19 +248,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb44-18"><a href="tree-based-methods.html#cb44-18"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(vanilla_fit)<span class="op">$</span>fit</span>
 <span id="cb44-19"><a href="tree-based-methods.html#cb44-19"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
 <p>If you read the chapter on reguralization, the only thing new here should be <code>rpart.plot</code>. All <code>plug_*</code> functions serve to build your machine learning workflow and the model <code>decision_tree</code> is the equivalent of <code>linear_reg</code> that we saw in the previous chapter. We are just recycling the same code for this model. <code>rpart.plot</code> on the other hand, is a function used specifically for plotting the decision tree (that is why we loaded the package <code>rpart.plot</code> at the beginning). No need to delve much into this function. It just works if you pass it a decision tree model: that is why <code>pull</code> the model fit before calling it.</p>
-<p>Now I’ve told all the good things about decision trees but they are not a smoking gun. They have serious limitations. In particular, there are two that we’ll discuss in this chapter. The first one is that decision trees tend to overfit a lot. Substantially, this example doesn’t make much sense but look at the percentages in the <strong>leaf nodes</strong>:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tree-based-methods.html#cb45-1"></a>tflow &lt;-</span>
-<span id="cb45-2"><a href="tree-based-methods.html#cb45-2"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb45-3"><a href="tree-based-methods.html#cb45-3"></a><span class="st">  </span><span class="kw">replace_formula</span>(ST163Q03HA <span class="op">~</span><span class="st"> </span>.)</span>
-<span id="cb45-4"><a href="tree-based-methods.html#cb45-4"></a></span>
-<span id="cb45-5"><a href="tree-based-methods.html#cb45-5"></a>fit_complex &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb45-6"><a href="tree-based-methods.html#cb45-6"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(fit_complex)<span class="op">$</span>fit</span>
-<span id="cb45-7"><a href="tree-based-methods.html#cb45-7"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
+<p>Now I’ve told all the good things about decision trees but they are not a smoking gun. They have serious limitations. In particular, there are two that we’ll discuss in this chapter. The first one is that decision trees tend to overfit a lot. Just for the sake of showing this problem, let’s switch the example. Let’s say we’re trying to understand which variables are related to whether teachers set goals in the classroom. Substantially, this example might not make a lot of sense, but but let’s follow along just to show how much trees can overfit the data. This variable is named <code>ST102Q01TA</code>. Let’s plug it into our <code>tidyflow</code> and visualize the tree:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tree-based-methods.html#cb45-1"></a><span class="co">## ST100Q01TA</span></span>
+<span id="cb45-2"><a href="tree-based-methods.html#cb45-2"></a><span class="co">## ST102Q01TA</span></span>
+<span id="cb45-3"><a href="tree-based-methods.html#cb45-3"></a><span class="co">## IC009Q07NA</span></span>
+<span id="cb45-4"><a href="tree-based-methods.html#cb45-4"></a><span class="co">## ST011Q03TA</span></span>
+<span id="cb45-5"><a href="tree-based-methods.html#cb45-5"></a><span class="co">## ST011Q05TA</span></span>
+<span id="cb45-6"><a href="tree-based-methods.html#cb45-6"></a><span class="co">## ST011Q10TA</span></span>
+<span id="cb45-7"><a href="tree-based-methods.html#cb45-7"></a></span>
+<span id="cb45-8"><a href="tree-based-methods.html#cb45-8"></a>tflow &lt;-</span>
+<span id="cb45-9"><a href="tree-based-methods.html#cb45-9"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb45-10"><a href="tree-based-methods.html#cb45-10"></a><span class="st">  </span><span class="kw">replace_formula</span>(ST102Q01TA <span class="op">~</span><span class="st"> </span>.)</span>
+<span id="cb45-11"><a href="tree-based-methods.html#cb45-11"></a></span>
+<span id="cb45-12"><a href="tree-based-methods.html#cb45-12"></a>fit_complex &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb45-13"><a href="tree-based-methods.html#cb45-13"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(fit_complex)<span class="op">$</span>fit</span>
+<span id="cb45-14"><a href="tree-based-methods.html#cb45-14"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
-<p>Decision trees can capture a lot of noise. <span class="math inline">\(5\)</span> out of the <span class="math inline">\(8\)</span> <strong>leaf nodes</strong> have less than <span class="math inline">\(2\%\)</span> of the sample. These are <strong>leaf nodes</strong> with very weak statistical power:</p>
+<p>The tree is quite big compared to our previous examples and makes the interpretation more difficult. However, equally important, some <strong>leaf nodes</strong> are very small. Decision trees can capture a lot of noise and mimic the data very closely. <span class="math inline">\(6\)</span> <strong>leaf nodes</strong> have less than <span class="math inline">\(3\%\)</span> of the sample. These are <strong>leaf nodes</strong> with very weak statistical power:</p>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>What would happen if a tiny %1% of those <strong>leaf nodes</strong> respondend <strong>slightly</strong> different? It is possible we get a complete different tree. Decision trees are not well known for being robust. In fact, it is one of its main weaknesses. However, decision trees have an argument called <code>min_n</code> that force the tree to discard any <strong>node</strong> that has a number of observations below your minimum. Let’s run the model above and set the minimum number of observation per <strong>node</strong> to be <span class="math inline">\(200\)</span>:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tree-based-methods.html#cb46-1"></a>dectree &lt;-<span class="st"> </span><span class="kw">update</span>(mod1, <span class="dt">min_n =</span> <span class="dv">250</span>)</span>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="tree-based-methods.html#cb46-1"></a>dectree &lt;-<span class="st"> </span><span class="kw">update</span>(mod1, <span class="dt">min_n =</span> <span class="dv">200</span>)</span>
 <span id="cb46-2"><a href="tree-based-methods.html#cb46-2"></a>tflow &lt;-</span>
 <span id="cb46-3"><a href="tree-based-methods.html#cb46-3"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
 <span id="cb46-4"><a href="tree-based-methods.html#cb46-4"></a><span class="st">  </span><span class="kw">replace_model</span>(dectree)</span>
@@ -274,38 +277,112 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb46-8"><a href="tree-based-methods.html#cb46-8"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>The tree was reduced considerably now. There are fewer <strong>leaf nodes</strong> and all nodes have a greater sample size than before.</p>
-<p>You might be wondering: what should the minimum sample size be? It depends. The rule of thumb should be relative to your data. In particular, the identification of small nodes should be analyzed with care. Perhaps there <strong>is</strong> a group of outliers that consitute a node and it’s not a problem of statistical noise. By increasing the minimum sample size for each node you would be destroying that statistical finding. For example, suppose we are studying welfare social expenditure as the dependent variable and then we had other independent variables, among which are country names. Scandinavian countries might group pretty well into a solitary node because they are super powers in welfare spending (these are Denmark, Norway, Sweden and Finland). If we increased the minimum sample size to <span class="math inline">\(10\)</span>, we might group them with Germany and France, which are completely different in substantive terms. The best rule of thumb I can recommend is no other than to study your problem at hand with great care and make decisions accordingly. It might make sense to increase the sample or it might not depending on the research question, the total sample size, whether you’re exploring the data or whether you’re interested in predicting on new data.</p>
+<p>You might be wondering: what should the minimum sample size be? There is no easy answer for this. The rule of thumb should be relative to your data and research question. In particular, the identification of small nodes should be analyzed with care. Perhaps there <strong>is</strong> a group of outliers that consitute a node and it’s not a problem of statistical noise. By increasing the minimum sample size for each node you would be destroying that statistical finding.</p>
+<p>For example, suppose we are studying welfare social expenditure as the dependent variable and then we had other independent variables, among which are country names. Scandinavian countries might group pretty well into a solitary node because they are super powers in welfare spending (these are Denmark, Norway, Sweden and Finland). If we increased the minimum sample size to <span class="math inline">\(10\)</span>, we might group them with Germany and France, which are completely different in substantive terms. The best rule of thumb I can recommend is no other than to study your problem at hand with great care and make decisions accordingly. It might make sense to increase the sample or it might not depending on the research question, the sample size, whether you’re exploring the data or whether you’re interested in predicting on new data.</p>
 <p>The second problem with decision trees is the tree depth. As can be seen from the previous plot, decision trees can create <strong>leaf nodes</strong> which are very small. In other more complicated scenarios, your tree might get huge. Yes, huge:</p>
 <p><img src="img/large_tree.png" width="100%" /></p>
-<p>More often that not, these huge trees are just overfitting the data. They are creating very small nodes that capture noise from the data and when you’re predicting on new data, they perform terribly bad.</p>
-</div>
-<div id="left-off-here" class="section level2">
-<h2><span class="header-section-number">3.3</span> LEFT OFF HERE</h2>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tree-based-methods.html#cb47-1"></a>dectree2 &lt;-<span class="st"> </span><span class="kw">set_engine</span>(<span class="kw">update</span>(mod1, <span class="dt">min_n =</span> <span class="dv">200</span>, <span class="dt">tree_depth =</span> <span class="dv">5</span>), <span class="st">&quot;rpart&quot;</span>, <span class="dt">model =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb47-2"><a href="tree-based-methods.html#cb47-2"></a></span>
-<span id="cb47-3"><a href="tree-based-methods.html#cb47-3"></a>tflow &lt;-</span>
-<span id="cb47-4"><a href="tree-based-methods.html#cb47-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb47-5"><a href="tree-based-methods.html#cb47-5"></a><span class="st">  </span><span class="kw">replace_formula</span>(math_score <span class="op">~</span><span class="st"> </span>. <span class="op">-</span><span class="st"> </span>scie_score <span class="op">-</span><span class="st"> </span>read_score) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb47-6"><a href="tree-based-methods.html#cb47-6"></a><span class="st">  </span><span class="kw">replace_model</span>(dectree2)</span>
-<span id="cb47-7"><a href="tree-based-methods.html#cb47-7"></a></span>
-<span id="cb47-8"><a href="tree-based-methods.html#cb47-8"></a>fit_complex &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb47-9"><a href="tree-based-methods.html#cb47-9"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(fit_complex)<span class="op">$</span>fit</span>
-<span id="cb47-10"><a href="tree-based-methods.html#cb47-10"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
+<p>More often that not, these huge trees are just overfitting the data. They are creating very small nodes that capture noise from the data and when you’re predicting on new data, they perform terribly bad. As well as the <code>min_n</code> argument, decision trees have another argument called <code>tree_depth</code>. This argument forces the tree to stop growing if it passes the maximum depth of the tree as measured in nodes. Let’s run our previous example with only a depth of three nodes:</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tree-based-methods.html#cb47-1"></a>dectree &lt;-<span class="st"> </span><span class="kw">update</span>(mod1, <span class="dt">min_n =</span> <span class="dv">200</span>, <span class="dt">tree_depth =</span> <span class="dv">3</span>)</span>
+<span id="cb47-2"><a href="tree-based-methods.html#cb47-2"></a>tflow &lt;-</span>
+<span id="cb47-3"><a href="tree-based-methods.html#cb47-3"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb47-4"><a href="tree-based-methods.html#cb47-4"></a><span class="st">  </span><span class="kw">replace_model</span>(dectree)</span>
+<span id="cb47-5"><a href="tree-based-methods.html#cb47-5"></a></span>
+<span id="cb47-6"><a href="tree-based-methods.html#cb47-6"></a>fit_complex &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb47-7"><a href="tree-based-methods.html#cb47-7"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(fit_complex)<span class="op">$</span>fit</span>
+<span id="cb47-8"><a href="tree-based-methods.html#cb47-8"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>Due to lack of space, we won’t cover tree pruning but it is a very important technique used to generate very complex trees and ‘prune’ them to avoid overfitting.</p>
-<div id="how-do-they-really-work" class="section level3">
-<h3><span class="header-section-number">3.3.1</span> How do they really work?</h3>
-<p>Before we go into</p>
-<p><img src="03_trees_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>Then we apply a random split</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="tree-based-methods.html#cb48-1"></a>p2</span></code></pre></div>
-<p><img src="03_trees_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tree-based-methods.html#cb49-1"></a>p3</span></code></pre></div>
+<p>The tree was reduced considerably now in combination with the minimun number of respondents within each node. Note that we’ve been interpreting decision trees in a ‘subjective’ fashion. That is, we’ve been cutting the nodes of the trees from subjective criteria that makes sense to our research problem. This is how we social scientists would analyze the data. The tree should model our theoretical problem and make substantive sense. However, for machine learning, we have other criteria: how well it predicts. Let’s check how our model predicts at this point:</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="tree-based-methods.html#cb48-1"></a>fit_complex <span class="op">%&gt;%</span></span>
+<span id="cb48-2"><a href="tree-based-methods.html#cb48-2"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb48-3"><a href="tree-based-methods.html#cb48-3"></a><span class="st">  </span><span class="kw">rmse</span>(ST102Q01TA, .pred)</span></code></pre></div>
+<pre><code>## # A tibble: 1 x 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard       0.514</code></pre>
+<p>Our predictions for each set goals is off by around <span class="math inline">\(.5\)</span> in a scale of <span class="math inline">\(1\)</span> through <span class="math inline">\(4\)</span>. This is not terribly bad. For example, it means that for every child that answered a <span class="math inline">\(2\)</span>, on average, we have an error of around <span class="math inline">\(.5\)</span>. This means that any prediction for a single number runs the risk of being wrongly predicting either the number from above or below (a child which has a <span class="math inline">\(2\)</span> might get wrongly predicte a <span class="math inline">\(3\)</span> or a <span class="math inline">\(1\)</span> but hardly a <span class="math inline">\(4\)</span>). To improve prediction, we can allow <code>tidyflow</code> to search for the best combination of <code>min_n</code> and <code>tree_depth</code> that maximizes prediction. Let’s perform a grid search for these two tuning values. However, let’s set the tuning values ourselves:</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="tree-based-methods.html#cb50-1"></a>tune_mod &lt;-<span class="st"> </span><span class="kw">update</span>(dectree, <span class="dt">min_n =</span> <span class="kw">tune</span>(), <span class="dt">tree_depth =</span> <span class="kw">tune</span>())</span>
+<span id="cb50-2"><a href="tree-based-methods.html#cb50-2"></a></span>
+<span id="cb50-3"><a href="tree-based-methods.html#cb50-3"></a>tflow &lt;-</span>
+<span id="cb50-4"><a href="tree-based-methods.html#cb50-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb50-5"><a href="tree-based-methods.html#cb50-5"></a><span class="st">  </span><span class="kw">plug_resample</span>(vfold_cv) <span class="op">%&gt;%</span></span>
+<span id="cb50-6"><a href="tree-based-methods.html#cb50-6"></a><span class="st">  </span><span class="kw">plug_grid</span>(</span>
+<span id="cb50-7"><a href="tree-based-methods.html#cb50-7"></a>    expand.grid,</span>
+<span id="cb50-8"><a href="tree-based-methods.html#cb50-8"></a>    <span class="dt">tree_depth =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">15</span>),</span>
+<span id="cb50-9"><a href="tree-based-methods.html#cb50-9"></a>    <span class="dt">min_n =</span> <span class="kw">c</span>(<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">150</span>)</span>
+<span id="cb50-10"><a href="tree-based-methods.html#cb50-10"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb50-11"><a href="tree-based-methods.html#cb50-11"></a><span class="st">  </span><span class="kw">replace_model</span>(tune_mod)</span>
+<span id="cb50-12"><a href="tree-based-methods.html#cb50-12"></a></span>
+<span id="cb50-13"><a href="tree-based-methods.html#cb50-13"></a>fit_tuned &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb50-14"><a href="tree-based-methods.html#cb50-14"></a></span>
+<span id="cb50-15"><a href="tree-based-methods.html#cb50-15"></a>fit_tuned <span class="op">%&gt;%</span></span>
+<span id="cb50-16"><a href="tree-based-methods.html#cb50-16"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb50-17"><a href="tree-based-methods.html#cb50-17"></a><span class="st">  </span><span class="kw">show_best</span>(<span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 5 x 7
+##   tree_depth min_n .metric .estimator  mean     n std_err
+##        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1          6    50 rmse    standard   0.469    10  0.0128
+## 2          6   100 rmse    standard   0.469    10  0.0128
+## 3          9    50 rmse    standard   0.469    10  0.0128
+## 4          9   100 rmse    standard   0.469    10  0.0128
+## 5         15    50 rmse    standard   0.469    10  0.0128</code></pre>
+<p>It seems that our predictions on the training data were slightly overfitting the data, as the best error from the cross-validation search is centered around <code>0.469</code> with a standard error of <code>0.01</code>. Let’s explore whether the error changes between the minimum sample size and the tree depth:</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="tree-based-methods.html#cb52-1"></a>tree_depth_lvl &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Tree depth: &quot;</span>, <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">15</span>))</span>
+<span id="cb52-2"><a href="tree-based-methods.html#cb52-2"></a></span>
+<span id="cb52-3"><a href="tree-based-methods.html#cb52-3"></a>fit_tuned <span class="op">%&gt;%</span></span>
+<span id="cb52-4"><a href="tree-based-methods.html#cb52-4"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb52-5"><a href="tree-based-methods.html#cb52-5"></a><span class="st">  </span><span class="kw">collect_metrics</span>() <span class="op">%&gt;%</span></span>
+<span id="cb52-6"><a href="tree-based-methods.html#cb52-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ci_low =</span> mean <span class="op">-</span><span class="st"> </span>(<span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std_err),</span>
+<span id="cb52-7"><a href="tree-based-methods.html#cb52-7"></a>         <span class="dt">ci_high =</span> mean <span class="op">+</span><span class="st"> </span>(<span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>std_err),</span>
+<span id="cb52-8"><a href="tree-based-methods.html#cb52-8"></a>         <span class="dt">tree_depth =</span> <span class="kw">factor</span>(<span class="kw">paste0</span>(<span class="st">&quot;Tree depth: &quot;</span>, tree_depth), <span class="dt">levels =</span> tree_depth_lvl),</span>
+<span id="cb52-9"><a href="tree-based-methods.html#cb52-9"></a>         <span class="dt">min_n =</span> <span class="kw">factor</span>(min_n, <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;50&quot;</span>, <span class="st">&quot;100&quot;</span>, <span class="st">&quot;150&quot;</span>))) <span class="op">%&gt;%</span></span>
+<span id="cb52-10"><a href="tree-based-methods.html#cb52-10"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;rmse&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb52-11"><a href="tree-based-methods.html#cb52-11"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(min_n, mean)) <span class="op">+</span></span>
+<span id="cb52-12"><a href="tree-based-methods.html#cb52-12"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb52-13"><a href="tree-based-methods.html#cb52-13"></a><span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> ci_low, <span class="dt">ymax =</span> ci_high), <span class="dt">width =</span> <span class="fl">.1</span>) <span class="op">+</span></span>
+<span id="cb52-14"><a href="tree-based-methods.html#cb52-14"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="st">&quot;Minimum sample size per node&quot;</span>) <span class="op">+</span></span>
+<span id="cb52-15"><a href="tree-based-methods.html#cb52-15"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Average RMSE&quot;</span>) <span class="op">+</span></span>
+<span id="cb52-16"><a href="tree-based-methods.html#cb52-16"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>tree_depth, <span class="dt">nrow =</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb52-17"><a href="tree-based-methods.html#cb52-17"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="tree-based-methods.html#cb50-1"></a>p4</span></code></pre></div>
-<p><img src="03_trees_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tree-based-methods.html#cb51-1"></a>p_many</span></code></pre></div>
-<p><img src="03_trees_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>On the <code>x</code> axis we have the minimum sample size per node (these are the values for <code>min_n</code>) and on the <code>y</code> axis we have the error of the model through cross-validation (the <span class="math inline">\(RMSE\)</span>). The lower each points is on the plot, the better, since it means that the error is lower.</p>
+<p>Let’s begin with the first plot on the left. The points represent the error of the model with different sample sizes for the nodes with a fixed tree depth of <span class="math inline">\(1\)</span>. For a tree depth of <span class="math inline">\(1\)</span>, the error of the model is of around <code>.65</code>. However, as the number of trees increases (the additional <em>plots</em> to the right), the error comes down to nearly <code>.47</code> when there is a <code>tree_depth</code> of <code>6</code>. It seems that the simplest model with the lowest <span class="math inline">\(RMSE\)</span> has a <code>tree_depth</code> of <span class="math inline">\(6\)</span> and a minimum sample size of <code>50</code>. We calculated this ourselves for the sake of the example, but <code>complete_tflow</code> can calculate this for you:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tree-based-methods.html#cb53-1"></a>final_model &lt;-</span>
+<span id="cb53-2"><a href="tree-based-methods.html#cb53-2"></a><span class="st">  </span>fit_tuned <span class="op">%&gt;%</span></span>
+<span id="cb53-3"><a href="tree-based-methods.html#cb53-3"></a><span class="st">  </span><span class="kw">complete_tflow</span>(<span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>, tree_depth, <span class="st">&quot;select_by_one_std_err&quot;</span>)</span>
+<span id="cb53-4"><a href="tree-based-methods.html#cb53-4"></a></span>
+<span id="cb53-5"><a href="tree-based-methods.html#cb53-5"></a>train_err &lt;-</span>
+<span id="cb53-6"><a href="tree-based-methods.html#cb53-6"></a><span class="st">  </span>final_model <span class="op">%&gt;%</span></span>
+<span id="cb53-7"><a href="tree-based-methods.html#cb53-7"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb53-8"><a href="tree-based-methods.html#cb53-8"></a><span class="st">  </span><span class="kw">rmse</span>(ST102Q01TA, .pred)</span>
+<span id="cb53-9"><a href="tree-based-methods.html#cb53-9"></a></span>
+<span id="cb53-10"><a href="tree-based-methods.html#cb53-10"></a>test_err &lt;-</span>
+<span id="cb53-11"><a href="tree-based-methods.html#cb53-11"></a><span class="st">  </span>final_model <span class="op">%&gt;%</span></span>
+<span id="cb53-12"><a href="tree-based-methods.html#cb53-12"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
+<span id="cb53-13"><a href="tree-based-methods.html#cb53-13"></a><span class="st">  </span><span class="kw">rmse</span>(ST102Q01TA, .pred)</span>
+<span id="cb53-14"><a href="tree-based-methods.html#cb53-14"></a></span>
+<span id="cb53-15"><a href="tree-based-methods.html#cb53-15"></a><span class="kw">c</span>(<span class="st">&quot;testing error&quot;</span> =<span class="st"> </span>test_err<span class="op">$</span>.estimate, <span class="st">&quot;training error&quot;</span> =<span class="st"> </span>train_err<span class="op">$</span>.estimate)</span></code></pre></div>
+<pre><code>##  testing error training error 
+##      0.4644939      0.4512248</code></pre>
+<p>Our testing error and our training error have a difference of only <span class="math inline">\(0.01\)</span>, not bad. The cross-validation tuning seemed to have helped avoid a great deal of overfitting.</p>
+<p>Before we go through the next section, I want to briefly mention an alternative to <code>tree_depth</code> and <code>min_n</code>. A technique called ‘tree pruning’ is also very common for modeling decision trees. It first grows a very large and complex tree and <strong>then</strong> starts pruning the leafs. This technique is also very useful but due to the lack of time, we won’t cover this. You can check out the material on this technique from the resources outlined in the first paragraph of this section.</p>
+<div id="advanced-how-do-trees-choose-where-to-split" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Advanced: how do trees choose where to split?</h3>
+<p>Throughout most of the chapter we’ve seen that trees find optimal ‘splits’ that make the respondents very different between the splits and very similar within them. But how do decision trees make these splits? Let’s work out a simple example using the <code>HISEI</code> variable from the first model in this section.</p>
+<p><code>HISEI</code> is an index for the socio-economic status of families. It’s continuous and has a distribution like this:</p>
+<p><img src="03_trees_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>As we saw in the first tree of this section, <code>HISEI</code> is the <strong>root node</strong>. To decide on the <strong>root node</strong>, the decision tree algorithm chooses a random location in the distribution of <code>HISEI</code> and draws a split:</p>
+<p><img src="03_trees_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>The two sides have an average <code>math_score</code> which serves as the baseline for how different these two groups are. At this point, the algorithm does something very simple: for each split, it calculates the <strong>R</strong>esidual <strong>S</strong>um of <strong>S</strong>quares (RSS). This is just the sum of the <code>math_score</code> of each respondent (<span class="math inline">\(math_i\)</span>) minus the average <code>math_score</code> (<span class="math inline">\(\hat{math}\)</span>) for that split squared. In other words, it applies the <span class="math inline">\(RSS\)</span> for each split:</p>
+<p><span class="math display">\[\begin{equation}
+RSS = \sum_{k = 1}^n(math_i - \hat{math})^2
+\end{equation}\]</span></p>
+<p>Each side of the split then has a corresponding <span class="math inline">\(RSS\)</span>:</p>
+<p><img src="03_trees_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>After that, it calculates the total <span class="math inline">\(RSS\)</span> of the split by adding the two <span class="math inline">\(RSS\)</span>:</p>
+<p><img src="03_trees_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>So far we should have a single random split with an associated <span class="math inline">\(RSS\)</span> for <span class="math inline">\(HISEI\)</span>. The decision tree algorithm is called <em>recursive binary splitting</em> because it is recursive: it repeats itself again many times. It repeats the strategy of <span class="math inline">\(Split\)</span> -&gt; <span class="math inline">\(RSS_{split}\)</span> -&gt; <span class="math inline">\(RSS_{total}\)</span> many times such that we get a distribution of splits and <span class="math inline">\(RSS\)</span> for <span class="math inline">\(HISEI\)</span>:</p>
+<p><img src="03_trees_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>This produces a distribution of random splits with an associated metric of fit (<span class="math inline">\(RSS\)</span>) for <span class="math inline">\(HISEI\)</span>. <em>Recursive binary splitting</em> applies this same logic to every single variable in the model such that you have a distribution of splits for every single variable:</p>
 <pre><code>## # A tibble: 8 x 3
 ##   variable random_split total_rss            
 ##   &lt;chr&gt;    &lt;chr&gt;        &lt;chr&gt;                
@@ -317,8 +394,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 &quot;FISCED&quot; 1            &quot;Total RSS: 36085201&quot;
 ## 7 &quot;FISCED&quot; 5            &quot;Total RSS: 34083264&quot;
 ## 8 &quot;&quot;       ...          &quot;&quot;</code></pre>
-
+<p>With such a distribution, the algorithm can objectively ask: which random split best separates the data into two branches with the lowest <span class="math inline">\(RSS\)</span>? And based on that answer, the first <strong>node</strong> is chosen. After this first node is chosen, two branches grow to both sides. The algorithm then applies exactly the same set of rules <em>recursively</em> for each branch until a maximum depth is reached.</p>
+<p>Although this explanation will be in nearly all cases invisible to you, this behind the scenes explanation can help you understand better which criteria is used for choosing a split. For example, understanding how this splitting is done gives you insight into how outliers do not affect the selection of splits because the splitting criteria is random and navigates the entire distribution.</p>
+<p>In addition, there might be cases where you might want to switch the <span class="math inline">\(RSS\)</span> for another loss function because it makes sense for your problem. For example, using decision trees with binary dependent variables merits another type of loss function: <em>Gini impurity</em>. We won’t delve into this but it serves as an example that these are things which are not hard fixed. It might make sense to experiment with them if needed.</p>
 </div>
+</div>
+<div id="exercises-1" class="section level2">
+<h2><span class="header-section-number">3.2</span> Exercises</h2>
+
 </div>
 </div>
 <h3>References</h3>

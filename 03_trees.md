@@ -20,12 +20,9 @@ pisa <- read.csv(data_link)
 
 Decision trees are simple models. In fact, they are even simpler than linear models. They require little statistical background and are in fact among the simplest models to communicate to a general audience. In particular, the visualizations used for decision trees are very powerful in conveying information and can even serve as an exploratory avenue for social research.
 
-## TODO
-Add here that there are no coefficients. WHAT? Yes, you heard it right!
-
 Throughout this chapter, we'll be using the PISA data set from the regularization chapter. On this example we'll be focusing on predicting the `math_score` of students in the United States, based on the socio economic status of the parents (named `HISEI` in the data; the higher the `HISEI` variable, the higher the socio economic status), the father's education (named `FISCED` in the data; coded as several categories from 0 to 6 where 6 is high education) and whether the child repeated a grade (named `REPEAT` in the data). On the other hand, `REPEAT` is a dummy variable where `1` means the child repeated a grade and `0` no repetition.
 
-Decision trees, as their name conveys, are tree-like diagrams. The work by defining yes-or-no rules based on the data to try to predict the most common value in each final branch. Let's begin learning about decision trees by looking at one:
+Decision trees, as their name conveys, are tree-like diagrams. The work by defining yes-or-no rules based on the data to try to predict the most common value in each final branch. The best way to learn about decision trees is by looking at one. Let's do that:
 
 <img src="03_trees_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
@@ -71,6 +68,8 @@ This is the case because it comes first in the tree. Substantially, this might b
 
 <img src="03_trees_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
+Did you notice that we haven't interpreted any coefficients? That's right. Decision trees have no coefficients and many other machine learning algorithms also don't produce coefficients. Although for the case of decision trees this is because the model produces information in another way (through visualization of trees), lack of coefficients is common in machine learning models because they are too complex to generate coefficients for single predictors. These models are non-linear, non-parametric in nature, produce extremely complex relationships that we difficult to summarize in coefficients. Instead, the only produce predictions. We'll be delving into this topic in future sections in detail.
+
 I hope that these examples show that decision trees are a great tool for exploratory analysis and I strongly believe they have an inmense potential for exploring interactions in social science research. In case you didn't notice it, we literally just interpreted an interaction term that social scientists would routinely use in linear models. Without having to worry about statistical significance or plotting marginal effects, social scientists can use decision trees as an exploratory medium to understand interactions in an intuitive way. 
 
 You might be asking yourself, how do we fit these models and visualize them? `tidyflow` and `tidymodels` have got you covered. For example, for fitting the model from above, we can begin our `tidyflow`, add a split, a formula and define the decision tree:
@@ -100,13 +99,20 @@ rpart.plot(tree)
 
 If you read the chapter on reguralization, the only thing new here should be `rpart.plot`. All `plug_*` functions serve to build your machine learning workflow and the model `decision_tree` is the equivalent of `linear_reg` that we saw in the previous chapter. We are just recycling the same code for this model. `rpart.plot` on the other hand, is a function used specifically for plotting the decision tree (that is why we loaded the package `rpart.plot` at the beginning). No need to delve much into this function. It just works if you pass it a decision tree model: that is why `pull` the model fit before calling it.
 
-Now I've told all the good things about decision trees but they are not a smoking gun. They have serious limitations. In particular, there are two that we'll discuss in this chapter. The first one is that decision trees tend to overfit a lot. Substantially, this example doesn't make much sense but look at the percentages in the **leaf nodes**:
+Now I've told all the good things about decision trees but they are not a smoking gun. They have serious limitations. In particular, there are two that we'll discuss in this chapter. The first one is that decision trees tend to overfit a lot. Just for the sake of showing this problem, let's switch the example. Let's say we're trying to understand which variables are related to whether teachers set goals in the classroom. Substantially, this example might not make a lot of sense, but but let's follow along just to show how much trees can overfit the data. This variable is named `ST102Q01TA`. Let's plug it into our `tidyflow` and visualize the tree:
 
 
 ```r
+## ST100Q01TA
+## ST102Q01TA
+## IC009Q07NA
+## ST011Q03TA
+## ST011Q05TA
+## ST011Q10TA
+
 tflow <-
   tflow %>%
-  replace_formula(ST163Q03HA ~ .)
+  replace_formula(ST102Q01TA ~ .)
 
 fit_complex <- fit(tflow)
 tree <- pull_tflow_fit(fit_complex)$fit
@@ -115,7 +121,7 @@ rpart.plot(tree)
 
 <img src="03_trees_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
-Decision trees can capture a lot of noise. $5$ out of the $8$ **leaf nodes** have less than $2\%$ of the sample. These are **leaf nodes** with very weak statistical power:
+The tree is quite big compared to our previous examples and makes the interpretation more difficult. However, equally important, some **leaf nodes** are very small. Decision trees can capture a lot of noise and mimic the data very closely. $6$ **leaf nodes** have less than $3\%$ of the sample. These are **leaf nodes** with very weak statistical power:
 
 <img src="03_trees_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
@@ -123,7 +129,7 @@ What would happen if a tiny %1\% of those **leaf nodes** respondend **slightly**
 
 
 ```r
-dectree <- update(mod1, min_n = 250)
+dectree <- update(mod1, min_n = 200)
 tflow <-
   tflow %>%
   replace_model(dectree)
@@ -137,24 +143,22 @@ rpart.plot(tree)
 
 The tree was reduced considerably now. There are fewer **leaf nodes** and all nodes have a greater sample size than before. 
 
-You might be wondering: what should the minimum sample size be? It depends. The rule of thumb should be relative to your data. In particular, the identification of small nodes should be analyzed with care. Perhaps there **is** a group of outliers that consitute a node and it's not a problem of statistical noise. By increasing the minimum sample size for each node you would be destroying that statistical finding. For example, suppose we are studying welfare social expenditure as the dependent variable and then we had other independent variables, among which are country names. Scandinavian countries might group pretty well into a solitary node because they are super powers in welfare spending (these are Denmark, Norway, Sweden and Finland). If we increased the minimum sample size to $10$, we might group them with Germany and France, which are completely different in substantive terms. The best rule of thumb I can recommend is no other than to study your problem at hand with great care and make decisions accordingly. It might make sense to increase the sample or it might not depending on the research question, the total sample size, whether you're exploring the data or whether you're interested in predicting on new data.
+You might be wondering: what should the minimum sample size be? There is no easy answer for this. The rule of thumb should be relative to your data and research question. In particular, the identification of small nodes should be analyzed with care. Perhaps there **is** a group of outliers that consitute a node and it's not a problem of statistical noise. By increasing the minimum sample size for each node you would be destroying that statistical finding. 
+
+For example, suppose we are studying welfare social expenditure as the dependent variable and then we had other independent variables, among which are country names. Scandinavian countries might group pretty well into a solitary node because they are super powers in welfare spending (these are Denmark, Norway, Sweden and Finland). If we increased the minimum sample size to $10$, we might group them with Germany and France, which are completely different in substantive terms. The best rule of thumb I can recommend is no other than to study your problem at hand with great care and make decisions accordingly. It might make sense to increase the sample or it might not depending on the research question, the sample size, whether you're exploring the data or whether you're interested in predicting on new data.
 
 The second problem with decision trees is the tree depth. As can be seen from the previous plot, decision trees can create **leaf nodes** which are very small. In other more complicated scenarios, your tree might get huge. Yes, huge:
 
 <img src="./img/large_tree.png" width="100%" />
 
-More often that not, these huge trees are just overfitting the data. They are creating very small nodes that capture noise from the data and when you're predicting on new data, they perform terribly bad.
-
-## LEFT OFF HERE
+More often that not, these huge trees are just overfitting the data. They are creating very small nodes that capture noise from the data and when you're predicting on new data, they perform terribly bad. As well as the `min_n` argument, decision trees have another argument called `tree_depth`. This argument forces the tree to stop growing if it passes the maximum depth of the tree as measured in nodes. Let's run our previous example with only a depth of three nodes:
 
 
 ```r
-dectree2 <- set_engine(update(mod1, min_n = 200, tree_depth = 5), "rpart", model = TRUE)
-
+dectree <- update(mod1, min_n = 200, tree_depth = 3)
 tflow <-
   tflow %>%
-  replace_formula(math_score ~ . - scie_score - read_score) %>% 
-  replace_model(dectree2)
+  replace_model(dectree)
 
 fit_complex <- fit(tflow)
 tree <- pull_tflow_fit(fit_complex)$fit
@@ -163,44 +167,146 @@ rpart.plot(tree)
 
 <img src="03_trees_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
-Due to lack of space, we won't cover tree pruning but it is a very important technique used to generate very complex trees and 'prune' them to avoid overfitting.
-
-### How do they really work?
-
-Before we go into
-
-<img src="03_trees_files/figure-html/unnamed-chunk-20-1.png" width="672" />
-
-Then we apply a random split
+The tree was reduced considerably now in combination with the minimun number of respondents within each node. Note that we've been interpreting decision trees in a 'subjective' fashion. That is, we've been cutting the nodes of the trees from subjective criteria that makes sense to our research problem. This is how we social scientists would analyze the data. The tree should model our theoretical problem and make substantive sense. However, for machine learning, we have other criteria: how well it predicts. Let's check how our model predicts at this point:
 
 
 ```r
-p2
+fit_complex %>%
+  predict_training() %>%
+  rmse(ST102Q01TA, .pred)
 ```
 
-<img src="03_trees_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+```
+## # A tibble: 1 x 3
+##   .metric .estimator .estimate
+##   <chr>   <chr>          <dbl>
+## 1 rmse    standard       0.514
+```
+
+Our predictions for each set goals is off by around $.5$ in a scale of $1$ through $4$. This is not terribly bad. For example, it means that for every child that answered a $2$, on average, we have an error of around $.5$. This means that any prediction for a single number runs the risk of being wrongly predicting either the number from above or below (a child which has a $2$ might get wrongly predicte a $3$ or a $1$ but hardly a $4$). To improve prediction, we can allow `tidyflow` to search for the best combination of `min_n` and `tree_depth` that maximizes prediction. Let's perform a grid search for these two tuning values. However, let's set the tuning values ourselves:
 
 
 ```r
-p3
+tune_mod <- update(dectree, min_n = tune(), tree_depth = tune())
+
+tflow <-
+  tflow %>%
+  plug_resample(vfold_cv) %>%
+  plug_grid(
+    expand.grid,
+    tree_depth = c(1, 3, 6, 9, 15),
+    min_n = c(50, 100, 150)
+  ) %>%
+  replace_model(tune_mod)
+
+fit_tuned <- fit(tflow)
+
+fit_tuned %>%
+  pull_tflow_fit_tuning() %>%
+  show_best(metric = "rmse")
+```
+
+```
+## # A tibble: 5 x 7
+##   tree_depth min_n .metric .estimator  mean     n std_err
+##        <dbl> <dbl> <chr>   <chr>      <dbl> <int>   <dbl>
+## 1          6    50 rmse    standard   0.469    10  0.0128
+## 2          6   100 rmse    standard   0.469    10  0.0128
+## 3          9    50 rmse    standard   0.469    10  0.0128
+## 4          9   100 rmse    standard   0.469    10  0.0128
+## 5         15    50 rmse    standard   0.469    10  0.0128
+```
+
+It seems that our predictions on the training data were slightly overfitting the data, as the best error from the cross-validation search is centered around `0.469` with a standard error of `0.01`. Let's explore whether the error changes between the minimum sample size and the tree depth:
+
+
+```r
+tree_depth_lvl <- paste0("Tree depth: ", c(1, 3, 6, 9, 15))
+
+fit_tuned %>%
+  pull_tflow_fit_tuning() %>%
+  collect_metrics() %>%
+  mutate(ci_low = mean - (1.96 * std_err),
+         ci_high = mean + (1.96 * std_err),
+         tree_depth = factor(paste0("Tree depth: ", tree_depth), levels = tree_depth_lvl),
+         min_n = factor(min_n, levels = c("50", "100", "150"))) %>%
+  filter(.metric == "rmse") %>% 
+  ggplot(aes(min_n, mean)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = ci_low, ymax = ci_high), width = .1) +
+  scale_x_discrete("Minimum sample size per node") +
+  scale_y_continuous("Average RMSE") +
+  facet_wrap(~ tree_depth, nrow = 1) +
+  theme_minimal()
 ```
 
 <img src="03_trees_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
+On the `x` axis we have the minimum sample size per node (these are the values for `min_n`) and on the `y` axis we have the error of the model through cross-validation (the $RMSE$). The lower each points is on the plot, the better, since it means that the error is lower. 
 
-```r
-p4
-```
-
-<img src="03_trees_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+Let's begin with the first plot on the left. The points represent the error of the model with different sample sizes for the nodes with a fixed tree depth of $1$. For a tree depth of $1$, the error of the model is of around `.65`. However, as the number of trees increases (the additional *plots* to the right), the error comes down to nearly `.47` when there is a `tree_depth` of `6`. It seems that the simplest model with the lowest $RMSE$ has a `tree_depth` of $6$ and a minimum sample size of `50`. We calculated this ourselves for the sake of the example, but `complete_tflow` can calculate this for you:
 
 
 ```r
-p_many
+final_model <-
+  fit_tuned %>%
+  complete_tflow(metric = "rmse", tree_depth, "select_by_one_std_err")
+
+train_err <-
+  final_model %>%
+  predict_training() %>%
+  rmse(ST102Q01TA, .pred)
+
+test_err <-
+  final_model %>%
+  predict_testing() %>%
+  rmse(ST102Q01TA, .pred)
+
+c("testing error" = test_err$.estimate, "training error" = train_err$.estimate)
 ```
 
-<img src="03_trees_files/figure-html/unnamed-chunk-24-1.png" width="672" />
+```
+##  testing error training error 
+##      0.4644939      0.4512248
+```
 
+Our testing error and our training error have a difference of only $0.01$, not bad. The cross-validation tuning seemed to have helped avoid a great deal of overfitting. 
+
+Before we go through the next section, I want to briefly mention an alternative to `tree_depth` and `min_n`. A technique called 'tree pruning' is also very common for modeling decision trees. It first grows a very large and complex tree and **then** starts pruning the leafs. This technique is also very useful but due to the lack of time, we won't cover this. You can check out the material on this technique from the resources outlined in the first paragraph of this section.
+
+### Advanced: how do trees choose where to split?
+
+Throughout most of the chapter we've seen that trees find optimal 'splits' that make the respondents very different between the splits and very similar within them. But how do decision trees make these splits? Let's work out a simple example using the `HISEI` variable from the first model in this section.
+
+
+
+`HISEI` is an index for the socio-economic status of families. It's continuous and has a distribution like this:
+
+<img src="03_trees_files/figure-html/unnamed-chunk-25-1.png" width="672" />
+
+As we saw in the first tree of this section, `HISEI` is the **root node**. To decide on the **root node**, the decision tree algorithm chooses a random location in the distribution of `HISEI` and draws a split:
+
+<img src="03_trees_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+
+The two sides have an average `math_score` which serves as the baseline for how different these two groups are. At this point, the algorithm does something very simple: for each split, it calculates the **R**esidual **S**um of **S**quares (RSS). This is just the sum of the `math_score` of each respondent ($math_i$) minus the average `math_score` ($\hat{math}$) for that split squared. In other words, it applies the $RSS$ for each split:
+
+\begin{equation}
+RSS = \sum_{k = 1}^n(math_i - \hat{math})^2
+\end{equation}
+
+Each side of the split then has a corresponding $RSS$:
+
+<img src="03_trees_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+
+After that, it calculates the total $RSS$ of the split by adding the two $RSS$:
+
+<img src="03_trees_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+
+So far we should have a single random split with an associated $RSS$ for $HISEI$. The decision tree algorithm is called *recursive binary splitting* because it is recursive: it repeats itself again many times. It repeats the strategy of $Split$ -> $RSS_{split}$ -> $RSS_{total}$ many times such that we get a distribution of splits and $RSS$ for $HISEI$:
+
+<img src="03_trees_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+
+This produces a distribution of random splits with an associated metric of fit ($RSS$) for $HISEI$. *Recursive binary splitting* applies this same logic to every single variable in the model such that you have a distribution of splits for every single variable:
 
 
 
@@ -219,4 +325,11 @@ p_many
 ## 8 ""       ...          ""
 ```
 
+With such a distribution, the algorithm can objectively ask: which random split best separates the data into two branches with the lowest $RSS$? And based on that answer, the first **node** is chosen. After this first node is chosen, two branches grow to both sides. The algorithm then applies exactly the same set of rules *recursively* for each branch until a maximum depth is reached.
+
+Although this explanation will be in nearly all cases invisible to you, this behind the scenes explanation can help you understand better which criteria is used for choosing a split. For example, understanding how this splitting is done gives you insight into how outliers do not affect the selection of splits because the splitting criteria is random and navigates the entire distribution. 
+
+In addition, there might be cases where you might want to switch the $RSS$ for another loss function because it makes sense for your problem. For example, using decision trees with binary dependent variables merits another type of loss function: *Gini impurity*. We won't delve into this but it serves as an example that these are things which are not hard fixed. It might make sense to experiment with them if needed.
+
+## Exercises
 
