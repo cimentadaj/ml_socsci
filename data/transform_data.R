@@ -40,6 +40,7 @@ pisa_us_ready <-
   select(-starts_with("PV"),
          -starts_with("W_"),
          -all_of(noncogn_questions),
+         -VER_DAT,
          -WORKMAST,
          -STRATUM,
          -COMPETE,
