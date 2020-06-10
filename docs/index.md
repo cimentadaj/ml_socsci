@@ -1,7 +1,7 @@
 --- 
 title: "Machine Learning for Social Scientists"
 author: "Jorge Cimentada"
-date: "2020-06-09"
+date: "2020-06-10"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib]

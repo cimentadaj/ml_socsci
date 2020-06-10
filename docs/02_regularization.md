@@ -70,7 +70,7 @@ tflow
 
 ```
 ## ══ Tidyflow ════════════════════════════════════════════════════════════════════
-## Data: 4.84K rows x 502 columns
+## Data: 4.84K rows x 501 columns
 ## Split: initial_split w/ prop = ~0.7
 ## Recipe: available
 ## Resample: None
