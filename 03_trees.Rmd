@@ -1564,41 +1564,36 @@ res_randf_all %>%
 </details>
 
 
-#### 9. Fit an untuned boosting algorithm to check whether the default values are enough to beat the other models {-#ex9}
+#### 9. Perform a grid search using a boosting algorithm {-#ex9}
 
-From the example in the main text, we saw that boosting had the highest accuracy out of all models. However, can we improve it? This exercise is exploratory. Try running a `boost_tree` through a grid search of `trees`, `learn_rate`, `tree_depth` and `min_n`. To avoid running models for too long, set `levels = 3` in `plug_grid`.
+From the example in the main text, we saw that boosting had the highest accuracy out of all models. However, can we improve it? This exercise is exploratory. Try running a `boost_tree` varying levels of `trees` and `learn_rate`.
 
-* Define `boost_tree` with `tune()` for all the parameters defined above
-* Replace the previous model with this model
-* Replace the previous formula to exclude `scie_score` and `read_score` with `plug_formula`
-* Plug a cross-validation with `vfold_cv` and a grid with `grid_regular`
-* Fit the grid search
+Keep in mind that:
 
-Is there a particular set of tuning parameters that maximizes accuracy? Note that our initial prediction with only 500 trees on the training set already achieved a very small error of less than one point in test scores. What you're looking for is to test whether the model overfits the data less such that the test error is improved.
+* Increasing the number of trees can results in greater overfitting
+* If the learning rate is decreased, it means that the model is learning slower and thus greater trees are needed
+
+The testing error for the default boosting algorithm was `54`. Can you improve that? One strategy would be to perform a grid search. Another strategy is to focus on variables which are important for predicting `math_score`.
 
 <details>
   <summary><strong>> Answer </strong></summary>
+  
+  * Here we settled for a solution which increased the number of trees from 500 to 1000 but decreased the default learning rate of 0.3 to 0.1. This difference decreased the testing error to 48 points, 7 points below the benchmark.
 
 ```{r, eval = FALSE}
 xg_mod <-
-  boost_tree(mode = "regression",
-             trees = tune(),
-             min_n = tune(),
-             tree_depth = tune(),
-             learn_rate = tune()) %>%
+  boost_tree(mode = "regression", trees = 1000, learn_rate = 0.1) %>%
   set_engine("xgboost", importance = "impurity")
 
 tflow <-
   tflow %>%
   replace_model(xg_mod) %>%
-  replace_formula(math_score ~ . - scie_score - read_score) %>%
-  plug_resample(vfold_cv) %>%
-  plug_grid(grid_regular, levels = 3)
+  replace_formula(math_score ~ . - scie_score - read_score)
 
 res_boosting <- tflow %>% fit()
 
 res_boosting %>%
-  predict_training() %>%
+  predict_testing() %>%
   rmse(math_score, .pred)
   
 ```
