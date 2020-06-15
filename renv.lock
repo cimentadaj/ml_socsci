@@ -1045,10 +1045,15 @@
     },
     "parsnip": {
       "Package": "parsnip",
-      "Version": "0.1.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "4884bbcbd3a64ce3a7b1fe789f20b006"
+      "Version": "0.1.1.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "parsnip",
+      "RemoteUsername": "tidymodels",
+      "RemoteRef": "master",
+      "RemoteSha": "7860b56e6808f6aae16f0a42f52f3ad7e6444201",
+      "Hash": "09e0322dda651e7e1197f6eed43c0698"
     },
     "partykit": {
       "Package": "partykit",

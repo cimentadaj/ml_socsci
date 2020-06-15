@@ -869,7 +869,7 @@ Both models seem to have been overfitting the data considerably, but they were b
 
 Random Forests have several advantages, among which are that they are considerably faster than bagged decision trees because they use only a fraction of the variables used in bagging. However, as we have just showed, their performance gain is not straight forward when the outcome variable only has a few predictors which are strongly correlated with the outcome and very few which are not. There has to be some type of gradient in the correlations between the predictors and the outcome for the random forest to have a considerable improvement.
 
-Our model also offers a good example of how tuning different values of the parameters can offer improved accuracy. If we would've stayed with the default `mtry` of $\sqrt{Total\text{ }number\text{ }of\text{ }variables}$, the trees would have consistently included uncorrelated variables in each decision tree, making many of our trees obsolete in predictive accuracy. Instead, whenever we're running random forests, we should try several values of `mtry` and empirically check which number of columns produce an improvement in the error rate.
+Our model also offers a good example of how tuning different values of the parameters can offer improved accuracy. If we would've stayed with the default `mtry` of $\sqrt{Total\text{ }number\text{ }of\text{ }variables}$, the trees would have consistently included uncorrelated variables in each decision tree, making many of our trees obsolete in predictive accuracy. Instead, whenever we're running random forests, we should try several values of `mtry` and empirically check which number of columns produce an improvement in the error rate. One important note which sometimes has aroused discussion in machine learning is whether increasing the number of trees increase the chance of overfitting. Increasing the number of trees in a random forest does not lead to increased overfitting because the random forest averages the predictions of all the different trees. Single trees can overfit the data, and that's ok, because we take the average of all these hundred trees.
 
 Aside from the argument `mtry`, random forests also have other parameters which can be tuned for their optimal value in a grid search. `min_n` and `trees` are the most important ones to tune. Chapter 11 of @boehmke2019 offers good examples on some of the default values you can explore in a random forest and some general intuitions on which parameters have the biggest impact on computational resources, including the time spent running models. This next example can serve as an introductory template if you want to tune some values for your random forest. Beware, searching for the most optimal value of a 10 x 10 grid through 10 cross-validated sets can take a lot of time (even a few hours). You are effectively running 1000 models:
 
@@ -898,9 +898,96 @@ The problem with random forest is mostly about computing time. Although they oft
 
 ## Boosting
 
-```{r, eval = FALSE}
+So far, the tree based methods we've seen use decision trees as baseline models and an ensemble approach to calculate the average predictions of all decision trees. Boosting also uses decision trees as the baseline model but the ensemble strategy is fundamentally different.
+
+The name boosting comes from the notion that we fit a weak decision tree and we 'boost' it iteratively. This strategy is fundamentally different from bagging and random forests because instead of relying on hundreds of **independent** decision trees, boosting works by recursively boosting the the result of the same decision tree. How does it do that? Let's work it out manually with our `math_score` example.
+
+Let's fit a very weak decision tree of `math_score` regressed on `scie_score`. 
+
+```{r}
 dt_tree <-
-  decision_tree(mode = "regression", tree_depth = 3) %>%
+  decision_tree(mode = "regression", tree_depth = 1, min_n = 10) %>%
+  set_engine("rpart")
+
+pisa_tr <- training(initial_split(pisa))
+
+tflow <-
+  pisa_tr %>%
+  tidyflow(seed = 51231) %>%
+  plug_formula(math_score ~ scie_score) %>%
+  plug_model(dt_tree)
+
+mod1 <- fit(tflow)
+mod1 %>% pull_tflow_fit() %>% .[['fit']] %>% rpart.plot()
+```
+
+This decision tree is very weak. It is only allowed to have a tree depth of 1 which probably means that it is underfitting the data. We can checkout the $RMSE$ of the model:
+
+```{r }
+res_mod1 <-
+  pisa_tr %>% 
+  cbind(., predict(mod1, new_data = .))
+
+res_mod1 %>% 
+  rmse(math_score, .pred)
+```
+
+This is not a good model. The $RMSE$ is much bigger than our previous models. In fact, if we look at the residuals, we should see a very strong pattern, something that signals that a model is not properly specified:
+
+```{r }
+res_mod1 <-
+  res_mod1 %>% 
+  mutate(.resid = math_score - .pred)
+
+res_mod1 %>% 
+  ggplot(aes(scie_score, .resid)) +
+  geom_point(alpha = 1/3) +
+  scale_x_continuous(name = "Science scores") +
+  scale_y_continuous(name = "Residuals") +  
+  theme_minimal()
+```
+
+Boosting works by predicting the residuals of previous decision tree. In our example, we just fitted our first model and calculated the residuals. Boosting works by fitting a second model but the dependent variable should now be the residuals of the first model rather than the `math_score` variable. Let's do that:
+
+```{r }
+# Convert `math_score` to be the residuals of model 1
+res_mod1 <- mutate(res_mod1, math_score = .resid)
+
+# Replace the new data in our `tflow`
+# In the data `res_mod1`, `math_score`
+# is now the residuals of the first model
+mod2 <-
+  tflow %>%
+  replace_data(res_mod1) %>%
+  fit()
+
+mod2 %>% pull_tflow_fit() %>% .[['fit']] %>% rpart.plot()
+```
+
+This second model is exactly the same as the first model with the only difference that the dependent variable is the residuals (the unexplained test scores from the first model) of the first model. You can actually see a hint of this in the average score of the dependent variable in the two leaf nodes: they are both in the scale of residuals rather than the scale of `math_score` (the average `math_score` is between 300 and 600 points whereas the average of each leaf node is very far from this). Let's visualize the residuals from the **second** model:
+
+```{r }
+res_mod2 <-
+  pisa_tr %>% 
+  cbind(., predict(mod2, new_data = .)) %>%
+  mutate(.resid = math_score - .pred)
+
+res_mod2 %>% 
+  ggplot(aes(scie_score, .resid)) +
+  geom_point(alpha = 1/3) +
+  scale_x_continuous(name = "Science scores") +
+  scale_y_continuous(name = "Residuals") +  
+  theme_minimal()
+```
+
+The pattern seems to have changed although it's not clear that it's closer to a random pattern. In the small-scale example we just did, we only fitted two models (or in machine learning jargon, **two trees**). If we fitted 20 trees, each using the previous model's residuals as the dependent variable, we can start to see how the residuals are converging towards randonmness:
+
+```{r, echo = FALSE}
+library(tidyr)
+library(patchwork)
+
+dt_tree <-
+  decision_tree(mode = "regression", tree_depth = 1, min_n = 10) %>%
   set_engine("rpart")
 
 pisa_tr <- training(initial_split(pisa))
@@ -908,22 +995,26 @@ pisa_tr <- training(initial_split(pisa))
 tflow <-
   pisa_tr %>%
   tidyflow(51231) %>%
-  plug_formula(math_score ~ .) %>%
+  plug_formula(math_score ~ scie_score) %>%
   plug_model(dt_tree)
 
-n <- 500
+n <- 20
 res <- vector("list", n)
-df_pred <- data.frame(pred_1 = rep(0, nrow(pisa_tr)))
+df_resid <- data.frame(resid_1 = rep(0, nrow(pisa_tr)))
 res[[1]] <- fit(tflow)
 
 for (i in 1:(n-1)) {
-  print(paste0("Model ", i))
-  df_pred[[paste0("pred_", i)]] <- 0.01 * predict(res[[i]], new_data = pull_tflow_rawdata(res[[i]]))[[1]]
+  df_pred <- predict(res[[i]], new_data = pull_tflow_rawdata(res[[i]]))[[1]]
   pred_data <-
     cbind(
       pull_tflow_rawdata(res[[i]]),
-      .pred = df_pred[[paste0("pred_", i)]]
-    ) %>%
+      .pred = df_pred
+    )
+
+  df_resid[[paste0("resid_", i)]] <- with(pred_data, math_score - .pred)
+
+  pred_data <-
+    pred_data %>% 
     mutate(math_score = math_score - .pred) %>%
     select(-.pred)
 
@@ -933,40 +1024,228 @@ for (i in 1:(n-1)) {
     fit()
 }
 
-pisa_tr$.pred <- rowSums(df_pred)
+p1 <-
+  df_resid %>%
+  cbind(pisa_tr["scie_score"]) %>%
+  ggplot(aes(scie_score, resid_1)) +
+  geom_point(alpha = 1/9) +
+  scale_y_continuous("Residuals") +
+  scale_x_continuous(name = NULL) +
+  ggtitle("Residuals of 1st model") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
 
-pisa_tr %>% 
-  as_tibble() %>%
-  rmse(math_score, .pred)
+p2 <-
+  df_resid %>%
+  cbind(pisa_tr["scie_score"]) %>%
+  ggplot(aes(scie_score, resid_7)) +
+  geom_point(alpha = 1/9) +
+  scale_y_continuous("Residuals") +
+  scale_x_continuous(name = NULL) +
+  ggtitle("Residuals of 7th model") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+p3 <-
+  df_resid %>%
+  cbind(pisa_tr["scie_score"]) %>%
+  ggplot(aes(scie_score, resid_19)) +
+  geom_point(alpha = 1/9) +
+  scale_y_continuous("Residuals") +
+  scale_x_continuous("Science score") +
+  ggtitle("Residuals of 19th model") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10))
+
+dots <-
+  ggplot() +
+  theme_void() +
+  scale_x_continuous(limits = c(0, 1)) +
+  scale_y_continuous(limits = c(0, 1)) +
+  annotate("text", .5, .8, label = ".", size = 7) +
+  annotate("text", .5, .6, label = ".", size = 7) +
+  annotate("text", .5, .4, label = ".", size = 7)
+
+
+list(p1, dots, p2, dots, p3) %>%
+  wrap_plots(ncol = 1) &
+  theme(aspect.ratio = 0.15)
 
 ```
 
+As each model tries to improve on the previous model's residuals, the pattern in the residual converges towards randomness. This means that most of the signal in the model has been captured and the remaining residuals are just random noise. 
+
+Understanding this iterative process gives a more intuitive explanation to the term boosting. Boosting is a way for each model to boost the last model's performance by focusing mostly on observations which had big residuals (and thus greater error). 
+
+Suppose that you have now fitted 20 trees. This means that each of the respondents in the data will have 20 predictions. However, these predictions are not the same as in bagging and random forest: you cannot take the average of these predictions because they are not in the same metric as `math_score`. What? What do we mean that they're not in the same metric? Let's compare the predictions of our first model and the second model:
+
+```{r }
+mod1_pred <- predict(mod1, new_data = pisa_tr)
+names(mod1_pred) <- "pred_mod1"
+mod2_pred <- predict(mod2, new_data = pisa_tr)
+names(mod2_pred) <- "pred_mod2"
+
+resid_pred <- cbind(mod1_pred, mod2_pred)
+head(resid_pred)
+```
+
+The predictions from the first model are in the scale of `math_score`, mostly between 300 and 600 points. However, the predictions of the second model are very small compared to the first predictions. This is because the dependent variable from the second model is the **residuals** from the first model. All predictions will thus be in the scale of the residuals! 
+
+If we ran 20 trees, the predictions from the first model will always be in the scale of the dependent variable while the predictions of the remaining 19 trees will be in the scale of the residuals. With these weird looking 20 predictive values, how can you arrive at the final prediction for each respondent? By adding up the predictions of the 20 trees for each respondent.
+
+For our small-scale example, we can do that with `rowSums`:
+
+```{r}
+resid_pred$final_pred <- rowSums(resid_pred)
+head(resid_pred)
+```
+
+We have a final prediction for each respondent. How can we use these models to predict on new data? We follow the same logic. We allow each tree to predict on this new data and then sum the predictions of all the trees. 
+
+In case you wanted to build some code that applies our manual proceedure automatically, I have written the code below to do it for you. It fits $N$ models on the same data but after the first model, the dependent variable of the decision tree becomes the residuals of the previous model:
 
 ```{r, eval = FALSE}
+# This is the base decision tree used in each iteration.
+dt_tree <-
+  decision_tree(mode = "regression", tree_depth = 1, min_n = 10) %>%
+  set_engine("rpart")
+
+# Let's extract the training data separately to fit the models
+pisa_tr <- training(initial_split(pisa))
+
+# Construct our tidyflow
+tflow <-
+  pisa_tr %>%
+  tidyflow(seed = 51231) %>%
+  plug_formula(math_score ~ scie_score) %>%
+  plug_model(dt_tree)
+
+# How many trees you want to run?
+n <- 40
+
+# This list will have the 40 models
+res <- vector("list", n)
+
+# This dataframe will have the 40 predictions
+# for each respondent
+df_pred <- data.frame(pred_1 = rep(0, nrow(pisa_tr)))
+
+# Fit the first model
+res[[1]] <- fit(tflow)
+
+# Repeat this loop 40-1 times
+for (i in 1:(n-1)) {
+  print(paste0("Model ", i))
+  # Save the prediction from the last model in `df_pred`
+  df_pred[[paste0("pred_", i)]] <- predict(res[[i]],
+                                           new_data = pull_tflow_rawdata(res[[i]]))[[1]]
+
+  # Calculate the residuals from the previous model
+  pred_data <-
+    cbind(
+      pull_tflow_rawdata(res[[i]]),
+      .pred = df_pred[[paste0("pred_", i)]]
+    ) %>%
+    mutate(math_score = math_score - .pred) %>%
+    select(-.pred)
+
+  # Run the actual model with the residuals from the previous
+  # model
+  res[[i + 1]] <-
+    tflow %>%
+    replace_data(pred_data) %>%
+    fit()
+}
+
+# Add up the 40 predictions for each respondent
+# What is the final RMSE?
+pisa_tr %>%
+  mutate(.pred = rowSums(df_pred)) %>% 
+  as_tibble() %>%
+  rmse(math_score, .pred)
+
+# Does it match closely the more robust implementation
+# from the package gbm?
+mod <- gbm::gbm(math_score ~ .,
+                data = pisa_tr,
+                n.trees = 40,
+                interaction.depth = 1,
+                n.minobsinnode = 10)
+pisa_tr %>%
+  mutate(.pred2 = predict(mod, newdata = pisa_tr, n.trees = 40)) %>% 
+  rmse(math_score, .pred2)
+
+```
+
+This raw implementation of the boosting algorithm is not something you should use for your own research or predictive tasks. Boosting has evolved to be more complex and other features have been introduced. For example, the `gbm` implementation includes a `shrinkage` parameter that penalizes each decision tree such that you have to increase the number of trees being fitted. This is a general approach called 'slow learning' which usually has better predictive accuracy than our manual approach. There are many other small tweaks that have improved the performance of boosting. We refer the reader to chapter 12 of @boehmke2019 which discusses them in detail.
+
+Let's fit our trademark model of `math_score` regressed on all variables with the more advanced implementation of boosting used in the package `xgboost`. The results from this model can be compared to our previous results of bagging and the random forest:
+
+```{r}
 boost_mod <-
   boost_tree(mode = "regression", trees = 500) %>%
   set_engine("xgboost")
 
 tflow <-
   pisa %>%
-  tidyflow(51231) %>%
+  tidyflow(seed = 51231) %>%
   plug_formula(math_score ~ .) %>%
   plug_split(initial_split) %>%
   plug_model(boost_mod)
 
 boot_res <- fit(tflow)
 
-boot_res %>%
-  pull_tflow_fit()
-
-boot_res %>%
-  predict_testing() %>%
+rmse_gb_train <-
+  boot_res %>%
+  predict_training() %>%
   rmse(math_score, .pred)
+
+rmse_gb_train
 ```
 
-- The number of trees for a RF does not lead to overfitting because the average reduces the variance
+An $RMSE$ of `r options(scipen = 9999); round(rmse_gb_train$.estimate, 4)`! This an impressive improvement relative to the best random forest or bagging performance. It is even more remarkable that this improvement happens without performing any grid search for the most optimal values in the tuning values.
 
-- The number of trees in GB does affect overfitting because you are sequentially building up on the previous one and adding more trees can learn noise from very small residuals. That's why we use the learning stop.
+Let's check how it performs on the testing data and compare that to the same estimate from the bagged decision trees and the random forest:
+
+```{r}
+gb_rmse <-
+  boot_res %>%
+  predict_testing() %>%
+  rmse(math_score, .pred) %>%
+  pull(.estimate)
+
+c("Bagged decision trees" = bt_rmse,
+  "Random Forest" = rf_rmse,
+  "Extreme Gradient Boosting" = gb_rmse)
+```
+
+The extreme gradient boosting model achieved a testing error of `r gb_rmse`, considerably lower than the counterpart of the bagged decision trees and the random forest (`r bt_rmse` for the bagged decision trees and `r rf_rmse` for the random forest, respectively).
+
+Boosting, and it's more full featured cousin 'Extreme Gradient Boosting' (those are the initials of the package `xgboost`) are considered to be among the best predictive models currently developed. They can achieve impressive predictive power with little tuning and preprocessing of data. However, there is one pitfall that you should be aware of.
+
+In contrast to random forests, increasing the number of trees in a boosting algorithm **can** increase overfitting. For the random forest, increasing the number of trees has no impact on overfitting because what we actually get is the average of all these trees. However, for boosting, increasing the number trees means increasing the number of trees that iteratively try to explain residuals. You might reach a point that adding more trees will just try to explain residuals which are random, resulting in overfitting. 
+
+`boost_tree` has implemented a tuning parameter called `stop_iter` (as of 15th of June 2020, this tuning parameter has now been implemented in the development version of `parsnip` which you can install with `devtools::install_github("tidymodels/parsnip")`). `stop_iter` signals that after $N$ number trees have passed without any improvement, the algorithm should stop. This approach often runs less trees than the user requested.
+
+There are other tuning parameters available in `boost_tree` which you can use to improve your model. Here I shortly describe each one. 
+
+* `trees`: the number of trees that will be ran.
+
+* `mtry`: just as in random forests, `mtry` can be specified in `boost_tree` and as expected, it controls the number of variables that will be used at each split of a decision tree.
+
+* `min_n`: controls the minimum number of observations that need to be present in each node of a decision tree. This can avoid having decision trees which overfit a lot. 
+
+* `tree_depth`: is the same tuning parameter we used in `decision_tree` and it controls how complex the tree is allowed to grow. This interacts very strongly with `min_n`. 
+
+* `learn_rate`: controls how much we regularize each tree such that more penalization warrants more decision trees. This is because the algorithm is learning 'slowly' and requires more iterations.
+
+* `loss_reduction`: signals the amount of reduction in your loss function (for example, $RMSE$) that will allow each split in a decision tree to continue to grow. You can see this as cost-effective step: only if the tree improves it's prediction by $X$, we allow the tree to produce another split. 
+
+* `sample_size`: controls the percentage of the data used in each iteration of the decision tree. This is similar to the bagging approach where we perform bootstraps on each iteration.
+
+Boosting algorithms have often been considered black boxes in terms of how they work. In this section we manually implemented a very simple boosting algorithm and showed their predictive power with our trademark example. 
+
+Note that throughout this entire chapter, all examples and explanations have focused on continuous variables. However, **all** of the techniques discussed above work just as well for dummy variables. We have omitted these discussions because it would be a lot of material for the course.
 
 ## Exercises
 
@@ -1194,7 +1473,7 @@ Is the value of the $RMSE$ lower than the previous model? Why? Does it make sens
 <details>
   <summary><strong>> Answer </strong></summary>
   
-  * Performing a grid search of the most optimal tuning values is often not a good idea with bagged decision trees. Why? Because the purpose of bagged trees is to run small trees that overfit the data as much as possible. That is, they allow the tree depth to grow as much as possible and require as little as 2 observations with each node. This means that there is really no improvement for choosing more 'adequate' tuning values. In the end, each small tree should be as complex as possible because what we're really after is the average prediction of all these small trees.
+  * For certain scenarios, performing a grid search of the most optimal tuning values might not a good idea with bagged decision trees. Why? Because the purpose of bagged trees is to run small trees that overfit the data as much as possible. That is, they allow the tree depth to grow as much as possible and require as little as 2 observations with each node. This means that there is really no improvement for choosing more 'adequate' tuning values. In the end, each small tree should be as complex as possible because what we're really after is the average prediction of all these small trees.
   
 ```{r, eval = FALSE}
 tune_btree_mod <-
@@ -1224,3 +1503,105 @@ final_btree %>%
 ```
 
 </details>
+
+#### 8. Fit an untuned random forest to check whether the default values are enough to beat the other models {-#ex8}
+
+Random Forests are well known for achieving greater predictive performance than bagging with simple off-the-shelf tuning values. That is without any grid search, they can often perform well with the default values. Run two models, one with the same specification as before (with the top ten variables) and one regressed on all the variables in the data sets and compare the $RMSE$ of the models.
+
+* Define a `rand_forest` model with 500 trees and replace the previous model form the `tflow`. Remember to set `importance = "impurity"` in the engine to check for the most important variables.
+* Since we won't be doing any grid search, remove the resample and grid from the `tflow`
+* Create another `tidyflow` (with the same specification) but replacing the formula with `math_score ~ . - scie_score - read_score`
+* Fit both `tflow`
+* Calculate the $RMSE$ in the training set for both models
+* Do the most important variables from the more complex models match the top 10 variables from the simple model?
+
+Does the random forest beat the previous model in accuracy? Does the simple model perform better than the more complex one?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * Without any grid search, the random forest beats the previous models by a range of nearly 20 math points.
+  * The more complex model seems to outperform the simple model by around 14 points.
+  * Nearly all variables from the top 10 are also present in the random forest, however the performance increase is notable so the remaining variables must be contributing to a certain extent.
+  
+```{r, eval = FALSE}
+rand_mod <-
+  rand_forest(mode = "regression", trees = 500) %>%
+  set_engine("ranger", importance = "impurity")
+
+tflow <-
+  tflow %>%
+  replace_model(rand_mod) %>%
+  drop_resample() %>%
+  drop_grid()
+
+tflow_all <-
+  tflow %>%
+  replace_formula(math_score ~ . - scie_score - read_score)
+
+res_randf <- tflow %>% fit()
+res_randf_all <- tflow_all %>% fit()
+
+# RMSE of simple model
+res_randf %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+
+# RMSE of complex model
+res_randf_all %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+
+# Visualize the top 10 variables
+res_randf_all %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  vip() +
+  theme_minimal()
+  
+```
+
+</details>
+
+
+#### 9. Fit an untuned boosting algorithm to check whether the default values are enough to beat the other models {-#ex9}
+
+From the example in the main text, we saw that boosting had the highest accuracy out of all models. However, can we improve it? This exercise is exploratory. Try running a `boost_tree` through a grid search of `trees`, `learn_rate`, `tree_depth` and `min_n`. To avoid running models for too long, set `levels = 3` in `plug_grid`.
+
+* Define `boost_tree` with `tune()` for all the parameters defined above
+* Replace the previous model with this model
+* Replace the previous formula to exclude `scie_score` and `read_score` with `plug_formula`
+* Plug a cross-validation with `vfold_cv` and a grid with `grid_regular`
+* Fit the grid search
+
+Is there a particular set of tuning parameters that maximizes accuracy? Note that our initial prediction with only 500 trees on the training set already achieved a very small error of less than one point in test scores. What you're looking for is to test whether the model overfits the data less such that the test error is improved.
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+```{r, eval = FALSE}
+xg_mod <-
+  boost_tree(mode = "regression",
+             trees = tune(),
+             min_n = tune(),
+             tree_depth = tune(),
+             learn_rate = tune()) %>%
+  set_engine("xgboost", importance = "impurity")
+
+tflow <-
+  tflow %>%
+  replace_model(xg_mod) %>%
+  replace_formula(math_score ~ . - scie_score - read_score) %>%
+  plug_resample(vfold_cv) %>%
+  plug_grid(grid_regular, levels = 3)
+
+res_boosting <- tflow %>% fit()
+
+res_boosting %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+  
+```
+
+</details>
+
