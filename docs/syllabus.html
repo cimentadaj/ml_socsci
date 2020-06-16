@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Syllabus | Machine Learning for Social Scientists</title>
+  <title>Chapter 5 Syllabus | Machine Learning for Social Scientists</title>
   <meta name="description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Syllabus | Machine Learning for Social Scientists" />
+  <meta property="og:title" content="Chapter 5 Syllabus | Machine Learning for Social Scientists" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="http://cimentadaj.github.io/ml_socsci/" />
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="cimentadaj/ml_socsci" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Syllabus | Machine Learning for Social Scientists" />
+  <meta name="twitter:title" content="Chapter 5 Syllabus | Machine Learning for Social Scientists" />
   
   <meta name="twitter:description" content="Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists." />
   
@@ -24,14 +24,14 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-15" />
+<meta name="date" content="2020-06-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="tree-based-methods.html"/>
+<link rel="prev" href="loss-functions.html"/>
 
 <script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
@@ -166,16 +166,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="tree-based-methods.html"><a href="tree-based-methods.html#bagging"><i class="fa fa-check"></i><b>3.2</b> Bagging</a></li>
 <li class="chapter" data-level="3.3" data-path="tree-based-methods.html"><a href="tree-based-methods.html#random-forests"><i class="fa fa-check"></i><b>3.3</b> Random Forests</a></li>
 <li class="chapter" data-level="3.4" data-path="tree-based-methods.html"><a href="tree-based-methods.html#boosting"><i class="fa fa-check"></i><b>3.4</b> Boosting</a></li>
-<li class="chapter" data-level="3.5" data-path="tree-based-methods.html"><a href="tree-based-methods.html#discussion"><i class="fa fa-check"></i><b>3.5</b> Discussion</a></li>
-<li class="chapter" data-level="3.6" data-path="tree-based-methods.html"><a href="tree-based-methods.html#exercises-1"><i class="fa fa-check"></i><b>3.6</b> Exercises</a></li>
+<li class="chapter" data-level="3.5" data-path="tree-based-methods.html"><a href="tree-based-methods.html#exercises-1"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>4</b> Syllabus</a>
+<li class="chapter" data-level="4" data-path="loss-functions.html"><a href="loss-functions.html"><i class="fa fa-check"></i><b>4</b> Loss functions</a></li>
+<li class="chapter" data-level="5" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>5</b> Syllabus</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>4.1</b> Course description</a></li>
-<li class="chapter" data-level="4.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>4.2</b> Schedule</a></li>
-<li class="chapter" data-level="4.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>4.3</b> Software</a></li>
-<li class="chapter" data-level="4.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>4.4</b> Prerequisites</a></li>
-<li class="chapter" data-level="4.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>4.5</b> About the author</a></li>
+<li class="chapter" data-level="5.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>5.1</b> Course description</a></li>
+<li class="chapter" data-level="5.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>5.2</b> Schedule</a></li>
+<li class="chapter" data-level="5.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>5.3</b> Software</a></li>
+<li class="chapter" data-level="5.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>5.4</b> Prerequisites</a></li>
+<li class="chapter" data-level="5.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>5.5</b> About the author</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -197,17 +197,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="syllabus" class="section level1" number="4">
-<h1><span class="header-section-number">Chapter 4</span> Syllabus</h1>
-<div id="course-description" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Course description</h2>
+<div id="syllabus" class="section level1" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Syllabus</h1>
+<div id="course-description" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Course description</h2>
 <p>With the increasing amounts of data being collected on a daily basis, the field of machine learning has gained mainstream attention. By shifting away from focusing on inference, machine learning is a field at the intersection of statistics and computer science that is focused on maximizing predictive performance by learning patterns from data. That is, the goal of machine learning is to predict something – and predict it very well, regardless of whether you understand it. These techniques are common in business settings where, for example, stakeholders are interested in knowing the probability of a client leaving a company or the propensity of a client for buying a particular product. The field can be intimidating as it is vast and growing every year.</p>
 <p>However, scholars in the social sciences are beginning to understand the importance of the machine learning framework and how it can unlock new knowledge in fields such as sociology, political science, economics and psychology. On this course we will introduce students to the basic ideas of the machine learning framework and touch upon the basic algorithms used for prediction and discussing the potential it can have in the social sciences.</p>
 <p>In particular, we will introduce predictive algorithms such as regularized regressions, classification trees and clustering techniques through basic examples. We will discuss their advantages and disadvantages while paying great attention to how it’s been used in research. Although many social scientists do not see how predictive models can help explain social phenomena, we will also focus on how machine learning can play a role as a tool for discovery, improving causal inference and generalizing our classical models through cross validation.</p>
 <p>We will end the course with a prediction challenge that will put to test all of your acquired knowledge. Starting with a discussion on the role of predictive challenges such as the <a href="http://www.fragilefamilieschallenge.org/">Fragile Families Challenge</a> in the social sciences, our predictive challenge will require the student to run machine learning algorithms, test their out-of-sample error rate and discuss strategies on how the results are useful. This will give the class a real hands-on example of how to incorporate machine learning into their research right away. Below is a detailed description of the syllabus.</p>
 </div>
-<div id="schedule" class="section level2" number="4.2">
-<h2><span class="header-section-number">4.2</span> Schedule</h2>
+<div id="schedule" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Schedule</h2>
 <p><strong>Session 1</strong><br />
 <strong>July 6th 09:00h-10:45h</strong></p>
 <ul>
@@ -397,19 +397,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul>
 </div>
-<div id="software" class="section level2" number="4.3">
-<h2><span class="header-section-number">4.3</span> Software</h2>
+<div id="software" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Software</h2>
 <p>We will be using the R software together with the Rstudio interface. No laptop is required as the seminars will take place in the RECSM facilities. Any packages we plan to use will be already downloaded previous to the session.</p>
 </div>
-<div id="prerequisites" class="section level2" number="4.4">
-<h2><span class="header-section-number">4.4</span> Prerequisites</h2>
+<div id="prerequisites" class="section level2" number="5.4">
+<h2><span class="header-section-number">5.4</span> Prerequisites</h2>
 <ul>
 <li><p>The course assumes that the student is familiar with R and should be familiar with reading, manipulating and cleaning data frames. Ideally, the student has conducted some type of research using the software.</p></li>
 <li><p>Students should have solid knowledge of basic statistics such as linear and logistic regression, ideally with more advanced concepts such as multilevel modelling.</p></li>
 </ul>
 </div>
-<div id="about-the-author" class="section level2" number="4.5">
-<h2><span class="header-section-number">4.5</span> About the author</h2>
+<div id="about-the-author" class="section level2" number="5.5">
+<h2><span class="header-section-number">5.5</span> About the author</h2>
 <p>Jorge Cimentada has a PhD in Sociology from Pompeu Fabra University and is currently a Research Scientist at the Laboratory of Digital and Computational Demography at the Max Planck Institute for Demographic Research. His research is mainly focused on the study of educational inequality, inequality in spatial mobility and computational social science. He has worked on data science projects both in the private sector and in academic research and is interested in merging cutting edge machine learning techniques with classical social statistics. You can check out his blog at <a href="https://cimentadaj.github.io/about/">cimentadaj.github.io</a> or contact him through twitter at <a href="https://twitter.com/cimentadaj/">@cimentadaj</a>.</p>
 
 <div id="refs" class="references hanging-indent">
@@ -439,7 +439,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="tree-based-methods.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="loss-functions.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
