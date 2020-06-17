@@ -527,6 +527,13 @@
       "RemoteSha": "0.0.2",
       "Hash": "b8cff1d1391fd1ad8b65877f4c7f2e53"
     },
+    "ggfortify": {
+      "Package": "ggfortify",
+      "Version": "0.4.10",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "b807214bc3037dfa72fb1c2833d51dae"
+    },
     "ggplot2": {
       "Package": "ggplot2",
       "Version": "3.3.1",

@@ -131,6 +131,8 @@ We will end the course with a prediction challenge that will put to test all of 
   + Perry, C. (2013). Machine learning and conflict prediction: a use case. Stability: International Journal of Security and Development, 2(3), 56.  
  
   + Berk, R. A., Sorenson, S. B., & Barnes, G. (2016). Forecasting domestic violence: A machine learning approach to help inform arraignment decisions. Journal of Empirical Legal Studies, 13(1), 94-115.
+  
+  + Arpino, B., Le Moglie, M., & Mencarini, L. (2018, April). Machine-learning techniques for family demography: an application of random forests to the analysis of divorce determinants in Germany. In ANNUAL MEETING PAA (Vol. 83).
 
 
 **Session 5**  

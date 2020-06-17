@@ -2,6 +2,6 @@ book_filename: "ml_socsci"
 chapter_name: "Chapter "
 repo: https://github.com/cimentadaj/ml_socsci
 output_dir: docs/
-rmd_files: ["index.Rmd", "01_ml_framework.Rmd", "02_regularization.Rmd", "03_trees.Rmd", "04_lossfuns.Rmd", "07_syllabus.Rmd"]
+rmd_files: ["index.Rmd", "01_ml_framework.Rmd", "02_regularization.Rmd", "03_trees.Rmd", "04_lossfuns.Rmd", "05_unsupervised.Rmd", "07_syllabus.Rmd"]
 clean: [packages.bib, bookdown.bbl]
 new_session: yes
