@@ -1,0 +1,169 @@
+# Unsupervised methods
+
+
+
+Unsupervised learning is a very popular concept in machine learning. Although we social scientists are aware of some of them, we do not take advantage of them as much as machine learning practitioners. What is unsupervised learning? Let's get that out of the way: it simply means that it **does not have a dependent variable**. These are models that look to find relationships between independent variables. 
+
+One common unsupervised method that social scientists are aware of are **P**rincipal **C**omponent **A**nalysis or PCA. PCA aims to summarize many variables into a small subset of variables that can capture the greatest variance out of all the main variables. We really never thought about this as a 'unsupervised' method, but it is used widely for predictive tasks. Before we begin, let's load the packages and data we'll be using.
+
+
+```r
+library(tidymodels)
+library(tidyflow)
+library(ggfortify)
+
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
+
+## Principal Component Analysis (PCA)
+
+**P**rincipal **C**omponent **A**nalysis or PCA is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more 'parsimonious' models and summarize many variables into a few 'strong' variables.
+
+PCA works by creating several components which are the normalized linear combination of the variables in the model. In the `pisa` data there are a six variables which asks the student whether they've suffered negative behavior from their friends in the past 12 months. In particular, it asks whether
+
+* Other students left them out of things on purpose
+* Other students made fun of them
+* They were threatened by other students
+* Other students took away or destroyed things that belonged to them
+* They got hit or pushed around by other students
+* Other students spread nasty rumours about them
+
+Let's rename these variables into more interpretable names and look at their correlation:
+
+
+```r
+pisa_selected <-
+  pisa %>%
+  rename(
+    past12_left_out = ST038Q03NA,
+    past12_madefun_of_me = ST038Q04NA,
+    past12_threatened = ST038Q05NA,
+    past12_destroyed_personal = ST038Q06NA,
+    past12_got_hit = ST038Q07NA,
+    past12_spread_rumours = ST038Q08NA
+  ) %>%
+  select(starts_with("past12"))
+
+cor(pisa_selected)
+```
+
+```
+##                           past12_left_out past12_madefun_of_me
+## past12_left_out                 1.0000000            0.6073982
+## past12_madefun_of_me            0.6073982            1.0000000
+## past12_threatened               0.4454125            0.4712083
+## past12_destroyed_personal       0.4037351            0.4165931
+## past12_got_hit                  0.3918129            0.4480862
+## past12_spread_rumours           0.4746302            0.5069299
+##                           past12_threatened past12_destroyed_personal
+## past12_left_out                   0.4454125                 0.4037351
+## past12_madefun_of_me              0.4712083                 0.4165931
+## past12_threatened                 1.0000000                 0.5685773
+## past12_destroyed_personal         0.5685773                 1.0000000
+## past12_got_hit                    0.5807617                 0.6206485
+## past12_spread_rumours             0.5513099                 0.4543380
+##                           past12_got_hit past12_spread_rumours
+## past12_left_out                0.3918129             0.4746302
+## past12_madefun_of_me           0.4480862             0.5069299
+## past12_threatened              0.5807617             0.5513099
+## past12_destroyed_personal      0.6206485             0.4543380
+## past12_got_hit                 1.0000000             0.4451408
+## past12_spread_rumours          0.4451408             1.0000000
+```
+Most correlations lie between `0.4` and `0.6`, a somewhat acceptable threshold for assesing whether they can be reduced into fewer variables. PCA works by receiving as input $P$ variables (in this case six) and calculating the normalized linear combination of the $P$ variables. This new variable is the combination of the $P$ that captures the greatest variance out of the $P$ variables. PCA continuous to calculate other normalized linear combinations **but** with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.
+
+This approach has the advantage that it constructs as many principal components (new variables) as it can. Each variable is assessed by how much variance it explains of the original $P$ variables and each new variable is completely independent of the other. Depending on the correlation of the $P$ input variables, you might get three principal components that capture all of the variability in the $P$ variables. In other cases, you can get many variables (more than 20). 
+
+This discussion is getting too theoretical. Let's get get some hands-on experience. Let's pass in our six variables to the function `prcomp`, which estimates these principal components based on our six variables:
+
+
+```r
+pc <- prcomp(pisa_selected)
+all_pcs <- as.data.frame(predict(pc, newdata = pisa_selected))
+head(all_pcs)
+```
+
+```
+##            PC1        PC2         PC3          PC4          PC5          PC6
+## 1 -2.836172297 -0.7549602 -1.91065434 -0.232647114 -0.368981283 -1.885607656
+## 2 -1.478020766  0.6622561  0.94113153  0.181451711  0.149387648  0.678384471
+## 3  1.025953306  0.1602906 -0.03806864 -0.008994148  0.009439987 -0.002391996
+## 4 -0.002173173 -0.7902197 -0.10112894 -0.197389118  0.013521080 -0.002718289
+## 5 -4.832075955  0.1996595  0.39221922 -0.256660522 -1.178883084  0.150399629
+## 6 -1.132036976 -1.8534154 -0.68913950  0.914561923  0.065907346  0.087208533
+```
+
+Let's explain what just happened. Our dataset `pisa_selected` contains the six variables of interest. We passed that to `prcomp` which calculated the principal components. With this model object, we used this model object to `predict` the actual columns using our initial $P$ variables in `pisa_selected`. The result of all of this is a dataframe with sex new columns. These six new columns are **not** the initial six variables from `pisa_selected`. Instead, they are variables that summarize the relationship of these six variables. You might ask yourself, how come six variables **summarize** six variables? Let's look at how much variance of the original $P$ variables these 'index' variables explain:
+
+
+```r
+tidy(pc, "pcs")
+```
+
+```
+## # A tibble: 6 x 4
+##      PC std.dev percent cumulative
+##   <dbl>   <dbl>   <dbl>      <dbl>
+## 1     1   1.34   0.591       0.591
+## 2     2   0.640  0.135       0.726
+## 3     3   0.530  0.0929      0.819
+## 4     4   0.522  0.0899      0.909
+## 5     5   0.394  0.0513      0.960
+## 6     6   0.347  0.0397      1
+```
+
+This output show how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59\% of the variance of the six variables. The second principal component explains 13.5\%, for a total of 72.6\% between the two. 
+Let's focus on these two principal components. They are supposed to be completely uncorrelated, so let's check that ourselves:
+
+
+```r
+cor(all_pcs[c("PC1", "PC2")])
+```
+
+```
+##                         PC1                     PC2
+## PC1  1.00000000000000000000 -0.00000000000001545012
+## PC2 -0.00000000000001545012  1.00000000000000000000
+```
+
+As expected, the correlation between these two variables are 0. How do we use these two variables? Well, a typical social scientist would make sure that their expected explanatory power of the two components is high enough for their research problem. If it is, they would include these two columns in their modelling instead of the six variables. However, PCA is all about exploratory data analysis. We might want to go further. These two principal components are a bit of a black box at this point. Which variables do they represent? We can check that with the initial output of `prcomp`:
+
+
+```r
+pc$rotation[, 1:2]
+```
+
+```
+##                                  PC1        PC2
+## past12_left_out           -0.4631946 -0.4189125
+## past12_madefun_of_me      -0.5649319 -0.5315979
+## past12_threatened         -0.3446963  0.4025682
+## past12_destroyed_personal -0.2694606  0.3405411
+## past12_got_hit            -0.2987481  0.3715999
+## past12_spread_rumours     -0.4308453  0.3546832
+```
+
+
+
+
+```r
+pc %>% 
+  autoplot(loadings = TRUE,
+           loadings.label = TRUE,
+           loadings.label.repel = TRUE,
+           alpha = 1/6) +
+  theme_minimal()
+
+res <-
+  pisa %>%
+  recipe(math_score ~ .) %>%
+  step_center(starts_with("ST038")) %>%
+  step_scale(starts_with("ST038")) %>% 
+  step_pca(starts_with("ST038"), num_comp = 2, res = TRUE) %>%
+  prep()
+
+res %>%
+  ggplot(aes(PC1, PC2)) +
+  geom_point()
+```
