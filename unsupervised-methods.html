@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-17" />
+<meta name="date" content="2020-06-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -210,8 +210,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="unsupervised-methods" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Unsupervised methods</h1>
-<p>Unsupervised learning is a very popular concept in machine learning. Although we social scientists are aware of some of them, we do not take advantage of them as much as machine learning practitioners. What is unsupervised learning? Let’s get that out of the way: it simply means that it <strong>does not have a dependent variable</strong>. These are models that look to find relationships between independent variables.</p>
-<p>One common unsupervised method that social scientists are aware of are <strong>P</strong>rincipal <strong>C</strong>omponent <strong>A</strong>nalysis or PCA. PCA aims to summarize many variables into a small subset of variables that can capture the greatest variance out of all the main variables. We really never thought about this as a ‘unsupervised’ method, but it is used widely for predictive tasks. Before we begin, let’s load the packages and data we’ll be using.</p>
+<p>Unsupervised learning is a very popular concept in machine learning. Although we social scientists are aware of some of these methods, we do not take advantage of them as much as machine learning practitioners. What is unsupervised learning? Let’s get that out of the way: this just means that a particular statistical method <strong>does not have a dependent variable</strong>. These are models that look to find relationships between independent variables without the need of a dependent variable.</p>
+<p>One common unsupervised method that social scientists are aware of is the <strong>P</strong>rincipal <strong>C</strong>omponent <strong>A</strong>nalysis or <span class="math inline">\(PCA\)</span>. <span class="math inline">\(PCA\)</span> aims to summarize many variables into a small subset of variables that can capture the greatest variance out of all the main variables. We really never thought about this as an ‘unsupervised’ method, but it is used widely for predictive tasks. Before we begin, let’s load the packages and data we’ll be using.</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="unsupervised-methods.html#cb131-1"></a><span class="kw">library</span>(tidymodels)</span>
 <span id="cb131-2"><a href="unsupervised-methods.html#cb131-2"></a><span class="kw">library</span>(tidyflow)</span>
 <span id="cb131-3"><a href="unsupervised-methods.html#cb131-3"></a><span class="kw">library</span>(ggfortify)</span>
@@ -220,8 +220,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb131-6"><a href="unsupervised-methods.html#cb131-6"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
 <div id="principal-component-analysis-pca" class="section level2">
 <h2><span class="header-section-number">5.1</span> Principal Component Analysis (PCA)</h2>
-<p><strong>P</strong>rincipal <strong>C</strong>omponent <strong>A</strong>nalysis or PCA is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more ‘parsimonious’ models and summarize many variables into a few ‘strong’ variables.</p>
-<p>PCA works by creating several components which are the normalized linear combination of the variables in the model. In the <code>pisa</code> data there are a six variables which asks the student whether they’ve suffered negative behavior from their friends in the past 12 months. In particular, it asks whether</p>
+<p><strong>P</strong>rincipal <strong>C</strong>omponent <strong>A</strong>nalysis or <span class="math inline">\(PCA\)</span> is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more ‘parsimonious’ models and summarize many variables into a few ‘strong’ variables.</p>
+<p><span class="math inline">\(PCA\)</span> works by creating several components which are the normalized linear combination of the variables in the model. In the <code>pisa</code> data there are a six variables which asks the student whether they’ve suffered negative behavior from their friends in the past 12 months. In particular, it asks whether</p>
 <ul>
 <li>Other students left them out of things on purpose</li>
 <li>Other students made fun of them</li>
@@ -230,8 +230,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>They got hit or pushed around by other students</li>
 <li>Other students spread nasty rumours about them</li>
 </ul>
+<p>For each of these variables, the scale ranges from 1 to 4 where 4 is ‘Once a week or more’ and 1 is ‘Never or almost never’. In other words, the higher the number, the more negative their response.</p>
 <p>Let’s rename these variables into more interpretable names and look at their correlation:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="unsupervised-methods.html#cb132-1"></a>pisa_selected &lt;-</span>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="unsupervised-methods.html#cb132-1"></a>pisa &lt;-</span>
 <span id="cb132-2"><a href="unsupervised-methods.html#cb132-2"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
 <span id="cb132-3"><a href="unsupervised-methods.html#cb132-3"></a><span class="st">  </span><span class="kw">rename</span>(</span>
 <span id="cb132-4"><a href="unsupervised-methods.html#cb132-4"></a>    <span class="dt">past12_left_out =</span> ST038Q03NA,</span>
@@ -240,10 +241,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb132-7"><a href="unsupervised-methods.html#cb132-7"></a>    <span class="dt">past12_destroyed_personal =</span> ST038Q06NA,</span>
 <span id="cb132-8"><a href="unsupervised-methods.html#cb132-8"></a>    <span class="dt">past12_got_hit =</span> ST038Q07NA,</span>
 <span id="cb132-9"><a href="unsupervised-methods.html#cb132-9"></a>    <span class="dt">past12_spread_rumours =</span> ST038Q08NA</span>
-<span id="cb132-10"><a href="unsupervised-methods.html#cb132-10"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb132-11"><a href="unsupervised-methods.html#cb132-11"></a><span class="st">  </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;past12&quot;</span>))</span>
-<span id="cb132-12"><a href="unsupervised-methods.html#cb132-12"></a></span>
-<span id="cb132-13"><a href="unsupervised-methods.html#cb132-13"></a><span class="kw">cor</span>(pisa_selected)</span></code></pre></div>
+<span id="cb132-10"><a href="unsupervised-methods.html#cb132-10"></a>  )</span>
+<span id="cb132-11"><a href="unsupervised-methods.html#cb132-11"></a></span>
+<span id="cb132-12"><a href="unsupervised-methods.html#cb132-12"></a>pisa_selected &lt;-</span>
+<span id="cb132-13"><a href="unsupervised-methods.html#cb132-13"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb132-14"><a href="unsupervised-methods.html#cb132-14"></a><span class="st">  </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;past12&quot;</span>))</span>
+<span id="cb132-15"><a href="unsupervised-methods.html#cb132-15"></a></span>
+<span id="cb132-16"><a href="unsupervised-methods.html#cb132-16"></a><span class="kw">cor</span>(pisa_selected)</span></code></pre></div>
 <pre><code>##                           past12_left_out past12_madefun_of_me
 ## past12_left_out                 1.0000000            0.6073982
 ## past12_madefun_of_me            0.6073982            1.0000000
@@ -265,11 +269,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## past12_destroyed_personal      0.6206485             0.4543380
 ## past12_got_hit                 1.0000000             0.4451408
 ## past12_spread_rumours          0.4451408             1.0000000</code></pre>
-<p>Most correlations lie between <code>0.4</code> and <code>0.6</code>, a somewhat acceptable threshold for assesing whether they can be reduced into fewer variables. PCA works by receiving as input <span class="math inline">\(P\)</span> variables (in this case six) and calculating the normalized linear combination of the <span class="math inline">\(P\)</span> variables. This new variable is the combination of the <span class="math inline">\(P\)</span> that captures the greatest variance out of the <span class="math inline">\(P\)</span> variables. PCA continuous to calculate other normalized linear combinations <strong>but</strong> with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.</p>
-<p>This approach has the advantage that it constructs as many principal components (new variables) as it can. Each variable is assessed by how much variance it explains of the original <span class="math inline">\(P\)</span> variables and each new variable is completely independent of the other. Depending on the correlation of the <span class="math inline">\(P\)</span> input variables, you might get three principal components that capture all of the variability in the <span class="math inline">\(P\)</span> variables. In other cases, you can get many variables (more than 20).</p>
-<p>This discussion is getting too theoretical. Let’s get get some hands-on experience. Let’s pass in our six variables to the function <code>prcomp</code>, which estimates these principal components based on our six variables:</p>
+<p>Most correlations lie between <code>0.4</code> and <code>0.6</code>, a somewhat acceptable threshold for assesing whether they can be reduced into fewer variables. <span class="math inline">\(PCA\)</span> works by receiving as input <span class="math inline">\(P\)</span> variables (in this case six) and calculating the normalized linear combination of the <span class="math inline">\(P\)</span> variables. This new variable is the linear combination of the six variables that captures the greatest variance out of all of them. <span class="math inline">\(PCA\)</span> continues to calculate other normalized linear combinations <strong>but</strong> with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.</p>
+<p>This approach has the advantage that it constructs as many principal components (new variables) as it can, as long as they all capture 100% of the variability of the original <span class="math inline">\(P\)</span> variables, and each of these new variables are completely uncorrelated between each other.</p>
+<p>Each variable is assessed by how much variance it explains of the original <span class="math inline">\(P\)</span> variables and each new variable is completely independent of the others. Depending on the correlation of the <span class="math inline">\(P\)</span> input variables, you might get three principal components that capture all of the variability of the original <span class="math inline">\(P\)</span> variables. In other cases, you can get an you might many more.</p>
+<p>This discussion is getting too theoretical. Let’s get get some hands-on experience of how this works. Let’s pass in our six variables to the function <code>prcomp</code>, which estimates these principal components based on our six variables. However, for <span class="math inline">\(PCA\)</span> to work well, we need to center and scale the independent variables. This means that the independent variables will have a mean of zero and a standard deviation of one. <code>prcomp</code> does this for you, but you should be aware of this for future discussion:</p>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="unsupervised-methods.html#cb134-1"></a>pc &lt;-<span class="st"> </span><span class="kw">prcomp</span>(pisa_selected)</span>
-<span id="cb134-2"><a href="unsupervised-methods.html#cb134-2"></a>all_pcs &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">predict</span>(pc, <span class="dt">newdata =</span> pisa_selected))</span>
+<span id="cb134-2"><a href="unsupervised-methods.html#cb134-2"></a>all_pcs &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(pc<span class="op">$</span>x)</span>
 <span id="cb134-3"><a href="unsupervised-methods.html#cb134-3"></a><span class="kw">head</span>(all_pcs)</span></code></pre></div>
 <pre><code>##            PC1        PC2         PC3          PC4          PC5          PC6
 ## 1 -2.836172297 -0.7549602 -1.91065434 -0.232647114 -0.368981283 -1.885607656
@@ -278,7 +283,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 -0.002173173 -0.7902197 -0.10112894 -0.197389118  0.013521080 -0.002718289
 ## 5 -4.832075955  0.1996595  0.39221922 -0.256660522 -1.178883084  0.150399629
 ## 6 -1.132036976 -1.8534154 -0.68913950  0.914561923  0.065907346  0.087208533</code></pre>
-<p>Let’s explain what just happened. Our dataset <code>pisa_selected</code> contains the six variables of interest. We passed that to <code>prcomp</code> which calculated the principal components. With this model object, we used this model object to <code>predict</code> the actual columns using our initial <span class="math inline">\(P\)</span> variables in <code>pisa_selected</code>. The result of all of this is a dataframe with sex new columns. These six new columns are <strong>not</strong> the initial six variables from <code>pisa_selected</code>. Instead, they are variables that summarize the relationship of these six variables. You might ask yourself, how come six variables <strong>summarize</strong> six variables? Let’s look at how much variance of the original <span class="math inline">\(P\)</span> variables these ‘index’ variables explain:</p>
+<p>Let’s explain what just happened. Our dataset <code>pisa_selected</code> contains the six variables of interest. We passed that to <code>prcomp</code> which calculated the principal components. With this model object, we extracted the dataframe with the new principal components. The result of all of this is a dataframe with six new columns. These six new columns are <strong>not</strong> the initial six variables from <code>pisa_selected</code>. Instead, they are variables that summarize the relationship of these six variables.</p>
+<p>You might ask yourself, how come six variables <strong>summarize</strong> six variables? That doesn’t make much sense. The whole idea is that fewer variables can summarize the original six. Let’s look at how much variance of the original <span class="math inline">\(P\)</span> variables these ‘index’ variables explain:</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="unsupervised-methods.html#cb136-1"></a><span class="kw">tidy</span>(pc, <span class="st">&quot;pcs&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 4
 ##      PC std.dev percent cumulative
@@ -289,13 +295,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4     4   0.522  0.0899      0.909
 ## 5     5   0.394  0.0513      0.960
 ## 6     6   0.347  0.0397      1</code></pre>
-<p>This output show how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59% of the variance of the six variables. The second principal component explains 13.5%, for a total of 72.6% between the two.
-Let’s focus on these two principal components. They are supposed to be completely uncorrelated, so let’s check that ourselves:</p>
+<p>This output shows how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59% of the variance of the six variables. The second principal component explains an additional 13.5%, for a total of 72.6% between the two. This is certainly better. It means that the first two variables seem to have some power in summarizing the original six variables.</p>
+<p>Let’s focus on the first two principal components. They are supposed to be completely uncorrelated, so let’s check that ourselves:</p>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="unsupervised-methods.html#cb138-1"></a><span class="kw">cor</span>(all_pcs[<span class="kw">c</span>(<span class="st">&quot;PC1&quot;</span>, <span class="st">&quot;PC2&quot;</span>)])</span></code></pre></div>
 <pre><code>##                         PC1                     PC2
 ## PC1  1.00000000000000000000 -0.00000000000001545012
 ## PC2 -0.00000000000001545012  1.00000000000000000000</code></pre>
-<p>As expected, the correlation between these two variables are 0. How do we use these two variables? Well, a typical social scientist would make sure that their expected explanatory power of the two components is high enough for their research problem. If it is, they would include these two columns in their modelling instead of the six variables. However, PCA is all about exploratory data analysis. We might want to go further. These two principal components are a bit of a black box at this point. Which variables do they represent? We can check that with the initial output of <code>prcomp</code>:</p>
+<p>As expected, the correlation between these two variables is 0.</p>
+<p>How do we use these two variables? Well, a typical social scientist would make sure that their expected explanatory power of the two components is high enough for their research problem. If it is, they would include these two columns in their statistical models instead of the six variables.
+However, <span class="math inline">\(PCA\)</span> is all about exploratory data analysis. We might want to go further and explore how the original six variables are related to these principal components. These two principal components are a bit of a black box at this point. Which variables do they represent? We can check that with the initial output of <code>prcomp</code>:</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="unsupervised-methods.html#cb140-1"></a>pc<span class="op">$</span>rotation[, <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>]</span></code></pre></div>
 <pre><code>##                                  PC1        PC2
 ## past12_left_out           -0.4631946 -0.4189125
@@ -304,24 +312,88 @@ Let’s focus on these two principal components. They are supposed to be complet
 ## past12_destroyed_personal -0.2694606  0.3405411
 ## past12_got_hit            -0.2987481  0.3715999
 ## past12_spread_rumours     -0.4308453  0.3546832</code></pre>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="unsupervised-methods.html#cb142-1"></a>pc <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb142-2"><a href="unsupervised-methods.html#cb142-2"></a><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">loadings =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-3"><a href="unsupervised-methods.html#cb142-3"></a>           <span class="dt">loadings.label =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-4"><a href="unsupervised-methods.html#cb142-4"></a>           <span class="dt">loadings.label.repel =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb142-5"><a href="unsupervised-methods.html#cb142-5"></a>           <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>) <span class="op">+</span></span>
-<span id="cb142-6"><a href="unsupervised-methods.html#cb142-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span>
-<span id="cb142-7"><a href="unsupervised-methods.html#cb142-7"></a></span>
-<span id="cb142-8"><a href="unsupervised-methods.html#cb142-8"></a>res &lt;-</span>
-<span id="cb142-9"><a href="unsupervised-methods.html#cb142-9"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
-<span id="cb142-10"><a href="unsupervised-methods.html#cb142-10"></a><span class="st">  </span><span class="kw">recipe</span>(math_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span></span>
-<span id="cb142-11"><a href="unsupervised-methods.html#cb142-11"></a><span class="st">  </span><span class="kw">step_center</span>(<span class="kw">starts_with</span>(<span class="st">&quot;ST038&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb142-12"><a href="unsupervised-methods.html#cb142-12"></a><span class="st">  </span><span class="kw">step_scale</span>(<span class="kw">starts_with</span>(<span class="st">&quot;ST038&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb142-13"><a href="unsupervised-methods.html#cb142-13"></a><span class="st">  </span><span class="kw">step_pca</span>(<span class="kw">starts_with</span>(<span class="st">&quot;ST038&quot;</span>), <span class="dt">num_comp =</span> <span class="dv">2</span>, <span class="dt">res =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb142-14"><a href="unsupervised-methods.html#cb142-14"></a><span class="st">  </span><span class="kw">prep</span>()</span>
-<span id="cb142-15"><a href="unsupervised-methods.html#cb142-15"></a></span>
-<span id="cb142-16"><a href="unsupervised-methods.html#cb142-16"></a>res <span class="op">%&gt;%</span></span>
-<span id="cb142-17"><a href="unsupervised-methods.html#cb142-17"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(PC1, PC2)) <span class="op">+</span></span>
-<span id="cb142-18"><a href="unsupervised-methods.html#cb142-18"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p>These two columns show the correlations between the six original variables and the first two principal components. Let’s focus on the first column. The first thing that stands out is that for all the six variables, the correlation is negative. This means that as the respondents answered negatively to the six questions, the first principal component decreases. Informally, we could call this variable a ‘negative-peer index’.</p>
+<p>Moving to the second column, four of these six variables correlate positively with the second principal component. At least for these four variables, the principal components tend capture the exact opposite relationship. In other words, at least for these four variables, this is a ‘positive-peer index’. This type of decomposition is precisely where the usefulness of this type of method comes in. It allows us to summarize many variables into a small set of components that capture meaningful variation.</p>
+<p>The package <code>ggfortifty</code> contains the function <code>autoplot</code> which can help us visualize these correlations in a more meaningful way:</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="unsupervised-methods.html#cb142-1"></a><span class="kw">set.seed</span>(<span class="dv">6652</span>)</span>
+<span id="cb142-2"><a href="unsupervised-methods.html#cb142-2"></a>pc <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb142-3"><a href="unsupervised-methods.html#cb142-3"></a><span class="st">  </span><span class="kw">autoplot</span>(<span class="dt">loadings =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb142-4"><a href="unsupervised-methods.html#cb142-4"></a>           <span class="dt">loadings.label =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb142-5"><a href="unsupervised-methods.html#cb142-5"></a>           <span class="dt">loadings.label.repel =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb142-6"><a href="unsupervised-methods.html#cb142-6"></a>           <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>) <span class="op">+</span></span>
+<span id="cb142-7"><a href="unsupervised-methods.html#cb142-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Let’s distill this plot. On the <code>X</code> axis we have the actual column of the first principal component (PC1) (this is literaly the same column we saw in the object <code>all_pcs</code>; if it serves to refresh your memory, check it out with <code>head(all_pcs)</code>). As you can see, the label of the <code>X</code> axis already tells us that this component explains nearly 60% of the variance of these six variables. On the <code>Y</code> axis we have the actual column of the second principal component (PC2) (same as before, you can see this with <code>head(all_pcs)</code>). This principal component explains an additional 13.5% of the variance of the six variables.</p>
+<p>What this plot is trying to show is where these six variables are clustered between these two principal components. Since these two variables were centered and scaled to have a mean of zero, the red lines always begin at the intersection of the zero in PC1 and PC2. In other words, we can see more clearly the correlations we saw earlier. For example, remember that the first two variables were both negatively correlated with both PC1 and PC2. These two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:</p>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>There is nothing new here. This is the same thing we interpreted from the correlation but from a more intuitive visualization. If you remember the other four variables from the correlation, they showed negative correlations with PC1 and positive correlations with PC2. This means that these variables should cluster <strong>below</strong> the average of PC1 and <strong>higher</strong> than the average of PC2. We can see that more clearly if we first add a line showing the zero values for both variables:</p>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Any values to the <strong>left</strong> of the the vertical line are low values of PC1 while all values <strong>above</strong> the horizontal line are high values for PC2. Building on this intuition, we should find that the remaining four variables cluster at lower values of PC1 and at higher values of PC1:</p>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Depending on these correlations, you might reject to focus on the first two principal components and explore this same plot for PC1 and PC3 or PC2 and PC4. There’s no clear cut rule for the number of principal components to use. The user should instead explore these plots to understand whether there are interesting findings from clustering many variables into fewer variables. Depending on this, you might reject the idea entirely of using principal components. Or you might use these principal components to represent some interesting findings for your theoretical model.</p>
+<p>In any case, this method is inherently exploratory. It serves as way to understand whether we can reduce correlated variables into a small subset of variables that represent them. For a social science point of view, this method is often used for reducing the number of variables. However, there is still room for using it as a clustering method to understand whether certain variables can help us summarize our understanding into simpler concepts.</p>
+<p>Having said this, for predictive tasks there is an objective measure on how many principal components to use: the ones that improve predictions the most. Using our previous example, we could perform a grid search on a number of components to see which one maximizes predictive accuracy. Let’s run a random forest by regressing the variable <code>math_score</code> on all variables in the dataset. While we do that, let’s try models with different number of principal components:</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="unsupervised-methods.html#cb143-1"></a><span class="co"># Set the number of components `num_comp`</span></span>
+<span id="cb143-2"><a href="unsupervised-methods.html#cb143-2"></a><span class="co"># to be tuned</span></span>
+<span id="cb143-3"><a href="unsupervised-methods.html#cb143-3"></a>rcp &lt;-</span>
+<span id="cb143-4"><a href="unsupervised-methods.html#cb143-4"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(.x, math_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span></span>
+<span id="cb143-5"><a href="unsupervised-methods.html#cb143-5"></a><span class="st">    </span><span class="kw">step_pca</span>(<span class="kw">starts_with</span>(<span class="st">&quot;past12_&quot;</span>), <span class="dt">num_comp =</span> <span class="kw">tune</span>())</span>
+<span id="cb143-6"><a href="unsupervised-methods.html#cb143-6"></a></span>
+<span id="cb143-7"><a href="unsupervised-methods.html#cb143-7"></a>tflow &lt;-</span>
+<span id="cb143-8"><a href="unsupervised-methods.html#cb143-8"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
+<span id="cb143-9"><a href="unsupervised-methods.html#cb143-9"></a><span class="st">  </span><span class="kw">tidyflow</span>(<span class="dt">seed =</span> <span class="dv">25131</span>) <span class="op">%&gt;%</span></span>
+<span id="cb143-10"><a href="unsupervised-methods.html#cb143-10"></a><span class="st">  </span><span class="kw">plug_split</span>(initial_split) <span class="op">%&gt;%</span></span>
+<span id="cb143-11"><a href="unsupervised-methods.html#cb143-11"></a><span class="st">  </span><span class="kw">plug_recipe</span>(rcp) <span class="op">%&gt;%</span></span>
+<span id="cb143-12"><a href="unsupervised-methods.html#cb143-12"></a><span class="st">  </span><span class="kw">plug_model</span>(<span class="kw">set_engine</span>(<span class="kw">rand_forest</span>(<span class="dt">mode =</span> <span class="st">&quot;regression&quot;</span>), <span class="st">&quot;ranger&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb143-13"><a href="unsupervised-methods.html#cb143-13"></a><span class="st">  </span><span class="kw">plug_resample</span>(vfold_cv) <span class="op">%&gt;%</span></span>
+<span id="cb143-14"><a href="unsupervised-methods.html#cb143-14"></a><span class="st">  </span><span class="co"># Set `num_comp`in the grid to 1:3</span></span>
+<span id="cb143-15"><a href="unsupervised-methods.html#cb143-15"></a><span class="st">  </span><span class="co"># meaning that we&#39;ll try the models with</span></span>
+<span id="cb143-16"><a href="unsupervised-methods.html#cb143-16"></a><span class="st">  </span><span class="co"># number of components 1, 2 and 3</span></span>
+<span id="cb143-17"><a href="unsupervised-methods.html#cb143-17"></a><span class="st">  </span><span class="kw">plug_grid</span>(expand.grid, <span class="dt">num_comp =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
+<span id="cb143-18"><a href="unsupervised-methods.html#cb143-18"></a></span>
+<span id="cb143-19"><a href="unsupervised-methods.html#cb143-19"></a>res_rf &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb143-20"><a href="unsupervised-methods.html#cb143-20"></a></span>
+<span id="cb143-21"><a href="unsupervised-methods.html#cb143-21"></a>res_rf <span class="op">%&gt;%</span></span>
+<span id="cb143-22"><a href="unsupervised-methods.html#cb143-22"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb143-23"><a href="unsupervised-methods.html#cb143-23"></a><span class="st">  </span><span class="kw">collect_metrics</span>() <span class="op">%&gt;%</span></span>
+<span id="cb143-24"><a href="unsupervised-methods.html#cb143-24"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;rmse&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 6
+##   num_comp .metric .estimator  mean     n std_err
+##      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1        1 rmse    standard    40.8    10   0.402
+## 2        2 rmse    standard    40.8    10   0.438
+## 3        3 rmse    standard    40.8    10   0.422</code></pre>
+<p>These are the average results of running a 10-fold cross-validation trying out models with one, two and three principal components respectively. As we can see from the <code>mean</code> column, there is little difference between the average <span class="math inline">\(RMSE\)</span> of these different models. If there are important reasons to include these variables in the model and we want to reduce the number of variables in the model for simplicity, we could just keep the model with one principal component.</p>
+<p>However, there’s also an alternative approach. <code>step_pca</code> allows you to specify the minimum explanatory power of the principal components. As discussed in the documentation of <code>step_pca</code>, <em>you specify the fraction of the total variance that should be covered by the components. For example, <code>threshold = .75</code> means that <code>step_pca</code> should generate enough components to capture 75% of the variance.</em></p>
+<p>We can try our previous models with a 90% threshold. Since we will not perform a grid search, we will drop the grid and only keep the cross-validation to get uncertain estimates of our loss function <span class="math inline">\(RMSE\)</span>:</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="unsupervised-methods.html#cb145-1"></a><span class="co"># Define a new recipe</span></span>
+<span id="cb145-2"><a href="unsupervised-methods.html#cb145-2"></a><span class="co"># where threshold is .90</span></span>
+<span id="cb145-3"><a href="unsupervised-methods.html#cb145-3"></a>rcp &lt;-</span>
+<span id="cb145-4"><a href="unsupervised-methods.html#cb145-4"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(.x, math_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span></span>
+<span id="cb145-5"><a href="unsupervised-methods.html#cb145-5"></a><span class="st">    </span><span class="kw">step_pca</span>(<span class="kw">starts_with</span>(<span class="st">&quot;past12_&quot;</span>), <span class="dt">threshold =</span> <span class="fl">.90</span>)</span>
+<span id="cb145-6"><a href="unsupervised-methods.html#cb145-6"></a></span>
+<span id="cb145-7"><a href="unsupervised-methods.html#cb145-7"></a><span class="co"># Replace the previous recipe</span></span>
+<span id="cb145-8"><a href="unsupervised-methods.html#cb145-8"></a><span class="co"># and drop the grid</span></span>
+<span id="cb145-9"><a href="unsupervised-methods.html#cb145-9"></a>tflow &lt;-</span>
+<span id="cb145-10"><a href="unsupervised-methods.html#cb145-10"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb145-11"><a href="unsupervised-methods.html#cb145-11"></a><span class="st">  </span><span class="kw">replace_recipe</span>(rcp) <span class="op">%&gt;%</span></span>
+<span id="cb145-12"><a href="unsupervised-methods.html#cb145-12"></a><span class="st">  </span><span class="kw">drop_grid</span>()</span>
+<span id="cb145-13"><a href="unsupervised-methods.html#cb145-13"></a></span>
+<span id="cb145-14"><a href="unsupervised-methods.html#cb145-14"></a>res_rf &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb145-15"><a href="unsupervised-methods.html#cb145-15"></a></span>
+<span id="cb145-16"><a href="unsupervised-methods.html#cb145-16"></a>res_cv &lt;-</span>
+<span id="cb145-17"><a href="unsupervised-methods.html#cb145-17"></a><span class="st">  </span>res_rf <span class="op">%&gt;%</span></span>
+<span id="cb145-18"><a href="unsupervised-methods.html#cb145-18"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb145-19"><a href="unsupervised-methods.html#cb145-19"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span>
+<span id="cb145-20"><a href="unsupervised-methods.html#cb145-20"></a></span>
+<span id="cb145-21"><a href="unsupervised-methods.html#cb145-21"></a>res_cv</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   .metric .estimator   mean     n std_err
+##   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1 rmse    standard   40.8      10 0.377  
+## 2 rsq     standard    0.835    10 0.00392</code></pre>
+<p>This approach offers a very similar <span class="math inline">\(RMSE\)</span> of 40.8. Althought not possible at this moment, <code>tidymodels</code> is expected to allow the <code>threshold</code> parameter to be <code>tune</code> such that you can perform a grid search of this value as well (for those interested, see <a href="https://github.com/tidymodels/recipes/issues/534">here</a>).</p>
+<p>Although <span class="math inline">\(PCA\)</span> is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.</p>
 
 </div>
 </div>

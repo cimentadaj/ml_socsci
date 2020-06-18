@@ -2,9 +2,9 @@
 
 
 
-Unsupervised learning is a very popular concept in machine learning. Although we social scientists are aware of some of them, we do not take advantage of them as much as machine learning practitioners. What is unsupervised learning? Let's get that out of the way: it simply means that it **does not have a dependent variable**. These are models that look to find relationships between independent variables. 
+Unsupervised learning is a very popular concept in machine learning. Although we social scientists are aware of some of these methods, we do not take advantage of them as much as machine learning practitioners. What is unsupervised learning? Let's get that out of the way: this just means that a particular statistical method **does not have a dependent variable**. These are models that look to find relationships between independent variables without the need of a dependent variable.
 
-One common unsupervised method that social scientists are aware of are **P**rincipal **C**omponent **A**nalysis or PCA. PCA aims to summarize many variables into a small subset of variables that can capture the greatest variance out of all the main variables. We really never thought about this as a 'unsupervised' method, but it is used widely for predictive tasks. Before we begin, let's load the packages and data we'll be using.
+One common unsupervised method that social scientists are aware of is the **P**rincipal **C**omponent **A**nalysis or $PCA$. $PCA$ aims to summarize many variables into a small subset of variables that can capture the greatest variance out of all the main variables. We really never thought about this as an 'unsupervised' method, but it is used widely for predictive tasks. Before we begin, let's load the packages and data we'll be using.
 
 
 ```r
@@ -18,9 +18,9 @@ pisa <- read.csv(data_link)
 
 ## Principal Component Analysis (PCA)
 
-**P**rincipal **C**omponent **A**nalysis or PCA is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more 'parsimonious' models and summarize many variables into a few 'strong' variables.
+**P**rincipal **C**omponent **A**nalysis or $PCA$ is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more 'parsimonious' models and summarize many variables into a few 'strong' variables.
 
-PCA works by creating several components which are the normalized linear combination of the variables in the model. In the `pisa` data there are a six variables which asks the student whether they've suffered negative behavior from their friends in the past 12 months. In particular, it asks whether
+$PCA$ works by creating several components which are the normalized linear combination of the variables in the model. In the `pisa` data there are a six variables which asks the student whether they've suffered negative behavior from their friends in the past 12 months. In particular, it asks whether
 
 * Other students left them out of things on purpose
 * Other students made fun of them
@@ -29,11 +29,13 @@ PCA works by creating several components which are the normalized linear combina
 * They got hit or pushed around by other students
 * Other students spread nasty rumours about them
 
+For each of these variables, the scale ranges from 1 to 4 where 4 is 'Once a week or more' and 1 is 'Never or almost never'. In other words, the higher the number, the more negative their response.
+
 Let's rename these variables into more interpretable names and look at their correlation:
 
 
 ```r
-pisa_selected <-
+pisa <-
   pisa %>%
   rename(
     past12_left_out = ST038Q03NA,
@@ -42,7 +44,10 @@ pisa_selected <-
     past12_destroyed_personal = ST038Q06NA,
     past12_got_hit = ST038Q07NA,
     past12_spread_rumours = ST038Q08NA
-  ) %>%
+  )
+
+pisa_selected <-
+  pisa %>% 
   select(starts_with("past12"))
 
 cor(pisa_selected)
@@ -71,16 +76,19 @@ cor(pisa_selected)
 ## past12_got_hit                 1.0000000             0.4451408
 ## past12_spread_rumours          0.4451408             1.0000000
 ```
-Most correlations lie between `0.4` and `0.6`, a somewhat acceptable threshold for assesing whether they can be reduced into fewer variables. PCA works by receiving as input $P$ variables (in this case six) and calculating the normalized linear combination of the $P$ variables. This new variable is the combination of the $P$ that captures the greatest variance out of the $P$ variables. PCA continuous to calculate other normalized linear combinations **but** with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.
 
-This approach has the advantage that it constructs as many principal components (new variables) as it can. Each variable is assessed by how much variance it explains of the original $P$ variables and each new variable is completely independent of the other. Depending on the correlation of the $P$ input variables, you might get three principal components that capture all of the variability in the $P$ variables. In other cases, you can get many variables (more than 20). 
+Most correlations lie between `0.4` and `0.6`, a somewhat acceptable threshold for assesing whether they can be reduced into fewer variables. $PCA$ works by receiving as input $P$ variables (in this case six) and calculating the normalized linear combination of the $P$ variables. This new variable is the linear combination of the six variables that captures the greatest variance out of all of them. $PCA$ continues to calculate other normalized linear combinations **but** with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.
 
-This discussion is getting too theoretical. Let's get get some hands-on experience. Let's pass in our six variables to the function `prcomp`, which estimates these principal components based on our six variables:
+This approach has the advantage that it constructs as many principal components (new variables) as it can, as long as they all capture 100\% of the variability of the original $P$ variables, and each of these new variables are completely uncorrelated between each other. 
+
+Each variable is assessed by how much variance it explains of the original $P$ variables and each new variable is completely independent of the others. Depending on the correlation of the $P$ input variables, you might get three principal components that capture all of the variability of the original $P$ variables. In other cases, you can get an you might many more. 
+
+This discussion is getting too theoretical. Let's get get some hands-on experience of how this works. Let's pass in our six variables to the function `prcomp`, which estimates these principal components based on our six variables. However, for $PCA$ to work well, we need to center and scale the independent variables. This means that the independent variables will have a mean of zero and a standard deviation of one. `prcomp` does this for you, but you should be aware of this for future discussion:
 
 
 ```r
 pc <- prcomp(pisa_selected)
-all_pcs <- as.data.frame(predict(pc, newdata = pisa_selected))
+all_pcs <- as.data.frame(pc$x)
 head(all_pcs)
 ```
 
@@ -94,7 +102,9 @@ head(all_pcs)
 ## 6 -1.132036976 -1.8534154 -0.68913950  0.914561923  0.065907346  0.087208533
 ```
 
-Let's explain what just happened. Our dataset `pisa_selected` contains the six variables of interest. We passed that to `prcomp` which calculated the principal components. With this model object, we used this model object to `predict` the actual columns using our initial $P$ variables in `pisa_selected`. The result of all of this is a dataframe with sex new columns. These six new columns are **not** the initial six variables from `pisa_selected`. Instead, they are variables that summarize the relationship of these six variables. You might ask yourself, how come six variables **summarize** six variables? Let's look at how much variance of the original $P$ variables these 'index' variables explain:
+Let's explain what just happened. Our dataset `pisa_selected` contains the six variables of interest. We passed that to `prcomp` which calculated the principal components. With this model object, we extracted the dataframe with the new principal components. The result of all of this is a dataframe with six new columns. These six new columns are **not** the initial six variables from `pisa_selected`. Instead, they are variables that summarize the relationship of these six variables. 
+
+You might ask yourself, how come six variables **summarize** six variables? That doesn't make much sense. The whole idea is that fewer variables can summarize the original six. Let's look at how much variance of the original $P$ variables these 'index' variables explain:
 
 
 ```r
@@ -113,8 +123,9 @@ tidy(pc, "pcs")
 ## 6     6   0.347  0.0397      1
 ```
 
-This output show how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59\% of the variance of the six variables. The second principal component explains 13.5\%, for a total of 72.6\% between the two. 
-Let's focus on these two principal components. They are supposed to be completely uncorrelated, so let's check that ourselves:
+This output shows how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59\% of the variance of the six variables. The second principal component explains an additional 13.5\%, for a total of 72.6\% between the two. This is certainly better. It means that the first two variables seem to have some power in summarizing the original six variables.
+
+Let's focus on the first two principal components. They are supposed to be completely uncorrelated, so let's check that ourselves:
 
 
 ```r
@@ -127,7 +138,10 @@ cor(all_pcs[c("PC1", "PC2")])
 ## PC2 -0.00000000000001545012  1.00000000000000000000
 ```
 
-As expected, the correlation between these two variables are 0. How do we use these two variables? Well, a typical social scientist would make sure that their expected explanatory power of the two components is high enough for their research problem. If it is, they would include these two columns in their modelling instead of the six variables. However, PCA is all about exploratory data analysis. We might want to go further. These two principal components are a bit of a black box at this point. Which variables do they represent? We can check that with the initial output of `prcomp`:
+As expected, the correlation between these two variables is 0. 
+
+How do we use these two variables? Well, a typical social scientist would make sure that their expected explanatory power of the two components is high enough for their research problem. If it is, they would include these two columns in their statistical models instead of the six variables. 
+However, $PCA$ is all about exploratory data analysis. We might want to go further and explore how the original six variables are related to these principal components. These two principal components are a bit of a black box at this point. Which variables do they represent? We can check that with the initial output of `prcomp`:
 
 
 ```r
@@ -144,26 +158,121 @@ pc$rotation[, 1:2]
 ## past12_spread_rumours     -0.4308453  0.3546832
 ```
 
+These two columns show the correlations between the six original variables and the first two principal components. Let's focus on the first column. The first thing that stands out is that for all the six variables, the correlation is negative. This means that as the respondents answered negatively to the six questions, the first principal component decreases. Informally, we could call this variable a 'negative-peer index'.
 
+Moving to the second column, four of these six variables correlate positively with the second principal component. At least for these four variables, the principal components tend capture the exact opposite relationship. In other words, at least for these four variables, this is a 'positive-peer index'. This type of decomposition is precisely where the usefulness of this type of method comes in. It allows us to summarize many variables into a small set of components that capture meaningful variation.
+
+The package `ggfortifty` contains the function `autoplot` which can help us visualize these correlations in a more meaningful way:
 
 
 ```r
+set.seed(6652)
 pc %>% 
   autoplot(loadings = TRUE,
            loadings.label = TRUE,
            loadings.label.repel = TRUE,
            alpha = 1/6) +
   theme_minimal()
-
-res <-
-  pisa %>%
-  recipe(math_score ~ .) %>%
-  step_center(starts_with("ST038")) %>%
-  step_scale(starts_with("ST038")) %>% 
-  step_pca(starts_with("ST038"), num_comp = 2, res = TRUE) %>%
-  prep()
-
-res %>%
-  ggplot(aes(PC1, PC2)) +
-  geom_point()
 ```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+
+Let's distill this plot. On the `X` axis we have the actual column of the first principal component (PC1) (this is literaly the same column we saw in the object `all_pcs`; if it serves to refresh your memory, check it out with `head(all_pcs)`). As you can see, the label of the `X` axis already tells us that this component explains nearly 60\% of the variance of these six variables. On the `Y` axis we have the actual column of the second principal component (PC2) (same as before, you can see this with `head(all_pcs)`). This principal component explains an additional 13.5\% of the variance of the six variables. 
+
+What this plot is trying to show is where these six variables are clustered between these two principal components. Since these two variables were centered and scaled to have a mean of zero, the red lines always begin at the intersection of the zero in PC1 and PC2. In other words, we can see more clearly the correlations we saw earlier. For example, remember that the first two variables were both negatively correlated with both PC1 and PC2. These two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+
+There is nothing new here. This is the same thing we interpreted from the correlation but from a more intuitive visualization. If you remember the other four variables from the correlation, they showed negative correlations with PC1 and positive correlations with PC2. This means that these variables should cluster **below** the average of PC1 and **higher** than the average of PC2. We can see that more clearly if we first add a line showing the zero values for both variables:
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+
+Any values to the **left** of the the vertical line are low values of PC1 while all values **above** the horizontal line are high values for PC2. Building on this intuition, we should find that the remaining four variables cluster at lower values of PC1 and at higher values of PC1:
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+
+Depending on these correlations, you might reject to focus on the first two principal components and explore this same plot for PC1 and PC3 or PC2 and PC4. There's no clear cut rule for the number of principal components to use. The user should instead explore these plots to understand whether there are interesting findings from clustering many variables into fewer variables. Depending on this, you might reject the idea entirely of using principal components. Or you might use these principal components to represent some interesting findings for your theoretical model.
+
+In any case, this method is inherently exploratory. It serves as way to understand whether we can reduce correlated variables into a small subset of variables that represent them. For a social science point of view, this method is often used for reducing the number of variables. However, there is still room for using it as a clustering method to understand whether certain variables can help us summarize our understanding into simpler concepts.
+
+Having said this, for predictive tasks there is an objective measure on how many principal components to use: the ones that improve predictions the most. Using our previous example, we could perform a grid search on a number of components to see which one maximizes predictive accuracy. Let's run a random forest by regressing the variable `math_score` on all variables in the dataset. While we do that, let's try models with different number of principal components:
+
+
+```r
+# Set the number of components `num_comp`
+# to be tuned
+rcp <-
+  ~ recipe(.x, math_score ~ .) %>%
+    step_pca(starts_with("past12_"), num_comp = tune())
+
+tflow <-
+  pisa %>%
+  tidyflow(seed = 25131) %>%
+  plug_split(initial_split) %>%
+  plug_recipe(rcp) %>%
+  plug_model(set_engine(rand_forest(mode = "regression"), "ranger")) %>%
+  plug_resample(vfold_cv) %>%
+  # Set `num_comp`in the grid to 1:3
+  # meaning that we'll try the models with
+  # number of components 1, 2 and 3
+  plug_grid(expand.grid, num_comp = 1:3)
+
+res_rf <- fit(tflow)
+
+res_rf %>%
+  pull_tflow_fit_tuning() %>%
+  collect_metrics() %>%
+  filter(.metric == "rmse")
+```
+
+```
+## # A tibble: 3 x 6
+##   num_comp .metric .estimator  mean     n std_err
+##      <int> <chr>   <chr>      <dbl> <int>   <dbl>
+## 1        1 rmse    standard    40.8    10   0.402
+## 2        2 rmse    standard    40.8    10   0.438
+## 3        3 rmse    standard    40.8    10   0.422
+```
+
+These are the average results of running a 10-fold cross-validation trying out models with one, two and three principal components respectively. As we can see from the `mean` column, there is little difference between the average $RMSE$ of these different models. If there are important reasons to include these variables in the model and we want to reduce the number of variables in the model for simplicity, we could just keep the model with one principal component. 
+
+However, there's also an alternative approach. `step_pca` allows you to specify the minimum explanatory power of the principal components. As discussed in the documentation of `step_pca`, *you specify the fraction of the total variance that should be covered by the components. For example, `threshold = .75` means that `step_pca` should generate enough components to capture 75\% of the variance.*
+
+We can try our previous models with a 90\% threshold. Since we will not perform a grid search, we will drop the grid and only keep the cross-validation to get uncertain estimates of our loss function $RMSE$:
+
+
+```r
+# Define a new recipe
+# where threshold is .90
+rcp <-
+  ~ recipe(.x, math_score ~ .) %>%
+    step_pca(starts_with("past12_"), threshold = .90)
+
+# Replace the previous recipe
+# and drop the grid
+tflow <-
+  tflow %>%
+  replace_recipe(rcp) %>%
+  drop_grid()
+
+res_rf <- fit(tflow)
+
+res_cv <-
+  res_rf %>%
+  pull_tflow_fit_tuning() %>%
+  collect_metrics()
+
+res_cv
+```
+
+```
+## # A tibble: 2 x 5
+##   .metric .estimator   mean     n std_err
+##   <chr>   <chr>       <dbl> <int>   <dbl>
+## 1 rmse    standard   40.8      10 0.377  
+## 2 rsq     standard    0.835    10 0.00392
+```
+
+This approach offers a very similar $RMSE$ of 40.8. Althought not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
+
+Although $PCA$ is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.
