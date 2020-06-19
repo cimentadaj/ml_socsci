@@ -395,3 +395,189 @@ Althought some people might think that these methods have no value in the social
 We don't seem problems in a way that can be answered with these techniques because we don't think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster. 
 
 A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there's no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we've been trained in a particular paradigm that is difficult to break.
+
+## Hierarchical Clustering
+
+```{r}
+dt <- USArrests
+
+dt %>%
+  ggplot(aes(Assault, Rape)) +
+  geom_point()
+
+
+plot(hclust(dist(dt[c("Assault", "Rape")])))
+```
+
+## Exercises
+
+In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from https://www.kaggle.com/mylesoneill/world-university-rankings/data) contains the name of each university, together with their world ranking, the country where they're located and several other variables that show the respective ranking in each area. The respective columns are:
+
+* `institution`: the name of the university
+* `world_rank`: the overall ranking of the university
+* `country`: the country where the university is located
+* `national_rank`: the ranking of the university within each country
+* `quality_of_education`: the ranking in quality of education
+* `alumni_employment`: the ranking in employment for their students
+* `quality_of_faculty`: the ranking of quality of the faculty
+* `publications`: the ranking in the number of publications
+* `influence`: the ranking in the overall influence
+* `citations`: the ranking in the overall number of citations
+* `patents`: the ranking in the number of patents
+* `year`: the year of each ranking
+
+We can read in the data with the code below:
+
+```{r}
+dt_all <- read.csv("https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv")
+
+# Have a look with:
+head(dt_all)
+```
+
+#### 1. Explore whether there is room for reducing the number of variables {-#ex1}
+
+Many of these ranking variables (except `world_rank`) should be very correlated. It could be that universities that score well in quality of faculty, they also score high on the ranking of publications. Explore these ranking variables by using a Principal Component Approach:
+
+* Limit the data to year 2015
+* Explore the correlation of the variables `quality_of_education`, `alumni_employment`, `quality_of_faculty`, `publications`, `influence`, `citations` and `patents` with the function `cor`.
+
+What is the overall conclusion of the correlation? Are these variables weakly or strongly correlated?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * The correlations are quite high for some variables (for example a .84 correlation between publication and influence and a .80 between influence and citation) while lower for others (correlation of .39 between alumni employment and quality of faculty).
+  
+  * All in all, these ranking variables seem to correlated to a reasonable degree together.
+
+```{r}
+dt <-
+  dt_all %>%
+  filter(year == 2015)
+
+dt %>%
+  select(-world_rank, -institution, -country, -national_rank, -year) %>% 
+  cor()
+
+```
+
+</details>
+
+
+#### 2. Perform a PCA on the ranking variables {-#ex2}
+
+* Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
+* Pass the ranking columns to `prcomp` and set `scale = TRUE` and `center = TRUE` to normalize the data
+* Use `tidy` with `"pcs"` to explore the contribution of explained variance by each principal component
+* Explore what each principal component measures with respect to the original seven variables. This can be done by accessing the object `rotation` with the `$` of the result of the `prcomp`
+* With the package `ggfortify`, use the function `autoplot` to plot the principal components
+
+How many principal componenets were created? How much variance do the first two and three components explain? What does PC1 measure? What does PC2 measure?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * Seven principal components were created by `prcomp`. This is quite a high number, considering that provided seven variables.
+  * The first two components, as expected, explain the majority of the variance of the original six variables with a total of 73\%.
+  * As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because 1st is the best university and 2000 is the worst university within the ranking).
+  * As PC2 increases, `publications`, `influence`, `citations` and `patents` decrease (meaning better university rankings) while the remaining four increase.
+  * Overall, there doesn't seem to be great consistency between the principal components and the variables.
+
+```{r }
+res_pc <-
+  dt %>%
+  select(-world_rank, -institution, -country, -national_rank, -year) %>%
+  prcomp(scale = TRUE, center = TRUE)
+
+tidy(res_pc, "pcs")
+
+res_pc$rotation
+
+autoplot(res_pc,
+         loadings = TRUE,
+         loadings.label = TRUE,
+         loadings.label.repel = TRUE,
+         alpha = 1/6) +
+  theme_minimal()
+```
+
+</details>
+
+#### 3. Apply the kmeans to the set of ranking variables {-#ex3}
+
+* Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
+* Pass the ranking variables to `kmeans`
+* Try several `centers` values to explore whethere there are some variables for clustering
+
+```{r}
+dt_km %>% 
+  ggplot(aes(quality_of_faculty, citations)) +
+  geom_point()
+
+## library(GGally)
+
+sum_dt <- 
+  dt %>%
+  select(-world_rank, -institution, -national_rank, -year) %>%
+  group_by(country) %>%
+  summarize_all(mean)
+
+row.names(sum_dt) <- sum_dt$country
+
+sum_dt %>%
+  select(-country) %>% 
+  ggpairs()
+
+res_km <-
+  sum_dt %>%
+  select(quality_of_education, alumni_employment) %>% 
+  kmeans(centers = 3, nstart = 50)
+
+sum_dt$.cluster <- factor(res_km$cluster, levels = 1:3)
+
+sum_dt %>% 
+  ggplot(aes(quality_of_education, alumni_employment, color = .cluster)) +
+  geom_text(aes(label = country)) +
+  theme_minimal()
+```
+
+
+```{r}
+res_km <-
+  dt %>%
+  filter(country == "USA") %>% 
+  select(quality_of_education, quality_of_faculty) %>%
+  kmeans(centers = 3, nstart = 50)
+
+dt_usa <-
+  dt %>%
+  filter(country == "USA") %>%
+  select(institution, quality_of_education, quality_of_faculty)
+
+dt_km <- augment(res_km, dt_usa)
+
+dt_km %>% 
+  ggplot(aes(quality_of_education,
+             quality_of_faculty)) +
+  geom_point()
+
+dt_km %>% 
+  ggplot(aes(quality_of_education,
+             quality_of_faculty,
+             color = .cluster)) +
+  geom_point()
+
+dt_km %>%
+  filter(quality_of_education < 50,
+         quality_of_faculty < 50)
+```
+
+
+```{r}
+row.names(dt_km) <- dt_km$institution
+plot(as.phylo(hclust(dist(dt_km))), labels = dt_km$institution, type = "unrooted", no.margin = TRUE, cex = 0.6)
+```
+
+</details>
+
