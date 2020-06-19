@@ -5,7 +5,7 @@ dt_all <- read.csv(here("data", "university_ranking.csv"))
 
 final_df <-
   dt_all %>%
-  select(institution, everything(), -score)
+  select(institution, everything(), -score, -broad_impact)
 
 write.csv(final_df,
           here("data", "university_ranking_final.csv"),
