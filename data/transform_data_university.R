@@ -1,9 +1,12 @@
 library(dplyr)
+library(here)
 
-dt_all <- read.csv("./university_ranking.csv")
+dt_all <- read.csv(here("data", "university_ranking.csv"))
 
 final_df <-
   dt_all %>%
   select(institution, everything(), -score)
 
-write.csv(final_df, "university_ranking_final.csv")
+write.csv(final_df,
+          here("data", "university_ranking_final.csv"),
+          row.names = FALSE)
