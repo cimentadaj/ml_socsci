@@ -1,0 +1,2201 @@
+"","institution","world_rank","country","national_rank","quality_of_education","alumni_employment","quality_of_faculty","publications","influence","citations","broad_impact","patents","year"
+"1","Harvard University",1,"USA",1,7,9,1,1,1,1,NA,5,2012
+"2","Massachusetts Institute of Technology",2,"USA",2,9,17,3,12,4,4,NA,1,2012
+"3","Stanford University",3,"USA",3,17,11,5,4,2,2,NA,15,2012
+"4","University of Cambridge",4,"United Kingdom",1,10,24,4,16,16,11,NA,50,2012
+"5","California Institute of Technology",5,"USA",4,2,29,7,37,22,22,NA,18,2012
+"6","Princeton University",6,"USA",5,8,14,2,53,33,26,NA,101,2012
+"7","University of Oxford",7,"United Kingdom",2,13,28,9,15,13,19,NA,26,2012
+"8","Yale University",8,"USA",6,14,31,12,14,6,15,NA,66,2012
+"9","Columbia University",9,"USA",7,23,21,10,13,12,14,NA,5,2012
+"10","University of California, Berkeley",10,"USA",8,16,52,6,6,5,3,NA,16,2012
+"11","University of Chicago",11,"USA",9,15,26,8,34,20,28,NA,101,2012
+"12","Cornell University",12,"USA",10,21,42,14,22,21,16,NA,10,2012
+"13","University of Pennsylvania",13,"USA",11,31,16,24,9,10,8,NA,9,2012
+"14","University of Tokyo",14,"Japan",1,32,19,31,8,19,23,NA,3,2012
+"15","Johns Hopkins University",15,"USA",12,34,77,20,11,9,9,NA,7,2012
+"16","Swiss Federal Institute of Technology in Zurich",16,"Switzerland",1,26,66,11,40,51,44,NA,34,2012
+"17","Kyoto University",17,"Japan",2,42,38,19,25,36,43,NA,23,2012
+"18","Weizmann Institute of Science",18,"Israel",1,4,101,22,101,67,101,NA,29,2012
+"19","University of California, Los Angeles",19,"USA",13,62,59,23,3,11,6,NA,13,2012
+"20","University of California, San Diego",20,"USA",14,61,101,15,10,8,10,NA,22,2012
+"21","Rockefeller University",21,"USA",15,1,101,16,101,28,96,NA,101,2012
+"22","Hebrew University of Jerusalem",22,"Israel",2,24,93,13,101,91,101,NA,28,2012
+"23","New York University",23,"USA",16,89,75,17,42,24,34,NA,62,2012
+"24","University of California, San Francisco",24,"USA",17,101,101,21,19,3,13,NA,33,2012
+"25","University of Wisconsin–Madison",25,"USA",18,64,63,33,17,30,21,NA,21,2012
+"26","University of Illinois at Urbana–Champaign",26,"USA",19,82,101,18,35,71,39,NA,44,2012
+"27","Duke University",27,"USA",20,65,43,55,20,15,12,NA,20,2012
+"28","Imperial College London",28,"United Kingdom",3,84,73,35,26,26,29,NA,41,2012
+"29","University of Texas Southwestern Medical Center",29,"USA",21,19,101,32,101,43,84,NA,101,2012
+"30","University of Texas at Austin",30,"USA",22,101,78,27,41,47,40,NA,57,2012
+"31","University College London",31,"United Kingdom",4,35,101,45,27,23,33,NA,86,2012
+"32","Osaka University",32,"Japan",3,77,101,44,39,44,51,NA,11,2012
+"33","Northwestern University",33,"USA",23,101,32,101,24,25,20,NA,35,2012
+"34","University of Michigan, Ann Arbor",34,"USA",24,68,60,101,2,17,7,NA,8,2012
+"35","University of Toronto",35,"Canada",1,101,101,34,7,14,18,NA,101,2012
+"36","University of North Carolina at Chapel Hill",36,"USA",25,101,86,56,31,29,31,NA,29,2012
+"37","Washington University in St. Louis",37,"USA",26,74,62,101,32,18,30,NA,14,2012
+"38","University of Utah",38,"USA",27,92,101,41,74,52,67,NA,12,2012
+"39","University of Washington - Seattle",39,"USA",28,101,101,40,5,7,5,NA,101,2012
+"40","University of California, Santa Barbara",40,"USA",29,101,101,28,68,72,36,NA,101,2012
+"41","McGill University",41,"Canada",2,70,91,54,33,39,47,NA,101,2012
+"42","Purdue University, West Lafayette",42,"USA",30,95,70,49,61,101,58,NA,19,2012
+"43","Carnegie Mellon University",43,"USA",31,30,81,26,101,101,61,NA,101,2012
+"44","University of Southern California",44,"USA",32,101,101,63,46,48,32,NA,23,2012
+"45","University of California, Davis",45,"USA",33,79,101,92,23,40,25,NA,32,2012
+"46","University of Colorado Boulder",46,"USA",34,83,88,48,71,54,56,NA,101,2012
+"47","University of California, Irvine",47,"USA",35,101,101,38,59,57,52,NA,65,2012
+"48","University of Paris-Sud",48,"France",1,48,101,25,73,96,101,NA,101,2012
+"49","University of Minnesota, Twin Cities",49,"USA",36,101,101,85,18,31,17,NA,84,2012
+"50","University of Arizona",50,"USA",37,101,101,88,45,42,45,NA,27,2012
+"51","Technion – Israel Institute of Technology",51,"Israel",3,45,89,36,101,101,101,NA,51,2012
+"52","Ohio State University, Columbus",52,"USA",38,101,101,83,30,50,35,NA,54,2012
+"53","University of Rochester",53,"USA",39,41,54,101,82,68,54,NA,62,2012
+"54","École normale supérieure - Paris",54,"France",2,3,61,77,101,101,101,NA,101,2012
+"55","University of Florida",55,"USA",40,101,101,96,29,74,42,NA,2,2012
+"56","Tel Aviv University",56,"Israel",4,97,101,51,72,101,101,NA,35,2012
+"57","Rice University",57,"USA",41,28,53,94,101,101,53,NA,101,2012
+"58","Dartmouth College",58,"USA",42,27,13,101,101,101,101,NA,92,2012
+"59","Vanderbilt University",59,"USA",43,80,72,101,50,35,49,NA,101,2012
+"60","University of Edinburgh",60,"United Kingdom",1,71,101,43,64,41,70,NA,101,2012
+"61","École Polytechnique",61,"France",3,47,3,101,101,101,101,NA,101,2012
+"62","Boston University",62,"USA",44,101,101,86,48,34,37,NA,101,2012
+"63","Pierre-and-Marie-Curie University",63,"France",4,54,101,84,36,53,78,NA,101,2012
+"64","Pennsylvania State University, University Park",64,"USA",45,101,94,101,38,60,27,NA,99,2012
+"65","University of Geneva",65,"Switzerland",2,46,101,29,101,93,101,NA,101,2012
+"66","Brown University",66,"USA",46,49,37,65,101,73,92,NA,101,2012
+"67","University of British Columbia",67,"Canada",3,101,101,93,28,38,48,NA,101,2012
+"68","University of Maryland, College Park",68,"USA",47,85,101,50,47,55,41,NA,101,2012
+"69","Swiss Federal Institute of Technology in Lausanne",69,"Switzerland",3,101,30,82,101,101,101,NA,74,2012
+"70","Karolinska Institute",70,"Sweden",1,51,101,42,84,49,95,NA,101,2012
+"71","University of Pittsburgh - Pittsburgh Campus",71,"USA",48,81,101,101,21,32,24,NA,61,2012
+"72","Rutgers University-New Brunswick",72,"USA",49,101,101,59,80,83,72,NA,85,2012
+"73","Texas A&M University, College Station",73,"USA",50,101,101,46,58,101,80,NA,101,2012
+"74","Nagoya University",74,"Japan",4,56,101,69,101,101,101,NA,46,2012
+"75","Seoul National University",75,"South Korea",1,101,34,101,44,101,69,NA,4,2012
+"76","University of Manchester",76,"United Kingdom",5,101,101,75,52,70,63,NA,101,2012
+"77","Sapienza University of Rome",77,"Italy",1,101,101,30,70,101,101,NA,101,2012
+"78","Case Western Reserve University",78,"USA",51,33,101,101,96,63,65,NA,101,2012
+"79","Tohoku University",79,"Japan",5,53,101,101,49,100,67,NA,29,2012
+"80","Arizona State University",80,"USA",52,101,101,70,101,101,77,NA,49,2012
+"81","Emory University",81,"USA",53,101,97,101,54,37,50,NA,46,2012
+"82","Ruprecht Karl University of Heidelberg",82,"Germany",1,87,101,52,86,58,100,NA,101,2012
+"83","Ludwig Maximilian University of Munich",83,"Germany",2,90,101,90,60,45,62,NA,101,2012
+"84","University of Virginia",84,"USA",54,101,50,101,76,62,57,NA,86,2012
+"85","Leiden University",85,"Netherlands",1,88,101,76,81,65,101,NA,101,2012
+"86","Tufts University",86,"USA",55,60,41,101,101,95,75,NA,101,2012
+"87","Georgia Institute of Technology",87,"USA",56,101,67,101,79,101,46,NA,40,2012
+"88","University of Zurich",88,"Switzerland",4,101,101,80,101,69,99,NA,101,2012
+"89","University of Helsinki",89,"Finland",1,96,101,79,62,64,54,NA,101,2012
+"90","Technical University of Munich",90,"Germany",3,52,101,101,91,76,94,NA,101,2012
+"91","University of Oslo",91,"Norway",1,101,101,39,101,101,101,NA,101,2012
+"92","University of Queensland",92,"Australia",1,101,101,101,67,90,89,NA,46,2012
+"93","University of Copenhagen",93,"Denmark",1,101,101,60,85,66,101,NA,101,2012
+"94","University of Sydney",94,"Australia",2,101,101,101,56,92,85,NA,69,2012
+"95","Williams College",95,"USA",57,18,15,101,101,101,101,NA,101,2012
+"96","University of Texas MD Anderson Cancer Center",96,"USA",58,101,101,101,95,46,66,NA,100,2012
+"97","University of Nottingham",97,"United Kingdom",6,101,101,87,101,101,101,NA,92,2012
+"98","University of Bristol",98,"United Kingdom",7,101,101,78,75,81,86,NA,101,2012
+"99","Utrecht University",99,"Netherlands",2,100,101,101,65,101,60,NA,101,2012
+"100","Mines ParisTech",100,"France",5,44,4,101,101,101,101,NA,101,2012
+"101","Harvard University",1,"USA",1,1,1,1,1,1,1,NA,7,2013
+"102","Stanford University",2,"USA",2,11,2,4,6,2,2,NA,11,2013
+"103","University of Oxford",3,"United Kingdom",1,7,12,10,11,7,13,NA,15,2013
+"104","Massachusetts Institute of Technology",4,"USA",3,2,16,2,16,3,3,NA,1,2013
+"105","University of Cambridge",5,"United Kingdom",2,3,15,5,9,11,10,NA,39,2013
+"106","Columbia University",6,"USA",4,13,8,9,13,9,11,NA,10,2013
+"107","University of California, Berkeley",7,"USA",5,6,28,6,8,6,4,NA,19,2013
+"108","Princeton University",8,"USA",6,4,14,3,58,35,27,NA,101,2013
+"109","University of Chicago",9,"USA",7,9,19,8,37,21,30,NA,101,2013
+"110","Yale University",10,"USA",8,10,25,13,20,12,22,NA,42,2013
+"111","California Institute of Technology",11,"USA",9,5,101,7,38,24,25,NA,17,2013
+"112","University of Pennsylvania",12,"USA",10,22,5,25,10,10,9,NA,14,2013
+"113","Cornell University",13,"USA",11,12,23,18,21,19,15,NA,7,2013
+"114","University of Tokyo",14,"Japan",1,17,3,32,14,23,29,NA,5,2013
+"115","Kyoto University",15,"Japan",2,32,17,14,28,46,58,NA,13,2013
+"116","University of California, Los Angeles",16,"USA",12,38,35,12,5,15,6,NA,12,2013
+"117","Johns Hopkins University",17,"USA",13,23,96,21,4,5,7,NA,2,2013
+"118","Swiss Federal Institute of Technology in Zurich",18,"Switzerland",1,16,60,11,40,53,55,NA,60,2013
+"119","New York University",19,"USA",14,37,31,16,41,25,33,NA,51,2013
+"120","University of California, San Diego",20,"USA",15,33,101,19,15,14,14,NA,22,2013
+"121","Hebrew University of Jerusalem",21,"Israel",1,15,101,15,101,96,101,NA,24,2013
+"122","University of California, San Francisco",22,"USA",16,101,101,22,23,4,18,NA,63,2013
+"123","University of Wisconsin–Madison",23,"USA",17,31,55,33,19,29,20,NA,30,2013
+"124","University of Illinois at Urbana–Champaign",24,"USA",18,65,101,20,33,66,34,NA,67,2013
+"125","Duke University",25,"USA",19,89,42,46,22,17,17,NA,24,2013
+"126","University of Texas at Austin",26,"USA",20,101,56,24,46,84,37,NA,20,2013
+"127","Imperial College London",27,"United Kingdom",3,101,92,35,17,22,19,NA,48,2013
+"128","Northwestern University",28,"USA",21,101,21,101,27,26,24,NA,30,2013
+"129","University of Toronto",29,"Canada",1,91,81,34,2,13,12,NA,101,2013
+"130","University College London",30,"United Kingdom",4,24,101,49,12,16,21,NA,73,2013
+"131","University of Washington - Seattle",31,"USA",22,101,101,41,7,8,5,NA,51,2013
+"132","University of Michigan, Ann Arbor",32,"USA",23,35,27,101,3,18,8,NA,6,2013
+"133","Weizmann Institute of Science",33,"Israel",2,18,101,23,101,85,101,NA,48,2013
+"134","University of North Carolina at Chapel Hill",34,"USA",24,101,101,60,30,27,26,NA,42,2013
+"135","Osaka University",35,"Japan",3,77,91,44,55,56,72,NA,17,2013
+"136","University of Paris-Sud",36,"France",1,26,101,26,73,101,101,NA,101,2013
+"137","University of California, Santa Barbara",37,"USA",25,101,101,28,89,91,38,NA,101,2013
+"138","Purdue University, West Lafayette",38,"USA",26,95,39,52,71,101,65,NA,36,2013
+"139","University of Southern California",39,"USA",27,101,99,56,56,52,36,NA,40,2013
+"140","Seoul National University",40,"South Korea",1,101,13,101,48,101,76,NA,4,2013
+"141","University of Colorado Boulder",41,"USA",28,82,84,38,75,68,54,NA,101,2013
+"142","University of Utah",42,"USA",29,101,101,42,93,61,85,NA,27,2013
+"143","Rutgers University-New Brunswick",43,"USA",30,101,101,48,43,58,45,NA,96,2013
+"144","University of Minnesota, Twin Cities",44,"USA",31,101,101,87,18,31,16,NA,67,2013
+"145","University of Edinburgh",45,"United Kingdom",5,47,101,45,52,36,63,NA,101,2013
+"146","University of Texas Southwestern Medical Center",46,"USA",32,46,101,29,101,28,82,NA,101,2013
+"147","McGill University",47,"Canada",2,54,62,59,34,42,48,NA,101,2013
+"148","Pierre-and-Marie-Curie University",48,"France",2,19,101,84,31,50,78,NA,81,2013
+"149","Rockefeller University",49,"USA",33,55,101,17,101,34,101,NA,101,2013
+"150","Pennsylvania State University, University Park",50,"USA",34,101,72,101,29,54,23,NA,67,2013
+"151","Carnegie Mellon University",51,"USA",35,30,101,27,101,101,74,NA,101,2013
+"152","Ohio State University, Columbus",52,"USA",36,101,101,86,32,55,35,NA,60,2013
+"153","University of California, Davis",53,"USA",37,60,101,94,26,47,31,NA,90,2013
+"154","Boston University",54,"USA",38,101,69,88,54,37,41,NA,100,2013
+"155","University of Florida",55,"USA",39,101,101,98,35,92,42,NA,9,2013
+"156","University of Geneva",56,"Switzerland",2,52,101,30,101,78,101,NA,101,2013
+"157","Tel Aviv University",57,"Israel",3,84,101,54,83,101,101,NA,32,2013
+"158","University of British Columbia",58,"Canada",3,101,101,95,25,39,39,NA,100,2013
+"159","University of Maryland, College Park",59,"USA",40,79,101,53,49,77,40,NA,101,2013
+"160","Karolinska Institute",60,"Sweden",1,101,101,47,64,38,62,NA,101,2013
+"161","Vanderbilt University",61,"USA",41,101,101,101,53,40,60,NA,40,2013
+"162","Sapienza University of Rome",62,"Italy",1,101,101,31,76,101,101,NA,101,2013
+"163","Washington University in St. Louis",63,"USA",42,101,101,101,36,20,32,NA,101,2013
+"164","École normale supérieure - Paris",64,"France",3,8,101,57,101,101,101,NA,101,2013
+"165","University of California, Irvine",65,"USA",43,101,101,39,69,67,61,NA,101,2013
+"166","Technion – Israel Institute of Technology",66,"Israel",4,50,101,36,101,101,101,NA,73,2013
+"167","Ludwig Maximilian University of Munich",67,"Germany",1,62,101,92,67,49,67,NA,101,2013
+"168","University of Copenhagen",68,"Denmark",1,101,101,63,42,43,51,NA,101,2013
+"169","University of Pittsburgh - Pittsburgh Campus",69,"USA",44,80,101,101,24,33,28,NA,44,2013
+"170","Keio University",70,"Japan",4,101,6,101,101,101,101,NA,73,2013
+"171","University of Virginia",71,"USA",45,101,24,101,88,73,68,NA,63,2013
+"172","University of Manchester",72,"United Kingdom",6,101,101,76,47,63,57,NA,101,2013
+"173","Arizona State University",73,"USA",46,101,101,73,101,101,89,NA,20,2013
+"174","University of Zurich",74,"Switzerland",3,101,101,82,59,48,52,NA,101,2013
+"175","King's College London",75,"United Kingdom",7,41,101,101,45,45,44,NA,101,2013
+"176","University of Rochester",76,"USA",47,63,80,101,101,86,66,NA,51,2013
+"177","Brown University",77,"USA",48,59,52,67,101,89,96,NA,101,2013
+"178","University of Arizona",78,"USA",49,101,101,90,60,57,49,NA,101,2013
+"179","Ruprecht Karl University of Heidelberg",79,"Germany",2,73,101,55,82,59,100,NA,101,2013
+"180","Texas A&M University, College Station",80,"USA",50,101,101,50,72,101,88,NA,101,2013
+"181","University of Oslo",81,"Norway",1,101,101,40,101,101,101,NA,101,2013
+"182","Dartmouth College",82,"USA",51,45,20,101,101,101,101,NA,78,2013
+"183","Swiss Federal Institute of Technology in Lausanne",83,"Switzerland",4,101,101,85,101,101,83,NA,54,2013
+"184","Utrecht University",84,"Netherlands",1,101,101,101,39,44,47,NA,101,2013
+"185","Indiana University - Bloomington",85,"USA",52,101,48,101,50,72,59,NA,101,2013
+"186","École Polytechnique",86,"France",4,101,4,101,101,101,101,NA,101,2013
+"187","National University of Singapore",87,"Singapore",1,101,101,101,44,101,50,NA,27,2013
+"188","University of Texas MD Anderson Cancer Center",88,"USA",53,101,101,101,90,32,56,NA,101,2013
+"189","Stony Brook University",89,"USA",54,101,101,68,101,101,98,NA,90,2013
+"190","Lomonosov Moscow State University",90,"Russia",1,14,101,51,101,101,101,NA,101,2013
+"191","Nagoya University",91,"Japan",5,72,101,71,101,101,101,NA,58,2013
+"192","University of Sydney",92,"Australia",1,101,101,101,61,101,101,NA,48,2013
+"193","Emory University",93,"USA",55,101,101,101,66,41,53,NA,81,2013
+"194","Rice University",94,"USA",56,51,101,97,101,101,64,NA,81,2013
+"195","Tohoku University",95,"Japan",6,43,101,101,65,101,91,NA,26,2013
+"196","Australian National University",96,"Australia",2,101,101,43,101,101,101,NA,101,2013
+"197","University of Alberta",97,"Canada",4,101,101,101,68,101,92,NA,81,2013
+"198","University of Helsinki",98,"Finland",1,69,101,81,74,79,71,NA,101,2013
+"199","Paris Diderot University - Paris 7",99,"France",5,28,101,72,101,87,101,NA,101,2013
+"200","Georgia Institute of Technology",100,"USA",57,101,85,101,97,101,43,NA,32,2013
+"201","Harvard University",1,"USA",1,1,1,1,1,1,1,1,2,2014
+"202","Stanford University",2,"USA",2,11,2,4,5,3,3,4,6,2014
+"203","Massachusetts Institute of Technology",3,"USA",3,3,11,2,15,2,2,2,1,2014
+"204","University of Cambridge",4,"United Kingdom",1,2,10,5,10,9,12,13,48,2014
+"205","University of Oxford",5,"United Kingdom",2,7,12,10,11,12,11,12,16,2014
+"206","Columbia University",6,"USA",4,13,8,9,14,13,9,13,4,2014
+"207","University of California, Berkeley",7,"USA",5,4,22,6,7,4,3,7,28,2014
+"208","University of Chicago",8,"USA",6,10,14,8,17,19,10,18,149,2014
+"209","Princeton University",9,"USA",7,5,16,3,70,25,19,41,204,2014
+"210","Yale University",10,"USA",8,9,25,11,18,7,32,19,45,2014
+"211","Cornell University",11,"USA",9,12,18,19,23,15,23,23,12,2014
+"212","California Institute of Technology",12,"USA",10,6,303,7,48,6,16,24,9,2014
+"213","University of Tokyo",13,"Japan",1,17,3,33,12,16,28,26,14,2014
+"214","University of Pennsylvania",14,"USA",11,21,4,26,8,17,13,10,28,2014
+"215","University of California, Los Angeles",15,"USA",12,27,27,12,6,14,7,6,10,2014
+"216","Kyoto University",16,"Japan",2,30,23,15,27,41,61,51,18,2014
+"217","New York University",17,"USA",13,33,21,17,49,29,32,31,48,2014
+"218","Swiss Federal Institute of Technology in Zurich",18,"Switzerland",1,16,105,13,42,28,45,86,84,2014
+"219","Johns Hopkins University",19,"USA",14,24,75,18,4,10,6,3,3,2014
+"220","University of California, San Diego",20,"USA",15,32,478,20,16,5,19,16,13,2014
+"221","University of Michigan, Ann Arbor",21,"USA",16,29,19,131,3,20,5,10,19,2014
+"222","Hebrew University of Jerusalem",22,"Israel",1,15,255,16,114,94,493,151,40,2014
+"223","Northwestern University",23,"USA",17,151,13,105,28,32,25,27,61,2014
+"224","Seoul National University",24,"South Korea",1,355,9,210,38,165,87,107,5,2014
+"225","University of Wisconsin–Madison",25,"USA",18,31,28,34,21,24,23,28,28,2014
+"226","Duke University",26,"USA",19,65,30,49,22,23,13,15,42,2014
+"227","University of California, San Francisco",27,"USA",20,355,478,23,24,8,17,9,57,2014
+"228","University of Illinois at Urbana–Champaign",28,"USA",21,34,80,21,36,45,38,68,64,2014
+"229","University of Texas at Austin",29,"USA",22,92,39,24,51,54,26,74,45,2014
+"230","University College London",30,"United Kingdom",3,20,406,52,13,22,18,21,121,2014
+"231","University of Toronto",31,"Canada",1,71,45,35,2,18,13,8,149,2014
+"232","University of Washington - Seattle",32,"USA",23,89,107,46,9,11,8,5,54,2014
+"233","Rutgers University-New Brunswick",33,"USA",24,91,33,31,52,47,38,51,54,2014
+"234","Keio University",34,"Japan",3,271,5,210,299,243,310,266,159,2014
+"235","École normale supérieure - Paris",35,"France",1,8,478,59,362,156,493,311,737,2014
+"236","École Polytechnique",36,"France",2,150,6,208,323,282,250,295,181,2014
+"237","Rockefeller University",37,"USA",25,72,478,14,347,26,107,62,227,2014
+"238","Weizmann Institute of Science",38,"Israel",2,18,478,22,233,63,250,137,51,2014
+"239","Imperial College London",39,"United Kingdom",4,121,98,38,20,27,31,17,34,2014
+"240","Waseda University",40,"Japan",4,355,7,210,391,384,283,380,204,2014
+"241","University of Virginia",41,"USA",26,194,17,117,93,71,55,89,94,2014
+"242","McGill University",42,"Canada",2,45,32,60,35,59,34,32,204,2014
+"243","Osaka University",43,"Japan",5,69,36,48,43,55,114,56,34,2014
+"244","Dartmouth College",44,"USA",27,46,15,210,246,164,125,132,74,2014
+"245","University of North Carolina at Chapel Hill",45,"USA",28,179,86,61,32,37,22,22,38,2014
+"246","Pennsylvania State University, University Park",46,"USA",29,226,42,65,33,36,26,33,100,2014
+"247","Ohio State University, Columbus",47,"USA",30,93,65,81,30,52,30,37,38,2014
+"248","Lomonosov Moscow State University",48,"Russia",1,14,210,50,264,247,310,361,737,2014
+"249","University of Minnesota, Twin Cities",49,"USA",31,61,159,83,19,38,29,29,68,2014
+"250","University of Paris-Sud",50,"France",3,26,410,25,69,89,114,102,338,2014
+"251","University of Southern California",51,"USA",32,148,74,43,59,64,61,54,33,2014
+"252","Purdue University, West Lafayette",52,"USA",33,81,52,54,72,87,73,121,20,2014
+"253","University of Pittsburgh - Pittsburgh Campus",53,"USA",34,76,195,210,25,58,21,24,64,2014
+"254","Carnegie Mellon University",54,"USA",35,25,219,27,207,234,52,144,170,2014
+"255","Peking University",55,"China",1,355,35,210,65,155,250,155,7,2014
+"256","University of Edinburgh",56,"United Kingdom",5,42,131,36,54,42,55,46,307,2014
+"257","University of California, Davis",57,"USA",36,47,192,90,29,31,38,50,68,2014
+"258","Washington University in St. Louis",58,"USA",37,96,145,112,39,21,34,19,181,2014
+"259","University of Florida",59,"USA",38,212,299,95,34,70,52,63,8,2014
+"260","University of California, Santa Barbara",60,"USA",39,124,252,28,105,53,48,56,68,2014
+"261","University of British Columbia",61,"Canada",3,85,298,92,26,34,36,41,78,2014
+"262","University of Utah",62,"USA",40,88,91,45,99,62,114,94,22,2014
+"263","University of Colorado Boulder",63,"USA",41,75,56,41,97,35,75,77,128,2014
+"264","University of Notre Dame",64,"USA",42,197,20,150,241,230,159,238,307,2014
+"265","National Taiwan University",65,"Taiwan",1,113,24,210,46,216,283,215,637,2014
+"266","University of Texas Southwestern Medical Center",66,"USA",43,50,478,29,127,30,81,34,181,2014
+"267","Boston University",67,"USA",44,291,47,84,60,46,43,37,227,2014
+"268","Pierre-and-Marie-Curie University",68,"France",4,36,431,86,31,39,99,66,100,2014
+"269","University of Manchester",69,"United Kingdom",6,98,73,74,41,68,43,59,94,2014
+"270","University of Arizona",70,"USA",45,99,62,87,67,33,37,46,307,2014
+"271","Vanderbilt University",71,"USA",46,108,90,113,58,57,52,40,51,2014
+"272","Tohoku University",72,"Japan",6,40,241,210,56,112,107,112,21,2014
+"273","Karolinska Institute",73,"Sweden",1,126,478,37,55,61,38,36,737,2014
+"274","National University of Singapore",74,"Singapore",1,355,99,210,37,136,114,102,23,2014
+"275","University of Geneva",75,"Switzerland",2,48,151,30,121,75,99,79,194,2014
+"276","University of Maryland, College Park",76,"USA",47,63,198,51,57,49,38,73,338,2014
+"277","University of Rochester",77,"USA",48,60,50,116,112,104,69,70,76,2014
+"278","Emory University",78,"USA",49,355,97,210,66,65,73,37,45,2014
+"279","University of Copenhagen",79,"Denmark",1,111,143,63,44,44,61,34,481,2014
+"280","University of California, Irvine",80,"USA",50,217,478,42,76,48,48,51,138,2014
+"281","Brown University",81,"USA",51,56,46,67,123,66,55,97,170,2014
+"282","Ludwig Maximilian University of Munich",82,"Germany",1,43,156,91,64,56,69,48,181,2014
+"283","Georgia Institute of Technology",83,"USA",52,123,77,210,104,154,79,101,24,2014
+"284","Tufts University",84,"USA",53,68,43,178,164,148,79,81,84,2014
+"285","University of Zurich",85,"Switzerland",3,110,404,82,47,43,55,56,94,2014
+"286","Tel Aviv University",86,"Israel",3,74,122,56,95,116,176,151,28,2014
+"287","Tsinghua University",87,"China",2,294,63,210,79,192,134,162,16,2014
+"288","Utrecht University",88,"Netherlands",1,102,181,101,40,51,55,49,338,2014
+"289","Ruprecht Karl University of Heidelberg",89,"Germany",2,57,426,58,68,67,61,54,159,2014
+"290","King's College London",90,"United Kingdom",7,28,173,114,84,132,87,77,181,2014
+"291","Sapienza University of Rome",91,"Italy",1,66,178,32,78,162,250,145,373,2014
+"292","Kyushu University",92,"Japan",7,355,41,210,135,170,283,207,27,2014
+"293","Swiss Federal Institute of Technology in Lausanne",93,"Switzerland",4,355,130,80,126,121,48,124,41,2014
+"294","Katholieke Universiteit Leuven",94,"Belgium",1,355,225,210,53,111,75,59,64,2014
+"295","University of Sydney",95,"Australia",1,127,158,162,50,117,61,94,100,2014
+"296","Tokyo Institute of Technology",96,"Japan",8,208,48,119,150,157,87,180,44,2014
+"297","University of Melbourne",97,"Australia",2,136,101,210,45,74,87,81,194,2014
+"298","University of Bonn",98,"Germany",3,23,275,70,156,125,187,145,227,2014
+"299","Technical University of Munich",99,"Germany",4,38,138,173,106,92,187,97,100,2014
+"300","Royal Institute of Technology",100,"Sweden",2,185,26,106,223,312,310,326,637,2014
+"301","Erasmus University Rotterdam",101,"Netherlands",2,355,66,184,88,142,75,45,227,2014
+"302","Case Western Reserve University",102,"USA",54,44,208,189,134,97,60,70,100,2014
+"303","University of Alberta",103,"Canada",4,163,144,148,61,105,81,99,84,2014
+"304","University of Texas MD Anderson Cancer Center",104,"USA",55,355,478,136,92,76,61,30,78,2014
+"305","Texas A&M University, College Station",105,"USA",56,328,94,53,73,90,87,137,280,2014
+"306","Arizona State University",106,"USA",57,355,478,72,141,79,69,145,34,2014
+"307","Yonsei University",107,"South Korea",2,355,61,210,143,330,250,251,15,2014
+"308","Rice University",108,"USA",58,54,313,94,252,144,45,121,61,2014
+"309","Technion – Israel Institute of Technology",109,"Israel",4,41,221,39,180,226,187,207,100,2014
+"310","University of Helsinki",110,"Finland",1,53,478,77,80,88,99,74,481,2014
+"311","University of Oslo",111,"Norway",1,139,266,44,108,126,130,100,373,2014
+"312","Michigan State University",112,"USA",59,112,214,210,85,115,45,106,128,2014
+"313","Indiana University - Bloomington",113,"USA",60,211,38,175,166,769,176,195,204,2014
+"314","University of the Witwatersrand",114,"South Africa",1,79,29,169,456,241,310,472,259,2014
+"315","University of Queensland",115,"Australia",3,265,295,134,75,96,125,102,78,2014
+"316","Lund University",116,"Sweden",3,132,478,165,81,133,48,70,737,2014
+"317","Leiden University",117,"Netherlands",3,107,478,78,82,91,114,66,227,2014
+"318","Georgetown University",118,"USA",61,146,37,210,295,323,310,211,159,2014
+"319","Aarhus University",119,"Denmark",2,292,188,107,90,78,81,90,194,2014
+"320","University of Barcelona",120,"Spain",1,355,207,210,63,107,81,88,259,2014
+"321","Baylor College of Medicine",121,"USA",62,355,478,210,111,40,107,41,194,2014
+"322","University of Amsterdam",122,"Netherlands",4,182,438,204,74,86,87,68,338,2014
+"323","University of Bristol",123,"United Kingdom",8,177,242,76,87,69,99,110,338,2014
+"324","Uppsala University",124,"Sweden",4,62,336,111,94,77,99,102,737,2014
+"325","University of Iowa",125,"USA",63,223,184,163,103,81,87,110,115,2014
+"326","Stony Brook University",126,"USA",64,170,478,68,161,73,69,118,100,2014
+"327","University of Groningen",127,"Netherlands",5,293,265,190,71,103,107,79,338,2014
+"328","Korea Advanced Institute of Science and Technology (KAIST)",128,"South Korea",3,355,85,210,186,262,363,306,11,2014
+"329","Radboud University Nijmegen",129,"Netherlands",6,118,155,210,91,120,114,81,552,2014
+"330","Korea University",130,"South Korea",4,355,58,210,182,428,220,293,34,2014
+"331","University of São Paulo",131,"Brazil",1,302,70,210,62,182,114,162,737,2014
+"332","Nagoya University",132,"Japan",9,67,356,69,119,141,134,192,68,2014
+"333","University of Colorado Denver",133,"USA",65,355,478,131,140,118,150,61,78,2014
+"334","University of Montreal",134,"Canada",5,309,460,210,77,110,87,64,426,2014
+"335","Albert Ludwig University of Freiburg",135,"Germany",5,137,113,187,155,106,159,137,64,2014
+"336","Ghent University",136,"Belgium",2,115,282,139,89,158,81,129,121,2014
+"337","University of Glasgow",137,"United Kingdom",9,219,112,210,118,131,87,92,280,2014
+"338","University of Miami",138,"USA",66,355,152,210,159,128,87,114,78,2014
+"339","Université libre de Bruxelles",139,"Belgium",3,165,167,57,221,196,81,158,115,2014
+"340","Paris Diderot University - Paris 7",140,"France",5,117,478,73,107,60,159,107,426,2014
+"341","McMaster University",141,"Canada",6,210,271,159,128,159,87,81,159,2014
+"342","University of Birmingham",142,"United Kingdom",10,58,119,198,116,160,150,135,204,2014
+"343","University of Texas at Dallas",143,"USA",67,355,244,210,219,100,61,44,307,2014
+"344","VU University Amsterdam",144,"Netherlands",7,355,398,210,83,123,87,86,737,2014
+"345","Wake Forest University",145,"USA",68,242,59,210,251,236,150,126,128,2014
+"346","University of Southampton",146,"United Kingdom",11,315,81,210,115,129,107,129,259,2014
+"347","University of Nottingham",147,"United Kingdom",12,128,148,85,113,174,150,135,159,2014
+"348","Nanyang Technological University",148,"Singapore",2,355,478,210,110,387,220,251,26,2014
+"349","University of New South Wales",149,"Australia",4,172,114,210,100,194,99,164,138,2014
+"350","Osaka City University",150,"Japan",10,19,320,210,460,520,283,437,373,2014
+"351","University of Leeds",151,"United Kingdom",13,84,93,210,132,134,134,151,280,2014
+"352","Western University (The University of Western Ontario)",152,"Canada",7,355,49,210,154,198,250,176,426,2014
+"353","Kobe University",153,"Japan",11,22,362,96,349,259,283,318,307,2014
+"354","University of Basel",154,"Switzerland",5,77,222,66,168,113,134,141,426,2014
+"355","University of Hong Kong",155,"Hong Kong",1,272,116,210,98,195,176,118,481,2014
+"356","Indiana University-Purdue University Indianapolis",156,"USA",69,355,424,210,195,351,134,121,57,2014
+"357","Humboldt University of Berlin",157,"Germany",6,275,478,110,117,84,159,81,373,2014
+"358","Free University of Berlin",158,"Germany",7,94,478,119,122,82,250,90,481,2014
+"359","University of Tübingen",159,"Germany",8,64,478,102,158,143,159,117,227,2014
+"360","Australian National University",160,"Australia",5,186,377,47,137,95,187,196,426,2014
+"361","Goethe University Frankfurt",161,"Germany",9,105,291,62,175,151,200,124,280,2014
+"362","University of Houston",162,"USA",70,355,40,210,315,291,493,355,89,2014
+"363","University of California, Santa Cruz",163,"USA",71,160,478,99,239,50,114,107,227,2014
+"364","University of Alabama at Birmingham",164,"USA",72,355,478,210,139,114,134,74,194,2014
+"365","Icahn School of Medicine at Mount Sinai",165,"USA",73,355,478,210,169,80,176,64,159,2014
+"366","University of Calgary",166,"Canada",8,355,89,210,147,171,114,132,737,2014
+"367","Mines ParisTech",167,"France",6,249,31,165,980,825,609,917,737,2014
+"368","University of Gothenburg",168,"Sweden",5,248,321,71,177,186,107,112,737,2014
+"369","University of Göttingen",169,"Germany",10,39,174,172,172,152,310,196,373,2014
+"370","Monash University",170,"Australia",6,277,134,210,96,146,250,173,159,2014
+"371","Southern Methodist University",171,"USA",74,157,34,210,632,677,406,628,737,2014
+"372","Yeshiva University",172,"USA",75,174,478,210,188,85,159,94,138,2014
+"373","University of South Florida - Tampa",173,"USA",76,355,284,210,242,263,159,164,51,2014
+"374","Hanyang University",174,"South Korea",5,355,69,210,292,481,406,415,28,2014
+"375","Oregon Health & Science University",175,"USA",77,355,478,119,191,124,107,92,227,2014
+"376","University of Strasbourg",176,"France",7,59,478,55,190,135,250,224,204,2014
+"377","University of Cincinnati",177,"USA",78,305,132,210,145,166,159,129,204,2014
+"378","University of Sheffield",178,"United Kingdom",14,131,257,190,124,127,114,145,227,2014
+"379","University of Hamburg",179,"Germany",11,304,146,126,152,138,134,132,637,2014
+"380","George Washington University",180,"USA",79,176,53,210,312,229,187,203,307,2014
+"381","University of Milan",181,"Italy",2,162,467,178,109,183,200,114,481,2014
+"382","Iowa State University",182,"USA",80,273,190,109,142,173,75,176,338,2014
+"383","University of Maryland, Baltimore",183,"USA",81,355,478,210,125,102,134,114,280,2014
+"384","University of Padua",184,"Italy",3,278,478,210,101,99,176,126,737,2014
+"385","University of New Mexico",185,"USA",82,355,478,210,227,168,61,137,149,2014
+"386","Pohang University of Science and Technology",186,"South Korea",6,355,478,210,279,346,220,295,25,2014
+"387","Stockholm University",187,"Sweden",6,184,106,183,202,93,99,185,637,2014
+"388","Hokkaido University",188,"Japan",12,260,378,126,138,172,283,251,61,2014
+"389","Fudan University",189,"China",3,355,126,210,120,264,310,230,100,2014
+"390","University of Sussex",190,"United Kingdom",15,138,218,40,368,261,176,306,481,2014
+"391","Université catholique de Louvain",191,"Belgium",4,355,269,103,179,286,134,160,181,2014
+"392","Wayne State University",192,"USA",83,355,186,210,187,258,125,155,181,2014
+"393","University of Massachusetts Medical School",193,"USA",84,355,478,136,288,72,187,118,170,2014
+"394","University of Lausanne",194,"Switzerland",6,95,338,210,237,108,134,128,637,2014
+"395","Shanghai Jiao Tong University",195,"China",4,325,149,210,102,250,250,234,138,2014
+"396","University of Missouri–Columbia",196,"USA",85,243,96,97,220,213,220,234,149,2014
+"397","Technical University of Denmark",197,"Denmark",3,339,478,195,240,257,200,238,48,2014
+"398","Complutense University of Madrid",198,"Spain",2,86,55,206,213,309,406,339,204,2014
+"399","University of Cologne",199,"Germany",12,355,109,194,215,150,187,161,426,2014
+"400","Trinity College, Dublin",200,"Ireland",1,319,68,193,301,249,150,201,227,2014
+"401","University of Bern",201,"Switzerland",7,166,478,205,167,119,99,155,426,2014
+"402","Chinese University of Hong Kong",202,"Hong Kong",2,90,478,88,171,386,159,203,204,2014
+"403","University of Kansas",203,"USA",86,216,83,210,209,161,159,234,194,2014
+"404","Sungkyunkwan University",204,"South Korea",7,355,191,210,206,331,187,295,54,2014
+"405","University of Vienna",205,"Austria",1,200,160,100,225,147,150,192,737,2014
+"406","Zhejiang University",206,"China",5,355,293,210,86,318,493,290,94,2014
+"407","University of Georgia",207,"USA",87,104,193,169,176,122,187,247,128,2014
+"408","University of Massachusetts Amherst",208,"USA",88,199,118,154,194,190,159,201,373,2014
+"409","Cardiff University",209,"United Kingdom",16,306,183,135,183,153,310,189,170,2014
+"410","University of Münster",210,"Germany",13,114,456,171,173,197,114,180,338,2014
+"411","University of Liverpool",211,"United Kingdom",17,159,248,200,149,163,134,189,373,2014
+"412","University of Ottawa",212,"Canada",9,355,287,210,185,191,159,141,481,2014
+"413","University of Erlangen-Nuremberg",213,"Germany",14,222,478,210,170,208,134,145,307,2014
+"414","Queen Mary University of London",214,"United Kingdom",18,133,348,210,231,181,220,141,227,2014
+"415","Karlsruhe Institute of Technology",215,"Germany",15,343,170,122,193,271,150,249,109,2014
+"416","Louisiana State University - Baton Rouge",216,"USA",89,256,179,210,162,179,159,176,481,2014
+"417","Nanjing University",217,"China",6,331,447,210,148,371,363,288,57,2014
+"418","University of Illinois at Chicago",218,"USA",90,355,416,210,131,189,220,185,170,2014
+"419","University of Bologna",219,"Italy",4,342,319,210,130,283,187,169,552,2014
+"420","University of Manitoba",220,"Canada",10,149,84,150,257,297,220,249,227,2014
+"421","Joseph Fourier University",221,"France",8,181,478,210,136,101,220,207,159,2014
+"422","University of California, Riverside",222,"USA",91,228,478,210,199,98,134,169,259,2014
+"423","Julius-Maximilian's University of Würzburg",223,"Germany",16,100,407,164,216,178,200,173,481,2014
+"424","Aix-Marseille University",224,"France",9,220,472,210,129,83,176,215,227,2014
+"425","University of Western Australia",225,"Australia",7,145,397,140,165,214,283,176,373,2014
+"426","Laval University",226,"Canada",11,285,296,210,212,270,220,200,109,2014
+"427","University of Tennessee, Knoxville",227,"USA",92,300,117,210,192,177,134,224,481,2014
+"428","North Carolina State University",228,"USA",93,245,194,210,151,202,159,238,181,2014
+"429","Newcastle University",229,"United Kingdom",19,355,250,210,200,149,200,164,481,2014
+"430","Claude Bernard University Lyon 1",230,"France",10,355,478,210,133,130,220,196,204,2014
+"431","University of Turin",231,"Italy",5,311,471,159,214,272,220,151,552,2014
+"432","University of Kiel",232,"Germany",17,180,396,192,236,185,220,158,280,2014
+"433","University of Connecticut",233,"USA",94,282,402,210,160,187,200,185,204,2014
+"434","Tulane University",234,"USA",95,298,92,210,363,298,283,215,194,2014
+"435","University of Oklahoma - Norman Campus",235,"USA",96,355,124,210,238,223,176,203,307,2014
+"436","Brandeis University",236,"USA",97,49,311,79,527,169,493,322,128,2014
+"437","Dresden University of Technology",237,"Germany",18,355,478,210,218,227,176,211,109,2014
+"438","RWTH Aachen University",238,"Germany",19,346,286,122,197,364,187,230,138,2014
+"439","University of Texas Health Science Center at San Antonio",239,"USA",98,355,478,210,314,224,130,145,373,2014
+"440","Virginia Commonwealth University",240,"USA",99,355,428,145,263,233,200,189,149,2014
+"441","University of Montpellier 2",241,"France",11,355,358,165,174,137,200,196,280,2014
+"442","Dalian University of Technology",242,"China",7,355,67,210,326,666,406,472,74,2014
+"443","Rensselaer Polytechnic Institute",243,"USA",100,120,121,210,375,344,159,272,138,2014
+"444","Paul Sabatier University - Toulouse III",244,"France",12,355,478,210,153,109,250,192,426,2014
+"445","Paris Descartes University",245,"France",13,202,478,210,189,139,363,173,426,2014
+"446","National Cheng Kung University",246,"Taiwan",2,355,60,210,157,545,800,395,307,2014
+"447","University of Delaware",247,"USA",101,297,386,126,265,305,250,277,76,2014
+"448","Vrije Universiteit Brussel",248,"Belgium",5,73,478,210,271,276,130,220,552,2014
+"449","Johannes Gutenberg University of Mainz",249,"Germany",20,355,478,188,204,167,250,164,637,2014
+"450","Maastricht University",250,"Netherlands",8,355,478,210,208,376,283,164,307,2014
+"451","University of Düsseldorf",251,"Germany",21,168,478,210,298,207,159,169,637,2014
+"452","University of Dundee",252,"United Kingdom",20,164,478,210,354,200,134,184,227,2014
+"453","University of Tsukuba",253,"Japan",13,183,478,108,226,239,176,220,259,2014
+"454","Autonomous University of Barcelona",254,"Spain",3,355,478,210,146,218,250,224,204,2014
+"455","Florida State University",255,"USA",102,355,288,210,201,180,134,220,338,2014
+"456","University of Texas at San Antonio",256,"USA",103,355,478,210,410,334,125,180,227,2014
+"457","London School of Hygiene & Tropical Medicine",257,"United Kingdom",21,355,478,154,302,306,250,169,737,2014
+"458","Lehigh University",258,"USA",104,355,44,210,594,512,609,523,481,2014
+"459","University of Kentucky",259,"USA",105,317,270,210,184,219,250,220,338,2014
+"460","Thomas Jefferson University",260,"USA",106,134,478,210,331,302,200,180,373,2014
+"461","Drexel University",261,"USA",107,355,262,210,366,322,220,266,89,2014
+"462","Colorado State University - Fort Collins",262,"USA",108,203,478,143,234,201,250,211,259,2014
+"463","University of Leicester",263,"United Kingdom",22,355,478,210,254,140,220,185,373,2014
+"464","Durham University",264,"United Kingdom",23,122,237,210,250,203,250,230,373,2014
+"465","Oregon State University",265,"USA",109,175,268,210,247,145,176,238,338,2014
+"466","University of Florence",266,"Italy",6,316,304,93,211,256,200,261,637,2014
+"467","University of Cape Town",267,"South Africa",2,97,169,142,333,244,220,274,552,2014
+"468","University at Buffalo, The State University of New York",268,"USA",110,355,418,210,203,285,200,230,204,2014
+"469","University College Dublin",269,"Ireland",2,227,182,210,276,280,150,251,307,2014
+"470","University of Science and Technology of China",270,"China",8,355,238,210,144,275,363,266,481,2014
+"471","Virginia Polytechnic Institute and State University",271,"USA",111,270,185,210,196,267,200,281,227,2014
+"472","University of Naples Federico II",272,"Italy",7,324,475,210,163,333,200,238,737,2014
+"473","University of Auckland",273,"New Zealand",1,230,455,210,266,235,283,251,138,2014
+"474","University of Texas Health Science Center at Houston",274,"USA",112,355,478,150,267,175,220,215,373,2014
+"475","Delft University of Technology",275,"Netherlands",9,289,374,210,222,212,250,245,227,2014
+"476","University of Aberdeen",276,"United Kingdom",24,347,223,210,282,217,250,224,481,2014
+"477","Queen's University",277,"Canada",12,301,172,210,253,273,220,281,204,2014
+"478","University of Lisbon",278,"Portugal",1,327,478,147,178,321,220,256,426,2014
+"479","Hiroshima University",279,"Japan",14,355,478,210,294,274,283,266,109,2014
+"480","University of Waterloo",280,"Canada",13,355,125,210,205,352,283,306,637,2014
+"481","Okayama University",281,"Japan",15,355,226,210,332,335,250,322,94,2014
+"482","University of Ulm",282,"Germany",22,355,478,122,285,232,310,207,737,2014
+"483","Chulalongkorn University",283,"Thailand",1,355,51,210,580,752,406,585,737,2014
+"484","Dalhousie University",284,"Canada",14,355,153,210,289,251,250,272,338,2014
+"485","Saint Petersburg State University",285,"Russia",2,37,129,210,619,620,609,756,737,2014
+"486","Norwegian University of Science and Technology",286,"Norway",2,231,163,210,274,350,220,277,373,2014
+"487","University of Reading",287,"United Kingdom",25,241,78,210,393,319,220,355,481,2014
+"488","Wageningen University and Research Centre",288,"Netherlands",10,267,478,141,217,176,363,256,552,2014
+"489","Umeå University",289,"Sweden",7,355,478,210,277,199,220,215,737,2014
+"490","University of Porto",290,"Portugal",2,83,427,89,269,394,250,349,426,2014
+"491","Hong Kong University of Science and Technology",291,"Hong Kong",3,355,279,210,256,469,363,295,128,2014
+"492","Sun Yat-sen University",292,"China",9,355,328,210,198,424,310,313,138,2014
+"493","Medical College of Wisconsin",293,"USA",113,355,478,210,338,279,220,203,737,2014
+"494","City College of New York",294,"USA",114,35,236,210,677,444,406,569,373,2014
+"495","Hannover Medical School",295,"Germany",23,355,478,210,324,252,363,211,280,2014
+"496","Washington State University, Pullman",296,"USA",115,355,267,122,293,221,310,295,170,2014
+"497","Technical University of Berlin",297,"Germany",24,80,276,210,353,432,406,372,115,2014
+"498","University of South Carolina - Columbia",298,"USA",116,355,440,182,262,353,130,266,737,2014
+"499","Leipzig University",299,"Germany",25,308,478,201,287,268,800,224,307,2014
+"500","University of Stuttgart",300,"Germany",26,78,175,210,379,367,363,346,280,2014
+"501","University of Valencia",301,"Spain",4,355,464,210,210,342,220,261,552,2014
+"502","Linköping University",302,"Sweden",8,355,177,210,290,345,310,274,737,2014
+"503","University of Duisburg-Essen",303,"Germany",27,355,453,210,284,288,406,234,426,2014
+"504","Ruhr University Bochum",304,"Germany",28,355,283,210,235,222,406,265,637,2014
+"505","University of Bergen",305,"Norway",3,355,478,210,249,206,283,245,737,2014
+"506","London School of Economics",306,"United Kingdom",26,70,139,75,520,742,310,596,737,2014
+"507","Wesleyan University",307,"USA",117,130,54,210,986,538,609,832,737,2014
+"508","University of Pisa",308,"Italy",8,268,465,210,229,368,200,266,426,2014
+"509","Autonomous University of Madrid",309,"Spain",5,355,449,210,228,245,310,261,426,2014
+"510","Medical University of Vienna",310,"Austria",2,355,478,210,275,242,283,238,426,2014
+"511","Stellenbosch University",311,"South Africa",3,355,64,210,545,494,310,504,259,2014
+"512","Medical University of South Carolina",312,"USA",118,355,478,210,322,357,310,224,552,2014
+"513","Charles University in Prague",313,"Czech Republic",1,337,478,210,243,231,220,256,637,2014
+"514","Kyungpook National University",314,"South Korea",8,355,446,210,358,661,283,420,68,2014
+"515","University of Science, Malaysia",315,"Malaysia",1,355,478,210,700,877,609,819,42,2014
+"516","University of Liège",316,"Belgium",6,135,478,136,313,215,310,295,227,2014
+"517","University of Hull",317,"United Kingdom",27,287,253,158,612,554,493,256,552,2014
+"518","Northeastern University",318,"USA",119,295,171,210,383,307,250,375,115,2014
+"519","Kansas State University",319,"USA",120,116,165,210,348,313,220,346,259,2014
+"520","University of Vermont",320,"USA",121,178,215,210,364,300,406,277,373,2014
+"521","Rush University",321,"USA",122,355,478,210,424,412,150,247,737,2014
+"522","University of Louisville",322,"USA",123,355,389,210,335,383,406,295,138,2014
+"523","University of St Andrews",323,"United Kingdom",28,125,478,210,317,193,363,281,280,2014
+"524","University of Warwick",324,"United Kingdom",29,198,394,210,224,253,200,326,259,2014
+"525","University of Rome Tor Vergata",325,"Italy",9,355,478,210,260,260,283,261,737,2014
+"526","University of Innsbruck",326,"Austria",3,190,415,115,413,225,310,281,373,2014
+"527","Darmstadt University of Technology",327,"Germany",29,55,258,210,374,417,493,420,227,2014
+"528","Indian Institute of Technology Delhi",328,"India",1,355,57,210,644,928,800,756,426,2014
+"529","Federal University of Rio de Janeiro",329,"Brazil",2,261,120,210,304,326,493,402,181,2014
+"530","University of Antwerp",330,"Belgium",7,355,478,210,258,314,220,274,373,2014
+"531","National and Kapodistrian University of Athens",331,"Greece",1,355,246,210,248,433,310,306,737,2014
+"532","Boston College",332,"USA",124,355,95,210,548,380,200,386,338,2014
+"533","Vita-Salute San Raffaele University",333,"Italy",10,355,478,210,484,303,310,238,737,2014
+"534","Gwangju Institute of Science and Technology",334,"South Korea",9,355,478,210,528,565,406,543,57,2014
+"535","University of Nebraska–Lincoln",335,"USA",125,154,256,210,272,246,250,337,426,2014
+"536","University of York",336,"United Kingdom",30,355,478,210,272,209,159,295,481,2014
+"537","National Autonomous University of Mexico",337,"Mexico",1,299,478,210,181,204,406,326,481,2014
+"538","University of Regensburg",338,"Germany",30,355,382,210,303,248,310,277,737,2014
+"539","Yokohama National University",339,"Japan",16,52,135,126,841,812,609,749,338,2014
+"540","University of Adelaide",340,"Australia",8,201,400,210,244,254,283,313,737,2014
+"541","University of Genoa",341,"Italy",11,355,478,210,291,429,250,281,373,2014
+"542","Queen's University Belfast",342,"United Kingdom",31,169,399,210,308,284,283,295,737,2014
+"543","University of Marburg",343,"Germany",31,290,478,209,328,237,283,293,259,2014
+"544","University of Pavia",344,"Italy",12,276,385,206,329,359,283,288,637,2014
+"545","St George's, University of London",345,"United Kingdom",32,355,478,210,525,459,310,256,552,2014
+"546","University of Oregon",346,"USA",126,334,478,210,370,205,200,281,637,2014
+"547","University of Navarra",347,"Spain",6,355,72,210,582,734,800,523,426,2014
+"548","San Diego State University",348,"USA",127,240,187,210,480,290,200,341,481,2014
+"549","Nankai University",349,"China",10,318,168,210,311,456,493,361,280,2014
+"550","University of East Anglia",350,"United Kingdom",33,187,478,174,356,210,187,318,637,2014
+"551","University of Nebraska Medical Center",351,"USA",128,355,478,210,469,395,363,339,128,2014
+"552","University of Southern Denmark",352,"Denmark",4,355,478,210,380,316,310,290,280,2014
+"553","Eindhoven University of Technology",353,"Netherlands",11,355,315,181,296,555,310,334,307,2014
+"554","Xiamen University",354,"China",11,355,100,210,371,507,609,472,307,2014
+"555","University of Otago",355,"New Zealand",2,355,372,210,318,338,220,313,637,2014
+"556","University of Santiago de Compostela",356,"Spain",7,355,478,210,373,634,406,386,100,2014
+"557","University of Exeter",357,"United Kingdom",34,250,371,210,309,188,406,322,481,2014
+"558","University of Jena",358,"Germany",32,355,478,210,278,255,363,311,426,2014
+"559","University of Perugia",359,"Italy",13,355,478,210,367,341,406,281,637,2014
+"560","Justus Liebig University Giessen",360,"Germany",33,355,478,210,336,349,363,318,204,2014
+"561","College of William and Mary",361,"USA",129,355,82,210,639,442,310,523,637,2014
+"562","Ben-Gurion University of the Negev",362,"Israel",5,355,478,165,280,382,406,386,138,2014
+"563","Saint Louis University",363,"USA",130,355,342,195,468,287,493,318,227,2014
+"564","Colorado School of Mines",364,"USA",131,355,76,210,653,577,310,596,637,2014
+"565","Oklahoma State University–Stillwater",365,"USA",132,221,111,210,427,623,310,472,307,2014
+"566","University of Guelph",366,"Canada",15,355,478,210,319,289,125,349,373,2014
+"567","University of Trieste",367,"Italy",14,355,478,210,378,295,283,295,426,2014
+"568","University of Verona",368,"Italy",15,355,478,210,509,489,220,290,737,2014
+"569","University at Albany, SUNY",369,"USA",133,161,478,161,402,372,187,355,338,2014
+"570","Tongji University",370,"China",12,152,102,210,401,547,609,690,204,2014
+"571","Eötvös Loránd University",371,"Hungary",1,87,478,104,539,403,250,430,637,2014
+"572","University of Alabama - Tuscaloosa",372,"USA",134,312,137,210,513,499,283,409,338,2014
+"573","University of Eastern Finland",373,"Finland",2,355,478,210,377,410,310,295,737,2014
+"574","Ewha Womans University",374,"South Korea",10,355,478,210,474,505,609,452,89,2014
+"575","City University of Hong Kong",375,"Hong Kong",4,355,478,210,255,893,493,343,259,2014
+"576","Tokyo Medical and Dental University",376,"Japan",17,355,478,210,442,299,609,306,307,2014
+"577","University of Victoria",377,"Canada",16,355,478,210,320,337,363,313,737,2014
+"578","University of Buenos Aires",378,"Argentina",1,192,477,176,268,348,363,349,737,2014
+"579","University of Texas Medical Branch at Galveston",379,"USA",135,355,478,210,365,294,363,334,227,2014
+"580","Kyung Hee University",380,"South Korea",11,239,445,210,398,626,609,569,84,2014
+"581","Hong Kong Polytechnic University",381,"Hong Kong",5,355,189,210,261,764,406,395,481,2014
+"582","Saarland University",382,"Germany",34,355,370,210,390,402,493,326,307,2014
+"583","Scuola Normale Superiore di Pisa",383,"Italy",16,229,478,64,530,533,363,488,737,2014
+"584","University of Seville",384,"Spain",8,355,478,210,339,556,493,523,89,2014
+"585","Beijing Normal University",385,"China",13,51,478,210,408,490,406,504,737,2014
+"586","Chiba University",386,"Japan",18,355,478,210,342,315,406,343,204,2014
+"587","University of Ferrara",387,"Italy",17,355,478,210,399,393,310,313,552,2014
+"588","University of Bari Aldo Moro",388,"Italy",18,355,478,210,345,336,493,326,338,2014
+"589","Polytechnic University of Milan",389,"Italy",19,101,203,186,360,532,609,504,280,2014
+"590","Temple University",390,"USA",136,262,478,210,341,378,493,355,194,2014
+"591","University of Turku",391,"Finland",3,355,478,210,320,332,609,326,481,2014
+"592","Aalto University",392,"Finland",4,355,251,210,344,434,609,460,138,2014
+"593","Simon Fraser University",393,"Canada",17,355,478,210,286,281,406,341,373,2014
+"594","Tianjin University",394,"China",14,355,87,210,406,926,800,663,426,2014
+"595","Chalmers University of Technology",395,"Sweden",9,349,332,210,359,435,493,337,737,2014
+"596","Middle East Technical University",396,"Turkey",1,355,79,210,529,904,493,724,737,2014
+"597","Cranfield University",397,"United Kingdom",35,355,71,210,728,731,800,769,737,2014
+"598","York University",398,"Canada",18,355,164,210,397,396,250,409,737,2014
+"599","Xi'an Jiaotong University",399,"China",15,355,127,210,307,595,800,642,181,2014
+"600","Chonnam National University",400,"South Korea",12,355,478,210,411,652,363,430,115,2014
+"601","University of Central Florida",401,"USA",137,355,468,210,388,391,493,380,149,2014
+"602","University of Lorraine",402,"France",14,213,301,185,300,361,493,442,181,2014
+"603","University of Bordeaux II",403,"France",15,355,478,210,440,385,363,322,426,2014
+"604","University of New Hampshire",404,"USA",138,355,346,131,511,277,200,366,637,2014
+"605","Versailles Saint-Quentin-en-Yvelines University",405,"France",16,355,478,210,452,240,283,326,637,2014
+"606","Chonbuk National University",406,"South Korea",13,355,478,210,512,741,800,618,78,2014
+"607","Kumamoto University",407,"Japan",19,279,325,210,473,400,493,380,170,2014
+"608","Huazhong University of Science and Technology",408,"China",16,355,232,210,259,656,609,504,181,2014
+"609","Brunel University",409,"United Kingdom",36,355,147,210,486,612,609,420,481,2014
+"610","Polytechnic University of Catalonia",410,"Spain",9,355,451,210,386,583,406,514,109,2014
+"611","National Chiao Tung University",411,"Taiwan",3,355,220,210,232,638,609,442,737,2014
+"612","Southeast University",412,"China",17,158,409,210,412,695,609,514,121,2014
+"613","Tokyo University of Science",413,"Japan",20,355,478,210,504,516,406,402,128,2014
+"614","Catholic University of the Sacred Heart",414,"Italy",20,355,478,210,422,500,609,326,737,2014
+"615","Brigham Young University",415,"USA",139,288,444,210,495,423,283,415,149,2014
+"616","Technical University of Madrid",416,"Spain",10,206,200,210,478,672,609,749,109,2014
+"617","Nagasaki University",417,"Japan",21,274,128,210,567,579,493,514,307,2014
+"618","National Tsing Hua University",418,"Taiwan",4,244,478,210,230,406,493,386,552,2014
+"619","University of Warsaw",419,"Poland",1,119,478,145,400,488,363,402,637,2014
+"620","King Saud University",420,"Saudi Arabia",1,355,133,210,611,537,800,897,115,2014
+"621","University of Bath",421,"United Kingdom",37,355,352,210,387,379,310,355,552,2014
+"622","Concordia University",422,"Canada",19,355,110,210,540,687,493,543,552,2014
+"623","Georgia Regents University",423,"USA",140,355,478,210,579,471,310,334,737,2014
+"624","Niigata University",424,"Japan",22,355,217,210,503,506,363,420,204,2014
+"625","University of Oulu",425,"Finland",5,253,354,210,426,360,493,361,373,2014
+"626","Pompeu Fabra University",426,"Spain",11,355,478,210,409,184,609,343,481,2014
+"627","Vienna University of Technology",427,"Austria",4,351,413,210,381,365,406,420,159,2014
+"628","Sogang University",428,"South Korea",14,355,478,210,781,792,800,889,68,2014
+"629","Gyeongsang National University",429,"South Korea",15,355,478,210,626,663,800,618,84,2014
+"630","University of Tampere",430,"Finland",6,355,235,210,554,461,493,370,637,2014
+"631","University of Milan - Bicocca",431,"Italy",21,355,478,210,404,328,406,355,280,2014
+"632","University of Bordeaux I",432,"France",17,355,478,210,327,228,406,361,426,2014
+"633","Swedish University of Agricultural Sciences",433,"Sweden",10,355,478,210,376,266,363,346,737,2014
+"634","George Mason University",434,"USA",141,355,478,97,449,374,283,415,637,2014
+"635","Jilin University",435,"China",18,224,469,210,270,467,493,395,373,2014
+"636","University of Delhi",436,"India",2,263,88,210,701,732,800,769,637,2014
+"637","University of Campinas",437,"Brazil",3,355,478,210,297,534,406,386,227,2014
+"638","Wuhan University",438,"China",19,355,228,210,310,627,609,420,481,2014
+"639","West Virginia University",439,"USA",142,314,180,210,441,419,406,430,637,2014
+"640","Pusan National University",440,"South Korea",16,355,422,210,395,511,363,496,128,2014
+"641","University of Mississippi - Oxford Campus",441,"USA",143,355,478,210,384,478,220,361,552,2014
+"642","University of Arkansas for Medical Sciences",442,"USA",144,355,478,210,488,542,609,349,280,2014
+"643","Miami University",443,"USA",145,355,104,210,712,501,406,642,737,2014
+"644","University of Tokushima",444,"Japan",23,109,478,210,603,455,493,504,149,2014
+"645","University of Twente",445,"Netherlands",12,355,478,210,343,477,363,366,338,2014
+"646","Loyola University Chicago",446,"USA",146,355,350,210,538,414,609,349,737,2014
+"647","Ajou University",447,"South Korea",17,355,343,210,646,802,609,663,94,2014
+"648","Syracuse University",448,"USA",147,129,249,210,459,479,310,488,338,2014
+"649","Lancaster University",449,"United Kingdom",38,355,339,210,372,398,250,380,637,2014
+"650","Pontifical Catholic University of Chile",450,"Chile",1,330,263,210,450,310,493,395,426,2014
+"651","University of Chile",451,"Chile",2,232,278,210,416,375,493,409,552,2014
+"652","Innsbruck Medical University",452,"Austria",5,355,478,210,482,401,800,349,637,2014
+"653","University of Granada",453,"Spain",12,355,478,210,316,451,310,442,194,2014
+"654","Kanazawa University",454,"Japan",24,355,327,210,455,409,493,375,373,2014
+"655","University of Parma",455,"Italy",22,355,431,210,421,440,310,372,637,2014
+"656","University of Siena",456,"Italy",23,355,478,210,407,356,310,366,737,2014
+"657","Shandong University",457,"China",20,355,466,210,245,588,493,437,481,2014
+"658","Technical University of Dortmund",458,"Germany",35,355,478,210,454,539,406,430,170,2014
+"659","University of KwaZulu-Natal",459,"South Africa",4,355,142,210,584,436,310,554,737,2014
+"660","University of Nevada, Reno",460,"USA",148,355,347,210,516,325,250,380,637,2014
+"661","Yokohama City University",461,"Japan",25,355,196,210,650,362,800,460,338,2014
+"662","École normale supérieure de Lyon",462,"France",18,355,478,126,489,220,493,395,737,2014
+"663","University College Cork",463,"Ireland",3,355,359,210,423,464,406,420,227,2014
+"664","Ohio University",464,"USA",149,196,176,210,568,474,493,554,280,2014
+"665","Central South University",465,"China",21,355,162,210,330,855,609,596,373,2014
+"666","University of Modena and Reggio Emilia",466,"Italy",24,355,478,210,435,485,310,370,637,2014
+"667","New Mexico State University",467,"USA",150,355,369,210,677,630,200,386,737,2014
+"668","University of Konstanz",468,"Germany",36,355,478,157,475,347,493,395,481,2014
+"669","University of Hawaii at Manoa",469,"USA",151,355,379,148,451,211,363,452,373,2014
+"670","University of Nebraska Omaha",470,"USA",152,355,349,210,643,521,406,372,737,2014
+"671","Shinshu University",471,"Japan",26,355,333,210,564,568,283,442,204,2014
+"672","University of Strathclyde",472,"United Kingdom",39,355,245,210,382,454,406,460,426,2014
+"673","Baylor University",473,"USA",153,355,351,210,578,566,220,395,637,2014
+"674","Polytechnic University of Valencia",474,"Spain",13,355,478,210,361,468,609,430,204,2014
+"675","Harbin Institute of Technology",475,"China",22,355,289,210,283,875,609,496,338,2014
+"676","University of Rennes 1",476,"France",19,355,478,210,351,355,609,402,307,2014
+"677","University of Arkansas - Fayetteville",477,"USA",154,189,260,210,506,513,310,482,373,2014
+"678","Aristotle University of Thessaloniki",478,"Greece",2,355,478,210,334,649,493,386,637,2014
+"679","Jagiellonian University",479,"Poland",2,355,478,210,396,466,609,375,552,2014
+"680","Texas Tech University (TTU)",480,"USA",155,355,277,210,392,508,250,460,552,2014
+"681","University of Rostock",481,"Germany",37,352,478,210,433,615,800,380,338,2014
+"682","University of Akron",482,"USA",156,355,421,210,637,660,609,596,121,2014
+"683","University of Saskatchewan",483,"Canada",20,320,380,210,337,427,310,442,373,2014
+"684","Juntendo University",484,"Japan",27,355,478,210,645,482,406,366,737,2014
+"685","University of Wyoming",485,"USA",157,355,224,210,531,327,363,472,426,2014
+"686","Macquarie University",486,"Australia",9,355,452,210,416,292,283,409,552,2014
+"687","University of Canterbury",487,"New Zealand",3,173,154,210,561,426,493,628,737,2014
+"688","University of Denver",488,"USA",158,283,141,210,906,487,493,628,552,2014
+"689","Illinois Institute of Technology",489,"USA",159,251,123,210,767,718,800,716,737,2014
+"690","Creighton University",490,"USA",160,355,478,210,792,618,250,375,637,2014
+"691","Bielefeld University",491,"Germany",38,355,478,210,487,370,493,375,737,2014
+"692","University of Malaya",492,"Malaysia",2,355,115,210,670,910,493,769,426,2014
+"693","University of Ulsan",493,"South Korea",18,355,247,210,437,662,609,460,637,2014
+"694","City University London",494,"United Kingdom",40,355,103,210,808,868,800,874,637,2014
+"695","Grenoble Institute of Technology",495,"France",20,355,478,210,340,525,609,430,307,2014
+"696","Federal University of Minas Gerais",496,"Brazil",4,355,462,210,430,476,493,514,170,2014
+"697","University of Hanover",497,"Germany",39,355,392,210,431,527,406,452,259,2014
+"698","South China University of Technology",498,"China",23,355,292,210,403,650,493,514,227,2014
+"699","University of Surrey",499,"United Kingdom",41,195,234,210,414,548,406,569,338,2014
+"700","Otto-von-Guericke University Magdeburg",500,"Germany",40,355,478,210,483,619,493,420,259,2014
+"701","Indian Institute of Science",501,"India",3,355,478,210,305,495,609,472,280,2014
+"702","Tokyo Metropolitan University",502,"Japan",28,355,322,210,550,450,310,420,637,2014
+"703","Bar-Ilan University",503,"Israel",6,266,408,210,415,392,609,482,259,2014
+"704","Mississippi State University",504,"USA",161,141,157,210,580,617,609,739,481,2014
+"705","University of Maryland, Baltimore County",505,"USA",162,355,478,210,554,377,363,402,373,2014
+"706","University of Wollongong",506,"Australia",10,355,274,210,445,460,609,488,338,2014
+"707","Flinders University",507,"Australia",11,82,478,210,551,573,609,605,637,2014
+"708","Martin Luther University of Halle-Wittenberg",508,"Germany",41,345,478,202,385,340,800,409,737,2014
+"709","Graduate University for Advanced Studies",509,"Japan",29,355,478,210,607,269,493,386,737,2014
+"710","Clemson University",510,"USA",163,355,478,210,424,470,493,402,737,2014
+"711","University of Brescia",511,"Italy",25,355,478,210,576,604,609,386,737,2014
+"712","Georgia State University",512,"USA",164,355,434,210,465,504,363,437,426,2014
+"713","Dongguk University",513,"South Korea",19,355,395,210,954,915,800,979,89,2014
+"714","University of Fribourg",514,"Switzerland",8,208,209,210,727,405,406,554,552,2014
+"715","Sichuan University",515,"China",24,355,478,210,306,530,800,472,373,2014
+"716","University of Iceland",516,"Iceland",1,355,478,210,629,311,310,409,737,2014
+"717","University of Sherbrooke",517,"Canada",21,355,478,210,446,437,406,415,637,2014
+"718","University of Graz",518,"Austria",6,338,429,197,526,524,406,437,481,2014
+"719","University of Málaga",519,"Spain",14,355,478,210,428,755,609,724,121,2014
+"720","University of Zaragoza",520,"Spain",15,354,441,210,350,684,493,488,338,2014
+"721","New York Medical College",521,"USA",165,355,478,210,726,594,493,402,481,2014
+"722","SUNY Downstate Medical Center",522,"USA",166,355,478,150,736,411,609,442,737,2014
+"723","École Centrale Paris",523,"France",21,355,108,210,995,837,800,923,637,2014
+"724","Utah State University",524,"USA",167,156,419,210,553,473,363,531,307,2014
+"725","University of Ljubljana",525,"Slovenia",1,355,478,210,346,449,310,460,737,2014
+"726","University of Montpellier 1",526,"France",22,355,478,210,429,324,493,430,737,2014
+"727","Victoria University of Wellington",527,"New Zealand",4,296,161,210,630,441,609,675,637,2014
+"728","East China University of Science and Technology",528,"China",25,355,478,210,444,808,609,496,204,2014
+"729","Konkuk University",529,"South Korea",20,355,403,210,564,730,800,724,128,2014
+"730","University of Potsdam",530,"Germany",42,355,478,210,491,329,609,420,637,2014
+"731","University of the Basque Country",531,"Spain",16,355,478,210,325,418,493,482,426,2014
+"732","University of Nice Sophia Antipolis",532,"France",23,252,478,210,467,265,609,460,373,2014
+"733","University of Udine",533,"Italy",26,355,478,210,583,397,609,415,552,2014
+"734","National Yang-Ming University",534,"Taiwan",5,355,478,210,355,502,406,452,737,2014
+"735","Indian Institute of Technology Bombay",535,"India",4,355,478,210,522,785,609,724,121,2014
+"736","University of Bayreuth",536,"Germany",43,355,478,210,442,293,310,452,552,2014
+"737","University of Wisconsin–Milwaukee",537,"USA",168,218,273,210,537,491,406,536,737,2014
+"738","University of Dayton",538,"USA",169,335,140,210,991,796,609,783,552,2014
+"739","Nihon University",539,"Japan",30,307,474,210,573,611,800,642,149,2014
+"740","Montana State University - Bozeman",540,"USA",170,355,344,210,557,354,363,472,637,2014
+"741","Royal Holloway, University of London",541,"United Kingdom",42,355,478,210,560,317,406,442,373,2014
+"742","Tokyo Women's Medical University",542,"Japan",31,355,478,210,763,609,493,460,259,2014
+"743","Panjab University",543,"India",5,332,212,210,708,722,363,569,737,2014
+"744","Tampere University of Technology",544,"Finland",7,355,136,210,819,670,800,819,737,2014
+"745","University of Coimbra",545,"Portugal",3,348,478,210,420,415,609,452,481,2014
+"746","University of Newcastle",546,"Australia",12,355,478,210,434,475,609,442,637,2014
+"747","Nara Institute of Science and Technology",547,"Japan",32,355,478,210,715,304,493,437,426,2014
+"748","Auburn University",548,"USA",171,355,261,210,463,585,310,585,373,2014
+"749","University of Bremen",549,"Germany",44,355,478,210,439,296,363,460,552,2014
+"750","Mahidol University",550,"Thailand",2,355,478,210,479,366,406,442,737,2014
+"751","University of Crete",551,"Greece",3,355,478,210,481,497,406,442,737,2014
+"752","Bangor University",552,"United Kingdom",43,246,360,210,624,526,609,504,373,2014
+"753","University of Aveiro",553,"Portugal",4,355,478,210,419,659,609,605,170,2014
+"754","University of Palermo",554,"Italy",27,355,478,210,447,590,800,452,552,2014
+"755","Nagoya City University",555,"Japan",33,355,306,210,764,531,310,531,307,2014
+"756","University of Tartu",556,"Estonia",1,353,478,210,600,388,406,496,259,2014
+"757","University of Savoy",557,"France",24,355,478,210,505,453,406,452,552,2014
+"758","University of Tromsø - The Arctic University of Norway",558,"Norway",4,355,478,210,493,413,310,460,737,2014
+"759","University of Missouri–Kansas City",559,"USA",172,286,357,210,638,430,800,488,552,2014
+"760","Beihang University",560,"China",26,355,254,210,523,881,609,800,170,2014
+"761","American University of Beirut",561,"Lebanon",1,103,205,210,892,850,800,849,737,2014
+"762","University of Nantes",562,"France",25,355,478,210,492,404,310,482,426,2014
+"763","University of Essex",563,"United Kingdom",44,106,335,210,710,651,406,642,737,2014
+"764","University of Zagreb",564,"Croatia",1,355,478,210,572,528,406,460,426,2014
+"765","National Central University",565,"Taiwan",6,204,478,210,369,438,609,523,637,2014
+"766","University Lille 1: Sciences and Technologies",566,"France",26,355,478,210,394,408,363,496,481,2014
+"767","University of Catania",567,"Italy",28,355,478,210,436,750,493,472,737,2014
+"768","National Polytechnic Institute of Toulouse",568,"France",27,355,201,210,499,705,800,663,737,2014
+"769","Indian Institute of Technology Kanpur",569,"India",6,153,308,210,536,846,609,724,227,2014
+"770","Kagoshima University",570,"Japan",34,355,211,210,694,648,493,642,373,2014
+"771","Lanzhou University",571,"China",27,355,478,210,389,667,493,496,481,2014
+"772","James Cook University",572,"Australia",13,355,478,210,510,238,363,488,552,2014
+"773","Shizuoka University",573,"Japan",35,355,478,210,586,589,406,703,149,2014
+"774","Indian Institute of Technology Kharagpur",574,"India",7,355,201,210,501,966,800,703,426,2014
+"775","Second University of Naples",575,"Italy",29,355,478,210,544,598,609,460,737,2014
+"776","Indian Institute of Technology Madras",576,"India",8,355,206,210,532,928,406,756,280,2014
+"777","Plymouth University",577,"United Kingdom",45,355,437,210,534,425,493,514,426,2014
+"778","International School for Advanced Studies",578,"Italy",30,355,478,210,595,407,609,472,737,2014
+"779","Polytechnic University of Turin",579,"Italy",31,355,478,210,464,773,800,642,181,2014
+"780","University of Oviedo",580,"Spain",17,355,478,210,437,465,493,514,426,2014
+"781","Ehime University",581,"Japan",36,355,324,210,585,564,493,554,338,2014
+"782","University of Ioannina",582,"Greece",4,355,478,210,569,828,609,482,737,2014
+"783","University of Cagliari",583,"Italy",32,355,478,210,514,536,800,488,552,2014
+"784","Tottori University",584,"Japan",37,355,199,210,846,710,493,724,373,2014
+"785","Federal University of Rio Grande do Sul",585,"Brazil",5,355,478,210,418,632,406,514,552,2014
+"786","Kent State University",586,"USA",173,355,478,210,616,431,363,496,481,2014
+"787","University of Los Andes (Colombia)",587,"Colombia",1,355,150,210,902,550,406,889,637,2014
+"788","Hunan University",588,"China",28,355,294,210,500,915,800,569,737,2014
+"789","Tokai University",589,"Japan",38,355,478,210,697,608,493,488,481,2014
+"790","LSU Health Sciences Center New Orleans",590,"USA",174,355,478,210,796,549,609,482,552,2014
+"791","Southern Illinois University Carbondale",591,"USA",175,191,478,210,571,518,800,531,552,2014
+"792","Tata Institute of Fundamental Research",592,"India",9,355,478,210,458,420,310,523,737,2014
+"793","Aalborg University",593,"Denmark",5,355,384,210,606,633,363,543,426,2014
+"794","Osaka Prefecture University",594,"Japan",39,355,316,210,646,682,609,675,204,2014
+"795","Chang Gung University",595,"Taiwan",7,355,478,210,357,582,800,536,737,2014
+"796","Northern Illinois University",596,"USA",176,355,259,210,671,602,363,642,481,2014
+"797","University of Trento",597,"Italy",33,355,478,210,490,569,609,504,737,2014
+"798","Semmelweis University",598,"Hungary",2,355,478,210,668,517,493,496,552,2014
+"799","University of Science and Technology Beijing",599,"China",29,355,166,210,592,928,493,897,373,2014
+"800","National University of Ireland, Galway",600,"Ireland",4,355,478,210,593,597,609,531,307,2014
+"801","Dankook University",601,"South Korea",21,355,478,210,896,934,609,897,121,2014
+"802","Istanbul University",602,"Turkey",2,255,337,210,681,580,609,554,737,2014
+"803","Tokyo University of Agriculture and Technology",603,"Japan",40,355,478,210,574,707,609,585,227,2014
+"804","University of Montana - Missoula",604,"USA",177,341,478,210,699,320,493,504,552,2014
+"805","Queensland University of Technology",605,"Australia",14,355,478,210,457,733,493,523,552,2014
+"806","Binghamton University",606,"USA",178,355,229,210,731,610,800,675,737,2014
+"807","Université de Namur",607,"Belgium",8,143,312,210,830,713,609,675,637,2014
+"808","University of Tasmania",608,"Australia",15,355,478,210,461,278,609,531,737,2014
+"809","University of Pretoria",609,"South Africa",5,355,233,210,597,557,493,716,481,2014
+"810","Central China Normal University",610,"China",30,355,478,210,653,837,493,504,737,2014
+"811","Indian Institute of Technology Roorkee",611,"India",10,355,307,210,845,846,609,554,737,2014
+"812","Curtin University",612,"Australia",16,355,478,210,462,389,406,543,426,2014
+"813","Deakin University",613,"Australia",17,355,459,210,556,678,609,536,637,2014
+"814","Tilburg University",614,"Netherlands",13,355,227,210,605,861,609,716,737,2014
+"815","Inha University",615,"South Korea",22,355,387,210,543,770,609,569,481,2014
+"816","University of New Orleans",616,"USA",179,355,478,210,907,806,493,504,737,2014
+"817","Paris-Est Créteil Val-de-Marne University",617,"France",28,355,435,210,710,581,800,536,737,2014
+"818","University of L'Aquila",618,"Italy",34,355,478,210,617,643,800,514,737,2014
+"819","Chungnam National University",619,"South Korea",23,355,478,210,472,561,493,585,307,2014
+"820","University of Salamanca",620,"Spain",18,355,423,210,558,558,363,569,737,2014
+"821","University of Alaska Fairbanks",621,"USA",180,355,478,210,608,339,609,523,737,2014
+"822","University of Poitiers",622,"France",29,236,478,143,615,480,609,675,481,2014
+"823","Albany Medical College",623,"USA",181,142,478,210,993,753,609,605,737,2014
+"824","Birkbeck, University of London",624,"United Kingdom",46,281,478,180,718,343,493,569,737,2014
+"825","Griffith University",625,"Australia",18,355,478,210,470,543,493,569,373,2014
+"826","Federal University of São Paulo",626,"Brazil",6,355,478,210,515,616,406,536,737,2014
+"827","Carleton University",627,"Canada",22,355,478,210,496,742,310,554,737,2014
+"828","Massey University",628,"New Zealand",5,355,448,210,552,575,609,569,637,2014
+"829","Catholic University of Korea",629,"South Korea",24,355,478,210,598,798,800,628,227,2014
+"830","Open University (UK)",630,"United Kingdom",47,355,478,210,613,301,800,536,637,2014
+"831","University of Patras",631,"Greece",5,355,478,210,485,674,406,554,552,2014
+"832","Universidade Nova de Lisboa",632,"Portugal",5,355,478,210,506,515,609,543,552,2014
+"833","Texas A&M Health Science Center",633,"USA",182,355,478,210,664,445,493,543,426,2014
+"834","Braunschweig University of Technology",634,"Germany",45,207,478,210,541,369,609,605,481,2014
+"835","National Chung Hsing University",635,"Taiwan",8,355,364,210,405,692,609,642,737,2014
+"836","La Trobe University",636,"Australia",19,355,439,210,559,446,800,585,737,2014
+"837","Missouri University of Science and Technology",637,"USA",183,355,204,210,696,866,493,819,737,2014
+"838","University of Idaho",638,"USA",184,355,478,210,640,399,406,569,373,2014
+"839","Louisiana Tech University",639,"USA",185,355,213,210,931,864,406,769,737,2014
+"840","University of Portsmouth",640,"United Kingdom",48,355,478,210,759,697,310,543,637,2014
+"841","University of La Laguna",641,"Spain",19,355,478,210,521,358,800,554,552,2014
+"842","Florida International University",642,"USA",186,355,478,210,502,484,363,569,637,2014
+"843","Medical University of Graz",643,"Austria",7,355,478,210,622,673,800,543,481,2014
+"844","Howard University",644,"USA",187,269,478,210,943,599,406,703,204,2014
+"845","University of Hertfordshire",645,"United Kingdom",49,355,478,210,792,390,609,536,637,2014
+"846","State University of New York Upstate Medical University",646,"USA",188,355,478,210,748,593,406,543,552,2014
+"847","Royal College of Surgeons in Ireland",647,"Ireland",5,355,478,210,813,724,310,554,552,2014
+"848","National Technical University of Athens",648,"Greece",6,167,478,210,498,938,493,663,737,2014
+"849","University of Windsor",649,"Canada",23,355,239,210,758,910,800,756,481,2014
+"850","Rovira i Virgili University",650,"Spain",20,355,478,210,575,646,493,554,552,2014
+"851","University of Burgundy",651,"France",30,214,478,210,524,541,800,605,737,2014
+"852","Gunma University",652,"Japan",41,355,478,210,599,519,493,596,338,2014
+"853","AGH University of Science and Technology",653,"Poland",3,257,197,210,722,881,609,909,552,2014
+"854","Gifu University",654,"Japan",42,355,478,210,648,664,493,569,426,2014
+"855","Hacettepe University",655,"Turkey",3,355,478,210,636,636,406,554,737,2014
+"856","Örebro University",656,"Sweden",11,355,478,210,820,771,406,543,737,2014
+"857","Memorial University of Newfoundland",657,"Canada",24,355,478,210,563,596,800,554,737,2014
+"858","Kindai University",658,"Japan",43,355,478,210,655,721,493,585,373,2014
+"859","University of Rhode Island",659,"USA",189,355,353,210,649,373,406,628,737,2014
+"860","University of Alicante",660,"Spain",21,355,478,210,657,797,800,675,227,2014
+"861","New Jersey Institute of Technology",661,"USA",190,235,326,210,745,654,800,703,426,2014
+"862","Lille 2 University of Health and Law",662,"France",31,355,478,210,854,624,800,543,637,2014
+"863","Keele University",663,"United Kingdom",50,355,478,210,635,535,406,569,737,2014
+"864","University of Jyväskylä",664,"Finland",8,355,478,210,471,462,493,596,737,2014
+"865","Rochester Institute of Technology",665,"USA",191,355,366,210,936,613,310,675,373,2014
+"866","Sapporo Medical University",666,"Japan",44,355,478,210,929,823,609,618,280,2014
+"867","Banaras Hindu University",667,"India",11,237,285,210,746,927,363,756,737,2014
+"868","King Abdullah University of Science and Technology",668,"Saudi Arabia",2,355,478,117,799,640,800,989,159,2014
+"869","Northeast Normal University",669,"China",31,355,478,210,716,774,609,554,737,2014
+"870","Portland State University",670,"USA",192,355,272,210,784,540,800,739,481,2014
+"871","University of Québec at Montreal",671,"Canada",25,355,457,210,534,546,406,628,737,2014
+"872","East China Normal University",672,"China",32,355,431,210,477,614,800,663,481,2014
+"873","University of Debrecen",673,"Hungary",3,355,478,210,660,586,406,585,552,2014
+"874","Loma Linda University",674,"USA",193,355,478,210,820,759,609,554,737,2014
+"875","Old Dominion University",675,"USA",194,355,478,210,717,622,406,596,426,2014
+"876","University of Insubria",676,"Italy",35,355,478,210,685,600,609,569,737,2014
+"877","University of Nevada, Las Vegas",677,"USA",195,355,412,210,619,457,800,628,737,2014
+"878","Hong Kong Baptist University",678,"Hong Kong",6,355,478,210,591,922,609,585,637,2014
+"879","University of Minho",679,"Portugal",6,355,478,210,590,641,363,642,338,2014
+"880","University of Messina",680,"Italy",36,355,478,210,577,763,800,585,737,2014
+"881","University of Texas at Arlington",681,"USA",196,355,478,210,494,514,493,605,637,2014
+"882","University François Rabelais, Tours",682,"France",32,188,478,210,684,503,609,663,481,2014
+"883","UNESP, São Paulo State University",683,"Brazil",7,355,478,210,352,655,493,690,552,2014
+"884","Toho University",684,"Japan",45,355,478,154,800,788,800,690,552,2014
+"885","Beijing University of Chemical Technology",685,"China",33,355,405,210,619,974,800,749,259,2014
+"886","Rutgers, The State University of New Jersey - Newark",686,"USA",197,355,478,210,855,498,609,569,737,2014
+"887","Johannes Kepler University of Linz",687,"Austria",8,355,373,210,738,645,493,663,481,2014
+"888","Warsaw University of Technology",688,"Poland",4,333,478,210,695,748,310,605,737,2014
+"889","University of Paris 13",689,"France",33,355,478,210,672,783,609,585,737,2014
+"890","University of Toyama",690,"Japan",46,355,323,210,659,736,609,675,737,2014
+"891","University of Toledo",691,"USA",198,355,478,210,625,553,800,618,373,2014
+"892","University of Vigo",692,"Spain",22,355,478,210,570,786,406,618,481,2014
+"893","University of Kent",693,"United Kingdom",51,355,375,210,656,458,609,663,737,2014
+"894","Jichi Medical University",694,"Japan",47,355,478,210,894,621,609,585,552,2014
+"895","Roma Tre University",695,"Italy",37,355,478,210,632,607,406,605,637,2014
+"896","Chung Yuan Christian University",696,"Taiwan",9,225,230,210,754,952,800,897,737,2014
+"897","University of Haifa",697,"Israel",7,355,363,210,587,448,609,690,552,2014
+"898","Åbo Akademi University",698,"Finland",9,355,478,210,724,686,609,596,552,2014
+"899","Swansea University",699,"United Kingdom",52,355,355,210,533,544,609,703,552,2014
+"900","China Agricultural University",700,"China",34,355,478,210,432,381,609,663,552,2014
+"901","Marche Polytechnic University",701,"Italy",38,355,478,210,666,639,800,596,737,2014
+"902","University of Maine, Orono",702,"USA",199,329,478,210,756,422,406,642,373,2014
+"903","Heriot-Watt University",703,"United Kingdom",53,355,381,210,602,601,609,690,552,2014
+"904","Marquette University",704,"USA",200,355,216,210,909,791,800,869,737,2014
+"905","Loughborough University",705,"United Kingdom",54,355,478,210,497,778,609,628,637,2014
+"906","Kaiserslautern University of Technology",706,"Germany",46,355,478,210,652,483,800,605,737,2014
+"907","Aston University",707,"United Kingdom",55,355,331,210,839,879,493,739,338,2014
+"908","University of Girona",708,"Spain",23,355,478,210,682,878,609,605,637,2014
+"909","Hasselt University",709,"Belgium",9,355,309,210,816,892,609,703,737,2014
+"910","Nanjing University of Science and Technology",710,"China",35,355,243,210,852,938,406,843,637,2014
+"911","University of Natural Resources and Life Sciences, Vienna",711,"Austria",9,355,478,210,746,629,800,605,552,2014
+"912","University of Szeged",712,"Hungary",4,355,478,198,651,765,800,618,552,2014
+"913","Soochow University (Suzhou)",713,"China",36,355,478,210,466,799,800,642,737,2014
+"914","University of the Balearic Islands",714,"Spain",24,355,478,210,634,529,406,628,552,2014
+"915","Fuzhou University",715,"China",37,355,420,210,786,974,609,769,259,2014
+"916","University of Memphis",716,"USA",201,355,390,210,782,592,609,724,338,2014
+"917","San Francisco State University",717,"USA",202,258,478,210,876,496,800,628,737,2014
+"918","East Carolina University",718,"USA",203,355,411,210,686,676,800,690,481,2014
+"919","University of Augsburg",719,"Germany",47,355,478,210,780,668,609,605,737,2014
+"920","University of Missouri–St. Louis",720,"USA",204,355,361,210,883,522,406,703,552,2014
+"921","Kyoto Prefectural University of Medicine",721,"Japan",48,355,478,210,823,712,609,605,737,2014
+"922","Shanghai University",722,"China",38,355,478,210,508,925,609,642,637,2014
+"923","University of South Australia",723,"Australia",20,355,280,210,663,795,800,819,426,2014
+"924","Liverpool John Moores University",724,"United Kingdom",56,355,478,210,744,421,609,618,737,2014
+"925","Graz University of Technology",725,"Austria",10,355,478,210,686,683,493,628,552,2014
+"926","Kitasato University",726,"Japan",49,355,478,210,706,510,800,618,737,2014
+"927","University of North Carolina at Charlotte",727,"USA",205,355,264,210,749,671,493,832,637,2014
+"928","G. d'Annunzio University, Chieti-Pescara",728,"Italy",39,355,478,210,733,574,609,618,737,2014
+"929","University of Cantabria",729,"Spain",25,355,478,210,596,637,406,663,481,2014
+"930","Miguel Hernández University of Elche",730,"Spain",26,355,478,210,769,584,800,690,307,2014
+"931","Donghua University",731,"China",39,355,478,210,833,952,250,690,481,2014
+"932","Comenius University in Bratislava",732,"Slovak Republic",1,355,478,210,709,625,493,628,737,2014
+"933","University of Alabama in Huntsville",733,"USA",206,355,478,210,886,443,800,618,737,2014
+"934","Mie University",734,"Japan",50,355,478,210,805,834,609,675,338,2014
+"935","University of Stirling",735,"United Kingdom",57,355,334,210,804,717,609,716,737,2014
+"936","Hunter College",736,"USA",207,247,383,210,825,606,800,739,737,2014
+"937","Swinburne University of Technology",737,"Australia",21,355,478,210,658,447,493,642,737,2014
+"938","University of Ulster",738,"United Kingdom",58,355,478,210,940,895,493,739,259,2014
+"939","University of Évry Val d'Essonne",739,"France",34,355,478,210,998,363,609,628,737,2014
+"940","University of Salerno",740,"Italy",40,355,478,210,518,809,609,675,552,2014
+"941","National University of La Plata",741,"Argentina",2,355,476,210,546,523,406,703,737,2014
+"942","Masaryk University",742,"Czech Republic",2,355,478,210,667,567,800,642,737,2014
+"943","Yamaguchi University",743,"Japan",51,355,478,210,719,735,609,716,307,2014
+"944","University of Yamanashi",744,"Japan",52,355,478,210,858,895,406,663,481,2014
+"945","Showa University",745,"Japan",53,355,478,210,945,760,609,628,737,2014
+"946","North Dakota State University - Main Campus",746,"USA",208,155,478,210,692,772,800,769,737,2014
+"947","University of North Texas, Denton",747,"USA",209,355,478,210,683,658,609,675,426,2014
+"948","University of Mississippi Medical Center",748,"USA",210,355,478,210,791,571,493,642,737,2014
+"949","University of Tehran",749,"Iran",1,171,478,210,519,974,800,769,737,2014
+"950","Paul Valéry University, Montpellier III",750,"France",35,355,478,210,829,486,493,642,737,2014
+"951","Wuhan University of Technology",751,"China",40,355,478,210,794,920,493,642,737,2014
+"952","University of Hyogo",752,"Japan",54,355,478,210,765,463,493,663,552,2014
+"953","The Catholic University of America",753,"USA",211,355,314,210,949,560,406,756,552,2014
+"954","University of Neuchâtel",754,"Switzerland",9,340,478,210,831,631,800,642,637,2014
+"955","National Polytechnic Institute",755,"Mexico",2,322,478,210,549,572,406,756,307,2014
+"956","Jikei University School of Medicine",756,"Japan",55,355,478,210,975,711,609,642,637,2014
+"957","University of Valladolid",757,"Spain",27,355,430,210,675,966,800,819,280,2014
+"958","University of Calabria",758,"Italy",41,355,478,210,566,816,406,690,737,2014
+"959","University of Lübeck",759,"Germany",48,355,478,210,910,587,800,642,737,2014
+"960","Kurume University",760,"Japan",56,355,478,210,981,727,800,642,737,2014
+"961","Peking Union Medical College",761,"China",41,355,478,210,281,308,800,909,637,2014
+"962","Yamagata University",762,"Japan",57,355,478,210,760,719,609,675,481,2014
+"963","University of Córdoba (Spain)",763,"Spain",28,355,478,210,623,726,609,675,737,2014
+"964","University of Mons",764,"Belgium",10,355,478,210,789,814,609,675,481,2014
+"965","Saga University",765,"Japan",58,355,478,210,773,757,800,675,481,2014
+"966","Clarkson University",766,"USA",212,355,305,210,943,966,800,769,552,2014
+"967","University of South Alabama",767,"USA",213,355,478,210,966,739,800,724,307,2014
+"968","Inje University",768,"South Korea",25,355,478,210,828,902,800,800,227,2014
+"969","University of Caen Lower Normandy",769,"France",36,193,478,210,626,801,609,756,552,2014
+"970","University of Castilla–La Mancha",770,"Spain",29,355,478,210,631,754,609,690,552,2014
+"971","Czech Technical University in Prague",771,"Czech Republic",3,336,478,210,698,793,406,690,737,2014
+"972","Saitama Medical University",772,"Japan",59,355,478,210,912,635,609,690,426,2014
+"973","Istanbul Technical University",773,"Turkey",4,355,388,210,641,858,363,769,637,2014
+"974","Kaohsiung Medical University",774,"Taiwan",10,355,478,210,562,854,800,703,552,2014
+"975","University of Electro-Communications",775,"Japan",60,140,478,210,846,866,609,874,373,2014
+"976","Yeungnam University",776,"South Korea",26,355,454,210,768,966,800,874,227,2014
+"977","Jawaharlal Nehru Centre for Advanced Scientific Research",777,"India",12,355,478,210,865,642,493,703,426,2014
+"978","Putra University, Malaysia",778,"Malaysia",3,355,478,210,932,897,800,979,159,2014
+"979","Institut national des sciences Appliquées de Lyon",779,"France",37,355,478,210,517,681,609,724,481,2014
+"980","University of Perpignan Via Domitia",780,"France",38,144,478,210,957,563,609,832,737,2014
+"981","University of Miyazaki",781,"Japan",61,259,478,210,924,690,609,800,280,2014
+"982","Second Military Medical University",782,"China",42,355,478,210,641,725,609,756,307,2014
+"983","Northern Arizona University",783,"USA",214,355,478,210,934,416,609,690,552,2014
+"984","École Polytechnique de Montréal",784,"Canada",26,355,478,210,679,907,800,724,373,2014
+"985","University of Salento",785,"Italy",42,355,478,210,662,685,493,703,637,2014
+"986","Fukuoka University",786,"Japan",62,355,478,210,972,852,800,783,259,2014
+"987","Nagoya Institute of Technology",787,"Japan",63,355,310,210,775,948,609,897,280,2014
+"988","Ankara University",788,"Turkey",5,355,461,210,751,723,493,739,737,2014
+"989","Blaise Pascal University",789,"France",39,355,478,210,735,689,406,716,481,2014
+"990","University of Electronic Science and Technology of China",790,"China",43,355,400,210,589,910,800,897,259,2014
+"991","National Sun Yat-sen University",791,"Taiwan",11,355,478,210,453,897,800,739,737,2014
+"992","University of Rouen",792,"France",40,350,478,210,689,720,609,783,280,2014
+"993","Bowling Green State University",793,"USA",215,355,365,210,907,653,609,756,737,2014
+"994","Norwegian University of Life Sciences",794,"Norway",5,355,478,210,757,578,493,703,637,2014
+"995","University of Picardie Jules Verne",795,"France",41,355,478,210,803,767,363,724,481,2014
+"996","Michigan Technological University",796,"USA",216,323,478,210,779,768,406,724,481,2014
+"997","University of Concepción",797,"Chile",3,355,478,210,704,452,800,724,426,2014
+"998","China Medical University (Taiwan)",798,"Taiwan",12,355,478,210,475,680,800,739,737,2014
+"999","University of Hohenheim",799,"Germany",49,355,478,210,753,665,609,703,637,2014
+"1000","Aberystwyth University",800,"United Kingdom",59,355,478,210,818,562,493,716,481,2014
+"1001","Wilfrid Laurier University",801,"Canada",27,355,240,210,987,920,800,948,737,2014
+"1002","Cairo University",802,"Egypt",1,310,473,176,701,729,609,843,737,2014
+"1003","University of Murcia",803,"Spain",30,355,478,210,547,745,493,756,426,2014
+"1004","Palacký University, Olomouc",804,"Czech Republic",4,355,478,210,771,559,609,724,481,2014
+"1005","Taipei Medical University",805,"Taiwan",13,355,478,210,542,888,493,749,552,2014
+"1006","University of Bradford",806,"United Kingdom",60,355,341,210,851,755,609,819,481,2014
+"1007","King Fahd University of Petroleum and Minerals",807,"Saudi Arabia",3,355,230,210,954,938,800,970,737,2014
+"1008","Ege University",808,"Turkey",6,355,478,210,734,822,406,724,737,2014
+"1009","University of Belgrade",809,"Serbia",1,280,478,210,448,702,493,800,737,2014
+"1010","University of Eastern Piedmont Amedeo Avogadro",810,"Italy",43,355,478,210,835,675,609,716,637,2014
+"1011","Budapest University of Technology and Economics",811,"Hungary",5,238,478,210,714,758,800,769,552,2014
+"1012","University of Salzburg",812,"Austria",11,355,367,210,970,703,800,783,737,2014
+"1013","University of Massachusetts Lowell",813,"USA",217,355,478,210,926,928,406,874,227,2014
+"1014","Jaume I University",814,"Spain",31,355,478,210,806,948,609,739,481,2014
+"1015","Chongqing University",815,"China",44,355,302,210,705,871,609,874,637,2014
+"1016","Beijing Institute of Technology",816,"China",45,355,478,210,601,959,609,749,637,2014
+"1017","Manchester Metropolitan University",817,"United Kingdom",61,355,442,210,919,679,800,800,481,2014
+"1018","Zhengzhou University",818,"China",46,355,463,210,725,778,800,783,637,2014
+"1019","Dublin City University",819,"Ireland",6,355,478,210,807,959,493,843,280,2014
+"1020","National University of Ireland, Maynooth",820,"Ireland",7,215,478,210,1000,716,800,800,552,2014
+"1021","Kangwon National University",821,"South Korea",27,355,478,210,707,850,609,800,338,2014
+"1022","Royal Veterinary College, University of London",822,"United Kingdom",62,205,478,210,827,551,493,819,737,2014
+"1023","Wright State University - Dayton",823,"USA",218,355,478,210,794,845,800,739,737,2014
+"1024","Capital Medical University",824,"China",47,355,478,210,618,800,609,756,737,2014
+"1025","University of Brighton",825,"United Kingdom",63,355,478,210,860,841,800,749,552,2014
+"1026","Sofia University",826,"Bulgaria",1,234,478,210,798,874,406,819,737,2014
+"1027","University of Regina",827,"Canada",28,355,478,210,889,740,609,800,338,2014
+"1028","Magna Græcia University of Catanzaro",828,"Italy",44,355,478,210,939,781,800,749,552,2014
+"1029","Chungbuk National University",829,"South Korea",28,355,478,210,751,863,800,819,338,2014
+"1030","Kōchi University",830,"Japan",64,355,478,210,925,788,800,769,426,2014
+"1031","University of New Brunswick",831,"Canada",29,355,329,210,719,784,800,874,552,2014
+"1032","Sejong University",832,"South Korea",29,355,478,210,778,826,800,800,373,2014
+"1033","Sharif University of Technology",833,"Iran",2,355,478,210,588,938,493,783,737,2014
+"1034","Chung-Ang University",834,"South Korea",30,355,478,210,676,775,609,874,280,2014
+"1035","Queens College, City University of New York",835,"USA",219,303,368,210,992,669,800,869,637,2014
+"1036","Murdoch University",836,"Australia",22,355,478,210,812,492,800,756,737,2014
+"1037","Chosun University",837,"South Korea",31,355,478,210,918,974,800,970,194,2014
+"1038","Vilnius University",838,"Lithuania",1,326,478,210,790,728,609,769,737,2014
+"1039","University of Maribor",839,"Slovenia",2,355,478,210,866,810,609,769,552,2014
+"1040","Ritsumeikan University",840,"Japan",65,355,281,210,870,884,493,973,426,2014
+"1041","University of Sassari",841,"Italy",45,355,478,210,740,605,800,769,737,2014
+"1042","Nanjing Normal University",842,"China",48,355,436,210,777,699,609,849,552,2014
+"1043","University of Franche-Comté",843,"France",42,284,478,210,832,833,609,800,637,2014
+"1044","University of Texas at El Paso",844,"USA",220,355,391,210,897,817,609,849,737,2014
+"1045","Rio de Janeiro State University",845,"Brazil",8,355,478,210,754,856,493,783,637,2014
+"1046","Jinan University",846,"China",49,355,290,210,855,880,800,956,481,2014
+"1047","University of Massachusetts Boston",847,"USA",221,355,478,210,864,704,406,783,737,2014
+"1048","University of Alcalá",848,"Spain",32,355,478,210,738,698,800,783,637,2014
+"1049","Tehran University of Medical Sciences",849,"Iran",3,355,478,210,603,903,800,800,737,2014
+"1050","University of the Ryukyus",850,"Japan",66,355,478,210,887,657,609,783,552,2014
+"1051","University of Angers",851,"France",43,355,478,210,824,805,800,783,552,2014
+"1052","Fluminense Federal University",852,"Brazil",9,355,300,210,783,922,609,937,737,2014
+"1053","Florida Institute of Technology",853,"USA",222,355,478,210,959,699,363,800,737,2014
+"1054","Trent University",854,"Canada",30,355,478,210,912,829,493,783,637,2014
+"1055","National Chung Cheng University",855,"Taiwan",14,355,478,210,760,987,800,783,737,2014
+"1056","Bilkent University",856,"Turkey",7,355,478,210,788,782,609,783,737,2014
+"1057","National Taiwan Normal University",857,"Taiwan",15,355,345,210,721,890,493,897,737,2014
+"1058","Saitama University",858,"Japan",67,355,318,210,912,603,493,909,637,2014
+"1059","RMIT University",859,"Australia",23,355,478,210,690,959,800,800,637,2014
+"1060","Hamamatsu University School of Medicine",860,"Japan",68,355,478,210,966,901,609,783,637,2014
+"1061","University of Greifswald",861,"Germany",50,355,478,203,741,493,800,800,637,2014
+"1062","University of Pécs",862,"Hungary",6,355,478,210,963,834,800,832,373,2014
+"1063","University of Fukui",863,"Japan",69,355,478,210,879,761,800,783,737,2014
+"1064","Oakland University",864,"USA",223,355,478,210,883,842,800,783,737,2014
+"1065","Nanjing University of Technology",865,"China",50,355,478,210,810,987,800,948,227,2014
+"1066","University of Technology, Sydney",866,"Australia",24,355,478,210,613,696,493,849,426,2014
+"1067","University of North Carolina at Greensboro",867,"USA",224,355,478,210,936,849,609,800,552,2014
+"1068","All India Institute of Medical Sciences, New Delhi",868,"India",13,355,478,210,879,853,609,800,637,2014
+"1069","Kyoto Institute of Technology",869,"Japan",70,355,478,210,927,831,800,874,307,2014
+"1070","Ocean University of China",870,"China",51,355,478,210,703,824,800,832,481,2014
+"1071","Chiang Mai University",871,"Thailand",3,355,478,210,838,706,609,800,737,2014
+"1072","University of Camerino",872,"Italy",46,355,478,210,844,804,800,800,637,2014
+"1073","Hirosaki University",873,"Japan",71,355,478,210,952,819,609,832,426,2014
+"1074","University of North Dakota",874,"USA",225,355,478,210,935,647,800,832,426,2014
+"1075","University of Extremadura",875,"Spain",33,355,478,210,729,871,800,819,637,2014
+"1076","Teikyo University",876,"Japan",72,355,478,210,965,738,800,800,737,2014
+"1077","Jiangnan University",877,"China",52,355,478,210,873,922,800,819,552,2014
+"1078","Adam Mickiewicz University in Poznań",878,"Poland",5,233,478,210,665,762,800,897,481,2014
+"1079","University of Waikato",879,"New Zealand",6,355,340,210,973,860,493,923,481,2014
+"1080","University of Veterinary Medicine Vienna",880,"Austria",12,355,478,210,853,691,609,819,637,2014
+"1081","University of Cádiz",881,"Spain",34,355,478,210,863,793,800,849,373,2014
+"1082","Florida Atlantic University",882,"USA",226,355,478,210,848,701,800,819,737,2014
+"1083","Huazhong Agricultural University",883,"China",53,355,478,210,691,570,609,849,481,2014
+"1084","Brock University",884,"Canada",31,355,478,210,899,746,609,832,552,2014
+"1085","University of Lleida",885,"Spain",35,355,478,210,871,888,609,832,637,2014
+"1086","Shanghai Normal University",886,"China",54,355,458,210,974,938,800,874,737,2014
+"1087","Jean Monnet University",887,"France",44,355,478,210,661,472,800,849,552,2014
+"1088","Shimane University",888,"Japan",73,355,478,210,922,693,609,832,637,2014
+"1089","University of Orléans",889,"France",45,355,478,210,743,509,609,843,637,2014
+"1090","University of Siegen",890,"Germany",51,355,478,210,877,714,406,843,737,2014
+"1091","Makerere University",891,"Uganda",1,355,478,210,915,708,609,832,737,2014
+"1092","University of Wales, Trinity Saint David",892,"United Kingdom",64,355,478,210,966,859,406,843,737,2014
+"1093","National Taiwan University of Science and Technology",893,"Taiwan",16,355,478,210,610,974,800,849,737,2014
+"1094","University of Brasília",894,"Brazil",10,355,450,210,785,777,800,897,737,2014
+"1095","University of Western Brittany",895,"France",46,355,478,210,834,644,800,849,481,2014
+"1096","Nanjing Agricultural University",896,"China",55,355,478,210,674,766,800,849,637,2014
+"1097","National University of Córdoba",897,"Argentina",3,355,478,210,713,818,609,849,737,2014
+"1098","Federal University of Santa Catarina",898,"Brazil",11,355,478,210,608,959,800,869,737,2014
+"1099","National Taiwan Ocean University",899,"Taiwan",17,355,317,210,774,934,800,956,737,2014
+"1100","Gazi University",900,"Turkey",8,355,478,210,742,952,609,849,737,2014
+"1101","National University of Colombia",901,"Colombia",2,355,297,210,882,748,609,979,737,2014
+"1102","University of Jaén",902,"Spain",36,355,478,210,932,864,493,874,426,2014
+"1103","Boğaziçi University",903,"Turkey",9,355,478,210,817,820,493,849,737,2014
+"1104","Jadavpur University",904,"India",14,355,478,210,871,987,493,849,737,2014
+"1105","Pukyong National University",905,"South Korea",32,355,478,210,904,952,800,889,373,2014
+"1106","University of Western Sydney",906,"Australia",25,355,478,210,693,591,609,869,737,2014
+"1107","Northeastern University (China)",907,"China",56,355,425,210,797,966,800,917,737,2014
+"1108","University of Mannheim",908,"Germany",52,355,478,210,949,885,493,849,737,2014
+"1109","University of Osnabrück",909,"Germany",53,355,478,210,841,628,800,849,737,2014
+"1110","Charles Darwin University",910,"Australia",26,355,478,210,911,694,609,849,737,2014
+"1111","University of Hyderabad",911,"India",15,355,478,210,857,938,800,849,737,2014
+"1112","Northwest University (China)",912,"China",57,355,478,210,969,751,609,849,737,2014
+"1113","University of Southern Mississippi",913,"USA",227,355,478,210,903,840,800,849,737,2014
+"1114","University of Wrocław",914,"Poland",6,344,478,210,732,812,800,869,737,2014
+"1115","Carlos III University of Madrid",915,"Spain",37,355,478,210,669,959,800,948,307,2014
+"1116","Novosibirsk State University",916,"Russia",3,147,478,210,875,910,609,994,737,2014
+"1117","Nanjing Medical University",917,"China",58,355,478,210,672,715,800,874,737,2014
+"1118","Nicolaus Copernicus University in Toruń",918,"Poland",7,355,478,210,879,839,493,874,552,2014
+"1119","Federal University of Santa Maria",919,"Brazil",12,355,414,210,985,974,800,923,737,2014
+"1120","Chemnitz University of Technology",920,"Germany",54,355,330,210,988,952,800,985,373,2014
+"1121","Southwest University",921,"China",59,264,478,210,760,875,609,909,737,2014
+"1122","Wrocław University of Technology",922,"Poland",8,355,443,210,771,900,800,937,737,2014
+"1123","University of California, Merced",923,"USA",228,355,478,210,957,576,800,923,338,2014
+"1124","United Arab Emirates University",924,"United Arab Emirates",1,355,478,210,983,821,800,897,426,2014
+"1125","Federal University of São Carlos",925,"Brazil",13,355,478,210,688,934,800,889,737,2014
+"1126","University of Thessaly",926,"Greece",7,355,478,210,867,974,609,874,737,2014
+"1127","University of Basilicata",927,"Italy",47,355,478,210,938,886,609,874,737,2014
+"1128","Feng Chia University",928,"Taiwan",18,355,376,210,869,987,800,956,737,2014
+"1129","Federal University of Paraná",929,"Brazil",14,355,478,210,730,787,800,889,737,2014
+"1130","University of Almería",930,"Spain",38,355,478,210,959,966,800,874,737,2014
+"1131","Hallym University",931,"South Korea",33,355,478,210,942,950,800,889,552,2014
+"1132","Fourth Military Medical University",932,"China",60,355,478,210,680,747,609,909,552,2014
+"1133","University of the Republic (Uruguay)",933,"Uruguay",1,355,478,210,940,744,800,889,737,2014
+"1134","Dokuz Eylül University",934,"Turkey",10,355,478,210,948,914,800,889,737,2014
+"1135","Nanjing University of Aeronautics and Astronautics",935,"China",61,355,478,210,775,974,800,897,737,2014
+"1136","Public University of Navarre",936,"Spain",39,355,478,210,959,803,800,897,552,2014
+"1137","University of A Coruña",937,"Spain",40,355,478,210,947,899,800,917,426,2014
+"1138","Isfahan University of Technology",938,"Iran",4,355,478,210,722,904,609,909,737,2014
+"1139","University of New England (Australia)",939,"Australia",27,355,478,210,916,552,493,909,637,2014
+"1140","Federal University of Pernambuco",940,"Brazil",15,355,478,210,765,883,800,948,373,2014
+"1141","Jiangsu University",941,"China",62,355,478,210,836,959,800,985,280,2014
+"1142","Third Military Medical University",942,"China",63,355,478,210,800,844,609,923,481,2014
+"1143","South China Normal University",943,"China",64,355,478,210,737,932,800,917,637,2014
+"1144","University of Limerick",944,"Ireland",8,355,478,210,897,868,800,948,373,2014
+"1145","Xiangtan University",945,"China",65,355,393,210,893,918,800,973,737,2014
+"1146","Yangzhou University",946,"China",66,355,478,210,928,907,800,909,737,2014
+"1147","Northwestern Polytechnical University",947,"China",67,355,417,210,628,987,800,985,737,2014
+"1148","University of Reims Champagne-Ardenne",948,"France",47,355,478,210,977,868,609,923,481,2014
+"1149","Ibaraki University",949,"Japan",74,355,478,210,995,439,609,917,737,2014
+"1150","Chung Shan Medical University",950,"Taiwan",19,355,478,210,750,987,609,923,737,2014
+"1151","Alexandria University",951,"Egypt",2,254,478,210,963,950,800,956,737,2014
+"1152","Yuan Ze University",952,"Taiwan",20,355,478,210,894,974,800,917,737,2014
+"1153","University of Cyprus",953,"Cyprus",1,355,478,210,802,887,609,923,737,2014
+"1154","University of Silesia",954,"Poland",9,355,478,210,815,843,609,923,737,2014
+"1155","Southern Medical University",955,"China",68,355,478,210,873,737,800,923,637,2014
+"1156","Shiraz University",956,"Iran",5,355,478,210,860,952,609,923,737,2014
+"1157","University of Bucharest",957,"Romania",1,321,478,210,837,776,609,937,737,2014
+"1158","Mansoura University",958,"Egypt",3,355,478,210,978,974,609,923,737,2014
+"1159","Amirkabir University of Technology",959,"Iran",6,355,478,210,769,952,609,937,737,2014
+"1160","Beijing Jiaotong University",960,"China",69,355,478,210,971,987,800,997,280,2014
+"1161","University of Valenciennes and Hainaut-Cambresis",961,"France",48,355,478,210,840,938,493,937,737,2014
+"1162","University of the Algarve",962,"Portugal",7,355,478,210,951,826,800,923,737,2014
+"1163","University of Chemistry and Technology, Prague",963,"Czech Republic",5,355,478,210,994,871,800,923,737,2014
+"1164","Federal University of Ceará",964,"Brazil",16,355,478,210,826,806,800,937,737,2014
+"1165","Ain Shams University",965,"Egypt",4,355,478,210,891,848,609,937,737,2014
+"1166","University of Oldenburg",966,"Germany",55,355,478,210,849,831,800,937,737,2014
+"1167","Federal University of Bahia",967,"Brazil",17,355,478,210,981,856,609,937,737,2014
+"1168","Hunan Normal University",968,"China",70,355,478,210,923,915,800,937,737,2014
+"1169","Western Michigan University",969,"USA",229,355,478,210,962,815,800,937,737,2014
+"1170","University of Seoul",970,"South Korea",34,355,478,210,997,938,609,948,552,2014
+"1171","Federico Santa María Technical University",971,"Chile",4,355,478,210,984,938,493,966,481,2014
+"1172","Ryerson University",972,"Canada",32,355,478,210,813,966,609,956,637,2014
+"1173","South China Agricultural University",973,"China",71,355,478,210,946,830,800,948,737,2014
+"1174","Fu Jen Catholic University",974,"Taiwan",21,355,478,210,978,891,800,948,737,2014
+"1175","China Pharmaceutical University",975,"China",72,355,478,210,919,987,800,956,552,2014
+"1176","Tarbiat Modares University",976,"Iran",7,355,478,210,811,987,800,956,737,2014
+"1177","University of Puerto Rico at Mayagüez",977,"Puerto Rico",1,355,478,210,999,778,609,956,737,2014
+"1178","National University of Rosario",978,"Argentina",4,355,478,210,976,811,800,956,737,2014
+"1179","University of Pau and Pays de l'Adour",979,"France",49,355,478,210,988,987,800,956,737,2014
+"1180","Xidian University",980,"China",73,355,478,210,888,974,800,985,373,2014
+"1181","Zhejiang University of Technology",981,"China",74,355,478,210,917,987,800,966,637,2014
+"1182","China Medical University (PRC)",982,"China",75,355,478,210,849,709,800,966,737,2014
+"1183","Federal University of ABC",983,"Brazil",18,355,478,210,952,904,609,966,737,2014
+"1184","King Juan Carlos University",984,"Spain",41,355,478,210,859,836,800,970,737,2014
+"1185","Beijing University of Technology",985,"China",76,355,478,210,809,938,609,973,637,2014
+"1186","Guangxi University",986,"China",77,313,478,210,919,974,800,979,637,2014
+"1187","Northwest A&F University",987,"China",78,355,478,210,787,894,800,973,737,2014
+"1188","Shanxi University",988,"China",79,355,478,210,885,907,800,973,737,2014
+"1189","Tamkang University",989,"Taiwan",22,355,478,210,929,974,800,973,737,2014
+"1190","Harbin Medical University",990,"China",80,355,478,210,900,862,800,979,737,2014
+"1191","Zhejiang Normal University",991,"China",81,355,478,210,905,932,800,979,737,2014
+"1192","King Abdulaziz University",992,"Saudi Arabia",4,355,470,210,843,688,609,998,637,2014
+"1193","Iran University of Science and Technology",993,"Iran",8,355,478,210,822,987,493,989,737,2014
+"1194","I-Shou University",994,"Taiwan",23,355,478,210,878,987,800,989,737,2014
+"1195","University of Maine (Le Mans)",995,"France",50,355,478,210,990,918,800,989,637,2014
+"1196","National Dong Hwa University",996,"Taiwan",24,355,478,210,901,934,800,989,737,2014
+"1197","National Taipei University of Technology",997,"Taiwan",25,355,478,210,867,987,800,994,737,2014
+"1198","Shaanxi Normal University",998,"China",82,355,478,210,956,965,800,994,737,2014
+"1199","National University of Defense Technology",999,"China",83,355,478,210,860,973,800,999,637,2014
+"1200","Yanbian University",1000,"China",84,355,478,210,890,790,800,1000,737,2014
+"1201","Harvard University",1,"USA",1,1,1,1,1,1,1,1,3,2015
+"1202","Stanford University",2,"USA",2,9,2,4,5,3,3,4,10,2015
+"1203","Massachusetts Institute of Technology",3,"USA",3,3,11,2,15,2,2,2,1,2015
+"1204","University of Cambridge",4,"United Kingdom",1,2,10,5,11,6,12,13,48,2015
+"1205","University of Oxford",5,"United Kingdom",2,7,13,10,7,12,7,9,15,2015
+"1206","Columbia University",6,"USA",4,13,6,9,13,13,11,12,4,2015
+"1207","University of California, Berkeley",7,"USA",5,5,21,6,10,4,4,7,29,2015
+"1208","University of Chicago",8,"USA",6,11,14,8,17,16,12,22,141,2015
+"1209","Princeton University",9,"USA",7,4,15,3,72,25,24,33,225,2015
+"1210","Cornell University",10,"USA",8,12,18,14,24,15,25,22,11,2015
+"1211","Yale University",11,"USA",9,10,26,11,18,8,35,20,49,2015
+"1212","California Institute of Technology",12,"USA",10,6,328,7,53,9,19,25,13,2015
+"1213","University of Tokyo",13,"Japan",1,16,3,38,14,19,31,29,7,2015
+"1214","University of Pennsylvania",14,"USA",11,20,4,28,8,18,14,9,14,2015
+"1215","University of California, Los Angeles",15,"USA",12,28,27,13,6,14,8,6,9,2015
+"1216","Johns Hopkins University",16,"USA",13,18,84,16,4,11,5,3,2,2015
+"1217","Kyoto University",17,"Japan",2,22,16,24,30,42,88,60,16,2015
+"1218","New York University",18,"USA",14,32,22,18,47,29,46,32,43,2015
+"1219","University of Michigan, Ann Arbor",19,"USA",15,24,17,140,3,20,6,14,12,2015
+"1220","Swiss Federal Institute of Technology in Zurich",20,"Switzerland",1,17,64,17,44,27,39,79,57,2015
+"1221","University of California, San Diego",21,"USA",16,36,567,19,16,5,15,15,17,2015
+"1222","Northwestern University",22,"USA",17,163,12,104,27,34,27,26,42,2015
+"1223","Hebrew University of Jerusalem",23,"Israel",1,15,164,15,120,97,368,143,35,2015
+"1224","Seoul National University",24,"South Korea",1,367,9,218,36,163,146,112,6,2015
+"1225","University of Wisconsin–Madison",25,"USA",18,29,29,34,21,24,22,27,27,2015
+"1226","University of California, San Francisco",26,"USA",19,367,567,20,22,7,15,11,56,2015
+"1227","University College London",27,"United Kingdom",3,21,447,27,12,22,15,18,67,2015
+"1228","Duke University",28,"USA",20,74,31,56,19,23,15,16,33,2015
+"1229","Rockefeller University",29,"USA",21,49,567,12,372,28,115,70,289,2015
+"1230","University of Texas at Austin",30,"USA",22,75,36,25,48,50,26,71,38,2015
+"1231","University of Washington - Seattle",31,"USA",23,48,103,41,9,10,10,5,40,2015
+"1232","University of Toronto",32,"Canada",1,70,51,32,2,17,9,8,145,2015
+"1233","University of Illinois at Urbana–Champaign",33,"USA",24,33,75,21,40,48,42,74,65,2015
+"1234","Keio University",34,"Japan",3,284,5,218,309,246,368,270,80,2015
+"1235","Imperial College London",35,"United Kingdom",4,90,82,30,19,26,23,19,47,2015
+"1236","École Polytechnique",36,"France",1,98,7,216,327,314,234,295,172,2015
+"1237","École normale supérieure - Paris",37,"France",2,8,502,54,379,157,645,295,871,2015
+"1238","Waseda University",38,"Japan",4,288,8,218,406,389,368,388,248,2015
+"1239","Weizmann Institute of Science",39,"Israel",2,19,567,22,246,63,234,143,45,2015
+"1240","University of North Carolina at Chapel Hill",40,"USA",25,124,69,86,32,32,19,21,41,2015
+"1241","University of Virginia",41,"USA",26,209,20,126,94,74,88,90,97,2015
+"1242","McGill University",42,"Canada",2,34,37,75,33,53,44,34,132,2015
+"1243","Purdue University, West Lafayette",43,"USA",27,55,33,47,75,95,68,117,28,2015
+"1244","Dartmouth College",44,"USA",28,40,19,218,246,167,136,154,63,2015
+"1245","Osaka University",45,"Japan",5,46,39,75,50,58,182,67,18,2015
+"1246","University of Pittsburgh - Pittsburgh Campus",46,"USA",29,79,169,218,25,57,21,24,50,2015
+"1247","Pennsylvania State University, University Park",47,"USA",30,230,44,62,49,43,28,38,92,2015
+"1248","University of Minnesota, Twin Cities",48,"USA",31,63,130,63,23,40,31,28,59,2015
+"1249","Ohio State University, Columbus",49,"USA",32,96,87,82,28,52,31,38,44,2015
+"1250","Rutgers University-New Brunswick",50,"USA",33,91,40,37,100,66,46,89,61,2015
+"1251","University of Southern California",51,"USA",34,152,62,39,57,64,101,56,34,2015
+"1252","Washington University in St. Louis",52,"USA",35,101,96,71,41,21,29,17,169,2015
+"1253","University of California, Davis",53,"USA",36,54,227,59,29,33,35,52,62,2015
+"1254","University of Colorado Boulder",54,"USA",37,80,67,31,96,38,45,74,133,2015
+"1255","University of Edinburgh",55,"United Kingdom",5,44,127,33,54,37,65,43,228,2015
+"1256","Peking University",56,"China",1,182,38,218,52,131,182,125,20,2015
+"1257","National Taiwan University",57,"Taiwan",1,92,25,218,46,223,182,204,695,2015
+"1258","University of Paris-Sud",58,"France",3,26,393,26,73,86,115,97,324,2015
+"1259","Lomonosov Moscow State University",59,"Russia",1,14,175,48,268,254,287,344,861,2015
+"1260","University of Florida",60,"USA",38,214,276,96,37,73,46,59,5,2015
+"1261","Carnegie Mellon University",61,"USA",39,25,160,23,211,225,78,150,165,2015
+"1262","University of British Columbia",62,"Canada",3,81,275,93,26,36,37,34,81,2015
+"1263","Pierre-and-Marie-Curie University",63,"France",4,30,404,88,31,35,68,63,87,2015
+"1264","University of California, Santa Barbara",64,"USA",40,133,280,29,111,59,46,55,77,2015
+"1265","National University of Singapore",65,"Singapore",1,367,98,218,34,125,78,90,25,2015
+"1266","Boston University",66,"USA",41,303,54,83,60,45,37,34,135,2015
+"1267","University of Manchester",67,"United Kingdom",6,99,92,72,43,70,29,53,142,2015
+"1268","University of Arizona",68,"USA",42,139,55,87,74,39,31,49,235,2015
+"1269","Vanderbilt University",69,"USA",43,87,94,110,55,62,59,41,51,2015
+"1270","University of Utah",70,"USA",44,97,105,67,97,65,101,90,19,2015
+"1271","Karolinska Institute",71,"Sweden",1,149,567,36,51,54,52,34,743,2015
+"1272","University of Maryland, College Park",72,"USA",45,68,210,43,58,47,39,67,280,2015
+"1273","Tohoku University",73,"Japan",6,41,170,218,68,127,115,119,22,2015
+"1274","University of Copenhagen",74,"Denmark",1,117,149,64,38,31,59,31,432,2015
+"1275","University of Texas Southwestern Medical Center",75,"USA",46,59,567,35,131,30,78,40,173,2015
+"1276","Ruprecht Karl University of Heidelberg",76,"Germany",1,38,402,51,69,61,46,46,243,2015
+"1277","University of Notre Dame",77,"USA",47,221,24,155,242,242,182,235,352,2015
+"1278","Tsinghua University",78,"China",2,309,73,218,63,158,65,156,30,2015
+"1279","Ludwig Maximilian University of Munich",79,"Germany",2,42,129,92,66,55,53,51,167,2015
+"1280","Georgia Institute of Technology",80,"USA",48,135,60,218,107,152,78,106,36,2015
+"1281","University of Rochester",81,"USA",49,72,53,113,114,118,68,79,64,2015
+"1282","Katholieke Universiteit Leuven",82,"Belgium",1,367,202,218,35,92,53,46,74,2015
+"1283","Brown University",83,"USA",50,64,43,73,121,67,76,99,200,2015
+"1284","Emory University",84,"USA",51,367,146,116,67,60,93,41,55,2015
+"1285","Erasmus University Rotterdam",85,"Netherlands",1,367,46,189,87,147,53,44,227,2015
+"1286","Tel Aviv University",86,"Israel",3,77,107,50,98,117,136,154,39,2015
+"1287","Utrecht University",87,"Netherlands",2,84,199,115,39,44,59,46,429,2015
+"1288","University of Sydney",88,"Australia",1,105,198,166,45,103,46,84,75,2015
+"1289","University of California, Irvine",89,"USA",52,227,567,44,78,51,68,54,162,2015
+"1290","University of Texas MD Anderson Cancer Center",90,"USA",53,367,567,80,93,72,42,29,71,2015
+"1291","Swiss Federal Institute of Technology in Lausanne",91,"Switzerland",2,367,74,116,124,114,39,110,58,2015
+"1292","University of Geneva",92,"Switzerland",3,35,191,42,122,77,115,79,321,2015
+"1293","University of Melbourne",93,"Australia",2,141,113,218,42,68,53,71,223,2015
+"1294","King's College London",94,"United Kingdom",7,27,190,114,76,116,101,74,188,2015
+"1295","Tufts University",95,"USA",54,60,48,182,166,160,93,85,84,2015
+"1296","University of Zurich",96,"Switzerland",4,115,389,85,56,46,68,56,137,2015
+"1297","Arizona State University",97,"USA",55,367,455,66,143,85,76,140,21,2015
+"1298","Yonsei University",98,"South Korea",2,367,45,218,140,326,321,235,23,2015
+"1299","University of Oslo",99,"Norway",1,53,286,40,106,134,101,102,302,2015
+"1300","Kyushu University",100,"Japan",7,367,49,218,152,182,264,200,37,2015
+"1301","Technical University of Munich",101,"Germany",3,37,118,177,104,90,128,95,119,2015
+"1302","Texas A&M University, College Station",102,"USA",56,339,108,46,77,98,88,143,201,2015
+"1303","University of Queensland",103,"Australia",3,269,292,142,65,78,101,99,68,2015
+"1304","Mines ParisTech",104,"France",5,278,23,169,977,834,812,906,871,2015
+"1305","Case Western Reserve University",105,"USA",57,50,215,195,137,106,59,74,111,2015
+"1306","Indiana University - Bloomington",106,"USA",58,134,35,178,180,143,161,190,178,2015
+"1307","University of Alberta",107,"Canada",4,169,151,153,62,109,82,103,116,2015
+"1308","Leiden University",108,"Netherlands",3,120,567,102,82,94,53,56,260,2015
+"1309","Tokyo Institute of Technology",109,"Japan",8,170,50,128,169,169,136,190,52,2015
+"1310","University of Groningen",110,"Netherlands",4,313,193,196,64,96,68,67,316,2015
+"1311","University of Helsinki",111,"Finland",1,56,551,111,80,79,88,65,420,2015
+"1312","Sapienza University of Rome",112,"Italy",1,67,205,45,83,166,212,130,312,2015
+"1313","Georgetown University",113,"USA",59,159,34,218,298,321,321,204,122,2015
+"1314","University of Amsterdam",114,"Netherlands",5,109,317,212,70,88,93,60,282,2015
+"1315","Korea University",115,"South Korea",3,367,58,218,172,411,321,273,26,2015
+"1316","University of Barcelona",116,"Spain",1,367,226,218,61,108,93,83,215,2015
+"1317","Lund University",117,"Sweden",2,136,466,169,85,135,53,60,871,2015
+"1318","Michigan State University",118,"USA",60,112,162,218,88,123,65,111,136,2015
+"1319","Ghent University",119,"Belgium",2,123,329,147,84,149,68,119,90,2015
+"1320","Rice University",120,"USA",61,52,161,95,255,150,59,130,76,2015
+"1321","Baylor College of Medicine",121,"USA",62,367,567,218,113,41,101,44,199,2015
+"1322","Aarhus University",122,"Denmark",2,310,165,106,91,81,101,95,154,2015
+"1323","University of Bristol",123,"United Kingdom",8,194,196,74,92,69,82,106,335,2015
+"1324","Uppsala University",124,"Sweden",3,73,321,70,95,75,93,103,871,2015
+"1325","Nagoya University",125,"Japan",9,39,322,53,138,140,146,195,78,2015
+"1326","Royal Institute of Technology",126,"Sweden",4,199,30,105,221,300,321,318,797,2015
+"1327","University of Colorado Denver",127,"USA",63,367,567,140,135,110,128,66,72,2015
+"1328","University of Glasgow",128,"United Kingdom",9,234,89,218,123,144,82,87,402,2015
+"1329","VU University Amsterdam",129,"Netherlands",6,367,385,218,79,120,68,79,871,2015
+"1330","University of New South Wales",130,"Australia",4,177,70,218,90,177,101,164,157,2015
+"1331","Paris Diderot University - Paris 7",131,"France",6,127,567,68,105,56,115,97,483,2015
+"1332","University of São Paulo",132,"Brazil",1,297,71,218,59,186,136,164,710,2015
+"1333","Western University (The University of Western Ontario)",133,"Canada",5,367,41,218,149,208,234,190,261,2015
+"1334","Radboud University Nijmegen",134,"Netherlands",7,128,274,218,89,119,93,74,410,2015
+"1335","Nanyang Technological University",135,"Singapore",2,367,567,218,102,361,212,204,32,2015
+"1336","Technion – Israel Institute of Technology",136,"Israel",4,45,180,55,186,221,161,209,88,2015
+"1337","University of Miami",137,"USA",64,367,241,218,159,130,82,112,73,2015
+"1338","Stony Brook University",138,"USA",65,186,567,58,173,84,93,134,96,2015
+"1339","University of Texas at Dallas",139,"USA",66,367,159,218,250,151,59,49,313,2015
+"1340","University of Nottingham",140,"United Kingdom",10,131,109,84,116,176,146,140,138,2015
+"1341","University of Iowa",141,"USA",67,233,296,167,103,83,115,112,121,2015
+"1342","Southern Methodist University",142,"USA",68,179,28,218,624,655,368,646,824,2015
+"1343","Icahn School of Medicine at Mount Sinai",143,"USA",69,367,567,218,160,71,161,63,101,2015
+"1344","Korea Advanced Institute of Science and Technology (KAIST)",144,"South Korea",4,367,194,218,183,283,368,289,8,2015
+"1345","Monash University",145,"Australia",5,277,145,218,86,136,182,161,99,2015
+"1346","University of Alabama at Birmingham",146,"USA",70,367,567,218,141,124,128,71,130,2015
+"1347","Free University of Berlin",147,"Germany",4,76,548,128,109,80,234,90,461,2015
+"1348","University of Southampton",148,"United Kingdom",11,329,95,218,115,133,101,130,334,2015
+"1349","University of the Witwatersrand",149,"South Africa",1,61,32,172,442,237,321,447,291,2015
+"1350","McMaster University",150,"Canada",6,222,268,163,127,156,101,87,222,2015
+"1351","University of Montreal",151,"Canada",7,320,376,218,101,111,101,90,540,2015
+"1352","University of Birmingham",152,"United Kingdom",12,65,158,205,117,165,146,138,170,2015
+"1353","Humboldt University of Berlin",153,"Germany",5,291,567,108,108,82,161,85,471,2015
+"1354","University of California, Santa Cruz",154,"USA",71,175,567,100,243,49,115,99,183,2015
+"1355","Albert Ludwig University of Freiburg",155,"Germany",6,148,134,193,156,104,182,134,98,2015
+"1356","University of Tübingen",156,"Germany",7,69,490,103,142,122,146,115,226,2015
+"1357","University of Cincinnati",157,"USA",72,188,86,218,150,171,128,127,263,2015
+"1358","University of Bonn",158,"Germany",8,58,249,65,153,107,146,150,341,2015
+"1359","Wake Forest University",159,"USA",73,265,83,218,249,244,128,125,124,2015
+"1360","University of Basel",160,"Switzerland",5,83,363,60,167,100,136,130,486,2015
+"1361","University of Leeds",161,"United Kingdom",13,62,157,218,133,141,136,150,265,2015
+"1362","University of Hamburg",162,"Germany",9,314,136,135,147,126,101,127,677,2015
+"1363","Université libre de Bruxelles",163,"Belgium",3,173,110,69,236,214,101,170,148,2015
+"1364","Indiana University-Purdue University Indianapolis",164,"USA",74,367,492,218,187,190,125,122,79,2015
+"1365","Pohang University of Science and Technology",165,"South Korea",5,367,567,218,285,355,212,281,24,2015
+"1366","Oregon Health & Science University",166,"USA",75,367,567,128,184,115,125,105,144,2015
+"1367","University of Calgary",167,"Canada",8,367,123,218,145,180,101,127,778,2015
+"1368","Stockholm University",168,"Sweden",5,129,79,187,202,89,88,179,839,2015
+"1369","University of Padua",169,"Italy",2,281,567,218,99,105,182,119,351,2015
+"1370","University of Hong Kong",170,"Hong Kong",1,287,128,218,139,204,128,147,205,2015
+"1371","Yeshiva University",171,"USA",76,200,567,218,195,91,161,109,128,2015
+"1372","University of Milan",172,"Italy",3,162,441,182,118,189,212,106,438,2015
+"1373","University of Sheffield",173,"United Kingdom",14,142,209,196,129,137,136,147,179,2015
+"1374","Technical University of Denmark",174,"Denmark",3,351,510,202,220,230,161,216,46,2015
+"1375","University of Maryland, Baltimore",175,"USA",77,367,567,218,125,112,197,116,180,2015
+"1376","Goethe University Frankfurt",176,"Germany",10,111,219,89,179,155,212,124,328,2015
+"1377","University of Göttingen",177,"Germany",11,43,171,176,174,146,264,184,299,2015
+"1378","Hokkaido University",178,"Japan",10,279,277,135,148,173,287,251,53,2015
+"1379","Australian National University",179,"Australia",6,196,379,52,130,99,197,188,415,2015
+"1380","Shanghai Jiao Tong University",180,"China",3,335,143,218,81,267,212,209,198,2015
+"1381","University of New Mexico",181,"USA",78,367,567,218,223,170,82,147,100,2015
+"1382","University of Strasbourg",182,"France",7,71,567,49,191,145,264,219,269,2015
+"1383","University of Massachusetts Medical School",183,"USA",79,367,567,80,296,76,234,122,143,2015
+"1384","University of Houston",184,"USA",80,367,42,218,310,257,511,349,156,2015
+"1385","Trinity College, Dublin",185,"Ireland",1,338,78,200,289,233,115,204,153,2015
+"1386","University of Lausanne",186,"Switzerland",6,102,423,218,235,101,115,117,683,2015
+"1387","Iowa State University",187,"USA",81,286,186,109,151,178,82,184,339,2015
+"1388","Joseph Fourier University",188,"France",8,195,567,218,110,93,234,170,160,2015
+"1389","Wayne State University",189,"USA",82,367,183,218,189,258,125,176,117,2015
+"1390","University of South Florida - Tampa",190,"USA",83,367,418,218,233,251,197,164,70,2015
+"1391","Zhejiang University",191,"China",4,367,309,218,71,290,368,265,106,2015
+"1392","Hanyang University",192,"South Korea",6,367,168,218,286,471,368,396,31,2015
+"1393","University of Ottawa",193,"Canada",9,223,163,218,171,194,212,134,496,2015
+"1394","University of Missouri–Columbia",194,"USA",84,250,88,98,222,226,161,242,150,2015
+"1395","Fudan University",195,"China",5,367,203,218,112,252,368,204,123,2015
+"1396","University of Kansas",196,"USA",85,228,91,218,212,161,161,235,127,2015
+"1397","University of Cologne",197,"Germany",12,367,132,201,204,138,146,161,421,2015
+"1398","University of Georgia",198,"USA",86,93,188,172,181,132,234,256,82,2015
+"1399","University of Liverpool",199,"United Kingdom",15,176,179,207,154,172,128,174,377,2015
+"1400","University of Bern",200,"Switzerland",7,184,526,213,163,128,93,159,433,2015
+"1401","Cardiff University",201,"United Kingdom",16,321,218,143,178,153,146,170,193,2015
+"1402","George Washington University",202,"USA",87,192,56,218,301,227,264,235,326,2015
+"1403","University of Illinois at Chicago",203,"USA",88,367,541,218,126,196,287,179,129,2015
+"1404","University of Erlangen-Nuremberg",204,"Germany",13,231,554,218,176,202,146,134,361,2015
+"1405","University of Münster",205,"Germany",14,113,421,174,170,192,136,174,192,2015
+"1406","Aix-Marseille University",206,"France",9,218,451,218,119,87,182,197,230,2015
+"1407","Claude Bernard University Lyon 1",207,"France",10,367,567,218,132,121,234,184,151,2015
+"1408","University of Bologna",208,"Italy",4,350,348,218,136,281,212,161,354,2015
+"1409","Queen Mary University of London",209,"United Kingdom",17,147,319,218,226,175,212,138,255,2015
+"1410","Dresden University of Technology",210,"Germany",15,367,567,218,188,212,146,195,102,2015
+"1411","Sungkyunkwan University",211,"South Korea",7,367,225,218,194,317,161,270,69,2015
+"1412","Newcastle University",212,"United Kingdom",18,367,222,218,192,159,234,159,365,2015
+"1413","Karlsruhe Institute of Technology",213,"Germany",16,356,208,131,193,280,146,247,103,2015
+"1414","University of California, Riverside",214,"USA",89,247,567,218,209,113,161,169,194,2015
+"1415","University of Kiel",215,"Germany",17,193,487,198,232,183,161,143,310,2015
+"1416","University of Western Australia",216,"Australia",7,156,306,145,146,181,368,179,399,2015
+"1417","Paris Descartes University",217,"France",11,203,567,218,177,142,287,156,455,2015
+"1418","University of Connecticut",218,"USA",90,296,259,218,168,193,197,190,186,2015
+"1419","University of Massachusetts Amherst",219,"USA",91,212,141,159,198,191,212,200,356,2015
+"1420","Chinese University of Hong Kong",220,"Hong Kong",2,100,479,116,162,356,212,209,168,2015
+"1421","University of Turin",221,"Italy",5,315,450,163,206,278,197,150,613,2015
+"1422","University of Manitoba",222,"Canada",10,157,93,155,261,308,212,256,175,2015
+"1423","University of Vienna",223,"Austria",1,191,185,101,231,154,161,200,671,2015
+"1424","University of Montpellier",224,"France",12,289,462,169,165,129,146,184,511,2015
+"1425","Maastricht University",225,"Netherlands",8,367,567,218,185,354,234,156,281,2015
+"1426","National Cheng Kung University",226,"Taiwan",2,367,52,218,164,485,812,388,436,2015
+"1427","University of Tennessee, Knoxville",227,"USA",92,319,117,218,196,187,197,219,449,2015
+"1428","Complutense University of Madrid",228,"Spain",2,86,68,214,215,309,368,335,256,2015
+"1429","Laval University",229,"Canada",11,292,273,218,207,270,182,200,140,2015
+"1430","RWTH Aachen University",230,"Germany",18,357,238,131,197,359,182,219,158,2015
+"1431","Université catholique de Louvain",231,"Belgium",4,367,264,97,283,325,115,213,236,2015
+"1432","North Carolina State University",232,"USA",93,251,228,218,157,206,182,242,161,2015
+"1433","Johannes Gutenberg University of Mainz",233,"Germany",19,367,567,194,210,185,161,164,523,2015
+"1434","University of Texas Health Science Center at San Antonio",234,"USA",94,367,567,218,314,229,197,140,315,2015
+"1435","Julius-Maximilian's University of Würzburg",235,"Germany",20,106,391,168,216,179,287,179,369,2015
+"1436","Paul Sabatier University - Toulouse III",236,"France",13,367,567,218,158,102,321,188,514,2015
+"1437","University of Gothenburg",237,"Sweden",6,257,294,116,217,197,136,197,871,2015
+"1438","University College Dublin",238,"Ireland",2,241,112,218,288,285,128,247,278,2015
+"1439","University of Science and Technology of China",239,"China",6,367,192,218,128,269,368,247,452,2015
+"1440","University of Leicester",240,"United Kingdom",19,367,567,218,258,139,197,170,385,2015
+"1441","Autonomous University of Barcelona",241,"Spain",3,367,567,218,144,220,264,213,277,2015
+"1442","University of Dundee",242,"United Kingdom",20,178,567,218,354,200,161,176,216,2015
+"1443","Norwegian University of Science and Technology",243,"Norway",2,252,119,75,279,366,212,273,327,2015
+"1444","Nanjing University",244,"China",7,342,362,218,134,358,234,265,164,2015
+"1445","Okayama University",245,"Japan",11,367,288,218,353,335,287,318,60,2015
+"1446","London School of Hygiene & Tropical Medicine",246,"United Kingdom",21,367,567,159,300,294,264,164,736,2015
+"1447","University of Florence",247,"Italy",6,327,326,94,218,275,197,227,564,2015
+"1448","University of Cape Town",248,"South Africa",2,104,126,146,319,236,234,265,268,2015
+"1449","University of Texas Health Science Center at Houston",249,"USA",95,367,567,155,257,162,212,190,337,2015
+"1450","Moscow Institute of Physics and Technology",250,"Russia",2,23,339,218,949,605,812,1000,839,2015
+"1451","University of Düsseldorf",251,"Germany",21,185,567,218,297,209,182,178,454,2015
+"1452","Florida State University",252,"USA",96,367,334,218,200,184,136,225,411,2015
+"1453","University of Sussex",253,"United Kingdom",22,151,257,57,359,250,161,308,553,2015
+"1454","Thomas Jefferson University",254,"USA",97,158,567,218,333,334,161,179,502,2015
+"1455","Delft University of Technology",255,"Netherlands",9,307,300,218,224,224,264,247,146,2015
+"1456","Virginia Polytechnic Institute and State University",256,"USA",98,283,152,218,201,264,234,285,181,2015
+"1457","University of Lisbon",257,"Portugal",1,337,465,152,155,296,197,251,495,2015
+"1458","Drexel University",258,"USA",99,367,233,218,362,338,287,273,91,2015
+"1459","Virginia Commonwealth University",259,"USA",100,367,403,150,264,253,321,213,206,2015
+"1460","Oregon State University",260,"USA",101,189,239,218,263,148,161,235,389,2015
+"1461","Durham University",261,"United Kingdom",23,132,267,116,248,199,197,242,460,2015
+"1462","University of Tsukuba",262,"Japan",12,202,567,107,230,255,212,242,213,2015
+"1463","University of Reading",263,"United Kingdom",24,258,63,218,400,347,182,361,666,2015
+"1464","Lehigh University",264,"USA",102,367,47,218,615,542,511,511,534,2015
+"1465","Medical University of Vienna",265,"Austria",2,367,567,218,251,228,212,197,366,2015
+"1466","University of Auckland",266,"New Zealand",1,235,419,218,253,260,234,256,125,2015
+"1467","University of Kentucky",267,"USA",103,332,290,218,182,216,321,231,447,2015
+"1468","University of Naples Federico II",268,"Italy",7,331,459,218,175,324,234,227,792,2015
+"1469","University of Waterloo",269,"Canada",12,367,124,218,190,333,234,292,626,2015
+"1470","Charles University in Prague",270,"Czech Republic",1,238,560,116,228,238,182,227,636,2015
+"1471","Colorado State University - Fort Collins",271,"USA",104,211,493,148,244,203,234,231,257,2015
+"1472","Tulane University",272,"USA",105,324,144,218,365,299,264,251,258,2015
+"1473","University at Buffalo, The State University of New York",273,"USA",106,367,398,218,203,298,287,235,237,2015
+"1474","Brandeis University",274,"USA",107,51,342,78,549,195,428,330,249,2015
+"1475","Northeastern University",275,"USA",108,316,125,218,370,312,264,362,86,2015
+"1476","Wageningen University and Research Centre",276,"Netherlands",10,293,512,175,214,168,234,235,477,2015
+"1477","Sun Yat-sen University",277,"China",8,367,254,218,161,393,287,285,221,2015
+"1478","University of Ulm",278,"Germany",22,367,471,131,290,231,321,209,594,2015
+"1479","London School of Economics",279,"United Kingdom",25,78,65,91,503,739,264,590,871,2015
+"1480","Vrije Universiteit Brussel",280,"Belgium",5,110,567,218,294,301,161,231,506,2015
+"1481","University of Delaware",281,"USA",109,318,337,135,272,304,234,292,120,2015
+"1482","Rensselaer Polytechnic Institute",282,"USA",110,137,142,218,402,346,182,292,210,2015
+"1483","University of Bergen",283,"Norway",3,367,567,218,229,201,212,227,871,2015
+"1484","Queen's University",284,"Canada",13,322,155,218,254,274,264,281,275,2015
+"1485","University of Aberdeen",285,"United Kingdom",26,360,314,199,273,207,287,225,422,2015
+"1486","Dalhousie University",286,"Canada",14,367,137,218,280,247,264,273,384,2015
+"1487","Umeå University",287,"Sweden",7,367,567,218,275,198,212,219,871,2015
+"1488","University of Duisburg-Essen",288,"Germany",23,367,498,218,287,282,321,216,348,2015
+"1489","City College of New York",289,"USA",111,31,187,218,680,422,511,590,358,2015
+"1490","Hiroshima University",290,"Japan",13,367,567,218,304,287,428,273,112,2015
+"1491","University of Texas at San Antonio",291,"USA",112,367,567,218,445,376,197,216,254,2015
+"1492","Hannover Medical School",292,"Germany",24,367,567,218,322,245,287,219,308,2015
+"1493","University of Warwick",293,"United Kingdom",27,210,444,116,205,239,161,308,234,2015
+"1494","University of Valencia",294,"Spain",4,367,470,218,208,348,264,256,548,2015
+"1495","University of Pisa",295,"Italy",8,273,473,218,227,360,212,255,528,2015
+"1496","Ruhr University Bochum",296,"Germany",25,367,235,218,236,235,368,265,797,2015
+"1497","Medical College of Wisconsin",297,"USA",113,367,567,218,337,284,321,219,659,2015
+"1498","University of Louisville",298,"USA",114,367,484,218,338,405,368,300,105,2015
+"1499","University of Bordeaux",299,"France",14,354,567,218,291,265,234,251,297,2015
+"1500","University of South Carolina - Columbia",300,"USA",115,367,299,185,262,367,146,273,649,2015
+"1501","National and Kapodistrian University of Athens",301,"Greece",1,367,200,218,245,416,428,273,871,2015
+"1502","Leipzig University",302,"Germany",26,326,567,208,281,266,511,242,364,2015
+"1503","Medical University of South Carolina",303,"USA",116,367,567,218,316,364,287,231,508,2015
+"1504","Autonomous University of Madrid",304,"Spain",5,367,460,218,225,256,321,262,443,2015
+"1505","Dalian University of Technology",305,"China",9,367,104,218,313,667,511,409,131,2015
+"1506","Stellenbosch University",306,"South Africa",3,367,66,218,520,503,321,486,219,2015
+"1507","Kyungpook National University",307,"South Korea",8,367,412,218,355,625,321,413,66,2015
+"1508","University of Porto",308,"Portugal",2,94,316,90,266,380,264,341,405,2015
+"1509","University of St Andrews",309,"United Kingdom",28,145,506,218,308,188,321,281,189,2015
+"1510","Gwangju Institute of Science and Technology",310,"South Korea",9,367,567,218,540,538,368,529,54,2015
+"1511","Chulalongkorn University",311,"Thailand",1,367,57,218,584,734,511,558,871,2015
+"1512","University of Antwerp",312,"Belgium",6,367,567,218,265,307,234,265,372,2015
+"1513","Xiamen University",313,"China",10,367,80,218,331,493,645,409,467,2015
+"1514","University of Nebraska–Lincoln",314,"USA",117,165,207,218,278,262,234,311,456,2015
+"1515","Nankai University",315,"China",11,334,135,218,282,454,321,334,419,2015
+"1516","University of Stuttgart",316,"Germany",27,82,172,218,399,369,511,335,376,2015
+"1517","University of Rome Tor Vergata",317,"Italy",9,367,557,218,267,272,287,262,816,2015
+"1518","University of Regensburg",318,"Germany",28,367,303,218,302,241,287,270,522,2015
+"1519","Hong Kong University of Science and Technology",319,"Hong Kong",3,367,359,218,256,466,368,300,185,2015
+"1520","Kobe University",320,"Japan",14,95,240,116,368,271,321,335,301,2015
+"1521","University of Liège",321,"Belgium",7,143,567,144,317,218,234,300,285,2015
+"1522","Federal University of Rio de Janeiro",322,"Brazil",2,125,116,218,305,330,645,381,295,2015
+"1523","Rush University",323,"USA",118,367,567,218,427,404,197,260,871,2015
+"1524","University of Vermont",324,"USA",119,198,256,218,357,288,368,285,397,2015
+"1525","University of York",325,"United Kingdom",29,367,567,218,270,205,161,300,406,2015
+"1526","Boston College",326,"USA",120,367,97,218,557,363,197,402,386,2015
+"1527","University of Pavia",327,"Italy",10,295,380,214,330,381,264,273,680,2015
+"1528","University of Jena",328,"Germany",29,367,567,218,260,263,321,289,457,2015
+"1529","Vita-Salute San Raffaele University",329,"Italy",11,367,567,218,478,279,321,260,871,2015
+"1530","University of Genoa",330,"Italy",12,367,567,218,299,402,234,285,537,2015
+"1531","Tianjin University",331,"China",12,367,77,218,348,934,428,606,245,2015
+"1532","Louisiana State University - Baton Rouge",332,"USA",121,270,177,218,292,215,197,353,458,2015
+"1533","University of Exeter",333,"United Kingdom",30,264,481,218,293,174,428,295,353,2015
+"1534","National Autonomous University of Mexico",334,"Mexico",1,282,546,218,199,219,368,330,486,2015
+"1535","University of Adelaide",335,"Australia",8,219,445,218,234,243,287,318,465,2015
+"1536","University of East Anglia",336,"United Kingdom",31,206,567,179,349,211,146,313,500,2015
+"1537","York University",337,"Canada",15,367,106,218,382,408,264,388,871,2015
+"1538","University of Navarra",338,"Spain",6,367,76,218,578,722,511,503,645,2015
+"1539","University of Oregon",339,"USA",122,346,567,218,378,217,161,295,729,2015
+"1540","St George's, University of London",340,"United Kingdom",32,367,567,218,554,476,368,262,648,2015
+"1541","Indian Institute of Technology Delhi",341,"India",1,367,59,218,635,943,812,781,625,2015
+"1542","University of Trieste",342,"Italy",13,367,443,218,395,286,287,281,616,2015
+"1543","Queen's University Belfast",343,"United Kingdom",33,183,387,218,306,276,264,313,377,2015
+"1544","University of Perugia",344,"Italy",14,367,567,116,375,332,428,289,642,2015
+"1545","Technical University of Berlin",345,"Germany",30,85,271,218,360,412,368,388,177,2015
+"1546","University of Marburg",346,"Germany",31,304,567,217,329,249,428,300,271,2015
+"1547","University of Innsbruck",347,"Austria",3,197,397,112,430,222,287,311,442,2015
+"1548","Eindhoven University of Technology",348,"Netherlands",11,367,347,186,306,549,321,318,279,2015
+"1549","Ben-Gurion University of the Negev",349,"Israel",5,367,567,218,277,379,428,381,118,2015
+"1550","University of Oklahoma - Norman Campus",350,"USA",123,367,150,218,383,240,234,362,474,2015
+"1551","Wesleyan University",351,"USA",124,154,61,218,983,506,812,850,871,2015
+"1552","University of Victoria",352,"Canada",16,367,567,218,321,328,234,300,853,2015
+"1553","Kansas State University",353,"USA",125,130,229,218,373,320,212,358,294,2015
+"1554","Hong Kong Polytechnic University",354,"Hong Kong",4,367,166,218,259,764,511,375,329,2015
+"1555","Linköping University",355,"Sweden",8,367,237,218,323,401,368,324,871,2015
+"1556","University of Southern Denmark",356,"Denmark",4,367,567,218,386,327,321,295,320,2015
+"1557","University of Otago",357,"New Zealand",2,367,377,218,312,353,287,313,542,2015
+"1558","Justus Liebig University Giessen",358,"Germany",32,367,567,218,332,357,264,313,309,2015
+"1559","University of New Hampshire",359,"USA",126,367,318,79,531,273,234,362,596,2015
+"1560","College of William and Mary",360,"USA",127,367,85,218,611,459,321,511,809,2015
+"1561","San Diego State University",361,"USA",128,248,204,218,467,302,264,339,509,2015
+"1562","Simon Fraser University",362,"Canada",17,367,567,218,284,303,368,324,381,2015
+"1563","University of Santiago de Compostela",363,"Spain",7,367,489,218,385,600,287,373,126,2015
+"1564","Saint Louis University",364,"USA",129,367,261,202,458,293,428,330,286,2015
+"1565","Colorado School of Mines",365,"USA",130,367,81,218,668,601,321,565,690,2015
+"1566","University of Eastern Finland",366,"Finland",2,367,567,218,374,388,321,300,861,2015
+"1567","University of Buenos Aires",367,"Argentina",1,126,500,180,276,350,321,344,871,2015
+"1568","University of Guelph",368,"Canada",18,367,483,218,325,277,146,344,445,2015
+"1569","University of Ferrara",369,"Italy",15,367,567,218,416,392,287,300,656,2015
+"1570","Polytechnic University of Catalonia",370,"Spain",8,367,330,218,371,576,368,540,85,2015
+"1571","Versailles Saint-Quentin-en-Yvelines University",371,"France",15,367,567,218,443,232,264,308,839,2015
+"1572","Saarland University",372,"Germany",33,367,375,218,392,434,428,318,367,2015
+"1573","City University of Hong Kong",373,"Hong Kong",5,367,567,218,252,874,511,339,387,2015
+"1574","Darmstadt University of Technology",374,"Germany",34,66,344,218,376,457,368,413,330,2015
+"1575","Pompeu Fabra University",375,"Spain",9,367,567,218,397,164,428,318,604,2015
+"1576","Pontifical Catholic University of Chile",376,"Chile",1,343,139,218,446,310,645,388,396,2015
+"1577","University of Bari Aldo Moro",377,"Italy",16,367,567,218,352,322,511,313,527,2015
+"1578","University of Texas Medical Branch at Galveston",378,"USA",131,367,567,218,401,311,321,324,333,2015
+"1579","University of Delhi",379,"India",2,240,72,218,703,763,812,796,797,2015
+"1580","Washington State University, Pullman",380,"USA",132,367,301,131,334,234,428,362,298,2015
+"1581","Temple University",381,"USA",133,272,553,218,326,349,511,349,211,2015
+"1582","University of Milan - Bicocca",382,"Italy",17,367,567,218,390,305,287,324,468,2015
+"1583","University of Turku",383,"Finland",3,367,531,218,320,319,812,330,568,2015
+"1584","Chonnam National University",384,"South Korea",10,367,547,218,405,589,511,437,109,2015
+"1585","University of Lorraine",385,"France",16,216,213,190,311,342,321,437,208,2015
+"1586","National Chiao Tung University",386,"Taiwan",3,367,206,218,240,651,428,413,871,2015
+"1587","Catholic University of the Sacred Heart",387,"Italy",18,367,555,218,424,482,321,324,770,2015
+"1588","University at Albany, SUNY",388,"USA",134,180,567,165,411,374,212,353,531,2015
+"1589","Xi'an Jiaotong University",389,"China",13,367,154,218,271,583,812,606,174,2015
+"1590","Ewha Womans University",390,"South Korea",11,367,567,218,462,509,645,457,107,2015
+"1591","Jilin University",391,"China",14,220,338,218,239,452,645,375,551,2015
+"1592","Tokyo Medical and Dental University",392,"Japan",15,367,567,218,473,352,645,335,272,2015
+"1593","Scuola Normale Superiore di Pisa",393,"Italy",19,263,567,61,548,526,321,503,871,2015
+"1594","University of Central Florida",394,"USA",135,367,501,218,381,386,511,381,159,2015
+"1595","Innsbruck Medical University",395,"Austria",4,367,567,218,469,413,812,324,678,2015
+"1596","Beijing Normal University",396,"China",15,57,567,218,363,492,428,480,755,2015
+"1597","Polytechnic University of Milan",397,"Italy",20,103,181,191,358,510,428,503,292,2015
+"1598","University of Seville",398,"Spain",10,367,564,218,339,516,428,529,104,2015
+"1599","University of Nebraska Medical Center",399,"USA",136,367,567,218,463,399,368,344,253,2015
+"1600","Huazhong University of Science and Technology",400,"China",16,367,282,218,219,626,645,480,242,2015
+"1601","Kyung Hee University",401,"South Korea",12,245,495,218,380,584,645,558,95,2015
+"1602","Chalmers University of Technology",402,"Sweden",9,361,311,218,367,426,428,349,871,2015
+"1603","Brigham Young University",403,"USA",137,298,361,218,498,424,287,424,134,2015
+"1604","University of Campinas",404,"Brazil",3,367,567,218,295,575,511,388,197,2015
+"1605","University of Bath",405,"United Kingdom",34,367,368,218,388,378,287,353,478,2015
+"1606","Saint Petersburg State University",406,"Russia",3,47,250,218,621,574,645,754,816,2015
+"1607","National Tsing Hua University",407,"Taiwan",4,262,520,218,238,425,428,375,731,2015
+"1608","University of Twente",408,"Netherlands",12,367,511,218,343,511,368,358,288,2015
+"1609","University of Alabama - Tuscaloosa",409,"USA",138,325,140,218,511,490,368,471,314,2015
+"1610","Harbin Institute of Technology",410,"China",17,367,244,218,241,847,645,437,375,2015
+"1611","University of Verona",411,"Italy",21,367,567,218,508,464,212,341,736,2015
+"1612","Oklahoma State University–Stillwater",412,"USA",139,239,153,218,447,648,428,471,303,2015
+"1613","Shandong University",413,"China",18,367,437,218,213,604,511,409,538,2015
+"1614","George Mason University",414,"USA",140,367,567,98,450,371,264,388,526,2015
+"1615","Wuhan University",415,"China",19,367,258,218,274,612,645,396,576,2015
+"1616","Swedish University of Agricultural Sciences",416,"Sweden",10,146,567,218,393,268,428,353,871,2015
+"1617","Concordia University",417,"Canada",19,367,99,218,545,745,645,590,718,2015
+"1618","Chiba University",418,"Japan",16,367,567,218,361,343,368,362,267,2015
+"1619","Kumamoto University",419,"Japan",17,308,353,218,495,441,428,409,152,2015
+"1620","Tongji University",420,"China",20,153,115,218,346,480,645,671,373,2015
+"1621","Aalto University",421,"Finland",4,367,224,218,336,403,645,424,246,2015
+"1622","Chonbuk National University",422,"South Korea",13,367,567,218,507,774,812,646,83,2015
+"1623","Peking Union Medical College",423,"China",21,367,567,218,324,297,368,358,797,2015
+"1624","Georgia Regents University",424,"USA",141,367,567,218,482,418,368,341,481,2015
+"1625","University of Chile",425,"Chile",2,242,173,218,418,351,645,424,489,2015
+"1626","Lancaster University",426,"United Kingdom",35,367,360,218,364,398,234,369,673,2015
+"1627","Vienna University of Technology",427,"Austria",5,363,350,218,377,377,321,424,171,2015
+"1628","University of Denver",428,"USA",142,312,101,218,901,522,511,590,760,2015
+"1629","University of Arkansas for Medical Sciences",429,"USA",143,367,567,218,501,565,812,344,340,2015
+"1630","Grenoble Institute of Technology",430,"France",17,144,567,188,328,520,428,388,345,2015
+"1631","University of Granada",431,"Spain",11,367,567,218,303,449,321,424,190,2015
+"1632","University of Modena and Reggio Emilia",432,"Italy",22,367,567,218,435,474,368,349,709,2015
+"1633","Ajou University",433,"South Korea",14,367,426,218,646,729,645,671,89,2015
+"1634","Gyeongsang National University",434,"South Korea",15,367,567,218,633,673,645,606,93,2015
+"1635","Technical University of Madrid",435,"Spain",12,215,212,218,470,697,645,770,110,2015
+"1636","University College Cork",436,"Ireland",3,367,430,218,426,431,368,402,195,2015
+"1637","Loyola University Chicago",437,"USA",144,367,366,218,522,438,511,353,713,2015
+"1638","Central South University",438,"China",22,367,131,218,366,783,511,558,444,2015
+"1639","South China University of Technology",439,"China",23,367,266,218,347,620,511,471,196,2015
+"1640","Polytechnic University of Valencia",440,"Spain",13,367,567,218,386,505,645,437,155,2015
+"1641","West Virginia University",441,"USA",145,328,178,218,441,409,428,437,617,2015
+"1642","University of Tampere",442,"Finland",5,367,297,218,526,439,511,362,679,2015
+"1643","Southeast University",443,"China",24,168,488,218,369,702,645,480,149,2015
+"1644","Miami University",444,"USA",146,367,102,218,715,543,511,659,871,2015
+"1645","University of Dayton",445,"USA",147,348,90,218,988,818,511,781,675,2015
+"1646","University of Siena",446,"Italy",23,367,482,218,420,365,287,369,712,2015
+"1647","University of Oulu",447,"Finland",6,275,369,218,432,344,368,375,521,2015
+"1648","Indian Institute of Science",448,"India",3,367,332,218,315,537,511,447,239,2015
+"1649","Macquarie University",449,"Australia",9,367,304,218,391,292,321,402,530,2015
+"1650","University of Rostock",450,"Germany",35,364,567,218,443,591,511,373,325,2015
+"1651","Jagiellonian University",451,"Poland",1,367,567,218,403,465,645,375,355,2015
+"1652","Pusan National University",452,"South Korea",16,367,401,218,398,488,428,503,147,2015
+"1653","University of Strathclyde",453,"United Kingdom",36,367,216,218,389,467,368,486,305,2015
+"1654","University of Nevada, Reno",454,"USA",148,367,364,218,542,382,264,381,708,2015
+"1655","University of Saskatchewan",455,"Canada",20,336,278,218,335,442,287,457,427,2015
+"1656","University of Parma",456,"Italy",24,367,356,218,438,463,368,381,741,2015
+"1657","Kanazawa University",457,"Japan",18,367,416,218,474,419,511,381,350,2015
+"1658","Eötvös Loránd University",458,"Hungary",1,89,567,116,559,444,287,495,724,2015
+"1659","Aristotle University of Thessaloniki",459,"Greece",2,367,567,218,340,683,511,381,756,2015
+"1660","Ohio University",460,"USA",149,205,174,218,590,472,812,565,224,2015
+"1661","University of Iceland",461,"Iceland",1,367,567,218,612,295,321,369,839,2015
+"1662","University of Warsaw",462,"Poland",2,118,562,150,409,462,428,437,716,2015
+"1663","Syracuse University",463,"USA",150,138,221,218,453,494,428,495,392,2015
+"1664","Bielefeld University",464,"Germany",36,367,567,218,480,375,511,369,774,2015
+"1665","Juntendo University",465,"Japan",19,367,567,218,653,498,428,362,853,2015
+"1666","University of Wyoming",466,"USA",151,367,230,218,534,316,321,457,380,2015
+"1667","University of Wollongong",467,"Australia",10,367,269,218,431,433,428,424,493,2015
+"1668","Niigata University",468,"Japan",20,367,285,218,527,514,511,447,238,2015
+"1669","Texas Tech University (TTU)",469,"USA",152,367,184,218,455,618,287,511,809,2015
+"1670","Middle East Technical University",470,"Turkey",1,367,120,218,550,879,511,659,871,2015
+"1671","École normale supérieure de Lyon",471,"France",18,367,567,135,481,210,511,413,589,2015
+"1672","Brunel University",472,"United Kingdom",37,367,236,218,497,676,511,437,667,2015
+"1673","Nihon University",473,"Japan",21,301,565,218,599,588,812,637,113,2015
+"1674","Osaka City University",474,"Japan",22,108,414,218,484,536,321,471,374,2015
+"1675","University of Rennes 1",475,"France",19,367,567,218,351,341,428,420,344,2015
+"1676","University of Oklahoma Health Sciences Center",476,"USA",153,367,567,218,580,461,511,375,482,2015
+"1677","East China University of Science and Technology",477,"China",25,367,567,218,423,828,645,471,184,2015
+"1678","University of KwaZulu-Natal",478,"South Africa",4,367,148,218,562,397,368,579,539,2015
+"1679","Sichuan University",479,"China",26,367,563,218,269,478,645,447,597,2015
+"1680","Illinois Institute of Technology",480,"USA",154,274,114,218,784,713,511,715,861,2015
+"1681","Tokyo University of Science",481,"Japan",23,367,567,218,530,530,428,457,191,2015
+"1682","University of Science, Malaysia",482,"Malaysia",1,367,567,218,669,888,428,809,94,2015
+"1683","Clemson University",483,"USA",155,367,535,218,433,497,645,396,510,2015
+"1684","University of Zaragoza",484,"Spain",14,366,408,218,342,675,428,471,276,2015
+"1685","University of the Basque Country",485,"Spain",15,367,567,218,318,387,511,480,266,2015
+"1686","Nagasaki University",486,"Japan",24,299,214,218,614,607,645,529,233,2015
+"1687","Technical University of Dortmund",487,"Germany",37,367,567,218,459,528,368,420,284,2015
+"1688","University of Hawaii at Manoa",488,"USA",156,367,435,153,448,213,368,457,490,2015
+"1689","University of Nebraska Omaha",489,"USA",157,367,365,218,704,606,428,396,871,2015
+"1690","University of Konstanz",490,"Germany",38,367,567,218,475,337,368,402,614,2015
+"1691","Panjab University",491,"India",4,333,167,218,720,786,368,540,824,2015
+"1692","University of Hanover",492,"Germany",39,367,485,218,434,507,368,457,250,2015
+"1693","University of Maryland, Baltimore County",493,"USA",158,367,567,218,587,391,428,402,423,2015
+"1694","University of Newcastle",494,"Australia",11,367,567,218,408,496,812,424,322,2015
+"1695","University of Ulsan",495,"South Korea",17,367,436,218,421,599,645,424,370,2015
+"1696","Renmin University of China",496,"China",27,367,100,218,965,936,812,896,715,2015
+"1697","Martin Luther University of Halle-Wittenberg",497,"Germany",40,358,567,210,394,345,812,413,706,2015
+"1698","University of Malaya",498,"Malaysia",2,367,138,218,572,877,428,741,274,2015
+"1699","University of Savoy",499,"France",20,367,567,218,490,435,428,402,731,2015
+"1700","University of Udine",500,"Italy",25,367,567,218,600,390,511,396,634,2015
+"1701","Tokyo Metropolitan University",501,"Japan",25,367,415,218,593,460,321,413,574,2015
+"1702","University of Sherbrooke",502,"Canada",21,367,567,218,454,421,321,413,853,2015
+"1703","University of Brescia",503,"Italy",26,367,567,218,585,614,645,396,816,2015
+"1704","University of Ljubljana",504,"Slovenia",1,367,567,218,341,415,321,457,507,2015
+"1705","University of Nice Sophia Antipolis",505,"France",21,266,567,218,451,259,511,424,513,2015
+"1706","University of Hull",506,"United Kingdom",38,305,253,162,602,557,511,511,524,2015
+"1707","University of Coimbra",507,"Portugal",3,359,567,218,415,423,645,424,459,2015
+"1708","Creighton University",508,"USA",159,367,567,218,824,724,368,402,615,2015
+"1709","Georgia State University",509,"USA",160,367,405,218,449,484,511,457,360,2015
+"1710","University of Wisconsin–Milwaukee",510,"USA",161,229,248,218,516,491,511,503,871,2015
+"1711","Catholic University of Korea",511,"South Korea",18,367,567,218,576,792,645,590,139,2015
+"1712","University of Tokushima",512,"Japan",26,107,567,218,643,453,645,529,247,2015
+"1713","Yokohama City University",513,"Japan",27,367,231,218,685,370,645,520,359,2015
+"1714","Lanzhou University",514,"China",28,367,567,218,350,689,645,457,624,2015
+"1715","University of Crete",515,"Greece",3,367,567,218,491,518,511,420,871,2015
+"1716","SUNY Downstate Medical Center",516,"USA",162,367,567,155,756,446,511,437,660,2015
+"1717","University of Potsdam",517,"Germany",41,367,567,218,485,313,511,424,584,2015
+"1718","Yokohama National University",518,"Japan",28,88,217,135,909,865,645,809,440,2015
+"1719","New Mexico State University",519,"USA",163,367,432,218,711,585,321,424,871,2015
+"1720","University of Bayreuth",520,"Germany",42,367,567,218,457,331,321,447,603,2015
+"1721","Bar-Ilan University",521,"Israel",6,280,392,218,404,410,645,495,338,2015
+"1722","University of Mississippi - Oxford Campus",522,"USA",164,367,567,218,508,851,428,424,611,2015
+"1723","University of Tasmania",523,"Australia",12,367,567,218,429,261,645,447,727,2015
+"1724","Graduate University for Advanced Studies",524,"Japan",29,367,567,218,613,291,645,420,871,2015
+"1725","University of Surrey",525,"United Kingdom",39,217,295,218,419,553,428,549,300,2015
+"1726","Federal University of Minas Gerais",526,"Brazil",4,367,425,218,417,521,428,549,207,2015
+"1727","University of Tromsø - The Arctic University of Norway",527,"Norway",4,367,567,218,493,407,287,447,824,2015
+"1728","University of Palermo",528,"Italy",27,367,567,218,452,545,812,437,559,2015
+"1729","Shinshu University",529,"Japan",30,367,517,218,594,602,368,486,244,2015
+"1730","University of Science and Technology Beijing",530,"China",29,367,121,218,542,937,511,886,408,2015
+"1731","University of Catania",531,"Italy",28,213,567,218,438,693,428,457,853,2015
+"1732","Mahidol University",532,"Thailand",2,367,567,218,476,372,368,447,861,2015
+"1733","University of Canterbury",533,"New Zealand",3,190,195,218,569,437,428,606,871,2015
+"1734","Indian Institute of Technology Madras",534,"India",5,367,147,218,523,943,812,796,317,2015
+"1735","University of Bremen",535,"Germany",43,367,567,218,466,289,321,471,515,2015
+"1736","Otto-von-Guericke University Magdeburg",536,"Germany",44,367,567,218,486,629,511,457,388,2015
+"1737","University of Tartu",537,"Estonia",1,365,567,218,586,318,368,457,426,2015
+"1738","University of Windsor",538,"Canada",22,367,133,218,764,912,812,754,658,2015
+"1739","University of Nantes",539,"France",22,367,567,218,483,420,511,447,579,2015
+"1740","Royal Holloway, University of London",540,"United Kingdom",40,367,567,218,564,306,428,447,556,2015
+"1741","James Cook University",541,"Australia",13,367,567,218,505,248,428,457,665,2015
+"1742","National Yang-Ming University",542,"Taiwan",5,367,567,218,345,517,511,495,824,2015
+"1743","University of Akron",543,"USA",165,367,400,218,656,653,645,606,166,2015
+"1744","National Chung Hsing University",544,"Taiwan",6,367,211,218,412,682,511,606,871,2015
+"1745","City University London",545,"United Kingdom",41,367,122,218,785,861,812,880,601,2015
+"1746","New York Medical College",546,"USA",166,367,567,218,752,622,812,437,719,2015
+"1747","Nara Institute of Science and Technology",547,"Japan",31,367,567,218,773,329,645,495,270,2015
+"1748","École Centrale Paris",548,"France",23,367,111,218,995,827,812,958,839,2015
+"1749","Auburn University",549,"USA",167,367,232,218,472,569,368,606,425,2015
+"1750","University of Arkansas - Fayetteville",550,"USA",168,204,345,218,517,571,645,520,409,2015
+"1751","University of Zagreb",551,"Croatia",1,367,567,218,553,541,428,471,650,2015
+"1752","University of Lübeck",552,"Germany",45,367,567,218,649,394,812,457,629,2015
+"1753","Hunan University",553,"China",30,367,291,218,464,906,645,529,816,2015
+"1754","University of Missouri–Kansas City",554,"USA",169,311,480,218,634,447,645,471,687,2015
+"1755","Tokyo Women's Medical University",555,"Japan",32,367,567,218,787,594,511,480,362,2015
+"1756","Montana State University - Bozeman",556,"USA",170,367,477,218,575,323,287,495,744,2015
+"1757","University of Aveiro",557,"Portugal",4,367,567,218,413,680,511,590,212,2015
+"1758","National University of Ireland, Galway",558,"Ireland",4,367,567,218,588,546,645,503,293,2015
+"1759","University of Oviedo",559,"Spain",16,367,539,218,440,445,428,495,579,2015
+"1760","Dongguk University",560,"South Korea",19,367,305,218,927,917,812,997,108,2015
+"1761","University of Trento",561,"Italy",29,367,567,218,488,556,368,486,861,2015
+"1762","University Lille 1: Sciences and Technologies",562,"France",24,367,567,218,414,400,368,511,546,2015
+"1763","Chang Gung University",563,"Taiwan",7,367,567,218,344,598,812,520,824,2015
+"1764","National Central University",564,"Taiwan",8,225,567,218,384,468,511,520,839,2015
+"1765","Aalborg University",565,"Denmark",5,367,439,218,596,660,287,520,401,2015
+"1766","Utah State University",566,"USA",171,166,352,218,564,414,368,565,371,2015
+"1767","Baylor University",567,"USA",172,367,293,218,682,681,321,540,630,2015
+"1768","Bangor University",568,"United Kingdom",42,260,370,218,622,568,511,529,342,2015
+"1769","King Saud University",569,"Saudi Arabia",1,367,182,218,560,539,645,837,232,2015
+"1770","University of Cagliari",570,"Italy",30,367,567,218,518,567,511,486,623,2015
+"1771","Kent State University",571,"USA",173,367,567,218,610,436,511,486,498,2015
+"1772","Central China Normal University",572,"China",31,367,567,218,631,855,511,480,778,2015
+"1773","University of Fribourg",573,"Switzerland",8,232,252,218,734,428,428,579,787,2015
+"1774","Medical University of Graz",574,"Austria",6,367,567,218,573,628,812,486,576,2015
+"1775","Second University of Naples",575,"Italy",31,367,567,218,556,641,645,486,824,2015
+"1776","International School for Advanced Studies",576,"Italy",32,367,567,218,623,406,812,486,768,2015
+"1777","Tampere University of Technology",577,"Finland",7,367,156,218,816,646,645,796,746,2015
+"1778","Inha University",578,"South Korea",20,367,381,218,568,780,511,565,273,2015
+"1779","Deakin University",579,"Australia",14,367,424,218,502,647,321,529,636,2015
+"1780","National Polytechnic Institute of Toulouse",580,"France",25,367,242,218,486,672,812,646,413,2015
+"1781","Sogang University",581,"South Korea",21,367,567,218,806,798,812,921,115,2015
+"1782","University of Ioannina",582,"Greece",4,367,567,218,597,836,645,495,871,2015
+"1783","Federal University of Rio Grande do Sul",583,"Brazil",5,367,567,218,410,578,428,529,787,2015
+"1784","University of Graz",584,"Austria",7,349,453,204,571,547,812,511,600,2015
+"1785","University of Montana - Missoula",585,"USA",174,353,567,218,713,315,428,503,702,2015
+"1786","East China Normal University",586,"China",32,367,272,218,436,645,812,622,576,2015
+"1787","Plymouth University",587,"United Kingdom",43,367,544,218,532,429,511,511,651,2015
+"1788","Victoria University of Wellington",588,"New Zealand",4,317,223,218,606,469,645,646,809,2015
+"1789","Federal University of São Paulo",589,"Brazil",6,367,567,218,504,638,368,520,839,2015
+"1790","Southern Illinois University Carbondale",590,"USA",175,208,533,218,591,512,812,520,588,2015
+"1791","University of Alaska Fairbanks",591,"USA",176,367,420,218,642,373,511,520,792,2015
+"1792","University of Toledo",592,"USA",177,367,567,218,618,555,812,606,220,2015
+"1793","Carleton University",593,"Canada",23,367,538,218,479,739,264,549,871,2015
+"1794","Cranfield University",594,"United Kingdom",44,367,176,218,763,762,812,770,549,2015
+"1795","Curtin University",595,"Australia",15,367,559,218,425,384,511,549,518,2015
+"1796","Indian Institute of Technology Bombay",596,"India",6,367,507,218,521,815,645,699,176,2015
+"1797","University of Portsmouth",597,"United Kingdom",45,367,567,218,768,719,234,540,765,2015
+"1798","Osaka Prefecture University",598,"Japan",33,367,411,218,688,671,812,686,187,2015
+"1799","Nagoya City University",599,"Japan",34,367,333,218,785,525,368,565,400,2015
+"1800","LSU Health Sciences Center New Orleans",600,"USA",178,367,567,218,823,544,645,503,661,2015
+"1801","Tata Institute of Fundamental Research",601,"India",7,367,567,218,468,450,368,540,792,2015
+"1802","Konkuk University",602,"South Korea",22,367,388,218,533,748,812,686,204,2015
+"1803","University of La Laguna",603,"Spain",17,367,567,218,514,336,645,529,661,2015
+"1804","University of Hertfordshire",604,"United Kingdom",46,367,567,218,792,396,511,511,839,2015
+"1805","Florida International University",605,"USA",179,367,567,218,496,508,428,540,585,2015
+"1806","University of Rhode Island",606,"USA",180,367,265,218,664,385,511,637,472,2015
+"1807","Mississippi State University",607,"USA",181,155,220,218,605,608,645,754,566,2015
+"1808","Gunma University",608,"Japan",35,367,567,218,627,531,511,590,252,2015
+"1809","University of New Orleans",609,"USA",182,367,567,218,944,840,428,511,871,2015
+"1810","Putra University, Malaysia",610,"Malaysia",3,367,567,218,860,900,812,989,114,2015
+"1811","Memorial University of Newfoundland",611,"Canada",24,367,567,218,552,577,645,529,653,2015
+"1812","Universidade Nova de Lisboa",612,"Portugal",5,367,567,218,506,477,645,540,590,2015
+"1813","Griffith University",613,"Australia",16,367,567,218,436,500,368,565,556,2015
+"1814","Indian Institute of Technology Kharagpur",614,"India",8,367,242,218,500,974,812,686,644,2015
+"1815","Soochow University (Suzhou)",615,"China",33,367,567,218,396,773,812,565,871,2015
+"1816","Texas A&M Health Science Center",616,"USA",183,367,567,218,672,440,645,558,336,2015
+"1817","Semmelweis University",617,"Hungary",2,367,567,218,650,481,511,529,670,2015
+"1818","Lille 2 University of Health and Law",618,"France",26,367,567,218,821,631,645,520,630,2015
+"1819","Kagoshima University",619,"Japan",36,367,281,218,733,706,511,715,251,2015
+"1820","Flinders University",620,"Australia",17,122,567,218,518,581,812,622,686,2015
+"1821","Queensland University of Technology",621,"Australia",18,367,567,218,477,750,511,558,492,2015
+"1822","Tokai University",622,"Japan",37,367,567,218,721,644,645,540,448,2015
+"1823","Istanbul University",623,"Turkey",2,253,386,218,684,560,645,558,871,2015
+"1824","Tokyo University of Agriculture and Technology",624,"Japan",38,367,567,218,641,756,511,606,264,2015
+"1825","Louisiana Tech University",625,"USA",184,367,197,218,969,871,428,754,792,2015
+"1826","University of Texas at Arlington",626,"USA",185,367,567,218,492,532,511,565,462,2015
+"1827","China Agricultural University",627,"China",34,367,534,218,407,362,645,590,572,2015
+"1828","Chungnam National University",628,"South Korea",23,367,567,218,470,563,645,622,290,2015
+"1829","University of Minho",629,"Portugal",6,367,567,218,588,652,287,606,363,2015
+"1830","University of Eastern Piedmont Amedeo Avogadro",630,"Italy",33,367,567,218,693,623,645,540,739,2015
+"1831","Open University (UK)",631,"United Kingdom",47,367,567,218,616,340,645,549,809,2015
+"1832","University of Essex",632,"United Kingdom",48,119,358,218,694,695,511,671,871,2015
+"1833","Paris-Est Créteil Val-de-Marne University",633,"France",27,367,406,218,732,611,812,558,824,2015
+"1834","Hacettepe University",634,"Turkey",3,367,567,218,658,630,428,549,871,2015
+"1835","State University of New York Upstate Medical University",635,"USA",186,367,567,218,774,632,428,549,598,2015
+"1836","Braunschweig University of Technology",636,"Germany",46,226,567,218,551,383,645,622,343,2015
+"1837","University of Salamanca",637,"Spain",18,367,491,218,544,483,511,565,736,2015
+"1838","Indian Institute of Technology Roorkee",638,"India",9,367,395,218,839,931,428,565,871,2015
+"1839","Örebro University",639,"Sweden",11,367,529,218,816,747,428,549,871,2015
+"1840","Northeast Normal University",640,"China",35,367,567,218,678,765,645,549,871,2015
+"1841","University of Patras",641,"Greece",5,367,567,218,510,704,511,565,731,2015
+"1842","Beijing University of Chemical Technology",642,"China",36,367,536,218,558,984,812,715,214,2015
+"1843","Northern Illinois University",643,"USA",187,367,284,218,669,661,321,671,621,2015
+"1844","Rovira i Virgili University",644,"Spain",19,367,567,218,555,573,428,579,485,2015
+"1845","La Trobe University",645,"Australia",19,367,457,218,536,455,812,579,803,2015
+"1846","Warsaw University of Technology",646,"Poland",3,344,545,218,696,757,287,579,824,2015
+"1847","Binghamton University",647,"USA",188,367,263,218,710,593,812,671,853,2015
+"1848","Shizuoka University",648,"Japan",39,367,476,218,834,708,645,826,163,2015
+"1849","Hong Kong Baptist University",649,"Hong Kong",6,367,516,218,592,937,511,565,691,2015
+"1850","Albany Medical College",650,"USA",189,171,567,218,893,771,645,579,720,2015
+"1851","Ehime University",651,"Japan",40,367,514,218,619,582,511,590,418,2015
+"1852","University of Los Andes (Colombia)",652,"Colombia",1,367,189,218,898,561,428,837,749,2015
+"1853","Polytechnic University of Turin",653,"Italy",34,367,567,218,465,798,645,659,283,2015
+"1854","University of Burgundy",654,"France",28,224,567,218,513,527,812,590,774,2015
+"1855","University of Idaho",655,"USA",190,367,567,218,664,417,511,579,469,2015
+"1856","Old Dominion University",656,"USA",191,367,567,218,719,590,511,590,379,2015
+"1857","Yamaguchi University",657,"Japan",41,367,567,218,753,787,645,732,202,2015
+"1858","Massey University",658,"New Zealand",5,367,496,218,570,554,812,579,723,2015
+"1859","Donghua University",659,"China",37,367,567,218,805,962,234,622,726,2015
+"1860","University of the Balearic Islands",660,"Spain",20,367,567,218,629,558,428,590,503,2015
+"1861","Portland State University",661,"USA",192,367,245,218,800,548,812,741,484,2015
+"1862","Marche Polytechnic University",662,"Italy",35,367,567,218,688,649,812,565,748,2015
+"1863","University of Québec at Montreal",663,"Canada",25,367,422,218,537,534,428,622,871,2015
+"1864","UNESP, São Paulo State University",664,"Brazil",7,367,567,218,356,613,511,671,627,2015
+"1865","Loma Linda University",665,"USA",193,367,567,218,848,755,645,565,555,2015
+"1866","University of Toyama",666,"Japan",42,367,307,218,685,760,645,646,871,2015
+"1867","University of Debrecen",667,"Hungary",3,367,567,218,687,621,428,590,499,2015
+"1868","University of Maine, Orono",668,"USA",194,345,567,218,788,427,368,637,346,2015
+"1869","Graz University of Technology",669,"Austria",8,367,567,218,677,715,368,622,404,2015
+"1870","Gifu University",670,"Japan",43,367,567,218,701,658,645,606,403,2015
+"1871","University of Jyväskylä",671,"Finland",8,367,525,218,456,443,812,622,805,2015
+"1872","University of Paris 13",672,"France",29,367,567,218,669,744,645,579,700,2015
+"1873","University of Girona",673,"Spain",21,367,567,218,662,843,645,579,756,2015
+"1874","Keele University",674,"United Kingdom",49,367,567,218,659,533,321,606,853,2015
+"1875","University of Poitiers",675,"France",30,255,567,148,636,470,645,671,754,2015
+"1876","University of Insubria",676,"Italy",36,367,567,218,705,564,645,579,871,2015
+"1877","Wuhan University of Technology",677,"China",38,367,499,218,738,931,428,590,763,2015
+"1878","University of Pretoria",678,"South Africa",5,367,262,218,620,513,511,741,604,2015
+"1879","Banaras Hindu University",679,"India",10,243,260,218,754,904,511,741,871,2015
+"1880","University of L'Aquila",680,"Italy",37,367,567,218,655,678,645,590,871,2015
+"1881","University of Alicante",681,"Spain",22,367,567,218,666,779,812,686,262,2015
+"1882","American University of Beirut",682,"Lebanon",1,114,247,218,915,892,812,880,871,2015
+"1883","University of Ulster",683,"United Kingdom",50,367,567,218,747,808,321,732,240,2015
+"1884","Shanghai University",684,"China",39,367,567,218,494,929,812,622,782,2015
+"1885","Comenius University in Bratislava",685,"Slovak Republic",1,367,567,218,707,624,645,590,871,2015
+"1886","University of Vigo",686,"Spain",23,367,567,218,577,822,428,622,621,2015
+"1887","University of Nevada, Las Vegas",687,"USA",195,367,448,218,640,473,812,622,861,2015
+"1888","Swinburne University of Technology",688,"Australia",20,367,567,218,654,456,511,606,772,2015
+"1889","Tilburg University",689,"Netherlands",13,367,289,218,566,878,428,732,871,2015
+"1890","University of Messina",690,"Italy",38,367,567,218,608,803,812,606,871,2015
+"1891","Kaiserslautern University of Technology",691,"Germany",47,367,522,218,679,523,812,606,668,2015
+"1892","University of Kent",692,"United Kingdom",51,367,433,218,625,458,511,637,861,2015
+"1893","University of Málaga",693,"Spain",24,367,567,218,660,830,645,781,203,2015
+"1894","Loughborough University",694,"United Kingdom",52,367,567,218,512,806,511,646,480,2015
+"1895","National Technical University of Athens",695,"Greece",6,187,567,218,514,950,511,659,871,2015
+"1896","Liverpool John Moores University",696,"United Kingdom",53,367,567,218,723,395,511,606,871,2015
+"1897","Sharif University of Technology",697,"Iran",1,116,567,218,563,950,511,732,871,2015
+"1898","Birkbeck, University of London",698,"United Kingdom",54,300,567,218,724,339,428,622,871,2015
+"1899","University François Rabelais, Tours",699,"France",31,201,567,218,667,499,812,637,703,2015
+"1900","University of Haifa",700,"Israel",7,367,372,218,535,479,812,686,503,2015
+"1901","Roma Tre University",701,"Italy",39,367,567,218,639,637,511,622,756,2015
+"1902","Masaryk University",702,"Czech Republic",2,367,567,218,645,519,645,622,705,2015
+"1903","University of Salerno",703,"Italy",40,367,567,218,537,835,511,646,525,2015
+"1904","King Abdullah University of Science and Technology",704,"Saudi Arabia",2,367,567,126,691,529,812,946,182,2015
+"1905","Beihang University",705,"China",40,367,383,218,460,865,645,770,307,2015
+"1906","Fuzhou University",706,"China",41,367,399,218,727,984,428,671,463,2015
+"1907","Heriot-Watt University",707,"United Kingdom",55,367,335,218,601,597,812,715,439,2015
+"1908","China Medical University (Taiwan)",708,"Taiwan",9,367,567,218,428,686,812,671,871,2015
+"1909","University of Cantabria",709,"Spain",25,367,523,218,603,587,428,646,571,2015
+"1910","Rochester Institute of Technology",710,"USA",196,367,431,218,905,643,287,671,587,2015
+"1911","Royal College of Surgeons in Ireland",711,"Ireland",5,367,567,218,888,714,368,646,446,2015
+"1912","San Francisco State University",712,"USA",197,271,567,218,864,572,511,622,871,2015
+"1913","Sapporo Medical University",713,"Japan",44,367,567,218,975,837,645,637,441,2015
+"1914","Indian Institute of Technology Kanpur",714,"India",11,174,503,218,561,848,645,715,450,2015
+"1915","Johannes Kepler University of Linz",715,"Austria",9,367,378,218,742,659,645,671,560,2015
+"1916","Czech Technical University in Prague",716,"Czech Republic",3,347,567,218,673,816,428,646,582,2015
+"1917","Marquette University",717,"USA",198,367,201,218,912,785,812,896,682,2015
+"1918","Missouri University of Science and Technology",718,"USA",199,367,246,218,718,923,645,826,592,2015
+"1919","Howard University",719,"USA",200,294,567,218,934,665,511,699,296,2015
+"1920","Aston University",720,"United Kingdom",56,367,355,218,827,895,645,754,306,2015
+"1921","École normale supérieure de Cachan",721,"France",32,121,323,218,895,776,428,826,871,2015
+"1922","Jichi Medical University",722,"Japan",45,367,567,218,930,633,511,637,641,2015
+"1923","Rutgers, The State University of New Jersey - Newark",723,"USA",201,367,567,218,832,515,645,637,871,2015
+"1924","Palacký University, Olomouc",724,"Czech Republic",4,367,567,218,739,562,511,659,475,2015
+"1925","Ankara University",725,"Turkey",4,367,341,218,743,728,511,699,871,2015
+"1926","University of Belgrade",726,"Serbia",1,276,567,218,422,694,511,715,824,2015
+"1927","Toho University",727,"Japan",46,367,567,159,836,824,812,699,787,2015
+"1928","Kyoto Prefectural University of Medicine",728,"Japan",47,367,567,218,852,752,645,637,871,2015
+"1929","Swansea University",729,"United Kingdom",57,367,428,218,523,566,645,699,595,2015
+"1930","Université de Namur",730,"Belgium",8,164,464,218,881,700,645,699,716,2015
+"1931","University of Szeged",731,"Hungary",4,367,567,205,657,720,812,659,532,2015
+"1932","Kitasato University",732,"Japan",48,367,567,218,725,595,812,646,871,2015
+"1933","Hasselt University",733,"Belgium",9,367,340,218,829,904,645,699,761,2015
+"1934","University of Córdoba (Spain)",734,"Spain",26,367,567,218,632,725,812,659,633,2015
+"1935","Åbo Akademi University",735,"Finland",9,367,567,218,765,679,645,646,731,2015
+"1936","Tottori University",736,"Japan",49,367,343,218,908,721,511,741,390,2015
+"1937","Kindai University",737,"Japan",50,367,567,218,680,712,428,686,437,2015
+"1938","University of Castilla–La Mancha",738,"Spain",27,367,567,218,627,751,812,671,519,2015
+"1939","University of Augsburg",739,"Germany",48,367,567,218,816,684,812,646,792,2015
+"1940","Paul Valéry University, Montpellier III",740,"France",33,367,567,218,837,502,287,686,871,2015
+"1941","University of Mons",741,"Belgium",10,367,567,218,812,793,645,659,517,2015
+"1942","Istanbul Technical University",742,"Turkey",5,367,440,218,646,875,368,699,839,2015
+"1943","University of Natural Resources and Life Sciences, Vienna",743,"Austria",10,367,567,218,778,627,511,659,611,2015
+"1944","National University of La Plata",744,"Argentina",2,367,513,218,546,559,511,686,871,2015
+"1945","University of Calabria",745,"Italy",41,367,567,218,583,890,428,686,700,2015
+"1946","University of Memphis",746,"USA",202,367,382,218,782,640,511,741,394,2015
+"1947","G. d'Annunzio University, Chieti-Pescara",747,"Italy",42,367,567,218,750,615,812,659,871,2015
+"1948","University of Missouri–St. Louis",748,"USA",203,367,371,218,897,524,428,715,634,2015
+"1949","Beijing Institute of Technology",749,"China",42,367,567,218,528,969,511,699,569,2015
+"1950","University of Évry Val d'Essonne",750,"France",34,367,567,218,996,368,645,659,871,2015
+"1951","University of South Australia",751,"Australia",21,367,324,218,604,746,812,781,431,2015
+"1952","University of Alabama in Huntsville",752,"USA",204,367,567,218,921,432,645,659,805,2015
+"1953","University of Salzburg",753,"Austria",11,367,270,218,933,738,812,796,871,2015
+"1954","University of Mississippi Medical Center",754,"USA",205,367,567,218,775,504,511,671,871,2015
+"1955","National Research Nuclear University MEPhI",755,"Russia",4,306,567,218,957,699,428,671,871,2015
+"1956","Chung-Ang University",756,"South Korea",24,367,461,218,637,781,511,886,218,2015
+"1957","Kaohsiung Medical University",757,"Taiwan",10,367,567,218,539,854,812,699,661,2015
+"1958","University of Neuchâtel",758,"Switzerland",9,352,567,218,863,635,812,671,640,2015
+"1959","University of Yamanashi",759,"Japan",51,367,567,218,869,862,645,715,382,2015
+"1960","Yamagata University",760,"Japan",52,367,567,218,775,736,812,686,535,2015
+"1961","New Jersey Institute of Technology",761,"USA",206,259,472,218,791,670,812,741,391,2015
+"1962","East Carolina University",762,"USA",207,367,394,218,699,685,812,732,639,2015
+"1963","University of Hyogo",763,"Japan",53,367,567,218,813,475,511,686,787,2015
+"1964","University of Picardie Jules Verne",764,"France",35,367,567,218,826,782,428,699,543,2015
+"1965","University of Salento",765,"Italy",43,367,567,218,661,743,511,699,654,2015
+"1966","Northern Arizona University",766,"USA",208,367,537,218,939,489,645,686,609,2015
+"1967","Miguel Hernández University of Elche",767,"Spain",28,367,567,218,757,617,812,699,497,2015
+"1968","University of Tehran",768,"Iran",2,181,567,218,489,984,812,770,871,2015
+"1969","Blaise Pascal University",769,"France",36,367,567,192,735,701,645,699,619,2015
+"1970","Yeungnam University",770,"South Korea",25,367,417,218,761,974,812,867,231,2015
+"1971","Kurume University",771,"Japan",54,367,567,218,986,770,812,699,473,2015
+"1972","Institut national des sciences Appliquées de Lyon",772,"France",37,367,567,218,547,674,645,732,558,2015
+"1973","Saga University",773,"Japan",55,367,567,218,808,791,812,715,435,2015
+"1974","Chongqing University",774,"China",43,367,283,218,630,892,645,837,809,2015
+"1975","Jikei University School of Medicine",775,"Japan",56,367,567,218,959,711,645,686,797,2015
+"1976","Second Military Medical University",776,"China",44,367,567,218,579,664,645,754,395,2015
+"1977","Jawaharlal Nehru Centre for Advanced Scientific Research",777,"India",12,367,567,218,868,650,645,715,453,2015
+"1978","University of North Texas, Denton",778,"USA",209,367,567,218,675,636,645,715,554,2015
+"1979","Ege University",779,"Turkey",6,367,567,218,761,839,511,699,871,2015
+"1980","Mie University",780,"Japan",57,367,567,218,835,860,645,741,368,2015
+"1981","École Polytechnique de Montréal",781,"Canada",26,367,507,218,716,921,511,741,412,2015
+"1982","AGH University of Science and Technology",782,"Poland",4,267,279,218,708,891,511,896,398,2015
+"1983","University of Electronic Science and Technology of China",783,"China",45,367,308,218,529,912,812,837,552,2015
+"1984","University of Stirling",784,"United Kingdom",58,367,357,218,772,707,812,754,871,2015
+"1985","University of Greifswald",785,"Germany",49,367,567,211,714,487,812,732,476,2015
+"1986","National Polytechnic Institute",786,"Mexico",2,330,567,218,573,579,428,741,620,2015
+"1987","Jacobs University Bremen",787,"Germany",50,367,567,218,894,666,511,715,533,2015
+"1988","Capital Medical University",788,"China",46,367,567,218,525,754,511,741,871,2015
+"1989","Norwegian University of Life Sciences",789,"Norway",5,367,567,218,769,570,511,715,782,2015
+"1990","Michigan Technological University",790,"USA",210,341,467,218,794,769,428,741,581,2015
+"1991","Vilnius University",791,"Lithuania",1,340,567,218,799,642,645,715,684,2015
+"1992","North Dakota State University - Main Campus",792,"USA",211,172,567,218,702,790,812,770,871,2015
+"1993","University of Hohenheim",793,"Germany",51,367,567,218,767,691,645,715,782,2015
+"1994","University of North Carolina at Charlotte",794,"USA",212,367,310,218,741,662,511,826,593,2015
+"1995","Zhengzhou University",795,"China",47,367,427,218,663,806,812,754,749,2015
+"1996","Cairo University",796,"Egypt",1,285,469,180,697,730,511,781,871,2015
+"1997","University of Caen Lower Normandy",797,"France",38,207,567,218,637,768,812,754,787,2015
+"1998","Saitama Medical University",798,"Japan",58,367,567,218,993,586,645,732,488,2015
+"1999","University of Murcia",799,"Spain",29,367,567,218,541,703,428,781,479,2015
+"2000","Showa University",800,"Japan",59,367,567,218,985,759,645,715,727,2015
+"2001","University of Oldenburg",801,"Germany",52,367,567,218,729,619,645,732,816,2015
+"2002","Magna Græcia University of Catanzaro",802,"Italy",44,367,567,218,948,813,812,715,766,2015
+"2003","National Sun Yat-sen University",803,"Taiwan",11,367,567,218,461,950,511,781,871,2015
+"2004","Nanjing University of Science and Technology",804,"China",48,367,331,218,796,943,368,826,694,2015
+"2005","University of Concepción",805,"Chile",3,367,567,218,712,451,812,754,505,2015
+"2006","Chungbuk National University",806,"South Korea",26,367,567,218,745,859,812,809,319,2015
+"2007","Taipei Medical University",807,"Taiwan",12,367,567,218,499,883,645,781,661,2015
+"2008","Jaume I University",808,"Spain",30,367,567,218,794,958,645,741,643,2015
+"2009","Bowling Green State University",809,"USA",213,367,373,218,910,705,645,781,824,2015
+"2010","Nanjing University of Technology",810,"China",49,367,567,218,748,984,812,932,217,2015
+"2011","University of New England (Australia)",811,"Australia",22,367,251,218,938,634,511,932,797,2015
+"2012","Kangwon National University",812,"South Korea",27,367,567,218,706,819,645,781,428,2015
+"2013","Inje University",813,"South Korea",28,367,567,218,838,928,812,809,331,2015
+"2014","Aberystwyth University",814,"United Kingdom",59,367,567,218,842,552,511,754,607,2015
+"2015","University of Technology, Sydney",815,"Australia",23,367,543,218,580,668,511,796,520,2015
+"2016","University of Franche-Comté",816,"France",39,302,567,218,743,814,511,770,583,2015
+"2017","University of Sassari",817,"Italy",45,367,567,218,758,592,812,754,805,2015
+"2018","Chiang Mai University",818,"Thailand",3,367,550,218,847,753,511,754,871,2015
+"2019","Budapest University of Technology and Economics",819,"Hungary",5,256,567,218,740,761,645,781,529,2015
+"2020","University of Maribor",820,"Slovenia",2,367,567,218,853,820,511,754,752,2015
+"2021","University of Bradford",821,"United Kingdom",60,367,287,218,859,772,812,886,567,2015
+"2022","University of Perpignan Via Domitia",822,"France",40,160,567,218,974,580,428,826,871,2015
+"2023","Florida Institute of Technology",823,"USA",214,367,567,218,973,793,368,770,871,2015
+"2024","University of Brighton",824,"United Kingdom",61,367,567,218,854,829,812,754,766,2015
+"2025","University of Massachusetts Boston",825,"USA",215,367,429,218,846,698,428,796,824,2015
+"2026","Rio de Janeiro State University",826,"Brazil",8,367,567,218,760,910,511,770,739,2015
+"2027","Nagoya Institute of Technology",827,"Japan",60,367,504,218,825,958,645,921,229,2015
+"2028","Jiangnan University",828,"China",50,367,567,218,783,912,812,770,628,2015
+"2029","Murdoch University",829,"Australia",24,367,527,218,827,501,645,770,770,2015
+"2030","University of Wales, Trinity Saint David",830,"United Kingdom",62,367,567,218,1000,927,645,754,871,2015
+"2031","University of Rouen",831,"France",41,362,567,218,700,722,812,809,414,2015
+"2032","The Catholic University of America",832,"USA",216,367,407,218,947,596,511,809,674,2015
+"2033","Wright State University - Dayton",833,"USA",217,367,567,218,810,805,812,770,824,2015
+"2034","Dankook University",834,"South Korea",29,367,567,218,888,948,645,896,241,2015
+"2035","Clarkson University",835,"USA",218,367,390,218,981,974,812,809,685,2015
+"2036","University of Regina",836,"Canada",27,367,567,218,851,737,645,781,573,2015
+"2037","Boğaziçi University",837,"Turkey",7,367,519,218,843,766,511,781,824,2015
+"2038","Kōchi University",838,"Japan",61,367,567,218,942,788,812,781,536,2015
+"2039","University of Miyazaki",839,"Japan",62,290,567,218,952,692,645,826,393,2015
+"2040","University of Electro-Communications",840,"Japan",63,161,567,218,857,833,645,906,332,2015
+"2041","University of Valladolid",841,"Spain",31,367,454,218,691,888,812,850,407,2015
+"2042","Bilkent University",842,"Turkey",8,367,475,218,781,789,812,796,871,2015
+"2043","Dublin City University",843,"Ireland",6,367,567,218,803,933,511,850,347,2015
+"2044","University of South Alabama",844,"USA",219,367,567,218,979,784,812,796,464,2015
+"2045","Sofia University",845,"Bulgaria",1,254,567,218,814,881,645,796,871,2015
+"2046","Ocean University of China",846,"China",51,367,567,218,648,735,812,809,541,2015
+"2047","King Fahd University of Petroleum and Minerals",847,"Saudi Arabia",3,367,234,218,934,950,812,984,871,2015
+"2048","University of Veterinary Medicine Vienna",848,"Austria",12,367,567,184,872,687,511,809,654,2015
+"2049","University of Alcalá",849,"Spain",32,367,567,218,746,657,812,796,608,2015
+"2050","Hunter College",850,"USA",220,261,438,218,822,610,812,826,805,2015
+"2051","All India Institute of Medical Sciences, New Delhi",851,"India",13,367,567,218,887,886,645,781,839,2015
+"2052","Gazi University",852,"Turkey",9,367,468,218,750,942,645,809,871,2015
+"2053","National University of Ireland, Maynooth",853,"Ireland",7,244,567,218,992,710,812,809,561,2015
+"2054","Tehran University of Medical Sciences",854,"Iran",3,367,567,218,771,899,812,796,871,2015
+"2055","University of the Ryukyus",855,"Japan",64,367,567,218,922,663,645,796,618,2015
+"2056","Florida Atlantic University",856,"USA",221,367,567,218,855,741,812,796,714,2015
+"2057","University of Siegen",857,"Germany",53,367,532,218,870,732,428,809,769,2015
+"2058","Huazhong Agricultural University",858,"China",52,367,567,218,651,535,645,837,494,2015
+"2059","University of Angers",859,"France",42,367,567,218,840,801,812,809,550,2015
+"2060","University of Seoul",860,"South Korea",30,367,567,218,989,907,645,921,259,2015
+"2061","Brock University",861,"Canada",28,367,567,218,877,727,511,809,638,2015
+"2062","Fukuoka University",862,"Japan",65,367,567,218,971,876,812,837,416,2015
+"2063","Hamamatsu University School of Medicine",863,"Japan",66,367,567,218,990,917,645,826,470,2015
+"2064","Nanjing Normal University",864,"China",53,367,456,218,729,709,428,850,742,2015
+"2065","National Chung Cheng University",865,"Taiwan",13,367,567,218,796,991,645,809,871,2015
+"2066","Nanjing Agricultural University",866,"China",54,367,567,218,617,726,812,837,601,2015
+"2067","University of the Republic (Uruguay)",867,"Uruguay",66,367,567,218,814,669,812,809,871,2015
+"2068","Sejong University",868,"South Korea",31,367,567,218,788,845,812,837,466,2015
+"2069","Makerere University",869,"Uganda",1,367,567,218,882,656,645,809,871,2015
+"2070","University of New Brunswick",870,"Canada",29,367,354,218,777,802,812,886,591,2015
+"2071","Northeastern University (China)",871,"China",55,367,315,218,759,974,812,906,698,2015
+"2072","University of Extremadura",872,"Spain",33,367,567,218,766,958,812,826,630,2015
+"2073","RMIT University",873,"Australia",25,367,561,218,690,929,812,837,585,2015
+"2074","Royal Veterinary College, University of London",874,"United Kingdom",63,246,567,218,896,550,511,837,746,2015
+"2075","Chung Yuan Christian University",875,"Taiwan",14,249,320,218,779,962,812,921,871,2015
+"2076","University of Osnabrück",876,"Germany",54,367,567,218,844,654,511,826,871,2015
+"2077","Northwest University (China)",877,"China",56,367,567,218,904,848,368,837,871,2015
+"2078","Chosun University",878,"South Korea",32,367,567,218,942,984,812,991,209,2015
+"2079","University of Orléans",879,"France",43,367,524,218,754,495,645,837,839,2015
+"2080","Jean Monnet University",880,"France",44,367,567,218,626,486,812,850,710,2015
+"2081","École centrale de Lyon",881,"France",45,367,255,218,856,841,812,991,570,2015
+"2082","University of Western Sydney",882,"Australia",26,367,567,218,651,551,645,850,647,2015
+"2083","Hefei University of Technology",883,"China",57,367,302,218,914,974,812,932,871,2015
+"2084","University of Massachusetts Lowell",884,"USA",222,367,528,218,936,943,321,946,304,2015
+"2085","Manchester Metropolitan University",885,"United Kingdom",64,367,458,218,941,677,812,850,721,2015
+"2086","Nanjing Medical University",886,"China",58,367,567,218,582,696,812,867,761,2015
+"2087","Kyoto Institute of Technology",887,"Japan",67,367,567,218,982,868,812,921,287,2015
+"2088","Shanghai Normal University",888,"China",59,367,463,218,919,950,812,850,871,2015
+"2089","Southwest University",889,"China",60,268,567,218,695,897,645,867,669,2015
+"2090","Adam Mickiewicz University in Poznań",890,"Poland",5,150,567,218,675,775,812,932,657,2015
+"2091","University of Calcutta",891,"India",14,140,346,209,964,900,645,994,424,2015
+"2092","University of Pécs",892,"Hungary",6,367,567,218,962,812,812,850,501,2015
+"2093","Queens College, City University of New York",893,"USA",223,323,374,218,977,690,812,886,729,2015
+"2094","University of Lleida",894,"Spain",34,367,567,218,883,850,812,837,809,2015
+"2095","Nanjing University of Aeronautics and Astronautics",895,"China",61,367,486,218,709,974,812,867,853,2015
+"2096","University of Western Brittany",896,"France",46,367,567,218,840,616,812,850,599,2015
+"2097","University of North Carolina at Greensboro",897,"USA",224,367,567,218,899,825,645,850,575,2015
+"2098","Pukyong National University",898,"South Korea",33,367,567,218,906,962,812,896,356,2015
+"2099","Fourth Military Medical University",899,"China",62,367,567,218,609,716,645,880,692,2015
+"2100","University of Fukui",900,"Japan",68,367,567,218,950,797,812,850,610,2015
+"2101","University of Southern Mississippi",901,"USA",225,367,567,218,913,853,812,850,676,2015
+"2102","University of Mannheim",902,"Germany",55,367,518,218,916,903,428,867,871,2015
+"2103","Shimane University",903,"Japan",69,367,567,218,956,717,645,850,695,2015
+"2104","China University of Geosciences (Wuhan)",904,"China",63,367,558,218,928,639,428,867,752,2015
+"2105","University of Thessaly",905,"Greece",7,367,567,218,875,984,812,850,871,2015
+"2106","Oakland University",906,"USA",226,367,567,218,888,810,812,850,871,2015
+"2107","Wilfrid Laurier University",907,"Canada",30,367,298,218,952,921,812,969,871,2015
+"2108","Teikyo University",908,"Japan",70,367,567,218,966,767,812,850,803,2015
+"2109","Saitama University",909,"Japan",71,367,349,218,959,609,511,932,545,2015
+"2110","Trent University",910,"Canada",31,367,509,218,923,777,511,867,782,2015
+"2111","Nicolaus Copernicus University in Toruń",911,"Poland",6,367,567,218,873,821,511,867,698,2015
+"2112","Tarbiat Modares University",912,"Iran",4,367,567,218,769,991,812,867,871,2015
+"2113","University of North Dakota",913,"USA",227,367,567,218,917,731,812,867,606,2015
+"2114","Isfahan University of Technology",914,"Iran",5,367,567,218,682,923,645,880,871,2015
+"2115","Fluminense Federal University",915,"Brazil",9,367,313,218,802,892,645,958,871,2015
+"2116","National Taiwan University of Science and Technology",916,"Taiwan",15,367,567,218,598,991,812,886,823,2015
+"2117","University of Lethbridge",917,"Canada",32,367,567,218,957,718,511,867,853,2015
+"2118","Federal University of Santa Catarina",918,"Brazil",10,367,567,218,606,941,812,886,763,2015
+"2119","University of Camerino",919,"Italy",46,367,567,218,903,826,812,867,724,2015
+"2120","University of Brasília",920,"Brazil",11,367,367,218,807,688,812,921,871,2015
+"2121","University of Wrocław",921,"Poland",7,355,567,218,736,842,645,880,871,2015
+"2122","University of Basilicata",922,"Italy",47,367,567,218,940,900,645,867,871,2015
+"2123","Jadavpur University",923,"India",15,367,515,218,849,991,428,886,735,2015
+"2124","South China Normal University",924,"China",64,367,452,218,674,912,645,906,744,2015
+"2125","University of Hyderabad",925,"India",16,367,567,218,879,910,812,880,871,2015
+"2126","Ritsumeikan University",926,"Japan",72,367,325,218,906,882,511,984,430,2015
+"2127","Carlos III University of Madrid",927,"Spain",35,367,567,218,643,958,812,946,383,2015
+"2128","University of Cyprus",928,"Cyprus",1,367,567,218,820,896,645,886,816,2015
+"2129","University of Texas at El Paso",929,"USA",228,367,442,218,910,838,812,906,706,2015
+"2130","University of Cádiz",930,"Spain",36,367,567,218,850,816,812,969,311,2015
+"2131","Shahid Beheshti University of Medical Sciences",931,"Iran",6,367,567,218,833,920,812,886,871,2015
+"2132","National Taiwan Normal University",932,"Taiwan",16,367,478,218,731,939,645,906,871,2015
+"2133","National University of Córdoba",933,"Argentina",3,367,567,218,717,796,645,896,871,2015
+"2134","Federal University of Paraná",934,"Brazil",12,367,497,218,697,800,812,906,772,2015
+"2135","University of Jaén",935,"Spain",37,367,567,218,920,871,645,896,563,2015
+"2136","University of California, Merced",936,"USA",229,367,567,218,899,540,812,906,491,2015
+"2137","University of Waikato",937,"New Zealand",6,367,474,218,945,870,511,906,703,2015
+"2138","University of Central Lancashire",938,"United Kingdom",65,367,494,218,946,603,511,906,749,2015
+"2139","Federal University of Pernambuco",939,"Brazil",13,367,552,218,749,884,812,946,417,2015
+"2140","University of Almería",940,"Spain",38,367,567,218,967,974,812,896,681,2015
+"2141","Federal University of São Carlos",941,"Brazil",14,367,567,218,722,948,812,906,774,2015
+"2142","Charles Darwin University",942,"Australia",27,367,567,218,931,742,645,896,871,2015
+"2143","Yangzhou University",943,"China",65,367,567,218,891,873,812,896,871,2015
+"2144","Wrocław University of Technology",944,"Poland",8,367,409,218,798,947,645,946,861,2015
+"2145","Hirosaki University",945,"Japan",73,367,505,218,951,844,511,906,693,2015
+"2146","National Taiwan Ocean University",946,"Taiwan",17,367,413,218,790,940,812,946,871,2015
+"2147","Jiangsu University",947,"China",66,367,556,218,808,969,812,981,323,2015
+"2148","Northwestern Polytechnical University",948,"China",67,367,351,218,566,962,812,989,871,2015
+"2149","Xiangtan University",949,"China",68,367,384,218,862,935,812,958,778,2015
+"2150","United Arab Emirates University",950,"United Arab Emirates",1,367,521,218,994,851,812,906,689,2015
+"2151","Gachon University",951,"South Korea",34,367,567,218,918,880,812,932,451,2015
+"2152","Hallym University",952,"South Korea",35,367,567,218,884,908,812,921,565,2015
+"2153","Harbin Engineering University",953,"China",69,367,567,218,970,991,645,906,839,2015
+"2154","Dokuz Eylül University",954,"Turkey",10,367,567,218,931,957,812,906,871,2015
+"2155","Jinan University",955,"China",70,367,336,218,793,897,812,984,688,2015
+"2156","Shiraz University",956,"Iran",7,367,567,218,865,962,645,921,871,2015
+"2157","Third Military Medical University",957,"China",71,367,567,218,737,809,645,932,721,2015
+"2158","Amirkabir University of Technology",958,"Iran",8,367,567,218,725,962,645,932,871,2015
+"2159","Public University of Navarre",959,"Spain",39,367,567,218,972,831,812,921,697,2015
+"2160","Federico Santa María Technical University",960,"Chile",4,367,567,218,955,923,368,946,645,2015
+"2161","Federal University of ABC",961,"Brazil",15,367,567,218,929,923,645,921,871,2015
+"2162","University of Puerto Rico at Mayagüez",962,"Puerto Rico",1,367,567,218,998,793,645,921,871,2015
+"2163","Southern Medical University",963,"China",72,367,567,218,801,758,812,932,782,2015
+"2164","University of Silesia",964,"Poland",9,367,567,218,867,864,511,932,871,2015
+"2165","Ain Shams University",965,"Egypt",2,367,567,218,875,832,511,932,871,2015
+"2166","University of Valenciennes and Hainaut-Cambresis",966,"France",47,367,567,218,866,950,645,932,871,2015
+"2167","Chung Shan Medical University",967,"Taiwan",18,367,567,218,727,973,645,946,871,2015
+"2168","National University of Colombia",968,"Colombia",2,367,312,218,871,732,812,994,861,2015
+"2169","South China Agricultural University",969,"China",73,367,567,218,877,811,812,932,871,2015
+"2170","Ibaraki University",970,"Japan",74,367,567,218,999,448,645,946,562,2015
+"2171","Fu Jen Catholic University",971,"Taiwan",19,367,446,218,984,887,812,958,824,2015
+"2172","Hunan Normal University",972,"China",74,367,567,218,923,917,812,932,871,2015
+"2173","Ulsan National Institute of Science and Technology",973,"South Korea",36,367,567,218,880,912,645,984,349,2015
+"2174","Federal University of Santa Maria",974,"Brazil",16,367,396,218,954,974,812,975,871,2015
+"2175","Shenzhen University",975,"China",75,367,410,218,976,778,645,999,318,2015
+"2176","Tianjin Medical University",976,"China",76,367,567,218,885,857,812,946,839,2015
+"2177","Beijing University of Technology",977,"China",77,367,567,218,780,950,812,969,512,2015
+"2178","University of Reims Champagne-Ardenne",978,"France",48,367,567,218,967,884,645,958,544,2015
+"2179","Yuan Ze University",979,"Taiwan",20,367,567,218,923,984,812,946,871,2015
+"2180","University of Chemistry and Technology, Prague",980,"Czech Republic",5,367,567,218,991,868,812,946,778,2015
+"2181","University of Limerick",981,"Ireland",8,367,529,218,892,863,812,969,516,2015
+"2182","China Medical University (PRC)",982,"China",78,367,567,218,804,749,645,958,871,2015
+"2183","Feng Chia University",983,"Taiwan",21,367,434,218,902,991,812,975,871,2015
+"2184","Zhejiang University of Technology",984,"China",79,367,567,218,858,991,812,958,672,2015
+"2185","Novosibirsk State University",985,"Russia",5,167,567,218,819,858,645,991,871,2015
+"2186","University of Bucharest",986,"Romania",1,237,567,218,845,804,645,975,871,2015
+"2187","Babeș-Bolyai University",987,"Romania",2,367,567,218,874,855,812,958,871,2015
+"2188","Mansoura University",988,"Egypt",3,367,567,218,987,969,645,958,871,2015
+"2189","University of Pau and Pays de l'Adour",989,"France",49,367,567,218,980,991,812,958,809,2015
+"2190","Henan Normal University",990,"China",80,367,567,218,959,991,812,958,871,2015
+"2191","Xidian University",991,"China",81,367,542,218,830,974,812,984,434,2015
+"2192","Federal University of Bahia",992,"Brazil",17,367,540,218,962,865,645,969,774,2015
+"2193","Southwest Jiaotong University",993,"China",82,367,327,218,937,962,812,998,861,2015
+"2194","Ryerson University",994,"Canada",33,367,567,218,811,969,511,975,756,2015
+"2195","King Abdulaziz University",995,"Saudi Arabia",4,367,449,218,595,430,645,994,839,2015
+"2196","University of the Algarve",996,"Portugal",7,367,567,218,926,845,812,969,816,2015
+"2197","Alexandria University",997,"Egypt",4,236,566,218,997,908,645,981,871,2015
+"2198","Federal University of Ceará",998,"Brazil",18,367,549,218,830,823,812,975,824,2015
+"2199","University of A Coruña",999,"Spain",40,367,567,218,886,974,812,975,651,2015
+"2200","China Pharmaceutical University",1000,"China",83,367,567,218,861,991,812,981,547,2015
