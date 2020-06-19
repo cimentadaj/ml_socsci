@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-18" />
+<meta name="date" content="2020-06-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -180,6 +180,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html"><i class="fa fa-check"></i><b>5</b> Unsupervised methods</a><ul>
 <li class="chapter" data-level="5.1" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>5.1</b> Principal Component Analysis (PCA)</a></li>
+<li class="chapter" data-level="5.2" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#k-means-clustering"><i class="fa fa-check"></i><b>5.2</b> K-Means Clustering</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>6</b> Syllabus</a><ul>
 <li class="chapter" data-level="6.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>6.1</b> Course description</a></li>
@@ -218,6 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb131-4"><a href="unsupervised-methods.html#cb131-4"></a></span>
 <span id="cb131-5"><a href="unsupervised-methods.html#cb131-5"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
 <span id="cb131-6"><a href="unsupervised-methods.html#cb131-6"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
+<p>Most of the material on this chapter was built upon <span class="citation">Boehmke and Greenwell (<a href="#ref-boehmke2019" role="doc-biblioref">2019</a>)</span> and <span class="citation">James et al. (<a href="#ref-james2013" role="doc-biblioref">2013</a>)</span>. In particular, the section on K-Means clustering contains images directly copied from <span class="citation">James et al. (<a href="#ref-james2013" role="doc-biblioref">2013</a>)</span>.</p>
 <div id="principal-component-analysis-pca" class="section level2">
 <h2><span class="header-section-number">5.1</span> Principal Component Analysis (PCA)</h2>
 <p><strong>P</strong>rincipal <strong>C</strong>omponent <strong>A</strong>nalysis or <span class="math inline">\(PCA\)</span> is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more ‘parsimonious’ models and summarize many variables into a few ‘strong’ variables.</p>
@@ -357,44 +359,140 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <span id="cb143-22"><a href="unsupervised-methods.html#cb143-22"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
 <span id="cb143-23"><a href="unsupervised-methods.html#cb143-23"></a><span class="st">  </span><span class="kw">collect_metrics</span>() <span class="op">%&gt;%</span></span>
 <span id="cb143-24"><a href="unsupervised-methods.html#cb143-24"></a><span class="st">  </span><span class="kw">filter</span>(.metric <span class="op">==</span><span class="st"> &quot;rmse&quot;</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 3 x 6
-##   num_comp .metric .estimator  mean     n std_err
-##      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-## 1        1 rmse    standard    40.8    10   0.402
-## 2        2 rmse    standard    40.8    10   0.438
-## 3        3 rmse    standard    40.8    10   0.422</code></pre>
 <p>These are the average results of running a 10-fold cross-validation trying out models with one, two and three principal components respectively. As we can see from the <code>mean</code> column, there is little difference between the average <span class="math inline">\(RMSE\)</span> of these different models. If there are important reasons to include these variables in the model and we want to reduce the number of variables in the model for simplicity, we could just keep the model with one principal component.</p>
 <p>However, there’s also an alternative approach. <code>step_pca</code> allows you to specify the minimum explanatory power of the principal components. As discussed in the documentation of <code>step_pca</code>, <em>you specify the fraction of the total variance that should be covered by the components. For example, <code>threshold = .75</code> means that <code>step_pca</code> should generate enough components to capture 75% of the variance.</em></p>
 <p>We can try our previous models with a 90% threshold. Since we will not perform a grid search, we will drop the grid and only keep the cross-validation to get uncertain estimates of our loss function <span class="math inline">\(RMSE\)</span>:</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="unsupervised-methods.html#cb145-1"></a><span class="co"># Define a new recipe</span></span>
-<span id="cb145-2"><a href="unsupervised-methods.html#cb145-2"></a><span class="co"># where threshold is .90</span></span>
-<span id="cb145-3"><a href="unsupervised-methods.html#cb145-3"></a>rcp &lt;-</span>
-<span id="cb145-4"><a href="unsupervised-methods.html#cb145-4"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(.x, math_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span></span>
-<span id="cb145-5"><a href="unsupervised-methods.html#cb145-5"></a><span class="st">    </span><span class="kw">step_pca</span>(<span class="kw">starts_with</span>(<span class="st">&quot;past12_&quot;</span>), <span class="dt">threshold =</span> <span class="fl">.90</span>)</span>
-<span id="cb145-6"><a href="unsupervised-methods.html#cb145-6"></a></span>
-<span id="cb145-7"><a href="unsupervised-methods.html#cb145-7"></a><span class="co"># Replace the previous recipe</span></span>
-<span id="cb145-8"><a href="unsupervised-methods.html#cb145-8"></a><span class="co"># and drop the grid</span></span>
-<span id="cb145-9"><a href="unsupervised-methods.html#cb145-9"></a>tflow &lt;-</span>
-<span id="cb145-10"><a href="unsupervised-methods.html#cb145-10"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb145-11"><a href="unsupervised-methods.html#cb145-11"></a><span class="st">  </span><span class="kw">replace_recipe</span>(rcp) <span class="op">%&gt;%</span></span>
-<span id="cb145-12"><a href="unsupervised-methods.html#cb145-12"></a><span class="st">  </span><span class="kw">drop_grid</span>()</span>
-<span id="cb145-13"><a href="unsupervised-methods.html#cb145-13"></a></span>
-<span id="cb145-14"><a href="unsupervised-methods.html#cb145-14"></a>res_rf &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb145-15"><a href="unsupervised-methods.html#cb145-15"></a></span>
-<span id="cb145-16"><a href="unsupervised-methods.html#cb145-16"></a>res_cv &lt;-</span>
-<span id="cb145-17"><a href="unsupervised-methods.html#cb145-17"></a><span class="st">  </span>res_rf <span class="op">%&gt;%</span></span>
-<span id="cb145-18"><a href="unsupervised-methods.html#cb145-18"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
-<span id="cb145-19"><a href="unsupervised-methods.html#cb145-19"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span>
-<span id="cb145-20"><a href="unsupervised-methods.html#cb145-20"></a></span>
-<span id="cb145-21"><a href="unsupervised-methods.html#cb145-21"></a>res_cv</span></code></pre></div>
-<pre><code>## # A tibble: 2 x 5
-##   .metric .estimator   mean     n std_err
-##   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
-## 1 rmse    standard   40.8      10 0.377  
-## 2 rsq     standard    0.835    10 0.00392</code></pre>
-<p>This approach offers a very similar <span class="math inline">\(RMSE\)</span> of 40.8. Althought not possible at this moment, <code>tidymodels</code> is expected to allow the <code>threshold</code> parameter to be <code>tune</code> such that you can perform a grid search of this value as well (for those interested, see <a href="https://github.com/tidymodels/recipes/issues/534">here</a>).</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="unsupervised-methods.html#cb144-1"></a><span class="co"># Define a new recipe</span></span>
+<span id="cb144-2"><a href="unsupervised-methods.html#cb144-2"></a><span class="co"># where threshold is .90</span></span>
+<span id="cb144-3"><a href="unsupervised-methods.html#cb144-3"></a>rcp &lt;-</span>
+<span id="cb144-4"><a href="unsupervised-methods.html#cb144-4"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(.x, math_score <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span></span>
+<span id="cb144-5"><a href="unsupervised-methods.html#cb144-5"></a><span class="st">    </span><span class="kw">step_pca</span>(<span class="kw">starts_with</span>(<span class="st">&quot;past12_&quot;</span>), <span class="dt">threshold =</span> <span class="fl">.90</span>)</span>
+<span id="cb144-6"><a href="unsupervised-methods.html#cb144-6"></a></span>
+<span id="cb144-7"><a href="unsupervised-methods.html#cb144-7"></a><span class="co"># Replace the previous recipe</span></span>
+<span id="cb144-8"><a href="unsupervised-methods.html#cb144-8"></a><span class="co"># and drop the grid</span></span>
+<span id="cb144-9"><a href="unsupervised-methods.html#cb144-9"></a>tflow &lt;-</span>
+<span id="cb144-10"><a href="unsupervised-methods.html#cb144-10"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb144-11"><a href="unsupervised-methods.html#cb144-11"></a><span class="st">  </span><span class="kw">replace_recipe</span>(rcp) <span class="op">%&gt;%</span></span>
+<span id="cb144-12"><a href="unsupervised-methods.html#cb144-12"></a><span class="st">  </span><span class="kw">drop_grid</span>()</span>
+<span id="cb144-13"><a href="unsupervised-methods.html#cb144-13"></a></span>
+<span id="cb144-14"><a href="unsupervised-methods.html#cb144-14"></a>res_rf &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb144-15"><a href="unsupervised-methods.html#cb144-15"></a></span>
+<span id="cb144-16"><a href="unsupervised-methods.html#cb144-16"></a>res_cv &lt;-</span>
+<span id="cb144-17"><a href="unsupervised-methods.html#cb144-17"></a><span class="st">  </span>res_rf <span class="op">%&gt;%</span></span>
+<span id="cb144-18"><a href="unsupervised-methods.html#cb144-18"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb144-19"><a href="unsupervised-methods.html#cb144-19"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span>
+<span id="cb144-20"><a href="unsupervised-methods.html#cb144-20"></a></span>
+<span id="cb144-21"><a href="unsupervised-methods.html#cb144-21"></a><span class="kw">round</span>(res_cv<span class="op">$</span>mean[<span class="dv">1</span>], <span class="dv">2</span>)</span>
+<span id="cb144-22"><a href="unsupervised-methods.html#cb144-22"></a></span>
+<span id="cb144-23"><a href="unsupervised-methods.html#cb144-23"></a>res_cv</span></code></pre></div>
+<p>This approach offers a very similar <span class="math inline">\(RMSE\)</span> of MISSING CALCULATION. Althought not possible at this moment, <code>tidymodels</code> is expected to allow the <code>threshold</code> parameter to be <code>tune</code> such that you can perform a grid search of this value as well (for those interested, see <a href="https://github.com/tidymodels/recipes/issues/534">here</a>).</p>
 <p>Although <span class="math inline">\(PCA\)</span> is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.</p>
+</div>
+<div id="k-means-clustering" class="section level2">
+<h2><span class="header-section-number">5.2</span> K-Means Clustering</h2>
+<p>K-Means is a method for finding clusters in a dataset of <span class="math inline">\(P\)</span> variables. It is somewhat different from <span class="math inline">\(PCA\)</span> because it attemps to find non-overlapping clusters of respondents using <span class="math inline">\(P\)</span> variables. In terms of interpretation and transparency, K-Means clustering is particularly useful for exploration in the social sciences.</p>
+<p>Suppose we have a scatterplot of two variables:</p>
+<p><img src="img/km1.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>The distribution of this scatterplot shows that there are at least two visible clusters, one in the top part of the plot and one in the bottom part of plot. How does K-Means identify clusters appropriately? First, it begins by <strong>randomly</strong> assigning each point a cluster. Let’s suppose we want to identify three clusters:</p>
+<p><img src="img/km2.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>Each point has now an associated color. However, these colors were randomly assigned. There’s no evident pattern from the colors and the position of each point. K-Means clustering works by creating something called ‘centroids’ which represent the center of the different clusters.</p>
+<p>The centroid is usually the <strong>mean of the <span class="math inline">\(P\)</span> variables</strong>. For our simplified case, we calculate the average of X and Y for the color orange, then the average of X and Y for the color purple and then the average of X and Y for the color green. The end result of this is an average mean of X and Y for the three colors. For example, for the orange points, we can plot a ‘average big point’ that is located at the average of X and the average of Y <strong>only</strong> for the orange points. We repeat this for every color and plot it:</p>
+<p><img src="img/km3.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>Remember that we assigned the cluster colors to the points randomly? Then the mean of X and Y for the three different colors should be more or less the same. We find that’s the case, as the three ‘average big points’ are located at the center of the plot overlapping among each other. So far, everything that has happened is random. There’s no capturing of real knowledge here. The next step is where the substantive part comes in. We need to calculate something called the Euclidian distance between each point and the three centroids. This is not so difficult. Let’s work it out manually.</p>
+<p>Suppose that the three centroids are located with these X and Y values:</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="unsupervised-methods.html#cb145-1"></a>centroids_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>), <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)),</span>
+<span id="cb145-2"><a href="unsupervised-methods.html#cb145-2"></a>                           <span class="dt">x =</span> <span class="kw">c</span>(.<span class="dv">54</span>, <span class="fl">.56</span>, <span class="fl">.52</span>),</span>
+<span id="cb145-3"><a href="unsupervised-methods.html#cb145-3"></a>                           <span class="dt">y =</span> <span class="kw">c</span>(.<span class="dv">553</span>, <span class="fl">.55</span>, <span class="fl">.56</span>))</span></code></pre></div>
+<p>We can visualize them:</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="unsupervised-methods.html#cb146-1"></a>centroids_df <span class="op">%&gt;%</span></span>
+<span id="cb146-2"><a href="unsupervised-methods.html#cb146-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y, <span class="dt">color =</span> type)) <span class="op">+</span></span>
+<span id="cb146-3"><a href="unsupervised-methods.html#cb146-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb146-4"><a href="unsupervised-methods.html#cb146-4"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
+<span id="cb146-5"><a href="unsupervised-methods.html#cb146-5"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb146-6"><a href="unsupervised-methods.html#cb146-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Now suppose we add an additional random point in the plot:</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="unsupervised-methods.html#cb147-1"></a>centroids_df <span class="op">%&gt;%</span></span>
+<span id="cb147-2"><a href="unsupervised-methods.html#cb147-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb147-3"><a href="unsupervised-methods.html#cb147-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> type), <span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb147-4"><a href="unsupervised-methods.html#cb147-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.75</span>)) <span class="op">+</span></span>
+<span id="cb147-5"><a href="unsupervised-methods.html#cb147-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
+<span id="cb147-6"><a href="unsupervised-methods.html#cb147-6"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb147-7"><a href="unsupervised-methods.html#cb147-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>How do we calculate the Euclidean distance between this point and the three clusters? We use this formula:</p>
+<p><span class="math display">\[\sqrt{(x_2 - x_1) + (y_2 - y_1)}\]</span></p>
+<p>where <span class="math inline">\(x_2\)</span> and <span class="math inline">\(y_2\)</span> are the values for a particular centroid and <span class="math inline">\(x_1\)</span> and <span class="math inline">\(y_1\)</span> are the values for the random point. Here is the manual calculation for each centroid:</p>
+<ul>
+<li>Orange <span class="math display">\[\sqrt{(0.54 - 0.25) + (0.553 - 0.75)} = 0.304959 \]</span></li>
+<li>Purple <span class="math display">\[\sqrt{(0.56 - 0.25) + (0.550 - 0.75)} = 0.3316625 \]</span></li>
+<li>Green <span class="math display">\[\sqrt{(0.52 - 0.25) + (0.560 - 0.75)} = 0.2828427 \]</span></li>
+</ul>
+<p>Since each of these calculations is done on the random point and the three centroids, the only numbers that change between each formula is the location of the centroids. From these results, the random point is closest to the green centroid, as the distance is the smallest (0.28). Let’s assign it to that cluster:</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="unsupervised-methods.html#cb148-1"></a>centroids_df <span class="op">%&gt;%</span></span>
+<span id="cb148-2"><a href="unsupervised-methods.html#cb148-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y, <span class="dt">color =</span> type)) <span class="op">+</span></span>
+<span id="cb148-3"><a href="unsupervised-methods.html#cb148-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb148-4"><a href="unsupervised-methods.html#cb148-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">factor</span>(<span class="st">&quot;green&quot;</span>), <span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.75</span>)) <span class="op">+</span></span>
+<span id="cb148-5"><a href="unsupervised-methods.html#cb148-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
+<span id="cb148-6"><a href="unsupervised-methods.html#cb148-6"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb148-7"><a href="unsupervised-methods.html#cb148-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>The K-Means clustering algorithm applies this calculation for <strong>each point</strong>:</p>
+<p><img src="img/km4.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>Each point is now assigned the color of the closest centroid. The centroids are still positioned in the center, reflecting the random allocation of the initial points. However, we just reallocated the cluster of every single point. At this stage the K-Means clustering algorithm repeats the same process we just performed manually. It calculates new centroids based on the average of the X and Y of the newly new assigned points:</p>
+<p><img src="img/km5.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>The next step is to repeat exactly the same strategy again. That is:</p>
+<ul>
+<li>Calculate the distance between each point and all corresponding clusters</li>
+<li>Reassign all points to the cluster of the closest centroid</li>
+<li>Recalculate the centroid</li>
+</ul>
+<p>Mathematically, it can proved that after <span class="math inline">\(N\)</span> iterations, each point will be allocated to a particular centroid and it <strong>will stop being reassigned</strong>:</p>
+<p><img src="img/km6.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>This approach looks to minimize within-cluster variance and maximize between-cluster variance. That is, respondents are very similar within each cluster with respect to the <span class="math inline">\(P\)</span> variables and very different between clusters.</p>
+<p>Althought K-Means clustering is a very fast, interpretable and flexible method, it has important drawbacks. First, K-Means will <strong>always</strong> calculate the number of supplied clusters. That is, if the user supplies three clusters, it will calculate three clusters. If the user supplies, ten clusters, it will also calculate ten clusters. In other words, the clusters calculate by the K-Means algorithm should be interpreted as exploratory and be contrasted with a theoretical description of the problem at hand. The clusters need to make substantive sense rather than statistical sense.</p>
+<p>K-Means also has a stability problem. That is, it is completely dependent on the <strong>initial random assignment of the clusters</strong>. Remember how we assigned each point a random cluster in our manual example?</p>
+<p><img src="img/km2.png" width="30%" style="display: block; margin: auto;" /></p>
+<p>If we repeated the same random assignment again, it is possible we get completely different clusters. For example, here’s a simulation using the same example as before:</p>
+<p><img src="img/km7.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>These six plots show the exact same model showed above but repeated six times with different random allocation for each one. In some instances, the result is very similar to our initial clusters (for example, the middle top panel) but for others it’s slightly different (for example, the top left panel and the bottom right panel).</p>
+<p>This does not mean that the method is useless. It can be very useful to determine clusters whenever the latent distribution of the variables really reflect a clustering. However, instead of taking the clusters at face value, the result of K-Means should be used as an exploratory tool that needs to be compared and complemented with other types of analysis. These methods need to offer evidence of the validity of the clusters as well the robustness of the clusters.</p>
+<p>Clustering methods have in general some problems which are important to address. For example, in some instances, centering and scaling variables might be more appropriate, and this can have important implications for the resulting clusters. In addition, outliers can have a big impact on the cluster assignment in general. In addition, small changes in the data can have big impacts on the final clusters.</p>
+<p>You might ask yourelf, how can we fit this in <code>R</code>? Let’s suppose that we have reasons to believe that there are different clusters between the socio-economic status of a family and a student’s expected socio-economic status. For example, we might argue that students from low socio-economic status might not have great aspirations, students from middle socio-economic status have average aspirations while students from high socio-economic status might have great aspirations.</p>
+<p>The function <code>kmeans</code> is used to calculate the clusters. It accepts two arguments: the dataframe with the <span class="math inline">\(P\)</span> columns and how many clusters the user wants. Let’s pass that to <code>kmeans</code> and visualize the clusters</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="unsupervised-methods.html#cb149-1"></a>res &lt;-</span>
+<span id="cb149-2"><a href="unsupervised-methods.html#cb149-2"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
+<span id="cb149-3"><a href="unsupervised-methods.html#cb149-3"></a><span class="st">  </span><span class="kw">select</span>(ESCS, BSMJ) <span class="op">%&gt;%</span></span>
+<span id="cb149-4"><a href="unsupervised-methods.html#cb149-4"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">3</span>)</span>
+<span id="cb149-5"><a href="unsupervised-methods.html#cb149-5"></a></span>
+<span id="cb149-6"><a href="unsupervised-methods.html#cb149-6"></a>pisa<span class="op">$</span>clust &lt;-<span class="st"> </span><span class="kw">factor</span>(res<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb149-7"><a href="unsupervised-methods.html#cb149-7"></a></span>
+<span id="cb149-8"><a href="unsupervised-methods.html#cb149-8"></a>pisa <span class="op">%&gt;%</span></span>
+<span id="cb149-9"><a href="unsupervised-methods.html#cb149-9"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(ESCS, BSMJ, <span class="dt">color =</span> clust)) <span class="op">+</span></span>
+<span id="cb149-10"><a href="unsupervised-methods.html#cb149-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb149-11"><a href="unsupervised-methods.html#cb149-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="st">&quot;Index of economic, social and cultural status of family&quot;</span>) <span class="op">+</span></span>
+<span id="cb149-12"><a href="unsupervised-methods.html#cb149-12"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Students expected occupational status&quot;</span>) <span class="op">+</span></span>
+<span id="cb149-13"><a href="unsupervised-methods.html#cb149-13"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p>Substantively, this example might not make a lot of sense, but it serves to exemplify that the K-Means can find clusters <strong>even</strong> when there aren’t any clusters. From this particular plot, it doesn’t seem to be a clear cut distinction between the three clusters. We can inspect the actual values of the centrois, for example:</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="unsupervised-methods.html#cb150-1"></a>res<span class="op">$</span>centers</span></code></pre></div>
+<pre><code>##          ESCS     BSMJ
+## 1  0.01219057 55.53109
+## 2  0.12278091 75.46021
+## 3 -0.29322474 28.82504</code></pre>
+<p>Althought some people might think that these methods have no value in the social sciences, I like to think this is because they’ve been trained with a particular hammer, and thus every problem seems like a nail.</p>
+<p>We don’t seem problems in a way that can be answered with these techniques because we don’t think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster.</p>
+<p>A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there’s no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we’ve been trained in a particular paradigm that is difficult to break.</p>
 
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-boehmke2019">
+<p>Boehmke, Brad, and Brandon M Greenwell. 2019. <em>Hands-on Machine Learning with R</em>. CRC Press.</p>
+</div>
+<div id="ref-james2013">
+<p>James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2013. <em>An Introduction to Statistical Learning</em>. Vol. 112. Springer.</p>
 </div>
 </div>
             </section>

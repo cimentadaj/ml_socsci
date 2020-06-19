@@ -16,6 +16,8 @@ data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data
 pisa <- read.csv(data_link)
 ```
 
+Most of the material on this chapter was built upon @boehmke2019 and @james2013. In particular, the section on K-Means clustering contains images directly copied from @james2013.
+
 ## Principal Component Analysis (PCA)
 
 **P**rincipal **C**omponent **A**nalysis or $PCA$ is a method that tries to summarize many columns into a very small subset that captures the greatest variability of the original columns. Social Scientists often use this method to create more 'parsimonious' models and summarize many variables into a few 'strong' variables.
@@ -225,15 +227,6 @@ res_rf %>%
   filter(.metric == "rmse")
 ```
 
-```
-## # A tibble: 3 x 6
-##   num_comp .metric .estimator  mean     n std_err
-##      <int> <chr>   <chr>      <dbl> <int>   <dbl>
-## 1        1 rmse    standard    40.8    10   0.402
-## 2        2 rmse    standard    40.8    10   0.438
-## 3        3 rmse    standard    40.8    10   0.422
-```
-
 These are the average results of running a 10-fold cross-validation trying out models with one, two and three principal components respectively. As we can see from the `mean` column, there is little difference between the average $RMSE$ of these different models. If there are important reasons to include these variables in the model and we want to reduce the number of variables in the model for simplicity, we could just keep the model with one principal component. 
 
 However, there's also an alternative approach. `step_pca` allows you to specify the minimum explanatory power of the principal components. As discussed in the documentation of `step_pca`, *you specify the fraction of the total variance that should be covered by the components. For example, `threshold = .75` means that `step_pca` should generate enough components to capture 75\% of the variance.*
@@ -262,17 +255,176 @@ res_cv <-
   pull_tflow_fit_tuning() %>%
   collect_metrics()
 
+round(res_cv$mean[1], 2)
+
 res_cv
 ```
 
-```
-## # A tibble: 2 x 5
-##   .metric .estimator   mean     n std_err
-##   <chr>   <chr>       <dbl> <int>   <dbl>
-## 1 rmse    standard   40.8      10 0.377  
-## 2 rsq     standard    0.835    10 0.00392
-```
 
-This approach offers a very similar $RMSE$ of 40.8. Althought not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
+
+This approach offers a very similar $RMSE$ of MISSING CALCULATION. Althought not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
 
 Although $PCA$ is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.
+
+## K-Means Clustering
+
+K-Means is a method for finding clusters in a dataset of $P$ variables. It is somewhat different from $PCA$ because it attemps to find non-overlapping clusters of respondents using $P$ variables. In terms of interpretation and transparency, K-Means clustering is particularly useful for exploration in the social sciences.
+
+Suppose we have a scatterplot of two variables:
+
+<img src="./img/km1.png" width="30%" style="display: block; margin: auto;" />
+
+The distribution of this scatterplot shows that there are at least two visible clusters, one in the top part of the plot and one in the bottom part of plot. How does K-Means identify clusters appropriately? First, it begins by **randomly** assigning each point a cluster. Let's suppose we want to identify three clusters:
+
+<img src="./img/km2.png" width="30%" style="display: block; margin: auto;" />
+
+Each point has now an associated color. However, these colors were randomly assigned. There's no evident pattern from the colors and the position of each point. K-Means clustering works by creating something called 'centroids' which represent the center of the different clusters. 
+
+The centroid is usually the **mean of the $P$ variables**. For our simplified case, we calculate the average of X and Y for the color orange, then the average of X and Y for the color purple and then the average of X and Y for the color green. The end result of this is an average mean of X and Y for the three colors. For example, for the orange points, we can plot a 'average big point' that is located at the average of X and the average of Y **only** for the orange points. We repeat this for every color and plot it: 
+
+<img src="./img/km3.png" width="30%" style="display: block; margin: auto;" />
+
+Remember that we assigned the cluster colors to the points randomly? Then the mean of X and Y for the three different colors should be more or less the same. We find that's the case, as the three 'average big points' are located at the center of the plot overlapping among each other. So far, everything that has happened is random. There's no capturing of real knowledge here. The next step is where the substantive part comes in. We need to calculate something called the Euclidian distance between each point and the three centroids. This is not so difficult. Let's work it out manually.
+
+Suppose that the three centroids are located with these X and Y values:
+
+
+```r
+centroids_df <- data.frame(type = factor(c("orange", "purple", "green"), levels = c("orange", "purple", "green")),
+                           x = c(.54, .56, .52),
+                           y = c(.553, .55, .56))
+```
+
+We can visualize them:
+
+
+```r
+centroids_df %>%
+  ggplot(aes(x, y, color = type)) +
+  geom_point(size = 4) +
+  scale_color_manual(values = c("orange", "purple", "green")) +
+  lims(x = c(0, 1), y = c(0, 1)) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+
+
+Now suppose we add an additional random point in the plot:
+
+
+```r
+centroids_df %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = type), size = 4) +
+  geom_point(data = data.frame(x = 0.25, y = 0.75)) +
+  scale_color_manual(values = c("orange", "purple", "green")) +
+  lims(x = c(0, 1), y = c(0, 1)) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+
+How do we calculate the Euclidean distance between this point and the three clusters? We use this formula:
+
+$$\sqrt{(x_2 - x_1) + (y_2 - y_1)}$$
+
+where $x_2$ and $y_2$ are the values for a particular centroid and $x_1$ and $y_1$ are the values for the random point. Here is the manual calculation for each centroid:
+
+* Orange $$\sqrt{(0.54 - 0.25) + (0.553 - 0.75)} = 0.304959 $$
+* Purple $$\sqrt{(0.56 - 0.25) + (0.550 - 0.75)} = 0.3316625 $$
+* Green $$\sqrt{(0.52 - 0.25) + (0.560 - 0.75)} = 0.2828427 $$
+
+Since each of these calculations is done on the random point and the three centroids, the only numbers that change between each formula is the location of the centroids. From these results, the random point is closest to the green centroid, as the distance is the smallest (0.28). Let's assign it to that cluster:
+
+
+```r
+centroids_df %>%
+  ggplot(aes(x, y, color = type)) +
+  geom_point(size = 4) +
+  geom_point(data = data.frame(type = factor("green"), x = 0.25, y = 0.75)) +
+  scale_color_manual(values = c("orange", "purple", "green")) +
+  lims(x = c(0, 1), y = c(0, 1)) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+
+The K-Means clustering algorithm applies this calculation for **each point**:
+
+<img src="./img/km4.png" width="30%" style="display: block; margin: auto;" />
+
+Each point is now assigned the color of the closest centroid. The centroids are still positioned in the center, reflecting the random allocation of the initial points. However, we just reallocated the cluster of every single point. At this stage the K-Means clustering algorithm repeats the same process we just performed manually. It calculates new centroids based on the average of the X and Y of the newly new assigned points:
+
+<img src="./img/km5.png" width="30%" style="display: block; margin: auto;" />
+
+The next step is to repeat exactly the same strategy again. That is:
+
+* Calculate the distance between each point and all corresponding clusters
+* Reassign all points to the cluster of the closest centroid
+* Recalculate the centroid
+
+Mathematically, it can proved that after $N$ iterations, each point will be allocated to a particular centroid and it **will stop being reassigned**:
+
+<img src="./img/km6.png" width="30%" style="display: block; margin: auto;" />
+
+This approach looks to minimize within-cluster variance and maximize between-cluster variance. That is, respondents are very similar within each cluster with respect to the $P$ variables and very different between clusters.
+
+Althought K-Means clustering is a very fast, interpretable and flexible method, it has important drawbacks. First, K-Means will **always** calculate the number of supplied clusters. That is, if the user supplies three clusters, it will calculate three clusters. If the user supplies, ten clusters, it will also calculate ten clusters. In other words, the clusters calculate by the K-Means algorithm should be interpreted as exploratory and be contrasted with a theoretical description of the problem at hand. The clusters need to make substantive sense rather than statistical sense.
+
+K-Means also has a stability problem. That is, it is completely dependent on the **initial random assignment of the clusters**. Remember how we assigned each point a random cluster in our manual example?
+
+<img src="./img/km2.png" width="30%" style="display: block; margin: auto;" />
+
+If we repeated the same random assignment again, it is possible we get completely different clusters. For example, here's a simulation using the same example as before:
+
+<img src="./img/km7.png" width="80%" style="display: block; margin: auto;" />
+
+These six plots show the exact same model showed above but repeated six times with different random allocation for each one. In some instances, the result is very similar to our initial clusters (for example, the middle top panel) but for others it's slightly different (for example, the top left panel and the bottom right panel). 
+
+This does not mean that the method is useless. It can be very useful to determine clusters whenever the latent distribution of the variables really reflect a clustering. However, instead of taking the clusters at face value, the result of K-Means should be used as an exploratory tool that needs to be compared and complemented with other types of analysis. These methods need to offer evidence of the validity of the clusters as well the robustness of the clusters.
+
+Clustering methods have in general some problems which are important to address. For example, in some instances, centering and scaling variables might be more appropriate, and this can have important implications for the resulting clusters. In addition, outliers can have a big impact on the cluster assignment in general. In addition, small changes in the data can have big impacts on the final clusters.
+
+You might ask yourelf, how can we fit this in `R`? Let's suppose that we have reasons to believe that there are different clusters between the socio-economic status of a family and a student's expected socio-economic status. For example, we might argue that students from low socio-economic status might not have great aspirations, students from middle socio-economic status have average aspirations while students from high socio-economic status might have great aspirations.
+
+The function `kmeans` is used to calculate the clusters. It accepts two arguments: the dataframe with the $P$ columns and how many clusters the user wants. Let's pass that to `kmeans` and visualize the clusters
+
+
+```r
+res <-
+  pisa %>%
+  select(ESCS, BSMJ) %>%
+  kmeans(centers = 3)
+
+pisa$clust <- factor(res$cluster, levels = 1:3, ordered = TRUE)
+
+pisa %>%
+  ggplot(aes(ESCS, BSMJ, color = clust)) +
+  geom_point(alpha = 1/3) +
+  scale_x_continuous("Index of economic, social and cultural status of family") +
+  scale_y_continuous("Students expected occupational status") +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+
+Substantively, this example might not make a lot of sense, but it serves to exemplify that the K-Means can find clusters **even** when there aren't any clusters. From this particular plot, it doesn't seem to be a clear cut distinction between the three clusters. We can inspect the actual values of the centrois, for example:
+
+
+```r
+res$centers
+```
+
+```
+##          ESCS     BSMJ
+## 1  0.01219057 55.53109
+## 2  0.12278091 75.46021
+## 3 -0.29322474 28.82504
+```
+
+Althought some people might think that these methods have no value in the social sciences, I like to think this is because they've been trained with a particular hammer, and thus every problem seems like a nail. 
+
+We don't seem problems in a way that can be answered with these techniques because we don't think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster. 
+
+A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there's no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we've been trained in a particular paradigm that is difficult to break.
