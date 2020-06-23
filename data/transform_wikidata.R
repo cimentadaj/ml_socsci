@@ -24,7 +24,6 @@ res <-
                      pageviews_offset,
                      revisions,
                      editors,
-                     author_editcount,
                      secs_since_last_edit,
                      characters,
                      words,
@@ -33,8 +32,7 @@ res <-
                      sections,
                      external_links,
                      links_from_this_page,
-                     links_to_this_page,
-                     redirects_count),
+                     links_to_this_page),
                    sum, na.rm = TRUE),
             .groups = "drop_last") %>%
   ungroup()
@@ -43,7 +41,7 @@ merged_data <-
   res %>%
   inner_join(county_data, by = c("county_fips" = "GEOID")) %>%
   inner_join(internet_usage, by = "county_fips") %>%
-  select(-X_merge)
+  select(-X_merge, -total_population)
 
 merged_final <-
   merged_data %>%
