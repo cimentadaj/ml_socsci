@@ -24,7 +24,7 @@ jobs:
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "_book")'
       - name: Render Slides
-        run: Rscript -e 'all_slides <- list.files("slides", recursive = TRUE, pattern = "\\.Rmd", full.names = TRUE); for (i in all_slides) rmarkdown::render(i)'
+        run: Rscript -e 'all_slides <- list.files("slides", recursive = TRUE, pattern = "Rmd", full.names = TRUE); for (i in all_slides) rmarkdown::render(i)'
       - uses: actions/upload-artifact@v2
         with:
           name: _book
