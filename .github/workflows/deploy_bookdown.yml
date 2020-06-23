@@ -46,15 +46,15 @@ jobs:
      - name: Download artifact
        uses: actions/download-artifact@v1.0.0
        with:
-         Artifact name
+         # Artifact name
          name: _book # optional
-         Destination path
+         # Destination path
          path: _book # optional
        uses: actions/download-artifact@v1.0.0
        with:
-         Artifact name
+         # Artifact name
          name: slides # optional
-         Destination path
+         # Destination path
          path: slides/ # optional
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@master
