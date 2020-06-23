@@ -30,6 +30,13 @@
       "Repository": "CRAN",
       "Hash": "62c6842ce8b9700919edd897884caeff"
     },
+    "DBI": {
+      "Package": "DBI",
+      "Version": "1.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "4744be45519d675af66c28478720fce5"
+    },
     "DT": {
       "Package": "DT",
       "Version": "0.13",
@@ -222,6 +229,13 @@
       "Repository": "CRAN",
       "Hash": "c994e351b537a5d5101ce52915e83a8d"
     },
+    "blob": {
+      "Package": "blob",
+      "Version": "1.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9addc7e2c5954eca5719928131fed98c"
+    },
     "bookdown": {
       "Package": "bookdown",
       "Version": "0.19",
@@ -386,6 +400,13 @@
       "Repository": "CRAN",
       "Hash": "cd711af60c47207a776213a368626369"
     },
+    "dbplyr": {
+      "Package": "dbplyr",
+      "Version": "1.4.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2ba60a82dd9b6ca3cee0d8e2574cdf0e"
+    },
     "desc": {
       "Package": "desc",
       "Version": "1.2.0",
@@ -434,6 +455,18 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "fd2844b3a43ae2d27e70ece2df1b4e2a"
+    },
+    "emo": {
+      "Package": "emo",
+      "Version": "0.0.0.9000",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "emo",
+      "RemoteUsername": "hadley",
+      "RemoteRef": "master",
+      "RemoteSha": "3f03b11491ce3d6fc5601e210927eff73bf8e350",
+      "Hash": "5ece31a6c0f94811e6bef59482d87164"
     },
     "evaluate": {
       "Package": "evaluate",
@@ -902,10 +935,10 @@
     },
     "lubridate": {
       "Package": "lubridate",
-      "Version": "1.7.8",
+      "Version": "1.7.9",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "6c04c31012c1be39783bebbbfc27b3a3"
+      "Hash": "fc1c91e2e8d9e1fc932e75aa1ed989b7"
     },
     "magick": {
       "Package": "magick",
@@ -981,6 +1014,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "c46b4f76349213e3cecfb50f6ea6cdc7"
+    },
+    "modelr": {
+      "Package": "modelr",
+      "Version": "0.1.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9fd59716311ee82cba83dc2826fc5577"
     },
     "munsell": {
       "Package": "munsell",
@@ -1273,6 +1313,18 @@
       "Repository": "CRAN",
       "Hash": "0d3f1c2b63e70b3d918246b4e2ca59b7"
     },
+    "reprex": {
+      "Package": "reprex",
+      "Version": "0.3.0",
+      "Source": "CRAN",
+      "Repository": "CRAN",
+      "RemoteType": "standard",
+      "RemoteRef": "reprex",
+      "RemoteRepos": "https://cloud.r-project.org",
+      "RemotePkgType": "source",
+      "RemoteSha": "0.3.0",
+      "Hash": "b06bfb3504cc8a4579fd5567646f745b"
+    },
     "reshape2": {
       "Package": "reshape2",
       "Version": "1.4.4",
@@ -1378,12 +1430,26 @@
       "Repository": "CRAN",
       "Hash": "f3d32ee70ee9e5ca65b06ee61b4ce813"
     },
+    "rvest": {
+      "Package": "rvest",
+      "Version": "0.3.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "6a20c2cdf133ebc7ac45888c9ccc052b"
+    },
     "scales": {
       "Package": "scales",
       "Version": "1.1.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "6f76f71042411426ec8df6c54f34e6dd"
+    },
+    "selectr": {
+      "Package": "selectr",
+      "Version": "0.4-2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "3838071b66e0c566d55cc26bd6e27bf4"
     },
     "servr": {
       "Package": "servr",
@@ -1568,6 +1634,13 @@
       "Repository": "CRAN",
       "Hash": "3c8a4339c705bf331ed4f45f36cb2344"
     },
+    "tidyverse": {
+      "Package": "tidyverse",
+      "Version": "1.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "bd51be662f359fa99021f3d51e911490"
+    },
     "timeDate": {
       "Package": "timeDate",
       "Version": "3043.102",
@@ -1670,6 +1743,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "60e146e3aba37a547e12306dc3da77a6"
+    },
+    "xml2": {
+      "Package": "xml2",
+      "Version": "1.3.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d4d71a75dd3ea9eb5fa28cc21f9585e2"
     },
     "xtable": {
       "Package": "xtable",
