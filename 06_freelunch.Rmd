@@ -101,7 +101,7 @@ Here are some ideas you can try in your analysis:
 
 You can read the data with:
 
-```{r}
+```{r, eval = FALSE}
 wiki_dt <- read.csv("https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/wikipedia_final.csv")
 ```
 
