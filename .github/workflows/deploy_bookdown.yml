@@ -43,19 +43,7 @@ jobs:
    steps:
      - name: Checkout
        uses: actions/checkout@master
-     - name: Download artifact
        uses: actions/download-artifact@v1.0.0
-       with:
-         # Artifact name
-         name: _book # optional
-         # Destination path
-         path: _book # optional
-       uses: actions/download-artifact@v1.0.0
-       with:
-         # Artifact name
-         name: slides # optional
-         # Destination path
-         path: slides/ # optional
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@master
        env:
