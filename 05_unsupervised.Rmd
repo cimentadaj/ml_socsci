@@ -507,76 +507,56 @@ autoplot(res_pc,
 #### 3. Apply the kmeans to the set of ranking variables {-#ex3}
 
 * Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
-* Pass the ranking variables to `kmeans`
-* Try several `centers` values to explore whethere there are some variables for clustering
+* Calculate the average `quality_of_education` and `alumni_employment` by country
+* Pass these country average ranking variables to `kmeans`
+* Visualize the clusters in a scatterplot of `quality_of_education` and `alumni_employment`
+
+Try several `centers`. Is there a substantive cluster among these countries?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * Some of these clusters don't seem to captury substantial differences. However, the top-left group of countries seems to cluster continually with different centroids.
+  * This cluster is continually composed of countries such as France, Spain, Egypt, Argentina, etc...
+  * Do we have reasons to believe that they are very similar in `quality_of_education` and `alumno_employment`?
+  
+  An extension of this could hypothesize that we should collect information in terms of growth of labor market and population of students in order to check whether they also cluster on these variables.
 
 ```{r}
-dt_km %>% 
-  ggplot(aes(quality_of_faculty, citations)) +
-  geom_point()
-
-## library(GGally)
-
+############################# Three clusters ##################################
+###############################################################################
 sum_dt <- 
   dt %>%
   select(-world_rank, -institution, -national_rank, -year) %>%
   group_by(country) %>%
   summarize_all(mean)
 
-row.names(sum_dt) <- sum_dt$country
-
-sum_dt %>%
-  select(-country) %>% 
-  ggpairs()
-
+set.seed(523131)
 res_km <-
   sum_dt %>%
   select(quality_of_education, alumni_employment) %>% 
   kmeans(centers = 3, nstart = 50)
 
-sum_dt$.cluster <- factor(res_km$cluster, levels = 1:3)
-
+sum_dt$.cluster_three <- factor(res_km$cluster, levels = 1:3)
 sum_dt %>% 
-  ggplot(aes(quality_of_education, alumni_employment, color = .cluster)) +
+  ggplot(aes(quality_of_education, alumni_employment, color = .cluster_three)) +
   geom_text(aes(label = country)) +
   theme_minimal()
-```
 
+############################# Two clusters ####################################
+###############################################################################
 
-```{r}
+set.seed(523131)
 res_km <-
-  dt %>%
-  filter(country == "USA") %>% 
-  select(quality_of_education, quality_of_faculty) %>%
-  kmeans(centers = 3, nstart = 50)
+  sum_dt %>%
+  select(quality_of_education, alumni_employment) %>% 
+  kmeans(centers = 2, nstart = 50)
 
-dt_usa <-
-  dt %>%
-  filter(country == "USA") %>%
-  select(institution, quality_of_education, quality_of_faculty)
-
-dt_km <- augment(res_km, dt_usa)
-
-dt_km %>% 
-  ggplot(aes(quality_of_education,
-             quality_of_faculty)) +
-  geom_point()
-
-dt_km %>% 
-  ggplot(aes(quality_of_education,
-             quality_of_faculty,
-             color = .cluster)) +
-  geom_point()
-
-dt_km %>%
-  filter(quality_of_education < 50,
-         quality_of_faculty < 50)
-```
-
-
-```{r}
-row.names(dt_km) <- dt_km$institution
-plot(as.phylo(hclust(dist(dt_km))), labels = dt_km$institution, type = "unrooted", no.margin = TRUE, cex = 0.6)
+sum_dt$.cluster_two <- factor(res_km$cluster, levels = 1:2)
+sum_dt %>% 
+  ggplot(aes(quality_of_education, alumni_employment, color = .cluster_two)) +
+  geom_text(aes(label = country)) +
+  theme_minimal()
 ```
 
 </details>
