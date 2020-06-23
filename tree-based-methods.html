@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-19" />
+<meta name="date" content="2020-06-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -181,13 +181,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html"><i class="fa fa-check"></i><b>5</b> Unsupervised methods</a><ul>
 <li class="chapter" data-level="5.1" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>5.1</b> Principal Component Analysis (PCA)</a></li>
 <li class="chapter" data-level="5.2" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#k-means-clustering"><i class="fa fa-check"></i><b>5.2</b> K-Means Clustering</a></li>
+<li class="chapter" data-level="5.3" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#hierarchical-clustering"><i class="fa fa-check"></i><b>5.3</b> Hierarchical Clustering</a></li>
+<li class="chapter" data-level="5.4" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#exercises-2"><i class="fa fa-check"></i><b>5.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>6</b> Syllabus</a><ul>
-<li class="chapter" data-level="6.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>6.1</b> Course description</a></li>
-<li class="chapter" data-level="6.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>6.2</b> Schedule</a></li>
-<li class="chapter" data-level="6.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>6.3</b> Software</a></li>
-<li class="chapter" data-level="6.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>6.4</b> Prerequisites</a></li>
-<li class="chapter" data-level="6.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>6.5</b> About the author</a></li>
+<li class="chapter" data-level="6" data-path="no-free-lunch.html"><a href="no-free-lunch.html"><i class="fa fa-check"></i><b>6</b> No free lunch</a><ul>
+<li class="chapter" data-level="6.1" data-path="no-free-lunch.html"><a href="no-free-lunch.html#causal-inference"><i class="fa fa-check"></i><b>6.1</b> Causal Inference</a></li>
+<li class="chapter" data-level="6.2" data-path="no-free-lunch.html"><a href="no-free-lunch.html#explanaining-complex-models"><i class="fa fa-check"></i><b>6.2</b> Explanaining complex models</a></li>
+<li class="chapter" data-level="6.3" data-path="no-free-lunch.html"><a href="no-free-lunch.html#inference"><i class="fa fa-check"></i><b>6.3</b> Inference</a></li>
+<li class="chapter" data-level="6.4" data-path="no-free-lunch.html"><a href="no-free-lunch.html#prediction"><i class="fa fa-check"></i><b>6.4</b> Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>7</b> Syllabus</a><ul>
+<li class="chapter" data-level="7.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>7.1</b> Course description</a></li>
+<li class="chapter" data-level="7.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>7.2</b> Schedule</a></li>
+<li class="chapter" data-level="7.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>7.3</b> Software</a></li>
+<li class="chapter" data-level="7.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>7.4</b> Prerequisites</a></li>
+<li class="chapter" data-level="7.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>7.5</b> About the author</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -952,7 +960,7 @@ Figure 3.1: Visualization of many trees from the sample with varying composition
 <span id="cb98-10"><a href="tree-based-methods.html#cb98-10"></a><span class="st">  </span><span class="kw">plug_model</span>(boost_mod)</span>
 <span id="cb98-11"><a href="tree-based-methods.html#cb98-11"></a></span>
 <span id="cb98-12"><a href="tree-based-methods.html#cb98-12"></a>boot_res &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span></code></pre></div>
-<pre><code>## [15:21:47] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
+<pre><code>## [08:10:16] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tree-based-methods.html#cb100-1"></a>rmse_gb_train &lt;-</span>
 <span id="cb100-2"><a href="tree-based-methods.html#cb100-2"></a><span class="st">  </span>boot_res <span class="op">%&gt;%</span></span>
 <span id="cb100-3"><a href="tree-based-methods.html#cb100-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>

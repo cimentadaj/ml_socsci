@@ -428,3 +428,265 @@ Althought some people might think that these methods have no value in the social
 We don't seem problems in a way that can be answered with these techniques because we don't think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster. 
 
 A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there's no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we've been trained in a particular paradigm that is difficult to break.
+
+## Hierarchical Clustering
+
+
+```r
+dt <- USArrests
+
+dt %>%
+  ggplot(aes(Assault, Rape)) +
+  geom_point()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-28-1.png" width="672" />
+
+```r
+plot(hclust(dist(dt[c("Assault", "Rape")])))
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-28-2.png" width="672" />
+
+## Exercises
+
+In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from https://www.kaggle.com/mylesoneill/world-university-rankings/data) contains the name of each university, together with their world ranking, the country where they're located and several other variables that show the respective ranking in each area. The respective columns are:
+
+* `institution`: the name of the university
+* `world_rank`: the overall ranking of the university
+* `country`: the country where the university is located
+* `national_rank`: the ranking of the university within each country
+* `quality_of_education`: the ranking in quality of education
+* `alumni_employment`: the ranking in employment for their students
+* `quality_of_faculty`: the ranking of quality of the faculty
+* `publications`: the ranking in the number of publications
+* `influence`: the ranking in the overall influence
+* `citations`: the ranking in the overall number of citations
+* `patents`: the ranking in the number of patents
+* `year`: the year of each ranking
+
+We can read in the data with the code below:
+
+
+```r
+dt_all <- read.csv("https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv")
+
+# Have a look with:
+head(dt_all)
+```
+
+```
+##                             institution world_rank        country national_rank
+## 1                    Harvard University          1            USA             1
+## 2 Massachusetts Institute of Technology          2            USA             2
+## 3                   Stanford University          3            USA             3
+## 4               University of Cambridge          4 United Kingdom             1
+## 5    California Institute of Technology          5            USA             4
+## 6                  Princeton University          6            USA             5
+##   quality_of_education alumni_employment quality_of_faculty publications
+## 1                    7                 9                  1            1
+## 2                    9                17                  3           12
+## 3                   17                11                  5            4
+## 4                   10                24                  4           16
+## 5                    2                29                  7           37
+## 6                    8                14                  2           53
+##   influence citations patents year
+## 1         1         1       5 2012
+## 2         4         4       1 2012
+## 3         2         2      15 2012
+## 4        16        11      50 2012
+## 5        22        22      18 2012
+## 6        33        26     101 2012
+```
+
+#### 1. Explore whether there is room for reducing the number of variables {-#ex1}
+
+Many of these ranking variables (except `world_rank`) should be very correlated. It could be that universities that score well in quality of faculty, they also score high on the ranking of publications. Explore these ranking variables by using a Principal Component Approach:
+
+* Limit the data to year 2015
+* Explore the correlation of the variables `quality_of_education`, `alumni_employment`, `quality_of_faculty`, `publications`, `influence`, `citations` and `patents` with the function `cor`.
+
+What is the overall conclusion of the correlation? Are these variables weakly or strongly correlated?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * The correlations are quite high for some variables (for example a .84 correlation between publication and influence and a .80 between influence and citation) while lower for others (correlation of .39 between alumni employment and quality of faculty).
+  
+  * All in all, these ranking variables seem to correlated to a reasonable degree together.
+
+
+```r
+dt <-
+  dt_all %>%
+  filter(year == 2015)
+
+dt %>%
+  select(-world_rank, -institution, -country, -national_rank, -year) %>% 
+  cor()
+```
+
+```
+##                      quality_of_education alumni_employment quality_of_faculty
+## quality_of_education            1.0000000         0.4736529          0.6859886
+## alumni_employment               0.4736529         1.0000000          0.3906046
+## quality_of_faculty              0.6859886         0.3906046          1.0000000
+## publications                    0.5213777         0.4767965          0.5371659
+## influence                       0.5495743         0.4182182          0.5704868
+## citations                       0.5210670         0.4491194          0.5599886
+## patents                         0.3866523         0.3980353          0.4180885
+##                      publications influence citations   patents
+## quality_of_education    0.5213777 0.5495743 0.5210670 0.3866523
+## alumni_employment       0.4767965 0.4182182 0.4491194 0.3980353
+## quality_of_faculty      0.5371659 0.5704868 0.5599886 0.4180885
+## publications            1.0000000 0.8451104 0.7888855 0.6169113
+## influence               0.8451104 1.0000000 0.8089169 0.5486543
+## citations               0.7888855 0.8089169 1.0000000 0.5181444
+## patents                 0.6169113 0.5486543 0.5181444 1.0000000
+```
+
+</details>
+
+
+#### 2. Perform a PCA on the ranking variables {-#ex2}
+
+* Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
+* Pass the ranking columns to `prcomp` and set `scale = TRUE` and `center = TRUE` to normalize the data
+* Use `tidy` with `"pcs"` to explore the contribution of explained variance by each principal component
+* Explore what each principal component measures with respect to the original seven variables. This can be done by accessing the object `rotation` with the `$` of the result of the `prcomp`
+* With the package `ggfortify`, use the function `autoplot` to plot the principal components
+
+How many principal componenets were created? How much variance do the first two and three components explain? What does PC1 measure? What does PC2 measure?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * Seven principal components were created by `prcomp`. This is quite a high number, considering that provided seven variables.
+  * The first two components, as expected, explain the majority of the variance of the original six variables with a total of 73\%.
+  * As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because 1st is the best university and 2000 is the worst university within the ranking).
+  * As PC2 increases, `publications`, `influence`, `citations` and `patents` decrease (meaning better university rankings) while the remaining four increase.
+  * Overall, there doesn't seem to be great consistency between the principal components and the variables.
+
+
+```r
+res_pc <-
+  dt %>%
+  select(-world_rank, -institution, -country, -national_rank, -year) %>%
+  prcomp(scale = TRUE, center = TRUE)
+
+tidy(res_pc, "pcs")
+```
+
+```
+## # A tibble: 7 x 4
+##      PC std.dev percent cumulative
+##   <dbl>   <dbl>   <dbl>      <dbl>
+## 1     1   2.08   0.619       0.619
+## 2     2   0.897  0.115       0.734
+## 3     3   0.823  0.0967      0.830
+## 4     4   0.728  0.0758      0.906
+## 5     5   0.551  0.0434      0.950
+## 6     6   0.457  0.0299      0.979
+## 7     7   0.380  0.0206      1
+```
+
+```r
+res_pc$rotation
+```
+
+```
+##                            PC1        PC2         PC3        PC4         PC5
+## quality_of_education 0.3587429  0.5760826  0.16579182 -0.1095131  0.69777431
+## alumni_employment    0.3040826  0.3183726 -0.82359376  0.3051580 -0.16374091
+## quality_of_faculty   0.3629945  0.4588274  0.35704392 -0.2484045 -0.67321210
+## publications         0.4264696 -0.3208572  0.03655215  0.1558644  0.08695217
+## influence            0.4240042 -0.2722786  0.20768186  0.2411395  0.09517359
+## citations            0.4146066 -0.2442876  0.15335882  0.3319024 -0.11934581
+## patents              0.3369240 -0.3456641 -0.31422808 -0.8003621  0.04715163
+##                              PC6         PC7
+## quality_of_education -0.10366608  0.04813140
+## alumni_employment     0.04386293 -0.07752131
+## quality_of_faculty    0.12067837  0.02737664
+## publications          0.48290226  0.66991734
+## influence             0.33664464 -0.72278433
+## citations            -0.77984564  0.11110425
+## patents              -0.13447189 -0.08587055
+```
+
+```r
+autoplot(res_pc,
+         loadings = TRUE,
+         loadings.label = TRUE,
+         loadings.label.repel = TRUE,
+         alpha = 1/6) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+
+</details>
+
+#### 3. Apply the kmeans to the set of ranking variables {-#ex3}
+
+* Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
+* Calculate the average `quality_of_education` and `alumni_employment` by country
+* Pass these country average ranking variables to `kmeans`
+* Visualize the clusters in a scatterplot of `quality_of_education` and `alumni_employment`
+
+Try several `centers`. Is there a substantive cluster among these countries?
+
+<details>
+  <summary><strong>> Answer </strong></summary>
+
+  * Some of these clusters don't seem to captury substantial differences. However, the top-left group of countries seems to cluster continually with different centroids.
+  * This cluster is continually composed of countries such as France, Spain, Egypt, Argentina, etc...
+  * Do we have reasons to believe that they are very similar in `quality_of_education` and `alumno_employment`?
+  
+  An extension of this could hypothesize that we should collect information in terms of growth of labor market and population of students in order to check whether they also cluster on these variables.
+
+
+```r
+############################# Three clusters ##################################
+###############################################################################
+sum_dt <- 
+  dt %>%
+  select(-world_rank, -institution, -national_rank, -year) %>%
+  group_by(country) %>%
+  summarize_all(mean)
+
+set.seed(523131)
+res_km <-
+  sum_dt %>%
+  select(quality_of_education, alumni_employment) %>% 
+  kmeans(centers = 3, nstart = 50)
+
+sum_dt$.cluster_three <- factor(res_km$cluster, levels = 1:3)
+sum_dt %>% 
+  ggplot(aes(quality_of_education, alumni_employment, color = .cluster_three)) +
+  geom_text(aes(label = country)) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+
+```r
+############################# Two clusters ####################################
+###############################################################################
+
+set.seed(523131)
+res_km <-
+  sum_dt %>%
+  select(quality_of_education, alumni_employment) %>% 
+  kmeans(centers = 2, nstart = 50)
+
+sum_dt$.cluster_two <- factor(res_km$cluster, levels = 1:2)
+sum_dt %>% 
+  ggplot(aes(quality_of_education, alumni_employment, color = .cluster_two)) +
+  geom_text(aes(label = country)) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-32-2.png" width="672" />
+
+</details>
+

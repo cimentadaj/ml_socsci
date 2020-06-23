@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-19" />
+<meta name="date" content="2020-06-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="loss-functions.html"/>
-<link rel="next" href="syllabus.html"/>
+<link rel="next" href="no-free-lunch.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -181,13 +181,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html"><i class="fa fa-check"></i><b>5</b> Unsupervised methods</a><ul>
 <li class="chapter" data-level="5.1" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>5.1</b> Principal Component Analysis (PCA)</a></li>
 <li class="chapter" data-level="5.2" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#k-means-clustering"><i class="fa fa-check"></i><b>5.2</b> K-Means Clustering</a></li>
+<li class="chapter" data-level="5.3" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#hierarchical-clustering"><i class="fa fa-check"></i><b>5.3</b> Hierarchical Clustering</a></li>
+<li class="chapter" data-level="5.4" data-path="unsupervised-methods.html"><a href="unsupervised-methods.html#exercises-2"><i class="fa fa-check"></i><b>5.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>6</b> Syllabus</a><ul>
-<li class="chapter" data-level="6.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>6.1</b> Course description</a></li>
-<li class="chapter" data-level="6.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>6.2</b> Schedule</a></li>
-<li class="chapter" data-level="6.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>6.3</b> Software</a></li>
-<li class="chapter" data-level="6.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>6.4</b> Prerequisites</a></li>
-<li class="chapter" data-level="6.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>6.5</b> About the author</a></li>
+<li class="chapter" data-level="6" data-path="no-free-lunch.html"><a href="no-free-lunch.html"><i class="fa fa-check"></i><b>6</b> No free lunch</a><ul>
+<li class="chapter" data-level="6.1" data-path="no-free-lunch.html"><a href="no-free-lunch.html#causal-inference"><i class="fa fa-check"></i><b>6.1</b> Causal Inference</a></li>
+<li class="chapter" data-level="6.2" data-path="no-free-lunch.html"><a href="no-free-lunch.html#explanaining-complex-models"><i class="fa fa-check"></i><b>6.2</b> Explanaining complex models</a></li>
+<li class="chapter" data-level="6.3" data-path="no-free-lunch.html"><a href="no-free-lunch.html#inference"><i class="fa fa-check"></i><b>6.3</b> Inference</a></li>
+<li class="chapter" data-level="6.4" data-path="no-free-lunch.html"><a href="no-free-lunch.html#prediction"><i class="fa fa-check"></i><b>6.4</b> Prediction</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>7</b> Syllabus</a><ul>
+<li class="chapter" data-level="7.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>7.1</b> Course description</a></li>
+<li class="chapter" data-level="7.2" data-path="syllabus.html"><a href="syllabus.html#schedule"><i class="fa fa-check"></i><b>7.2</b> Schedule</a></li>
+<li class="chapter" data-level="7.3" data-path="syllabus.html"><a href="syllabus.html#software"><i class="fa fa-check"></i><b>7.3</b> Software</a></li>
+<li class="chapter" data-level="7.4" data-path="syllabus.html"><a href="syllabus.html#prerequisites"><i class="fa fa-check"></i><b>7.4</b> Prerequisites</a></li>
+<li class="chapter" data-level="7.5" data-path="syllabus.html"><a href="syllabus.html#about-the-author"><i class="fa fa-check"></i><b>7.5</b> About the author</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -483,7 +491,222 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <p>Althought some people might think that these methods have no value in the social sciences, I like to think this is because they’ve been trained with a particular hammer, and thus every problem seems like a nail.</p>
 <p>We don’t seem problems in a way that can be answered with these techniques because we don’t think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster.</p>
 <p>A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there’s no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we’ve been trained in a particular paradigm that is difficult to break.</p>
+</div>
+<div id="hierarchical-clustering" class="section level2">
+<h2><span class="header-section-number">5.3</span> Hierarchical Clustering</h2>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="unsupervised-methods.html#cb152-1"></a>dt &lt;-<span class="st"> </span>USArrests</span>
+<span id="cb152-2"><a href="unsupervised-methods.html#cb152-2"></a></span>
+<span id="cb152-3"><a href="unsupervised-methods.html#cb152-3"></a>dt <span class="op">%&gt;%</span></span>
+<span id="cb152-4"><a href="unsupervised-methods.html#cb152-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(Assault, Rape)) <span class="op">+</span></span>
+<span id="cb152-5"><a href="unsupervised-methods.html#cb152-5"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="unsupervised-methods.html#cb153-1"></a><span class="kw">plot</span>(<span class="kw">hclust</span>(<span class="kw">dist</span>(dt[<span class="kw">c</span>(<span class="st">&quot;Assault&quot;</span>, <span class="st">&quot;Rape&quot;</span>)])))</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-28-2.png" width="672" /></p>
+</div>
+<div id="exercises-2" class="section level2">
+<h2><span class="header-section-number">5.4</span> Exercises</h2>
+<p>In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from <a href="https://www.kaggle.com/mylesoneill/world-university-rankings/data" class="uri">https://www.kaggle.com/mylesoneill/world-university-rankings/data</a>) contains the name of each university, together with their world ranking, the country where they’re located and several other variables that show the respective ranking in each area. The respective columns are:</p>
+<ul>
+<li><code>institution</code>: the name of the university</li>
+<li><code>world_rank</code>: the overall ranking of the university</li>
+<li><code>country</code>: the country where the university is located</li>
+<li><code>national_rank</code>: the ranking of the university within each country</li>
+<li><code>quality_of_education</code>: the ranking in quality of education</li>
+<li><code>alumni_employment</code>: the ranking in employment for their students</li>
+<li><code>quality_of_faculty</code>: the ranking of quality of the faculty</li>
+<li><code>publications</code>: the ranking in the number of publications</li>
+<li><code>influence</code>: the ranking in the overall influence</li>
+<li><code>citations</code>: the ranking in the overall number of citations</li>
+<li><code>patents</code>: the ranking in the number of patents</li>
+<li><code>year</code>: the year of each ranking</li>
+</ul>
+<p>We can read in the data with the code below:</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="unsupervised-methods.html#cb154-1"></a>dt_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv&quot;</span>)</span>
+<span id="cb154-2"><a href="unsupervised-methods.html#cb154-2"></a></span>
+<span id="cb154-3"><a href="unsupervised-methods.html#cb154-3"></a><span class="co"># Have a look with:</span></span>
+<span id="cb154-4"><a href="unsupervised-methods.html#cb154-4"></a><span class="kw">head</span>(dt_all)</span></code></pre></div>
+<pre><code>##                             institution world_rank        country national_rank
+## 1                    Harvard University          1            USA             1
+## 2 Massachusetts Institute of Technology          2            USA             2
+## 3                   Stanford University          3            USA             3
+## 4               University of Cambridge          4 United Kingdom             1
+## 5    California Institute of Technology          5            USA             4
+## 6                  Princeton University          6            USA             5
+##   quality_of_education alumni_employment quality_of_faculty publications
+## 1                    7                 9                  1            1
+## 2                    9                17                  3           12
+## 3                   17                11                  5            4
+## 4                   10                24                  4           16
+## 5                    2                29                  7           37
+## 6                    8                14                  2           53
+##   influence citations patents year
+## 1         1         1       5 2012
+## 2         4         4       1 2012
+## 3         2         2      15 2012
+## 4        16        11      50 2012
+## 5        22        22      18 2012
+## 6        33        26     101 2012</code></pre>
+<div id="ex1" class="section level4 unnumbered">
+<h4>1. Explore whether there is room for reducing the number of variables</h4>
+<p>Many of these ranking variables (except <code>world_rank</code>) should be very correlated. It could be that universities that score well in quality of faculty, they also score high on the ranking of publications. Explore these ranking variables by using a Principal Component Approach:</p>
+<ul>
+<li>Limit the data to year 2015</li>
+<li>Explore the correlation of the variables <code>quality_of_education</code>, <code>alumni_employment</code>, <code>quality_of_faculty</code>, <code>publications</code>, <code>influence</code>, <code>citations</code> and <code>patents</code> with the function <code>cor</code>.</li>
+</ul>
+<p>What is the overall conclusion of the correlation? Are these variables weakly or strongly correlated?</p>
+<details>
+<p><summary><strong>&gt; Answer </strong></summary></p>
+<ul>
+<li><p>The correlations are quite high for some variables (for example a .84 correlation between publication and influence and a .80 between influence and citation) while lower for others (correlation of .39 between alumni employment and quality of faculty).</p>
+<ul>
+<li>All in all, these ranking variables seem to correlated to a reasonable degree together.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="unsupervised-methods.html#cb156-1"></a>dt &lt;-</span>
+<span id="cb156-2"><a href="unsupervised-methods.html#cb156-2"></a><span class="st">  </span>dt_all <span class="op">%&gt;%</span></span>
+<span id="cb156-3"><a href="unsupervised-methods.html#cb156-3"></a><span class="st">  </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2015</span>)</span>
+<span id="cb156-4"><a href="unsupervised-methods.html#cb156-4"></a></span>
+<span id="cb156-5"><a href="unsupervised-methods.html#cb156-5"></a>dt <span class="op">%&gt;%</span></span>
+<span id="cb156-6"><a href="unsupervised-methods.html#cb156-6"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>country, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb156-7"><a href="unsupervised-methods.html#cb156-7"></a><span class="st">  </span><span class="kw">cor</span>()</span></code></pre></div>
+<pre><code>##                      quality_of_education alumni_employment quality_of_faculty
+## quality_of_education            1.0000000         0.4736529          0.6859886
+## alumni_employment               0.4736529         1.0000000          0.3906046
+## quality_of_faculty              0.6859886         0.3906046          1.0000000
+## publications                    0.5213777         0.4767965          0.5371659
+## influence                       0.5495743         0.4182182          0.5704868
+## citations                       0.5210670         0.4491194          0.5599886
+## patents                         0.3866523         0.3980353          0.4180885
+##                      publications influence citations   patents
+## quality_of_education    0.5213777 0.5495743 0.5210670 0.3866523
+## alumni_employment       0.4767965 0.4182182 0.4491194 0.3980353
+## quality_of_faculty      0.5371659 0.5704868 0.5599886 0.4180885
+## publications            1.0000000 0.8451104 0.7888855 0.6169113
+## influence               0.8451104 1.0000000 0.8089169 0.5486543
+## citations               0.7888855 0.8089169 1.0000000 0.5181444
+## patents                 0.6169113 0.5486543 0.5181444 1.0000000</code></pre>
+</details>
+</div>
+<div id="ex2" class="section level4 unnumbered">
+<h4>2. Perform a PCA on the ranking variables</h4>
+<ul>
+<li>Exclude the columns <code>world_rank</code>, <code>institution</code>, <code>country</code>, <code>national_rank</code>, <code>year</code> from the data</li>
+<li>Pass the ranking columns to <code>prcomp</code> and set <code>scale = TRUE</code> and <code>center = TRUE</code> to normalize the data</li>
+<li>Use <code>tidy</code> with <code>"pcs"</code> to explore the contribution of explained variance by each principal component</li>
+<li>Explore what each principal component measures with respect to the original seven variables. This can be done by accessing the object <code>rotation</code> with the <code>$</code> of the result of the <code>prcomp</code></li>
+<li>With the package <code>ggfortify</code>, use the function <code>autoplot</code> to plot the principal components</li>
+</ul>
+<p>How many principal componenets were created? How much variance do the first two and three components explain? What does PC1 measure? What does PC2 measure?</p>
+<details>
+<p><summary><strong>&gt; Answer </strong></summary></p>
+<ul>
+<li>Seven principal components were created by <code>prcomp</code>. This is quite a high number, considering that provided seven variables.
+<ul>
+<li>The first two components, as expected, explain the majority of the variance of the original six variables with a total of 73%.</li>
+<li>As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because 1st is the best university and 2000 is the worst university within the ranking).</li>
+<li>As PC2 increases, <code>publications</code>, <code>influence</code>, <code>citations</code> and <code>patents</code> decrease (meaning better university rankings) while the remaining four increase.</li>
+<li>Overall, there doesn’t seem to be great consistency between the principal components and the variables.</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="unsupervised-methods.html#cb158-1"></a>res_pc &lt;-</span>
+<span id="cb158-2"><a href="unsupervised-methods.html#cb158-2"></a><span class="st">  </span>dt <span class="op">%&gt;%</span></span>
+<span id="cb158-3"><a href="unsupervised-methods.html#cb158-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>country, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span></span>
+<span id="cb158-4"><a href="unsupervised-methods.html#cb158-4"></a><span class="st">  </span><span class="kw">prcomp</span>(<span class="dt">scale =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb158-5"><a href="unsupervised-methods.html#cb158-5"></a></span>
+<span id="cb158-6"><a href="unsupervised-methods.html#cb158-6"></a><span class="kw">tidy</span>(res_pc, <span class="st">&quot;pcs&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 7 x 4
+##      PC std.dev percent cumulative
+##   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+## 1     1   2.08   0.619       0.619
+## 2     2   0.897  0.115       0.734
+## 3     3   0.823  0.0967      0.830
+## 4     4   0.728  0.0758      0.906
+## 5     5   0.551  0.0434      0.950
+## 6     6   0.457  0.0299      0.979
+## 7     7   0.380  0.0206      1</code></pre>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="unsupervised-methods.html#cb160-1"></a>res_pc<span class="op">$</span>rotation</span></code></pre></div>
+<pre><code>##                            PC1        PC2         PC3        PC4         PC5
+## quality_of_education 0.3587429  0.5760826  0.16579182 -0.1095131  0.69777431
+## alumni_employment    0.3040826  0.3183726 -0.82359376  0.3051580 -0.16374091
+## quality_of_faculty   0.3629945  0.4588274  0.35704392 -0.2484045 -0.67321210
+## publications         0.4264696 -0.3208572  0.03655215  0.1558644  0.08695217
+## influence            0.4240042 -0.2722786  0.20768186  0.2411395  0.09517359
+## citations            0.4146066 -0.2442876  0.15335882  0.3319024 -0.11934581
+## patents              0.3369240 -0.3456641 -0.31422808 -0.8003621  0.04715163
+##                              PC6         PC7
+## quality_of_education -0.10366608  0.04813140
+## alumni_employment     0.04386293 -0.07752131
+## quality_of_faculty    0.12067837  0.02737664
+## publications          0.48290226  0.66991734
+## influence             0.33664464 -0.72278433
+## citations            -0.77984564  0.11110425
+## patents              -0.13447189 -0.08587055</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="unsupervised-methods.html#cb162-1"></a><span class="kw">autoplot</span>(res_pc,</span>
+<span id="cb162-2"><a href="unsupervised-methods.html#cb162-2"></a>         <span class="dt">loadings =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb162-3"><a href="unsupervised-methods.html#cb162-3"></a>         <span class="dt">loadings.label =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb162-4"><a href="unsupervised-methods.html#cb162-4"></a>         <span class="dt">loadings.label.repel =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb162-5"><a href="unsupervised-methods.html#cb162-5"></a>         <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>) <span class="op">+</span></span>
+<span id="cb162-6"><a href="unsupervised-methods.html#cb162-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</details>
+</div>
+<div id="ex3" class="section level4 unnumbered">
+<h4>3. Apply the kmeans to the set of ranking variables</h4>
+<ul>
+<li>Exclude the columns <code>world_rank</code>, <code>institution</code>, <code>country</code>, <code>national_rank</code>, <code>year</code> from the data</li>
+<li>Calculate the average <code>quality_of_education</code> and <code>alumni_employment</code> by country</li>
+<li>Pass these country average ranking variables to <code>kmeans</code></li>
+<li>Visualize the clusters in a scatterplot of <code>quality_of_education</code> and <code>alumni_employment</code></li>
+</ul>
+<p>Try several <code>centers</code>. Is there a substantive cluster among these countries?</p>
+<details>
+<p><summary><strong>&gt; Answer </strong></summary></p>
+<ul>
+<li>Some of these clusters don’t seem to captury substantial differences. However, the top-left group of countries seems to cluster continually with different centroids.
+<ul>
+<li>This cluster is continually composed of countries such as France, Spain, Egypt, Argentina, etc…</li>
+<li>Do we have reasons to believe that they are very similar in <code>quality_of_education</code> and <code>alumno_employment</code>?</li>
+</ul>
+An extension of this could hypothesize that we should collect information in terms of growth of labor market and population of students in order to check whether they also cluster on these variables.</li>
+</ul>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="unsupervised-methods.html#cb163-1"></a><span class="co">############################# Three clusters ##################################</span></span>
+<span id="cb163-2"><a href="unsupervised-methods.html#cb163-2"></a><span class="co">###############################################################################</span></span>
+<span id="cb163-3"><a href="unsupervised-methods.html#cb163-3"></a>sum_dt &lt;-<span class="st"> </span></span>
+<span id="cb163-4"><a href="unsupervised-methods.html#cb163-4"></a><span class="st">  </span>dt <span class="op">%&gt;%</span></span>
+<span id="cb163-5"><a href="unsupervised-methods.html#cb163-5"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span></span>
+<span id="cb163-6"><a href="unsupervised-methods.html#cb163-6"></a><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span></span>
+<span id="cb163-7"><a href="unsupervised-methods.html#cb163-7"></a><span class="st">  </span><span class="kw">summarize_all</span>(mean)</span>
+<span id="cb163-8"><a href="unsupervised-methods.html#cb163-8"></a></span>
+<span id="cb163-9"><a href="unsupervised-methods.html#cb163-9"></a><span class="kw">set.seed</span>(<span class="dv">523131</span>)</span>
+<span id="cb163-10"><a href="unsupervised-methods.html#cb163-10"></a>res_km &lt;-</span>
+<span id="cb163-11"><a href="unsupervised-methods.html#cb163-11"></a><span class="st">  </span>sum_dt <span class="op">%&gt;%</span></span>
+<span id="cb163-12"><a href="unsupervised-methods.html#cb163-12"></a><span class="st">  </span><span class="kw">select</span>(quality_of_education, alumni_employment) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb163-13"><a href="unsupervised-methods.html#cb163-13"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">50</span>)</span>
+<span id="cb163-14"><a href="unsupervised-methods.html#cb163-14"></a></span>
+<span id="cb163-15"><a href="unsupervised-methods.html#cb163-15"></a>sum_dt<span class="op">$</span>.cluster_three &lt;-<span class="st"> </span><span class="kw">factor</span>(res_km<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
+<span id="cb163-16"><a href="unsupervised-methods.html#cb163-16"></a>sum_dt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb163-17"><a href="unsupervised-methods.html#cb163-17"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(quality_of_education, alumni_employment, <span class="dt">color =</span> .cluster_three)) <span class="op">+</span></span>
+<span id="cb163-18"><a href="unsupervised-methods.html#cb163-18"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> country)) <span class="op">+</span></span>
+<span id="cb163-19"><a href="unsupervised-methods.html#cb163-19"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="unsupervised-methods.html#cb164-1"></a><span class="co">############################# Two clusters ####################################</span></span>
+<span id="cb164-2"><a href="unsupervised-methods.html#cb164-2"></a><span class="co">###############################################################################</span></span>
+<span id="cb164-3"><a href="unsupervised-methods.html#cb164-3"></a></span>
+<span id="cb164-4"><a href="unsupervised-methods.html#cb164-4"></a><span class="kw">set.seed</span>(<span class="dv">523131</span>)</span>
+<span id="cb164-5"><a href="unsupervised-methods.html#cb164-5"></a>res_km &lt;-</span>
+<span id="cb164-6"><a href="unsupervised-methods.html#cb164-6"></a><span class="st">  </span>sum_dt <span class="op">%&gt;%</span></span>
+<span id="cb164-7"><a href="unsupervised-methods.html#cb164-7"></a><span class="st">  </span><span class="kw">select</span>(quality_of_education, alumni_employment) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb164-8"><a href="unsupervised-methods.html#cb164-8"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">2</span>, <span class="dt">nstart =</span> <span class="dv">50</span>)</span>
+<span id="cb164-9"><a href="unsupervised-methods.html#cb164-9"></a></span>
+<span id="cb164-10"><a href="unsupervised-methods.html#cb164-10"></a>sum_dt<span class="op">$</span>.cluster_two &lt;-<span class="st"> </span><span class="kw">factor</span>(res_km<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)</span>
+<span id="cb164-11"><a href="unsupervised-methods.html#cb164-11"></a>sum_dt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb164-12"><a href="unsupervised-methods.html#cb164-12"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(quality_of_education, alumni_employment, <span class="dt">color =</span> .cluster_two)) <span class="op">+</span></span>
+<span id="cb164-13"><a href="unsupervised-methods.html#cb164-13"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> country)) <span class="op">+</span></span>
+<span id="cb164-14"><a href="unsupervised-methods.html#cb164-14"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-32-2.png" width="672" /></p>
+</details>
 
+</div>
 </div>
 </div>
 <h3>References</h3>
@@ -501,7 +724,7 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
         </div>
       </div>
 <a href="loss-functions.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="syllabus.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="no-free-lunch.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
