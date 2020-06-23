@@ -221,37 +221,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="no-free-lunch" class="section level1">
 <h1><span class="header-section-number">Chapter 6</span> No free lunch</h1>
 <p>Throughout this course we’ve explained several different methods that are used in machine learning for predictive problems. Although we presented the benefits and pitfalls of each one when possible, there’s no clear cut rule on which one to use. The ‘No free lunch’ theorem is a simple axiom that states that since every predictive algorithm has different assumptions, no single model is known to perform better than all others <em>a priori</em>. In other words, machine learning practitioners need to try different models to check which one predicts better for their task.</p>
-<p>However, for different scenarios, this might be different. Let’s discuss some hypothetial scenarios.</p>
+<p>However, since social scientists are not only interested in predictive accuracy, for different scenarios this might be different. Let’s discuss some of these scenarios.</p>
 <div id="causal-inference" class="section level2">
 <h2><span class="header-section-number">6.1</span> Causal Inference</h2>
-<p>There is growing interesting from the social science literature on achieving causal inference using tree-based methods <span class="citation">(Athey and Imbens <a href="#ref-athey2016" role="doc-biblioref">2016</a>)</span>. By definition, this type of analysis is not interested in predictive accuracy alone. This means that we would not try several different models and check which one is better. Instead, we need to carefully understand how tree-based methods work and how they can help us estimate a causal effect.</p>
+<p>There is growing interest from the social science literature on achieving causal inference using tree-based methods <span class="citation">(Athey and Imbens <a href="#ref-athey2016" role="doc-biblioref">2016</a>)</span>. By definition, this type of analysis is not interested in predictive accuracy alone. This means that we would not try several different models and test each one against their predictive accuracy. Instead, we need to carefully understand how tree-based methods work and how they can help us estimate a causal effect. For this type of area, machine learning servers as a tool for exploration and for estimation of point estimates of causal effects rather than for predictive accuracy.</p>
 </div>
 <div id="explanaining-complex-models" class="section level2">
 <h2><span class="header-section-number">6.2</span> Explanaining complex models</h2>
-<p>In business settings, there are scenarios where interpretability is often needed more than accuracy. For example, for explaining a complex model to key stakeholders it is sometimes better to have a simple model that performs worse but to be able to walk through the stakeholder into how the final prediction was made. I’ve experienced situations like this one where we used simple decision trees that performed worse than other methods simply because it was much more important that the stakeholder understand how we achieved at a final prediction and which variables were the most important ones.</p>
+<p>In business settings, there are scenarios where interpretability is often needed more than accuracy. This is also the case for the social sciences. For example, explaining a complex model to key stakeholders can be challenging. It is sometimes better to have a simple model that performs worse than more complex model at the expense of interpretability. I’ve experienced situations like this one where we used simple decision trees that performed worse than other tree-based methods simply because it was much more important that the stakeholder understand how we achieved at a final prediction and which variables were the most important ones.</p>
 </div>
 <div id="inference" class="section level2">
 <h2><span class="header-section-number">6.3</span> Inference</h2>
-<p>For social scientists, we can use machine learning methods for exploring hypothesis in the data. In particular, tree-based methods and regularized regressions can help us understand variables which are very good for prediction but that we weren’t aware of. Moreover, it can help us understand the role of interactions from a more intuitive point of view through exploration.</p>
+<p>For social scientists, we can use machine learning methods for exploring hypothesis in the data. In particular, tree-based methods and regularized regressions can help us understand variables which are very good for prediction but that we weren’t aware of. Moreover, it can help us understand the role of interactions from a more intuitive point of view through exploration. This includes unsupervised methods such as <span class="math inline">\(PCA\)</span> and K-Means clustering.</p>
 </div>
 <div id="prediction" class="section level2">
 <h2><span class="header-section-number">6.4</span> Prediction</h2>
-<p>If you’re aim is the best predictive accuracy out there, then there’s also evidence that some models seem to perform better than others. Tree based methods such as random forests and gradient boosting seem to continually perform the best in predictive competitions, together with more advanced models such as neural networks and support vector machines. For raw accuracy, there’s no rule on which model to use. You might have a hunch depending on the distribution and exploration of your data but since these methods are quite complex, there’s no single rule that states that one will perform better. We simply need to try many of them.</p>
+<p>If you’re aim is to achieve the best predictive accuracy out there, then there’s also evidence that some models seem to perform better than others. Tree based methods such as random forests and gradient boosting seem to continually perform the best in predictive competitions, together with more advanced models such as neural networks and support vector machines. For raw accuracy, there’s no rule on which model to use. You might have a hunch depending on the distribution and exploration of your data but since these methods are quite complex, there’s no single rule that states that one will perform better. We simply need to try several of them.</p>
 <p>Having said this, we need to explore our data and understand it. This can help a lot in figuring out why some models work more than others.</p>
 </div>
 <div id="prediction-challenge" class="section level2">
 <h2><span class="header-section-number">6.5</span> Prediction challenge</h2>
 <p>As part of the end of the course, we will have a prediction competition. This means you’ll get to use all the methods we’ve discussed so far and compare your predictions to your fellow class mates.</p>
-<p>In the 2019 Summer Institute In Computational Social Science (SICSS), Mark Verhagen, Christopher Barrie, Arun Frey, Pablo Beytía, Arran Davis and me collected data on the number of people that visit the Wikipedia website of all counties in the United States. This data can be used to understand whether countries with different racial composition and poverty levels get more edits from the Wikipedia community. This can help assess whether there is a fundamental bias in Wikipedia contribution to richer counties.</p>
-<p>We will use this data to predict the total number of edits through the history of each country in Wikipedia (variable <code>revisions</code>). We’ve matched this data with census-level indicators for each county for a total of 150 columns. Below is the codebook:</p>
+<p>At the 2019 Summer Institute In Computational Social Science (SICSS), Mark Verhagen, Christopher Barrie, Arun Frey, Pablo Beytía, Arran Davis and me collected data on the number of people that visit the Wikipedia website of all counties in the United States. This data can be used to understand whether counties with different poverty levels get more edits from the Wikipedia community. This can help assess whether there is a fundamental bias in Wikipedia contribution to richer counties.</p>
+<p>We will use this data to predict the total number of edits of each county in Wikipedia. We’ve matched this Wikipedia data with census-level indicators for each county, including indicators on poverty level, racial composition and general metadata on the counties Wikipedia page. This amouns to a total of 150 columns. The variable you will be trying to predict is <code>revisions</code>. This is the total number of edits for each countie all along it’s history since 2001. Below is the complete codebook:</p>
 <ul>
 <li><code>county_fips</code>: the county code</li>
 <li><code>longitude/latitude</code>: the location of the county</li>
 <li><code>population</code>: total population of county</li>
-<li><code>density</code>: density of population</li>
+<li><code>density</code>: density of population in the county</li>
 <li><code>watchers</code>: number of wikipedia users who ‘watch’ the page</li>
 <li><code>pageviews</code>: number of pageviews</li>
-<li><code>pageviews_offset</code>: minimum number of pageviews as an offset</li>
+<li><code>pageviews_offset</code>: minimum number of pageviews which is visible to the user (censored)</li>
 <li><code>revisions</code>: total number of edits (from the creation of the website)</li>
 <li><code>editors</code>: total number of editors (from the creation of the website)</li>
 <li><code>secs_since_last_edit</code>: seconds since last edit</li>
@@ -263,15 +263,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>external_links</code>: number of external links</li>
 <li><code>links_from_this_page</code>: number of hyperlinks used in this page</li>
 <li><code>links_to_this_page</code>: number of hyperlinks that point to this page (from other wikipedia websites)</li>
-<li><code>male_*_*</code>: these are the number of males within age groups</li>
-<li><code>female_*_*</code>: these are the number of females within age groups</li>
-<li><code>total_*</code>: These are the total population for different demographic groups</li>
+<li><code>male_*_*</code>: these are the number of males within different age groups</li>
+<li><code>female_*_*</code>: these are the number of females within different age groups</li>
+<li><code>total_*</code>: This is the total population for different demographic groups</li>
 <li><code>latino</code>: total count of latinos</li>
 <li><code>latino_*</code>: total count of latinos from different races</li>
 <li><code>no_schooling_completed</code>: total respondents with no schooling</li>
 <li><code>nursery_school</code>: total respondents with only nursery school</li>
 <li><code>kindergarten</code>: total respondents with kindergarten</li>
-<li><code>grade_*</code>: These are the number of people the completed certain level of education</li>
+<li><code>grade_*</code>: These are the number of people the completed certain high school education</li>
 <li><code>hs_diploma</code>: total respondents with high school diploma</li>
 <li><code>ged</code>: total respondents with a GED diploma</li>
 <li><code>less_than_1_year_college</code>: total respondents with less than one year of college</li>
@@ -282,23 +282,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><code>professional_degree</code>: total respondents with professional degree</li>
 <li><code>doctorate_degree</code>: total respondents with doctorate degree</li>
 <li><code>total_with_poverty_status</code>: total respondents with poverty status</li>
-<li><code>income_below_poverty</code>: total respondents with income below povert levels</li>
+<li><code>income_below_poverty</code>: total respondents with income below poverty levels</li>
 <li><code>born_in_usa</code>: total respondents born in USA</li>
 <li><code>foreign_born</code>: total respondents foreing born</li>
 <li><code>speak_only_english</code>: total respondents who speak only english</li>
 <li><code>speak_other_languages</code>: total respondents who speak other languages</li>
 <li><code>count_*</code>: total number of respondents within age groups</li>
-<li><code>percent_age_*</code>: percentage of people within age groups</li>
-<li><code>percent_*</code>: percentage of people form different demogaphic groups. For example, whites, blacks, less than highschool, born in USA, etc..</li>
+<li><code>percent_age_*</code>: percentage of people within different age groups</li>
+<li><code>percent_*</code>: percentage of people form different demographic groups. For example, whites, blacks, less than highschool, born in USA, etc..</li>
 <li><code>internet_usage</code>: percentage of internet usage in county</li>
 </ul>
-<p>For all of your analysis, use the <code>rmse</code> loss function, so that we can compare across participants.</p>
+<p>For all of your analysis, use the <code>rmse</code> loss function, so that we can compare results across participants.</p>
 <p>Here are some ideas you can try in your analysis:</p>
 <ul>
-<li>Does it make sense to reduce the number of correlated variables into a few principal components?</li>
-<li>Do some counties cluster on very correlated variables? Is it fesiable to summarize some of these variables through predicting the cluster membership?</li>
-<li>Do we really need to use all variables?</li>
-<li>Does regularized regression or tree-based methods do better?</li>
+<li><p>Does it make sense to reduce the number of correlated variables into a few principal components?</p></li>
+<li><p>Do some counties cluster on very correlated variables? Is it fesiable to summarize some of these variables through predicting the cluster membership?</p></li>
+<li><p>Do we really need to use all variables?</p></li>
+<li><p>Does regularized regression or tree-based methods do better?</p></li>
 </ul>
 <p>You can read the data with:</p>
 <div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="no-free-lunch.html#cb165-1"></a>wiki_dt &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/wikipedia_final.csv&quot;</span>)</span></code></pre></div>
