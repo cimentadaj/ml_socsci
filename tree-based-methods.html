@@ -189,6 +189,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="no-free-lunch.html"><a href="no-free-lunch.html#explanaining-complex-models"><i class="fa fa-check"></i><b>6.2</b> Explanaining complex models</a></li>
 <li class="chapter" data-level="6.3" data-path="no-free-lunch.html"><a href="no-free-lunch.html#inference"><i class="fa fa-check"></i><b>6.3</b> Inference</a></li>
 <li class="chapter" data-level="6.4" data-path="no-free-lunch.html"><a href="no-free-lunch.html#prediction"><i class="fa fa-check"></i><b>6.4</b> Prediction</a></li>
+<li class="chapter" data-level="6.5" data-path="no-free-lunch.html"><a href="no-free-lunch.html#prediction-challenge"><i class="fa fa-check"></i><b>6.5</b> Prediction challenge</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="syllabus.html"><a href="syllabus.html"><i class="fa fa-check"></i><b>7</b> Syllabus</a><ul>
 <li class="chapter" data-level="7.1" data-path="syllabus.html"><a href="syllabus.html#course-description"><i class="fa fa-check"></i><b>7.1</b> Course description</a></li>
@@ -960,7 +961,7 @@ Figure 3.1: Visualization of many trees from the sample with varying composition
 <span id="cb98-10"><a href="tree-based-methods.html#cb98-10"></a><span class="st">  </span><span class="kw">plug_model</span>(boost_mod)</span>
 <span id="cb98-11"><a href="tree-based-methods.html#cb98-11"></a></span>
 <span id="cb98-12"><a href="tree-based-methods.html#cb98-12"></a>boot_res &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span></code></pre></div>
-<pre><code>## [09:54:24] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
+<pre><code>## [12:22:20] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tree-based-methods.html#cb100-1"></a>rmse_gb_train &lt;-</span>
 <span id="cb100-2"><a href="tree-based-methods.html#cb100-2"></a><span class="st">  </span>boot_res <span class="op">%&gt;%</span></span>
 <span id="cb100-3"><a href="tree-based-methods.html#cb100-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>

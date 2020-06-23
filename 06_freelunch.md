@@ -25,3 +25,77 @@ If you're aim is the best predictive accuracy out there, then there's also evide
 
 Having said this, we need to explore our data and understand it. This can help a lot in figuring out why some models work more than others.
 
+
+## Prediction challenge
+
+As part of the end of the course, we will have a prediction competition. This means you'll get to use all the methods we've discussed so far and compare your predictions to your fellow class mates. 
+
+In the 2019 Summer Institute In Computational Social Science (SICSS), Mark Verhagen, Christopher Barrie, Arun Frey, Pablo Beytía, Arran Davis and me collected data on the number of people that visit the Wikipedia website of all counties in the United States. This data can be used to understand whether countries with different racial composition and poverty levels get more edits from the Wikipedia community. This can help assess whether there is a fundamental bias in Wikipedia contribution to richer counties.
+
+We will use this data to predict the total number of edits through the history of each country in Wikipedia (variable `revisions`). We've matched this data with census-level indicators for each county for a total of 150 columns. Below is the codebook:
+
+* `county_fips`: the county code
+* `longitude/latitude`: the location of the county
+* `population`: total population of county
+* `density`: density of population
+* `watchers`: number of wikipedia users who 'watch' the page
+* `pageviews`: number of pageviews
+* `pageviews_offset`: minimum number of pageviews as an offset
+* `revisions`: total number of edits (from the creation of the website)
+* `editors`: total number of editors (from the creation of the website)
+* `secs_since_last_edit`: seconds since last edit
+* `characters`: number of characters in the website
+* `words`: number of words in the website
+* `references`: number of references in the article
+* `unique_references`: number of unique references in the article
+* `sections`: number of sections in the wikipedia article
+* `external_links`: number of external links
+* `links_from_this_page`: number of hyperlinks used in this page
+* `links_to_this_page`: number of hyperlinks that point to this page (from other wikipedia websites)
+* `male_*_*`: these are the number of males within age groups
+* `female_*_*`: these are the number of females within age groups
+* `total_*`: These are the total population for different demographic groups
+* `latino`: total count of latinos
+* `latino_*`: total count of latinos from different races
+* `no_schooling_completed`: total respondents with no schooling
+* `nursery_school`: total respondents with only nursery school
+* `kindergarten`: total respondents with kindergarten
+* `grade_*`: These are the number of people the completed certain level of education
+* `hs_diploma`: total respondents with high school diploma
+* `ged`: total respondents with a GED diploma
+* `less_than_1_year_college`: total respondents with less than one year of college
+* `more_than_1_year_college`: total respondents with more than one year of college
+* `associates_degree`: total respondents with associates degree
+* `bachelors_degree`: total respondents with bachelors degree
+* `masters_degree`: total respondents with masters degree
+* `professional_degree`: total respondents with professional degree
+* `doctorate_degree`: total respondents with doctorate degree
+* `total_with_poverty_status`: total respondents with poverty status
+* `income_below_poverty`: total respondents with income below povert levels
+* `born_in_usa`: total respondents born in USA
+* `foreign_born`: total respondents foreing born
+* `speak_only_english`: total respondents who speak only english
+* `speak_other_languages`: total respondents who speak other languages
+* `count_*`: total number of respondents within age groups
+* `percent_age_*`: percentage of people within age groups
+* `percent_*`: percentage of people form different demogaphic groups. For example, whites, blacks, less than highschool, born in USA, etc..
+* `internet_usage`: percentage of internet usage in county
+
+
+For all of your analysis, use the `rmse` loss function, so that we can compare across participants.
+
+Here are some ideas you can try in your analysis:
+
+* Does it make sense to reduce the number of correlated variables into a few principal components?
+* Do some counties cluster on very correlated variables? Is it fesiable to summarize some of these variables through predicting the cluster membership?
+* Do we really need to use all variables?
+* Does regularized regression or tree-based methods do better?
+
+You can read the data with:
+
+
+```r
+wiki_dt <- read.csv("https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/wikipedia_final.csv")
+```
+
+You have 45 minutes, start!
