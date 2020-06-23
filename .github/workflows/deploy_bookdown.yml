@@ -23,12 +23,12 @@ jobs:
         run: Rscript -e 'renv::restore()'
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "_book")'
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: _book
           path: _book/
             
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: slides
           path: slides/
@@ -42,7 +42,12 @@ jobs:
    needs: bookdown
    steps:
      - uses: actions/checkout@master
-     - uses: actions/download-artifact@v1.0.0
+         
+     - uses: actions/download-artifact@v2
+
+     - name: Display structure of downloaded files
+       run: ls -R
+
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@master
        env:
