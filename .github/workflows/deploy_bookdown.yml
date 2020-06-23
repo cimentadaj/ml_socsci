@@ -27,6 +27,11 @@ jobs:
         with:
           name: _book
           path: _book/
+            
+      - uses: actions/upload-artifact@v1
+        with:
+          name: slides
+          path: slides/
   
 # Need to first create an empty gh-pages branch
 # see https://pkgdown.r-lib.org/reference/deploy_site_github.html
@@ -40,11 +45,11 @@ jobs:
        uses: actions/checkout@master
      - name: Download artifact
        uses: actions/download-artifact@v1.0.0
-       with:
+       # with:
          # Artifact name
-         name: _book # optional
+         # name: _book # optional
          # Destination path
-         path: _book # optional
+         # path: _book # optional
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@master
        env:
