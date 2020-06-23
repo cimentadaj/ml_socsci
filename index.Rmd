@@ -15,3 +15,12 @@ description: "Notes, content and exercises for the RECSM 2020 course Machine Lea
 # Preface {-}
 
 Notes, content and exercises for the RECSM 2020 course Machine Learning for Social Scientists. These are intended to introduce social scientists to concepts in machine learning using traditional social science examples and datasets. Currently, it is not intended to be a book but rather supporting material for the course. Perhaps it evolves enough to be a book some day.
+
+Day 1 - Morning: [Slides](./slides/day1_morning/01_introduction.html)
+Day 1 - Afternoon: [Slides](./slides/day1_afternoon/02_regularization_afternoon.html)
+
+Day 2 - Morning: Slides
+Day 2 - Afternoon: Slides
+
+Day 3 - Morning: Slides
+Day 3 - Afternoon: Slides

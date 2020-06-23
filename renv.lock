@@ -1385,6 +1385,13 @@
       "Repository": "CRAN",
       "Hash": "6f76f71042411426ec8df6c54f34e6dd"
     },
+    "servr": {
+      "Package": "servr",
+      "Version": "0.17",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "a59f16bb4cb2280bebe6b7726103af66"
+    },
     "shape": {
       "Package": "shape",
       "Version": "1.4.4",
@@ -1649,6 +1656,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "a05c3c5c9c6f0afd6f0c41d10dc00e1d"
+    },
+    "xaringan": {
+      "Package": "xaringan",
+      "Version": "0.16",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "7168ed8f41f3597c6c570477c0d0bf15"
     },
     "xfun": {
       "Package": "xfun",
