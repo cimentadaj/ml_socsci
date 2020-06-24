@@ -31,19 +31,15 @@ jobs:
           
       - name: Print files slides
         run: ls -R slides
-          
-      - uses: actions/upload-artifact@v2
-        with:
-          name: slides
-          path: slides/
-            
-      - uses: actions/upload-artifact@v2
-        with:
-          name: img
-          path: img/
-            
+                      
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "_book")'
+
+      - name: Move slides and img to _book
+        run: |
+            cp -rf slides/ _book/
+            cp -rf img/ _book/
+          
       - uses: actions/upload-artifact@v2
         with:
           name: _book
