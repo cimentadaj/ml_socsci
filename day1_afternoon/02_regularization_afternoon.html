@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Machine Learning for Social Scientists</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jorge Cimentada" />
+    <meta name="date" content="2020-06-24" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Machine Learning for Social Scientists
+## Regularization
+### Jorge Cimentada
+### 2020-06-24
+
+---
+
+
+layout: true
+
+&lt;!-- background-image: url(./figs/upf.png) --&gt;
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+
+
+---
+
+# What is regularization?
+
+Regularization is when you force your estimates towards specific values:
+
+* Bayesian: restrict coefficients based on prior distributions
+&lt;br&gt;
+
+* Machine Learning: restrict coefficents to zero
+
+&lt;br&gt;
+
+--
+
+### What is this good for? It depends on your context
+
+* Increasing predictive power
+* Including important confounders in large models
+* Understanding the strength of variables
+* Testing the generalization of your model
+
+---
+
+# What is regularization?
+
+* Machine Learning is almost always about prediction
+
+* **It is important to make sure that out-of-sample accuracy is high**
+
+* Overfitting is our weak spot by including redundant or unimportant variables
+
+* Correct theoretical model is not always the aim
+
+--
+
+&lt;br&gt;
+&lt;br&gt;
+
+&gt; How do we make sure our model does good predictions on unseen data? We regularize how much it overfits the data. How do we do that? Forcing unimportant coefficients towards zero.
+
+&lt;br&gt;
+
+* ML parlance: reduce variance in favor of increasing bias
+* SocSci parlance: make sure your model fits an unseen data as fairly well as this data
+
+---
+
+# A first example: ridge regression
+
+* OLS minimizes the Residual Sum of Squares (RSS)
+* Fit N lines that minimize the RSS and keep the one with the best fit
+
+`\begin{equation}
+RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
+\end{equation}`
+
+.center[
+&lt;img src="./rss_plot.png" width="600px" /&gt;
+]
+
+\* Image from: Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series.
+
+---
+
+# A first example: ridge regression
+
+Ridge regression only adds one term:
+
+`\begin{equation}
+RSS + \lambda \sum_{k = 1}^n \beta^2_j
+\end{equation}`
+
+**The regularization term** or **penalty term**
+
+* `\(RSS\)` estimates how the model fits the data
+* `\(\sum_{k = 1}^n \beta^2_j\)` limits how much you overfit the data. 
+* `\(\lambda\)` is the weight given to the penalty term (called **lambda**): the higher the weight the bigger the shrinkage term of the equation.
+
+In layman words:
+
+&gt; In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization
+
+---
+
+# A first example: ridge regression
+
+Some caveats:
+
+* Since we're penalizing coefficients, their scale *matter*.
+
+&gt; Suppose that you have the income of a particular person (measured in thousands per months) and time spent with their families (measured in seconds) and you're trying to predict happiness. A one unit increase in salary could be penalized much more than a one unit increase in time spent with their families **just** because a one unit increase in salary can be much bigger due to it's metric.
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+### **Always standardize coefficients before running a regularized regression**
+]
+---
+
+# A first example: ridge regression
+
+
+```r
+library(caret) # Fitting machine learning models
+library(rsample) # For partitioning the data
+library(dplyr) # For data manipulation
+
+# Read the PISA data
+data_link &lt;- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa &lt;- read.csv(data_link)
+
+# Separate into testing/training
+set.seed(23151)
+pisa_split &lt;- initial_split(pisa)
+pisa_train &lt;- training(pisa_split)
+pisa_test &lt;- testing(pisa_split)
+```
+
+Remember, we do everything with the **training** dataset and ignore the **testing** dataset for our best model.
+
+---
+
+# A first example: ridge regression
+
+
+```r
+# Create tuning grid
+ridge_grid &lt;- data.frame(
+  # Here we specify the lambda to be a few values
+  lambda = seq(0, 3, length.out = 300),
+  # Here we specify the type of penalized regression: 0 is ridge regression
+  alpha = 0
+)
+
+# Fit model
+ridge_mod &lt;- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  tuneGrid = ridge_grid,
+  preProc = c("center", "scale")
+)
+```
+
+---
+
+# A first example: ridge regression
+
+
+```r
+plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
+```
+
+![](02_regularization_afternoon_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+# A first example: ridge regression
+
+
+```r
+best_lambda_ridge &lt;- ridge_mod$bestTune$lambda
+
+holdout_ridge &lt;-
+  RMSE(
+    predict(ridge_mod, pisa_test, s = best_lambda_ridge),
+    pisa_test$math_score
+  )
+
+train_rmse_ridge &lt;-
+  ridge_mod$results %&gt;%
+  filter(lambda == best_lambda_ridge) %&gt;%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
+```
+
+```
+holdout_rmse   train_rmse 
+    77.88796     76.87049 
+```
+
+---
+
+# A first example: lasso regression
+
+Lasso regression is very similar to ridge but the penalty term is different:
+
+`\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}`
+
+The same notes for ridge applies with one caveat:
+
+- The penalty term for lasso can **completely shrink to 0** meaning that it excludes variables.
+
+&gt; Lasso excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+
+---
+
+# A first example: lasso regression
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: lasso regression
+
+
+```r
+# Create tuning grid
+lasso_grid &lt;- data.frame(
+  # Here we specify the lambda to be a few values
+  lambda = seq(0, 3, length.out = 300),
+  # Here we specify the type of penalized regression: 1 is lasso regression
+  alpha = 1
+)
+
+# Fit model
+lasso_mod &lt;- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  tuneGrid = lasso_grid,
+  preProc = c("center", "scale")
+)
+```
+
+---
+
+# A first example: lasso regression
+
+
+```r
+plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
+```
+
+![](02_regularization_afternoon_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+# A first example: lasso regression
+
+
+```r
+best_lambda_lasso &lt;- lasso_mod$bestTune$lambda
+
+holdout_lasso &lt;-
+  RMSE(
+    predict(lasso_mod, pisa_test, s = best_lambda_lasso),
+    pisa_test$math_score
+  )
+
+train_rmse_lasso &lt;-
+  lasso_mod$results %&gt;%
+  filter(lambda == best_lambda_lasso) %&gt;%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
+```
+
+```
+holdout_rmse   train_rmse 
+    77.86604     77.29868 
+```
+
+---
+
+# A first example: elastic net regression
+
+Elastic Net regression is very similar to ridge but the penalty term is different:
+
+`\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}`
+
+The same notes for ridge applies with one caveat:
+
+- The penalty term for elastic net can **completely shrink to 0** meaning that it excludes variables.
+
+&gt; Elastic Net excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+
+---
+
+# A first example: elastic net regression
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: elastic net regression
+
+
+```r
+# Fit model
+elastic_net_mod &lt;- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  preProc = c("center", "scale"),
+  tuneLength = 30
+)
+```
+
+---
+
+# A first example: elastic net regression
+
+
+```r
+plot(elastic_net_mod$finalModel, xvar = "lambda", label = TRUE)
+```
+
+![](02_regularization_afternoon_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+
+# A first example: elastic net regression
+
+
+```r
+# Remember that we now have **two** tuning parameters
+best_lambda_elastic_net &lt;- elastic_net_mod$bestTune$lambda
+best_alpha_elastic_net &lt;- elastic_net_mod$bestTune$alpha
+
+holdout_elastic_net &lt;-
+  RMSE(
+    predict(elastic_net_mod, pisa_test, s = best_lambda_elastic_net),
+    pisa_test$math_score
+  )
+
+train_rmse_elastic_net &lt;-
+  elastic_net_mod$results %&gt;%
+  filter(alpha == best_alpha_elastic_net,
+         lambda == best_lambda_elastic_net) %&gt;%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_elastic_net, train_rmse = train_rmse_elastic_net)
+```
+
+```
+holdout_rmse   train_rmse 
+    77.88832     77.25992 
+```
+
+---
+
+# Exercise
+
+[Here](https://cimentadaj.github.io/ml_socsci/regularization.html#exercises)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,374 @@
+---
+title: "Machine Learning for Social Scientists"
+subtitle: "Regularization"
+author: "Jorge Cimentada"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # css: [./upf.css, "rutgers-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+layout: true
+
+<!-- background-image: url(./figs/upf.png) -->
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+```{r, echo = FALSE}
+
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE, 
+                      fig.width = 10.5,
+                      fig.height = 4, 
+                      comment = NA,
+                      rows.print = 16)
+
+```
+
+---
+
+# What is regularization?
+
+Regularization is when you force your estimates towards specific values:
+
+* Bayesian: restrict coefficients based on prior distributions
+<br>
+
+* Machine Learning: restrict coefficents to zero
+
+<br>
+
+--
+
+### What is this good for? It depends on your context
+
+* Increasing predictive power
+* Including important confounders in large models
+* Understanding the strength of variables
+* Testing the generalization of your model
+
+---
+
+# What is regularization?
+
+* Machine Learning is almost always about prediction
+
+* **It is important to make sure that out-of-sample accuracy is high**
+
+* Overfitting is our weak spot by including redundant or unimportant variables
+
+* Correct theoretical model is not always the aim
+
+--
+
+<br>
+<br>
+
+> How do we make sure our model does good predictions on unseen data? We regularize how much it overfits the data. How do we do that? Forcing unimportant coefficients towards zero.
+
+<br>
+
+* ML parlance: reduce variance in favor of increasing bias
+* SocSci parlance: make sure your model fits an unseen data as fairly well as this data
+
+---
+
+# A first example: ridge regression
+
+* OLS minimizes the Residual Sum of Squares (RSS)
+* Fit N lines that minimize the RSS and keep the one with the best fit
+
+\begin{equation}
+RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
+\end{equation}
+
+.center[
+```{r echo = FALSE, out.width = "600px"}
+knitr::include_graphics("./rss_plot.png")
+```
+]
+
+\* Image from: Boehmke & Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman & Hall/CRC The R Series.
+
+---
+
+# A first example: ridge regression
+
+Ridge regression only adds one term:
+
+\begin{equation}
+RSS + \lambda \sum_{k = 1}^n \beta^2_j
+\end{equation}
+
+**The regularization term** or **penalty term**
+
+* $RSS$ estimates how the model fits the data
+* $\sum_{k = 1}^n \beta^2_j$ limits how much you overfit the data. 
+* $\lambda$ is the weight given to the penalty term (called **lambda**): the higher the weight the bigger the shrinkage term of the equation.
+
+In layman words:
+
+> In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization
+
+---
+
+# A first example: ridge regression
+
+Some caveats:
+
+* Since we're penalizing coefficients, their scale *matter*.
+
+> Suppose that you have the income of a particular person (measured in thousands per months) and time spent with their families (measured in seconds) and you're trying to predict happiness. A one unit increase in salary could be penalized much more than a one unit increase in time spent with their families **just** because a one unit increase in salary can be much bigger due to it's metric.
+
+<br>
+<br>
+
+.center[
+### **Always standardize coefficients before running a regularized regression**
+]
+---
+
+# A first example: ridge regression
+
+```{r}
+library(caret) # Fitting machine learning models
+library(rsample) # For partitioning the data
+library(dplyr) # For data manipulation
+
+# Read the PISA data
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+
+# Separate into testing/training
+set.seed(23151)
+pisa_split <- initial_split(pisa)
+pisa_train <- training(pisa_split)
+pisa_test <- testing(pisa_split)
+```
+
+Remember, we do everything with the **training** dataset and ignore the **testing** dataset for our best model.
+
+---
+
+# A first example: ridge regression
+
+```{r}
+
+# Create tuning grid
+ridge_grid <- data.frame(
+  # Here we specify the lambda to be a few values
+  lambda = seq(0, 3, length.out = 300),
+  # Here we specify the type of penalized regression: 0 is ridge regression
+  alpha = 0
+)
+
+# Fit model
+ridge_mod <- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  tuneGrid = ridge_grid,
+  preProc = c("center", "scale")
+)
+ 
+```
+
+---
+
+# A first example: ridge regression
+
+```{r }
+plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: ridge regression
+
+```{r}
+best_lambda_ridge <- ridge_mod$bestTune$lambda
+
+holdout_ridge <-
+  RMSE(
+    predict(ridge_mod, pisa_test, s = best_lambda_ridge),
+    pisa_test$math_score
+  )
+
+train_rmse_ridge <-
+  ridge_mod$results %>%
+  filter(lambda == best_lambda_ridge) %>%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
+```
+
+---
+
+# A first example: lasso regression
+
+Lasso regression is very similar to ridge but the penalty term is different:
+
+\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}
+
+The same notes for ridge applies with one caveat:
+
+- The penalty term for lasso can **completely shrink to 0** meaning that it excludes variables.
+
+> Lasso excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+
+---
+
+# A first example: lasso regression
+
+<br>
+<br>
+<br>
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: lasso regression
+
+```{r}
+
+# Create tuning grid
+lasso_grid <- data.frame(
+  # Here we specify the lambda to be a few values
+  lambda = seq(0, 3, length.out = 300),
+  # Here we specify the type of penalized regression: 1 is lasso regression
+  alpha = 1
+)
+
+# Fit model
+lasso_mod <- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  tuneGrid = lasso_grid,
+  preProc = c("center", "scale")
+)
+ 
+```
+
+---
+
+# A first example: lasso regression
+
+```{r }
+plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: lasso regression
+
+```{r}
+best_lambda_lasso <- lasso_mod$bestTune$lambda
+
+holdout_lasso <-
+  RMSE(
+    predict(lasso_mod, pisa_test, s = best_lambda_lasso),
+    pisa_test$math_score
+  )
+
+train_rmse_lasso <-
+  lasso_mod$results %>%
+  filter(lambda == best_lambda_lasso) %>%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
+```
+
+---
+
+# A first example: elastic net regression
+
+Elastic Net regression is very similar to ridge but the penalty term is different:
+
+\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}
+
+The same notes for ridge applies with one caveat:
+
+- The penalty term for elastic net can **completely shrink to 0** meaning that it excludes variables.
+
+> Elastic Net excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+
+---
+
+# A first example: elastic net regression
+
+<br>
+<br>
+<br>
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: elastic net regression
+
+```{r}
+
+# Fit model
+elastic_net_mod <- train(
+  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
+  data = pisa_train,
+  method = "glmnet",
+  preProc = c("center", "scale"),
+  tuneLength = 30
+)
+ 
+```
+
+---
+
+# A first example: elastic net regression
+
+```{r }
+plot(elastic_net_mod$finalModel, xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: elastic net regression
+
+```{r}
+# Remember that we now have **two** tuning parameters
+best_lambda_elastic_net <- elastic_net_mod$bestTune$lambda
+best_alpha_elastic_net <- elastic_net_mod$bestTune$alpha
+
+holdout_elastic_net <-
+  RMSE(
+    predict(elastic_net_mod, pisa_test, s = best_lambda_elastic_net),
+    pisa_test$math_score
+  )
+
+train_rmse_elastic_net <-
+  elastic_net_mod$results %>%
+  filter(alpha == best_alpha_elastic_net,
+         lambda == best_lambda_elastic_net) %>%
+  pull(RMSE)
+
+c(holdout_rmse = holdout_elastic_net, train_rmse = train_rmse_elastic_net)
+```
+
+---
+
+# Exercise
+
+[Here](https://cimentadaj.github.io/ml_socsci/regularization.html#exercises)
