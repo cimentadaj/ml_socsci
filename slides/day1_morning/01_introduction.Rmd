@@ -21,21 +21,18 @@ background-position: 100% 0%, 100% 0%, 50% 100%
 background-size: 10%, 10%, 10%
 
 ```{r, echo = FALSE}
-
+suppressMessages(library(here))
 knitr::opts_chunk$set(warning = FALSE,
                       message = FALSE, 
                       fig.width = 10.5,
                       fig.height = 4, 
                       comment = NA,
                       rows.print = 16)
-
 ```
 
 ---
 
 # An introduction to the Machine Learning Framework
-
-
 
 **What is Machine Learning after all?**
 
@@ -70,7 +67,6 @@ class: center, middle
 ```{r, echo = FALSE, out.width = "90%"}
 knitr::include_graphics("../../img/socsci_wflow1.svg")
 ```
-
 
 ---
 # Prediction vs Inference

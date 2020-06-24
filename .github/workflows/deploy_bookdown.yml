@@ -14,26 +14,40 @@ jobs:
       - uses: r-lib/actions/setup-r@v1
         with:
           r-version: '4.0.0' # The R version to download (if necessary) and use.
+          
       - uses: r-lib/actions/setup-pandoc@v1
+          
       - name: Install rmarkdown
         run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "renv", "ranger", "xgboost"))'
+          
       - name: Install system deps
         run: brew install imagemagick
+          
       - name: Install packages
         run: Rscript -e 'renv::restore()'
-      - name: Render Book
-        run: Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "_book")'
+          
       - name: Render Slides
         run: Rscript -e 'all_slides <- list.files("slides", recursive = TRUE, pattern = "Rmd", full.names = TRUE); for (i in all_slides) rmarkdown::render(i)'
-      - uses: actions/upload-artifact@v2
-        with:
-          name: _book
-          path: _book/
-            
+          
+      - name: Print files slides
+        run: ls -R slides
+          
       - uses: actions/upload-artifact@v2
         with:
           name: slides
           path: slides/
+            
+      - uses: actions/upload-artifact@v2
+        with:
+          name: img
+          path: img/
+            
+      - name: Render Book
+        run: Rscript -e 'bookdown::render_book("index.Rmd", output_dir = "_book")'
+      - uses: actions/upload-artifact@v2
+        with:
+          name: _book
+          path: _book/
   
 # Need to first create an empty gh-pages branch
 # see https://pkgdown.r-lib.org/reference/deploy_site_github.html
