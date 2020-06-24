@@ -37,8 +37,8 @@ jobs:
 
       - name: Move slides and img to _book
         run: |
-            cp -rf slides/ _book/
-            cp -rf img/ _book/
+            cp -rf slides/ _book/slides/
+            cp -rf img/ _book/img/
           
       - uses: actions/upload-artifact@v2
         with:
