@@ -230,9 +230,9 @@ Although the previous exercises seemed easy enough, they are contingent on one a
 
 ### ROC Curves and Area Under the Curve
 
-The ROC curve (ROC means Receiver Operating Characteristic Curve) is just another fancy name for something the is just a representation of sensitivity and specificity. Let's work out a manual example.
+The ROC curve (ROC means Receiver Operating Characteristic Curve) is just another fancy name for something that is just a representation of sensitivity and specificity. Let's work out a manual example.
 
-Suppose we have the same example of trying to predict whether a family will need childcare support. In that example, we calculated the sensitivity and specificity but assuming that the thresholdfor being 1 in the probability of each respondent is `0.5`. 
+Suppose we have the same example of trying to predict whether a family will need childcare support. In that example, we calculated the sensitivity and specificity but assuming that the threshold for being 1 in the probability of each respondent is `0.5`. 
 
 We could assess how much the sensitivity and specificity of the model changes by changing this cutoff to 0.3 and 0.7:
 

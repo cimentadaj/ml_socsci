@@ -1,0 +1,375 @@
+---
+title: "Machine Learning for Social Scientists"
+subtitle: "Loss functions and decision trees"
+author: "Jorge Cimentada"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # css: [./upf.css, "rutgers-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+layout: true
+
+<!-- background-image: url(./figs/upf.png) -->
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+```{r, echo = FALSE}
+
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE, 
+                      fig.width = 10.5,
+                      fig.height = 4, 
+                      comment = NA,
+                      rows.print = 16)
+
+```
+
+---
+
+# What are loss functions?
+
+* Social Scientists use metrics such as the $R^2$, $AIC$, $Log\text{ }likelihood$ or $BIC$. 
+
+* We almost always use these metrics and their purpose is to inform some of our modeling choices. 
+
+* In machine learning, metrics such as the $R^2$ and the $AIC$ are called 'loss functions'
+
+* There are two types of loss functions: continuous and binary
+
+```{r, message = FALSE, echo = FALSE}
+library(tidymodels)
+library(tidyflow)
+library(plotly)
+library(ggplot2)
+
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
+
+---
+
+# Root Mean Square Error (RMSE)
+
+```{r, echo = FALSE}
+res <-
+  tidyflow(mtcars) %>%
+  plug_formula(qsec ~ mpg) %>%
+  plug_model(set_engine(linear_reg(), "lm")) %>%
+  fit() %>%
+  predict(new_data = pull_tflow_rawdata(.))
+
+mtcars$.pred <- res$.pred
+
+p1 <-
+  mtcars %>%
+  ggplot(aes(mpg, qsec)) +
+  geom_point() +
+  scale_x_continuous(name = "X") +
+  scale_y_continuous(name = "Y") +
+  theme_minimal()
+
+p2 <-
+  p1 +
+  geom_line(aes(y = .pred), color = "blue", size = 1)
+
+p3 <-
+  p2 +
+  geom_linerange(aes(ymin = .pred, ymax = qsec), color = "red", alpha = 1/2)
+
+```
+
+Subtract the actual $Y_{i}$ score of each respondent from the predicted $\hat{Y_{i}}$ for each respondent:
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", fig.align = 'center'}
+p3
+```
+
+$$RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y_{i}} - y_{i})^2}{N}}}$$
+
+---
+
+# Mean Absolute Error (MAE)
+
+* This approach doesn't penalize any values and just takes the absolute error of the predictions.
+
+* Fundamentally simpler to interpret than the $RMSE$ since it's just the average absolute error. 
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", fig.align = 'center'}
+p3
+```
+
+$$MAE = \sum_{i = 1}^n{\frac{|\hat{y_{i}} - y_{i}|}{N}}$$
+
+---
+
+# Confusion Matrices
+
+* A confusion matrix is the table comparing the predicted category of a model versus the actual category.
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/confusion_matrix_template.svg")
+```
+
+---
+
+# Confusion Matrices
+
+* The city of Berlin is working on developing an 'early warning' system that is aimed at predicting whether a family is in need of childcare support. 
+
+* Families which received childcare support are flagged with a 1 and families which didn't received childcare support are flagged with a 0:
+
+```{r, echo = FALSE, out.width = "15%", fig.align = 'center'}
+knitr::include_graphics("../../img/base_df_lossfunction.svg")
+```
+
+---
+
+# Confusion Matrices
+
+* Suppose we fit a logistic regression that returns a predicted probability for each family: 
+
+```{r, echo = FALSE, out.width = "35%", fig.align = 'center'}
+knitr::include_graphics("../../img/df_lossfunction_prob.svg")
+```
+
+---
+
+# Confusion Matrices
+
+* We could assign a 1 to every respondent who has a probability above `0.5` and a 0 to every respondent with a probability below `0.5`:
+
+```{r, echo = FALSE, out.width = "45%", fig.align = 'center'}
+knitr::include_graphics("../../img/df_lossfunction_class.svg")
+```
+
+---
+
+# Confusion Matrices
+
+The accuracy is the sum of all correctly predicted rows divided by the total number of predictions:
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/confusion_matrix_50_accuracy.svg")
+```
+
+* Accuracy: $(3 + 1) / (3 + 1 + 2 + 2) = 50\%$
+
+---
+
+# Confusion Matrices
+
+* **Sensitivity** of a model is a fancy name for the **true positive rate**.
+
+* Sensitivity measures those that were correctly predicted only for the `1`:
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/confusion_matrix_50_sensitivity.svg")
+```
+
+* Sensitivity: $3 / (3 + 1) = 75\%$
+
+---
+
+# Confusion Matrices
+
+* The **specificity** of a model measures the true false rate. 
+
+* Specificity measures those that were correctly predicted only for the `0`:
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/confusion_matrix_50_specificity.svg")
+```
+
+* Specificity: $1 / (1 + 2) = 33\%$
+
+---
+
+# ROC Curves and Area Under the Curve
+
+* The ROC curve is just another fancy name for something that is just a representation of sensitivity and specificity.
+
+<br>
+<br>
+<br>
+
+* In our previous example, we calculated the sensitivity and specificity assuming that the threshold for being 1 in the probability of each respondent is `0.5`. 
+
+<br>
+<br>
+
+> What if we tried different cutoff points?
+
+---
+
+# ROC Curves and Area Under the Curve
+
+```{r, echo = FALSE}
+# Create some very fake data for childcare_support
+# Do not interpret this as real!!
+childcare_support <-
+  USArrests %>%
+  mutate(dv = factor(ifelse(Rape >= mean(Rape), 1, 0))) %>%
+  as_tibble() %>%
+  select(dv, everything(), -Rape)
+names(childcare_support) <- c("dv", paste0("X", 1:3))
+
+# Define the tidyflow with the logistic regression
+tflow <-
+  childcare_support %>% 
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split) %>%
+  plug_formula(dv ~ .) %>%
+  plug_model(set_engine(logistic_reg(), "glm"))
+
+# Run the model
+res <- tflow %>% fit()
+
+# Get the probabilities
+res1 <-
+  res %>%
+  predict_training(type = "prob")
+
+# Calculate the sensitivity and specificty
+# of different thresholds
+all_loss <-
+  lapply(c(0.3, 0.5, 0.7), function(x) {
+    res <-
+      res1 %>%
+      mutate(pred = factor(as.numeric(.pred_1 >= x)))
+    
+    sens <- sensitivity(res, dv, pred)
+    speci <- specificity(res, dv, pred)
+
+    data.frame(cutoff = x,
+               sensitivity = round(sens$.estimate, 2),
+               specificity = round(speci$.estimate, 2))
+  })
+
+res_loss <- do.call(rbind, all_loss)
+
+DT::datatable(res_loss,
+              options = list(paging = TRUE,
+                             pageLength =  5,
+                             bLengthChange = FALSE)
+              )
+```
+
+
+* Assigning a 1 if the probability was above `0.3` is associated with a true positive rate (sensitivity) of `0.74`.
+
+* Switching the cutoff to `0.7`, increases the true positive rate to `0.95`, quite an impressive benchmark. 
+
+* At the expense of increasing sensitivity, the true false rate decreases from `0.87` to `0.53`. 
+
+---
+
+# ROC Curves and Area Under the Curve
+
+* We want a cutoff that maximizes both the true positive rate and true false rate.
+
+* Try all possible combinations:
+
+```{r, echo = FALSE}
+all_loss <-
+  lapply(seq(0.01, 0.99, by = 0.01), function(x) {
+    res <-
+      res1 %>%
+      mutate(pred = factor(as.numeric(.pred_1 >= x)))
+    
+    sens <- sensitivity(res, dv, pred)
+    speci <- specificity(res, dv, pred)
+
+    data.frame(cutoff = x,
+               sensitivity = round(sens$.estimate, 2),
+               specificity = round(speci$.estimate, 2)
+               )
+  })
+
+res_loss <- do.call(rbind, all_loss)
+DT::datatable(res_loss,
+              options = list(paging = TRUE,
+                             pageLength =  5,
+                             bLengthChange = FALSE)
+              )
+```
+
+---
+
+# ROC Curves and Area Under the Curve
+
+* This result contains the sensitivity and specificity for many different cutoff points. These results are most easy to understand by visualizing them.
+
+* Cutoffs that improve the specificity does so at the expense of sensitivity. 
+
+```{r, echo = FALSE, dpi = 300, out.width = "90%", fig.align = 'center'}
+res_loss %>%
+  ggplot(aes(specificity, sensitivity)) +
+  geom_point() +
+  theme_minimal()
+```
+
+---
+
+# ROC Curves and Area Under the Curve
+
+* Instead of visualizing the specificity as the true negative rate, let's subtract 1 such that as the `X` axis increases, it means that the error is increasing:
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+res_loss %>%
+  ggplot(aes(1 - specificity, sensitivity)) +
+  geom_point() +
+  geom_line() +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+  scale_y_continuous(limits = c(0, 1)) +
+  theme_minimal()
+
+```
+
+* Ideal result:  most points cluster on the top left quadrant. 
+
+* Sensitivity is high (the true positive rate) and the specificity is high (because $1 - specificity$ will switch the direction of the accuracy to the lower values of the `X` axis). 
+
+---
+
+# ROC Curves and Area Under the Curve
+
+* There is one thing we're missing: the actual cutoff points! 
+* Hover over the plot
+
+```{r, echo = FALSE, out.width = "50%", out.height = "50%"}
+p1 <-
+  res1 %>% 
+  roc_curve(dv, .pred_1) %>%
+  mutate(.threshold = round(.threshold, 2)) %>% 
+  ggplot(aes(1 - specificity, sensitivity)) +
+  geom_line() +
+  geom_point(aes(text = paste0("Cutoff: ", .threshold)), alpha = 0) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed") +
+  theme_minimal()
+
+ggplotly(p1)
+```
+
+---
+
+# ROC Curves and Area Under the Curve
+
+* The last loss function we'll discuss is a very small extension of the ROC curve: the **A**rea **U**nder the **C**urve or $AUC$. 
+
+* $AUC$ is the percentage of the plot that is under the curve. For example:
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+p1 +
+  geom_ribbon(aes(ymax = sensitivity, ymin = 0), fill = "red", alpha = 1/6)
+```
+
+* The more points are located in the top left quadrant, the higher the overall accuracy of our model
+
+* 90% of the space of the plot is under the curve.
