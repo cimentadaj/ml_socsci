@@ -961,7 +961,7 @@ Figure 3.1: Visualization of many trees from the sample with varying composition
 <span id="cb98-10"><a href="tree-based-methods.html#cb98-10"></a><span class="st">  </span><span class="kw">plug_model</span>(boost_mod)</span>
 <span id="cb98-11"><a href="tree-based-methods.html#cb98-11"></a></span>
 <span id="cb98-12"><a href="tree-based-methods.html#cb98-12"></a>boot_res &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span></code></pre></div>
-<pre><code>## [08:08:23] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
+<pre><code>## [10:37:14] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tree-based-methods.html#cb100-1"></a>rmse_gb_train &lt;-</span>
 <span id="cb100-2"><a href="tree-based-methods.html#cb100-2"></a><span class="st">  </span>boot_res <span class="op">%&gt;%</span></span>
 <span id="cb100-3"><a href="tree-based-methods.html#cb100-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>

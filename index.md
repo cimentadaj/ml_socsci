@@ -20,7 +20,7 @@ Day 1 - Morning: [Slides](./slides/day1_morning/01_introduction.html)
 
 Day 1 - Afternoon: [Slides](./slides/day1_afternoon/02_regularization_afternoon.html)
 
-Day 2 - Morning: Slides
+Day 2 - Morning: [Slides](./slides/day2_morning/03_loss_trees.html)
 
 Day 2 - Afternoon: Slides
 
