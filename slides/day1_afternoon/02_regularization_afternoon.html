@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-06-24" />
+    <meta name="date" content="2020-06-25" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Regularization
 ### Jorge Cimentada
-### 2020-06-24
+### 2020-06-25
 
 ---
 
@@ -86,10 +86,8 @@ RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
 \end{equation}`
 
 .center[
-&lt;img src="./rss_plot.png" width="600px" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-2-1.png" width="80%" /&gt;
 ]
-
-\* Image from: Boehmke &amp; Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman &amp; Hall/CRC The R Series.
 
 ---
 
@@ -131,24 +129,203 @@ Some caveats:
 
 # A first example: ridge regression
 
+Download the data:
+
 
 ```r
-library(caret) # Fitting machine learning models
-library(rsample) # For partitioning the data
-library(dplyr) # For data manipulation
+library(tidymodels)
+library(tidyflow)
 
 # Read the PISA data
 data_link &lt;- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
 pisa &lt;- read.csv(data_link)
-
-# Separate into testing/training
-set.seed(23151)
-pisa_split &lt;- initial_split(pisa)
-pisa_train &lt;- training(pisa_split)
-pisa_test &lt;- testing(pisa_split)
+head(pisa, n = c(5, 8))
 ```
 
-Remember, we do everything with the **training** dataset and ignore the **testing** dataset for our best model.
+```
+  CNTSCHID CNTSTUID BOOKID ST001D01T ST003D02T ST003D03T ST004D01T ST005Q01TA
+1 84000001 84000250      3        11         7      2002         2          1
+2 84000001 84000304     14        11         9      2002         1          1
+3 84000001 84000353     15         9         6      2003         2          1
+4 84000001 84000536     24        10         5      2003         2          3
+5 84000001 84001240      6        10         5      2003         2          1
+```
+
+---
+
+# A first example: ridge regression
+
+Remember, we do everything with the **training** dataset and ignore the **testing** dataset for our best model. Adding a split:
+
+
+```r
+tflow &lt;-
+  pisa %&gt;%
+  tidyflow(seed = 23151) %&gt;%
+  plug_split(initial_split)
+
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe/Formula: None
+Resample: None
+Grid: None
+Model: None
+```
+
+---
+
+# A first example: ridge regression
+
+Adding the preprocessing:
+
+
+```r
+rcp &lt;-
+  ~ recipe(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ, data = .x) %&gt;%
+  step_center(all_predictors()) %&gt;%
+  step_scale(all_predictors())
+
+tflow &lt;-
+  tflow %&gt;%
+  plug_recipe(rcp)
+
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: None
+Grid: None
+Model: None
+```
+
+---
+
+# A first example: ridge regression
+
+Adding the resample. `vfold_cv` is the function applying the cross-validated set:
+
+
+```r
+tflow &lt;-
+  tflow %&gt;%
+  plug_resample(vfold_cv)
+
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: None
+Model: None
+```
+
+
+---
+
+# A first example: ridge regression
+
+Adding the model:
+
+
+```r
+# mixture 0 is the same as ridge regression
+regularized_reg &lt;- linear_reg(penalty = tune(), mixture = 0) %&gt;% set_engine("glmnet")
+tflow &lt;- tflow %&gt;% plug_model(regularized_reg)
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: None
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = tune()
+  mixture = 0
+
+Computational engine: glmnet 
+```
+
+---
+
+# A first example: ridge regression
+
+Adding the grid:
+
+
+```r
+tflow &lt;-
+  tflow %&gt;%
+  plug_grid(expand.grid, penalty = seq(0, 3, length.out = 300))
+
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: expand.grid w/ penalty = ~seq(0, 3, length.out = 300)
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = tune()
+  mixture = 0
+
+Computational engine: glmnet 
+```
+
+
+# A first example: ridge regression
+
+
+```r
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: expand.grid w/ penalty = ~seq(0, 3, length.out = 300)
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = tune()
+  mixture = 0
+
+Computational engine: glmnet 
+```
+
+
+
+```r
+res &lt;- fit(tflow)
+```
 
 ---
 
@@ -156,23 +333,15 @@ Remember, we do everything with the **training** dataset and ignore the **testin
 
 
 ```r
-# Create tuning grid
-ridge_grid &lt;- data.frame(
-  # Here we specify the lambda to be a few values
-  lambda = seq(0, 3, length.out = 300),
-  # Here we specify the type of penalized regression: 0 is ridge regression
-  alpha = 0
-)
+final_ridge &lt;- complete_tflow(res, metric = "rmse")
 
-# Fit model
-ridge_mod &lt;- train(
-  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
-  data = pisa_train,
-  method = "glmnet",
-  tuneGrid = ridge_grid,
-  preProc = c("center", "scale")
-)
+final_ridge %&gt;% 
+  pull_tflow_fit() %&gt;%
+  .[['fit']] %&gt;%
+  plot(xvar = "lambda", label = TRUE)
 ```
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -180,36 +349,28 @@ ridge_mod &lt;- train(
 
 
 ```r
-plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
-```
-
-![](02_regularization_afternoon_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
-
----
-
-# A first example: ridge regression
-
-
-```r
-best_lambda_ridge &lt;- ridge_mod$bestTune$lambda
-
-holdout_ridge &lt;-
-  RMSE(
-    predict(ridge_mod, pisa_test, s = best_lambda_ridge),
-    pisa_test$math_score
-  )
-
 train_rmse_ridge &lt;-
-  ridge_mod$results %&gt;%
-  filter(lambda == best_lambda_ridge) %&gt;%
-  pull(RMSE)
+  final_ridge %&gt;%
+  predict_training() %&gt;%
+  rmse(math_score, .pred)
 
-c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
+test_ridge &lt;-
+  final_ridge %&gt;%
+  predict_testing() %&gt;%
+  rmse(math_score, .pred)
+
+train_rmse_ridge$type &lt;- "training"
+test_ridge$type &lt;- "testing"
+
+ridge &lt;- as.data.frame(rbind(train_rmse_ridge, test_ridge))
+ridge$model &lt;- "ridge"
+ridge
 ```
 
 ```
-holdout_rmse   train_rmse 
-    77.88796     76.87049 
+  .metric .estimator .estimate     type model
+1    rmse   standard  76.87668 training ridge
+2    rmse   standard  77.88607  testing ridge
 ```
 
 ---
@@ -244,24 +405,18 @@ The same notes for ridge applies with one caveat:
 
 # A first example: lasso regression
 
+`tflow` has all our steps, just replace the model:
+
 
 ```r
-# Create tuning grid
-lasso_grid &lt;- data.frame(
-  # Here we specify the lambda to be a few values
-  lambda = seq(0, 3, length.out = 300),
-  # Here we specify the type of penalized regression: 1 is lasso regression
-  alpha = 1
-)
+# mixture = 1 is lasso
+lasso_mod &lt;- update(regularized_reg, mixture = 1)
 
-# Fit model
-lasso_mod &lt;- train(
-  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
-  data = pisa_train,
-  method = "glmnet",
-  tuneGrid = lasso_grid,
-  preProc = c("center", "scale")
-)
+tflow &lt;-
+  tflow %&gt;%
+  replace_model(lasso_mod)
+
+res_lasso &lt;- fit(tflow)
 ```
 
 ---
@@ -270,10 +425,15 @@ lasso_mod &lt;- train(
 
 
 ```r
-plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
+final_lasso &lt;- complete_tflow(res_lasso, metric = "rmse")
+
+final_lasso %&gt;%
+  pull_tflow_fit() %&gt;%
+  .[['fit']] %&gt;%
+  plot(xvar = "lambda", label = TRUE)
 ```
 
-![](02_regularization_afternoon_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -281,25 +441,28 @@ plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
 
 
 ```r
-best_lambda_lasso &lt;- lasso_mod$bestTune$lambda
+train_rmse_lasso &lt;-
+  final_lasso %&gt;%
+  predict_training() %&gt;%
+  rmse(math_score, .pred)
 
 holdout_lasso &lt;-
-  RMSE(
-    predict(lasso_mod, pisa_test, s = best_lambda_lasso),
-    pisa_test$math_score
-  )
+  final_lasso %&gt;%
+  predict_testing() %&gt;%
+  rmse(math_score, .pred)
 
-train_rmse_lasso &lt;-
-  lasso_mod$results %&gt;%
-  filter(lambda == best_lambda_lasso) %&gt;%
-  pull(RMSE)
+train_rmse_lasso$type &lt;- "training"
+holdout_lasso$type &lt;- "testing"
 
-c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
+lasso &lt;- as.data.frame(rbind(train_rmse_lasso, holdout_lasso))
+lasso$model &lt;- "lasso"
+lasso
 ```
 
 ```
-holdout_rmse   train_rmse 
-    77.86604     77.29868 
+  .metric .estimator .estimate     type model
+1    rmse   standard  76.87264 training lasso
+2    rmse   standard  77.86454  testing lasso
 ```
 
 ---
@@ -336,14 +499,14 @@ The same notes for ridge applies with one caveat:
 
 
 ```r
-# Fit model
-elastic_net_mod &lt;- train(
-  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
-  data = pisa_train,
-  method = "glmnet",
-  preProc = c("center", "scale"),
-  tuneLength = 30
-)
+elnet_mod &lt;- update(lasso_mod, mixture = tune())
+
+tflow &lt;-
+  tflow %&gt;%
+  replace_model(elnet_mod) %&gt;%
+  replace_grid(grid_regular)
+
+res_elnet &lt;- fit(tflow)
 ```
 
 ---
@@ -352,10 +515,15 @@ elastic_net_mod &lt;- train(
 
 
 ```r
-plot(elastic_net_mod$finalModel, xvar = "lambda", label = TRUE)
+final_elnet &lt;- complete_tflow(res_elnet, metric = "rmse")
+
+final_elnet %&gt;%
+  pull_tflow_fit() %&gt;%
+  .[['fit']] %&gt;%
+  plot(xvar = "lambda", label = TRUE)
 ```
 
-![](02_regularization_afternoon_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -363,35 +531,36 @@ plot(elastic_net_mod$finalModel, xvar = "lambda", label = TRUE)
 
 
 ```r
-# Remember that we now have **two** tuning parameters
-best_lambda_elastic_net &lt;- elastic_net_mod$bestTune$lambda
-best_alpha_elastic_net &lt;- elastic_net_mod$bestTune$alpha
+train_rmse_elnet &lt;-
+  final_elnet %&gt;%
+  predict_training() %&gt;%
+  rmse(math_score, .pred)
 
-holdout_elastic_net &lt;-
-  RMSE(
-    predict(elastic_net_mod, pisa_test, s = best_lambda_elastic_net),
-    pisa_test$math_score
-  )
+holdout_elnet &lt;-
+  final_elnet %&gt;%
+  predict_testing() %&gt;%
+  rmse(math_score, .pred)
 
-train_rmse_elastic_net &lt;-
-  elastic_net_mod$results %&gt;%
-  filter(alpha == best_alpha_elastic_net,
-         lambda == best_lambda_elastic_net) %&gt;%
-  pull(RMSE)
+train_rmse_elnet$type &lt;- "training"
+holdout_elnet$type &lt;- "testing"
 
-c(holdout_rmse = holdout_elastic_net, train_rmse = train_rmse_elastic_net)
+elnet &lt;- as.data.frame(rbind(train_rmse_elnet, holdout_elnet))
+elnet$model &lt;- "elnet"
+elnet
 ```
 
 ```
-holdout_rmse   train_rmse 
-    77.88832     77.25992 
+  .metric .estimator .estimate     type model
+1    rmse   standard  76.87256 training elnet
+2    rmse   standard  77.87192  testing elnet
 ```
 
 ---
 
 # Exercise
-
-[Here](https://cimentadaj.github.io/ml_socsci/regularization.html#exercises)
+.center[
+https://cimentadaj.github.io/ml_socsci/regularization.html#exercises
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
