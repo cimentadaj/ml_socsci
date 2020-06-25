@@ -89,12 +89,32 @@ RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
 \end{equation}
 
 .center[
-```{r echo = FALSE, out.width = "600px"}
-knitr::include_graphics("./rss_plot.png")
+```{r echo = FALSE, dpi = 300, out.width = "80%"}
+library(tidymodels)
+library(tidyflow)
+
+res <-
+  tidyflow(mtcars) %>%
+  plug_formula(qsec ~ mpg) %>%
+  plug_model(set_engine(linear_reg(), "lm")) %>%
+  fit() %>%
+  predict(new_data = pull_tflow_rawdata(.))
+
+mtcars$.pred <- res$.pred
+
+p1 <-
+  mtcars %>%
+  ggplot(aes(mpg, qsec)) +
+  geom_point() +
+  scale_x_continuous(name = "X") +
+  scale_y_continuous(name = "Y") +
+  geom_line(aes(y = .pred), color = "blue", size = 1) +
+  geom_linerange(aes(ymin = .pred, ymax = qsec), color = "red", alpha = 1/2) +
+  theme_minimal()
+
+p1
 ```
 ]
-
-\* Image from: Boehmke & Greenwell (2019) Hands-On Machine Learning with R, 1st Edition, Chapman & Hall/CRC The R Series.
 
 ---
 
@@ -136,55 +156,117 @@ Some caveats:
 
 # A first example: ridge regression
 
+Download the data:
+
 ```{r}
-library(caret) # Fitting machine learning models
-library(rsample) # For partitioning the data
-library(dplyr) # For data manipulation
+library(tidymodels)
+library(tidyflow)
 
 # Read the PISA data
 data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
 pisa <- read.csv(data_link)
-
-# Separate into testing/training
-set.seed(23151)
-pisa_split <- initial_split(pisa)
-pisa_train <- training(pisa_split)
-pisa_test <- testing(pisa_split)
+head(pisa, n = c(5, 8))
 ```
 
-Remember, we do everything with the **training** dataset and ignore the **testing** dataset for our best model.
+---
+
+# A first example: ridge regression
+
+Remember, we do everything with the **training** dataset and ignore the **testing** dataset for our best model. Adding a split:
+
+```{r}
+tflow <-
+  pisa %>%
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split)
+
+tflow
+```
 
 ---
+
+# A first example: ridge regression
+
+Adding the preprocessing:
+
+```{r}
+rcp <-
+  ~ recipe(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ, data = .x) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+tflow <-
+  tflow %>%
+  plug_recipe(rcp)
+
+tflow
+```
+
+---
+
+# A first example: ridge regression
+
+Adding the resample. `vfold_cv` is the function applying the cross-validated set:
+
+```{r}
+tflow <-
+  tflow %>%
+  plug_resample(vfold_cv)
+
+tflow
+```
+
+
+---
+
+# A first example: ridge regression
+
+Adding the model:
+
+```{r}
+# mixture 0 is the same as ridge regression
+regularized_reg <- linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet")
+tflow <- tflow %>% plug_model(regularized_reg)
+tflow
+```
+
+---
+
+# A first example: ridge regression
+
+Adding the grid:
+
+```{r}
+tflow <-
+  tflow %>%
+  plug_grid(expand.grid, penalty = seq(0, 3, length.out = 300))
+
+tflow
+```
+
 
 # A first example: ridge regression
 
 ```{r}
-
-# Create tuning grid
-ridge_grid <- data.frame(
-  # Here we specify the lambda to be a few values
-  lambda = seq(0, 3, length.out = 300),
-  # Here we specify the type of penalized regression: 0 is ridge regression
-  alpha = 0
-)
-
-# Fit model
-ridge_mod <- train(
-  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
-  data = pisa_train,
-  method = "glmnet",
-  tuneGrid = ridge_grid,
-  preProc = c("center", "scale")
-)
- 
+tflow
 ```
 
----
-
-# A first example: ridge regression
 
 ```{r }
-plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
+res <- fit(tflow)
+```
+
+---
+
+# A first example: ridge regression
+
+```{r, fig.align = "center", dpi = 300, out.width = "90%"}
+final_ridge <- complete_tflow(res, metric = "rmse")
+
+final_ridge %>% 
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  plot(xvar = "lambda", label = TRUE)
 ```
 
 ---
@@ -192,20 +274,22 @@ plot(ridge_mod$finalModel, xvar = "lambda", label = TRUE)
 # A first example: ridge regression
 
 ```{r}
-best_lambda_ridge <- ridge_mod$bestTune$lambda
-
-holdout_ridge <-
-  RMSE(
-    predict(ridge_mod, pisa_test, s = best_lambda_ridge),
-    pisa_test$math_score
-  )
-
 train_rmse_ridge <-
-  ridge_mod$results %>%
-  filter(lambda == best_lambda_ridge) %>%
-  pull(RMSE)
+  final_ridge %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
 
-c(holdout_rmse = holdout_ridge, train_rmse = train_rmse_ridge)
+test_ridge <-
+  final_ridge %>%
+  predict_testing() %>%
+  rmse(math_score, .pred)
+
+train_rmse_ridge$type <- "training"
+test_ridge$type <- "testing"
+
+ridge <- as.data.frame(rbind(train_rmse_ridge, test_ridge))
+ridge$model <- "ridge"
+ridge
 ```
 
 ---
@@ -240,33 +324,30 @@ The same notes for ridge applies with one caveat:
 
 # A first example: lasso regression
 
+`tflow` has all our steps, just replace the model:
+
 ```{r}
+# mixture = 1 is lasso
+lasso_mod <- update(regularized_reg, mixture = 1)
 
-# Create tuning grid
-lasso_grid <- data.frame(
-  # Here we specify the lambda to be a few values
-  lambda = seq(0, 3, length.out = 300),
-  # Here we specify the type of penalized regression: 1 is lasso regression
-  alpha = 1
-)
+tflow <-
+  tflow %>%
+  replace_model(lasso_mod)
 
-# Fit model
-lasso_mod <- train(
-  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
-  data = pisa_train,
-  method = "glmnet",
-  tuneGrid = lasso_grid,
-  preProc = c("center", "scale")
-)
- 
+res_lasso <- fit(tflow)
 ```
 
 ---
 
 # A first example: lasso regression
 
-```{r }
-plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
+```{r, fig.align = "center", dpi = 300, out.width = "90%"}
+final_lasso <- complete_tflow(res_lasso, metric = "rmse")
+
+final_lasso %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  plot(xvar = "lambda", label = TRUE)
 ```
 
 ---
@@ -274,20 +355,22 @@ plot(lasso_mod$finalModel, xvar = "lambda", label = TRUE)
 # A first example: lasso regression
 
 ```{r}
-best_lambda_lasso <- lasso_mod$bestTune$lambda
+train_rmse_lasso <-
+  final_lasso %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
 
 holdout_lasso <-
-  RMSE(
-    predict(lasso_mod, pisa_test, s = best_lambda_lasso),
-    pisa_test$math_score
-  )
+  final_lasso %>%
+  predict_testing() %>%
+  rmse(math_score, .pred)
 
-train_rmse_lasso <-
-  lasso_mod$results %>%
-  filter(lambda == best_lambda_lasso) %>%
-  pull(RMSE)
+train_rmse_lasso$type <- "training"
+holdout_lasso$type <- "testing"
 
-c(holdout_rmse = holdout_lasso, train_rmse = train_rmse_lasso)
+lasso <- as.data.frame(rbind(train_rmse_lasso, holdout_lasso))
+lasso$model <- "lasso"
+lasso
 ```
 
 ---
@@ -323,24 +406,27 @@ The same notes for ridge applies with one caveat:
 # A first example: elastic net regression
 
 ```{r}
+elnet_mod <- update(lasso_mod, mixture = tune())
 
-# Fit model
-elastic_net_mod <- train(
-  math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ,
-  data = pisa_train,
-  method = "glmnet",
-  preProc = c("center", "scale"),
-  tuneLength = 30
-)
- 
+tflow <-
+  tflow %>%
+  replace_model(elnet_mod) %>%
+  replace_grid(grid_regular)
+
+res_elnet <- fit(tflow)
 ```
 
 ---
 
 # A first example: elastic net regression
 
-```{r }
-plot(elastic_net_mod$finalModel, xvar = "lambda", label = TRUE)
+```{r, fig.align = "center", dpi = 300, out.width = "90%"}
+final_elnet <- complete_tflow(res_elnet, metric = "rmse")
+
+final_elnet %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  plot(xvar = "lambda", label = TRUE)
 ```
 
 ---
@@ -348,27 +434,28 @@ plot(elastic_net_mod$finalModel, xvar = "lambda", label = TRUE)
 # A first example: elastic net regression
 
 ```{r}
-# Remember that we now have **two** tuning parameters
-best_lambda_elastic_net <- elastic_net_mod$bestTune$lambda
-best_alpha_elastic_net <- elastic_net_mod$bestTune$alpha
+train_rmse_elnet <-
+  final_elnet %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
 
-holdout_elastic_net <-
-  RMSE(
-    predict(elastic_net_mod, pisa_test, s = best_lambda_elastic_net),
-    pisa_test$math_score
-  )
+holdout_elnet <-
+  final_elnet %>%
+  predict_testing() %>%
+  rmse(math_score, .pred)
 
-train_rmse_elastic_net <-
-  elastic_net_mod$results %>%
-  filter(alpha == best_alpha_elastic_net,
-         lambda == best_lambda_elastic_net) %>%
-  pull(RMSE)
+train_rmse_elnet$type <- "training"
+holdout_elnet$type <- "testing"
 
-c(holdout_rmse = holdout_elastic_net, train_rmse = train_rmse_elastic_net)
+elnet <- as.data.frame(rbind(train_rmse_elnet, holdout_elnet))
+elnet$model <- "elnet"
+elnet
 ```
 
 ---
 
 # Exercise
+.center[
+https://cimentadaj.github.io/ml_socsci/regularization.html#exercises
+]
 
-[Here](https://cimentadaj.github.io/ml_socsci/regularization.html#exercises)
