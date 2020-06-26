@@ -33,6 +33,22 @@ knitr::opts_chunk$set(warning = FALSE,
 
 ---
 
+# Load the data
+
+```{r, message = FALSE}
+library(tidymodels)
+library(tidyflow)
+library(rpart.plot)
+library(vip)
+library(plotly)
+library(baguette)
+
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
+
+---
+
 # What are loss functions?
 
 * Social Scientists use metrics such as the $R^2$, $AIC$, $Log\text{ }likelihood$ or $BIC$. 
@@ -42,16 +58,6 @@ knitr::opts_chunk$set(warning = FALSE,
 * In machine learning, metrics such as the $R^2$ and the $AIC$ are called 'loss functions'
 
 * There are two types of loss functions: continuous and binary
-
-```{r, message = FALSE, echo = FALSE}
-library(tidymodels)
-library(tidyflow)
-library(plotly)
-library(ggplot2)
-
-data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
-pisa <- read.csv(data_link)
-```
 
 ---
 
@@ -106,16 +112,6 @@ p3
 ```
 
 $$MAE = \sum_{i = 1}^n{\frac{|\hat{y_{i}} - y_{i}|}{N}}$$
-
----
-
-# Confusion Matrices
-
-* A confusion matrix is the table comparing the predicted category of a model versus the actual category.
-
-```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/confusion_matrix_template.svg")
-```
 
 ---
 
@@ -373,3 +369,205 @@ p1 +
 * The more points are located in the top left quadrant, the higher the overall accuracy of our model
 
 * 90% of the space of the plot is under the curve.
+
+---
+# Decision trees
+
+* Decision trees are tree-like diagrams. 
+* They work by defining `yes-or-no` rules based on the data and assign the most common value for each respondent within their final branch.
+
+```{r, echo = FALSE, warning = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+mod1 <- set_engine(decision_tree(mode = "regression"), "rpart")
+
+tflow <-
+  pisa %>%
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split) %>%
+  plug_formula(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ) %>% 
+  plug_model(mod1)
+
+vanilla_fit <- fit(tflow)
+tree <- pull_tflow_fit(vanilla_fit)$fit
+cols <- c("black", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+
+# Decision trees
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+cols <- c("black", "black", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+
+# Decision trees
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+cols <- c("black", "grey", "grey", "grey", "black", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+# Decision trees
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+cols <- c("black", "black", "grey", "grey", "black", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+# Decision trees
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+cols <- c("black", "black", "black", "black", "grey", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+# Decision trees
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+cols <- c("black", "grey", "grey", "grey", "black", "grey", "grey", "grey", "black", "grey", "black")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+# Decision trees
+
+* How do we fit in R?
+
+```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+# Define the decision tree and tell it the the dependent
+# variable is continuous ('mode' = 'regression')
+mod1 <- decision_tree(mode = "regression") %>% set_engine("rpart")
+
+tflow <-
+  # Plug the data
+  pisa %>%
+  # Begin the tidyflow
+  tidyflow(seed = 23151) %>%
+  # Separate the data into training/testing
+  plug_split(initial_split) %>%
+  # Plug the formula
+  plug_formula(math_score ~ FISCED + HISEI + REPEAT) %>%
+  # Plug the model
+  plug_model(mod1)
+
+vanilla_fit <- fit(tflow)
+```
+
+---
+# Decision trees
+
+* All `plug_*` functions serve to build your machine learning workflow 
+
+* `tidyflow`: receives the data and seed
+
+* `plug_split`: add the training/testing
+
+* `plug_formula`/`plug_recipe`: model definition
+
+* `plug_model`: the model used
+
+---
+# Bad things about Decision trees
+
+* They overfit a lot
+
+```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+# We can recicle the entire `tflow` from above and just replace the formula:
+tflow <- tflow %>% replace_formula(ST102Q01TA ~ .)
+fit_complex <- fit(tflow)
+rpart.plot(pull_tflow_fit(fit_complex)$fit)
+```
+
+---
+# Bad things about Decision trees
+
+How can you address this?
+
+* Not straight forward
+* `min_n` and `tree_depth` are sometimes useful
+
+```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+dectree <- update(mod1, min_n = 200, tree_depth = 3)
+tflow <- tflow %>% replace_model(dectree)
+fit_complex <- fit(tflow)
+rpart.plot(pull_tflow_fit(fit_complex)$fit)
+```
+
+---
+# Tuning decision trees
+
+* Model tuning can help select the best `min_n` and `tree_depth`
+
+```{r}
+tflow <-
+  tflow %>%
+  plug_resample(vfold_cv, v = 5) %>%
+  plug_grid(expand.grid, tree_depth = c(1, 3, 9), min_n = c(50, 100)) %>%
+  replace_model(update(dectree, min_n = tune(), tree_depth = tune()))
+
+fit_tuned <- fit(tflow)
+fit_tuned %>% pull_tflow_fit_tuning() %>% show_best(metric = "rmse")
+```
+
+---
+# Tuning decision trees
+
+```{r, echo = FALSE, dpi = 300, out.width = "95%", out.height = "950%", fig.align = 'center'}
+tree_depth_lvl <- paste0("Tree depth: ", c(1, 3, 9))
+
+fit_tuned %>%
+  pull_tflow_fit_tuning() %>%
+  collect_metrics() %>%
+  mutate(ci_low = mean - (1.96 * std_err),
+         ci_high = mean + (1.96 * std_err),
+         tree_depth = factor(paste0("Tree depth: ", tree_depth), levels = tree_depth_lvl),
+         min_n = factor(min_n, levels = c("50", "100"))) %>%
+  filter(.metric == "rmse") %>% 
+  ggplot(aes(min_n, mean)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = ci_low, ymax = ci_high), width = .1) +
+  scale_x_discrete("Minimum sample size per node") +
+  scale_y_continuous("Average RMSE") +
+  facet_wrap(~ tree_depth, nrow = 1) +
+  theme_minimal()
+```
+
+---
+# Best tuned decision tree
+
+* Best model
+
+```{r}
+final_model <- complete_tflow(fit_tuned,
+                              metric = "rmse",
+                              tree_depth,
+                              method = "select_by_one_std_err")
+
+train_err <-
+  final_model %>%
+  predict_training() %>%
+  rmse(ST102Q01TA, .pred)
+
+test_err <-
+  final_model %>%
+  predict_testing() %>%
+  rmse(ST102Q01TA, .pred)
+
+c("Testing error" = test_err$.estimate,
+  "Training error" = train_err$.estimate)
+```
+
+---
+# Exercises
+
+Exercises 1-4
+
+.center[
+https://cimentadaj.github.io/ml_socsci/tree-based-methods.html#exercises-1
+]

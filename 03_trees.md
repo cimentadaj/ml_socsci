@@ -103,13 +103,6 @@ I've told all the good things about decision trees but they have important disad
 
 
 ```r
-## ST100Q01TA
-## ST102Q01TA
-## IC009Q07NA
-## ST011Q03TA
-## ST011Q05TA
-## ST011Q10TA
-
 # We can recicle the entire `tflow` from above and just
 # replace the formula:
 tflow <-
@@ -1102,7 +1095,7 @@ boot_res <- fit(tflow)
 ```
 
 ```
-## [10:37:14] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+## [09:18:13] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r

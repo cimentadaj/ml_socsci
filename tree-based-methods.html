@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-25" />
+<meta name="date" content="2020-06-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -280,22 +280,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><img src="03_trees_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>All <code>plug_*</code> functions serve to build your machine learning workflow and the model <code>decision_tree</code> serves to define the decision tree and all of the arguments. <code>rpart.plot</code> on the other hand, is a function used specifically for plotting decision trees (that is why we loaded the package <code>rpart.plot</code> at the beginning). No need to delve much into this function. It just works if you pass it a decision tree model: that is why <code>pull</code> the model fit before calling it.</p>
 <p>I’ve told all the good things about decision trees but they have important disadvantages. There are two that we’ll discuss in this chapter. The first one is that decision trees tend to overfit a lot. Just for the sake of exemplifying this, let’s switch to another example. Let’s say we’re trying to understand which variables are related to whether teachers set goals in the classroom. Substantially, this example might not make a lot of sense, but but let’s follow along just to show how much trees can overfit the data. This variable is named <code>ST102Q01TA</code>. Let’s plug it into our <code>tidyflow</code> and visualize the tree:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tree-based-methods.html#cb45-1"></a><span class="co">## ST100Q01TA</span></span>
-<span id="cb45-2"><a href="tree-based-methods.html#cb45-2"></a><span class="co">## ST102Q01TA</span></span>
-<span id="cb45-3"><a href="tree-based-methods.html#cb45-3"></a><span class="co">## IC009Q07NA</span></span>
-<span id="cb45-4"><a href="tree-based-methods.html#cb45-4"></a><span class="co">## ST011Q03TA</span></span>
-<span id="cb45-5"><a href="tree-based-methods.html#cb45-5"></a><span class="co">## ST011Q05TA</span></span>
-<span id="cb45-6"><a href="tree-based-methods.html#cb45-6"></a><span class="co">## ST011Q10TA</span></span>
-<span id="cb45-7"><a href="tree-based-methods.html#cb45-7"></a></span>
-<span id="cb45-8"><a href="tree-based-methods.html#cb45-8"></a><span class="co"># We can recicle the entire `tflow` from above and just</span></span>
-<span id="cb45-9"><a href="tree-based-methods.html#cb45-9"></a><span class="co"># replace the formula:</span></span>
-<span id="cb45-10"><a href="tree-based-methods.html#cb45-10"></a>tflow &lt;-</span>
-<span id="cb45-11"><a href="tree-based-methods.html#cb45-11"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb45-12"><a href="tree-based-methods.html#cb45-12"></a><span class="st">  </span><span class="kw">replace_formula</span>(ST102Q01TA <span class="op">~</span><span class="st"> </span>.)</span>
-<span id="cb45-13"><a href="tree-based-methods.html#cb45-13"></a></span>
-<span id="cb45-14"><a href="tree-based-methods.html#cb45-14"></a>fit_complex &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb45-15"><a href="tree-based-methods.html#cb45-15"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(fit_complex)<span class="op">$</span>fit</span>
-<span id="cb45-16"><a href="tree-based-methods.html#cb45-16"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tree-based-methods.html#cb45-1"></a><span class="co"># We can recicle the entire `tflow` from above and just</span></span>
+<span id="cb45-2"><a href="tree-based-methods.html#cb45-2"></a><span class="co"># replace the formula:</span></span>
+<span id="cb45-3"><a href="tree-based-methods.html#cb45-3"></a>tflow &lt;-</span>
+<span id="cb45-4"><a href="tree-based-methods.html#cb45-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb45-5"><a href="tree-based-methods.html#cb45-5"></a><span class="st">  </span><span class="kw">replace_formula</span>(ST102Q01TA <span class="op">~</span><span class="st"> </span>.)</span>
+<span id="cb45-6"><a href="tree-based-methods.html#cb45-6"></a></span>
+<span id="cb45-7"><a href="tree-based-methods.html#cb45-7"></a>fit_complex &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb45-8"><a href="tree-based-methods.html#cb45-8"></a>tree &lt;-<span class="st"> </span><span class="kw">pull_tflow_fit</span>(fit_complex)<span class="op">$</span>fit</span>
+<span id="cb45-9"><a href="tree-based-methods.html#cb45-9"></a><span class="kw">rpart.plot</span>(tree)</span></code></pre></div>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>The tree is quite big compared to our previous example and makes the interpretation more difficult. However, equally important, some <strong>leaf nodes</strong> are very small. Decision trees can capture a lot of noise and mimic the data very closely. <span class="math inline">\(6\)</span> <strong>leaf nodes</strong> have less than <span class="math inline">\(3\%\)</span> of the sample. These are <strong>leaf nodes</strong> with very weak statistical power:</p>
 <p><img src="03_trees_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
@@ -961,7 +954,7 @@ Figure 3.1: Visualization of many trees from the sample with varying composition
 <span id="cb98-10"><a href="tree-based-methods.html#cb98-10"></a><span class="st">  </span><span class="kw">plug_model</span>(boost_mod)</span>
 <span id="cb98-11"><a href="tree-based-methods.html#cb98-11"></a></span>
 <span id="cb98-12"><a href="tree-based-methods.html#cb98-12"></a>boot_res &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span></code></pre></div>
-<pre><code>## [10:37:14] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
+<pre><code>## [09:18:13] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
 <div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tree-based-methods.html#cb100-1"></a>rmse_gb_train &lt;-</span>
 <span id="cb100-2"><a href="tree-based-methods.html#cb100-2"></a><span class="st">  </span>boot_res <span class="op">%&gt;%</span></span>
 <span id="cb100-3"><a href="tree-based-methods.html#cb100-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>

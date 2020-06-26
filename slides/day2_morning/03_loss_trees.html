@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-06-25" />
+    <meta name="date" content="2020-06-26" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
@@ -28,7 +28,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Loss functions and decision trees
 ### Jorge Cimentada
-### 2020-06-25
+### 2020-06-26
 
 ---
 
@@ -43,6 +43,23 @@ background-size: 10%, 10%, 10%
 
 ---
 
+# Load the data
+
+
+```r
+library(tidymodels)
+library(tidyflow)
+library(rpart.plot)
+library(vip)
+library(plotly)
+library(baguette)
+
+data_link &lt;- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa &lt;- read.csv(data_link)
+```
+
+---
+
 # What are loss functions?
 
 * Social Scientists use metrics such as the `\(R^2\)`, `\(AIC\)`, `\(Log\text{ }likelihood\)` or `\(BIC\)`. 
@@ -52,8 +69,6 @@ background-size: 10%, 10%, 10%
 * In machine learning, metrics such as the `\(R^2\)` and the `\(AIC\)` are called 'loss functions'
 
 * There are two types of loss functions: continuous and binary
-
-
 
 ---
 
@@ -78,14 +93,6 @@ Subtract the actual `\(Y_{i}\)` score of each respondent from the predicted `\(\
 &lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;
 
 `$$MAE = \sum_{i = 1}^n{\frac{|\hat{y_{i}} - y_{i}|}{N}}$$`
-
----
-
-# Confusion Matrices
-
-* A confusion matrix is the table comparing the predicted category of a model versus the actual category.
-
-&lt;img src="../../img/confusion_matrix_template.svg" width="55%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -197,7 +204,7 @@ The accuracy is the sum of all correctly predicted rows divided by the total num
 
 * Cutoffs that improve the specificity does so at the expense of sensitivity. 
 
-&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-15-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -205,7 +212,7 @@ The accuracy is the sum of all correctly predicted rows divided by the total num
 
 * Instead of visualizing the specificity as the true negative rate, let's subtract 1 such that as the `X` axis increases, it means that the error is increasing:
 
-&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-16-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-15-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
 
 * Ideal result:  most points cluster on the top left quadrant. 
 
@@ -219,7 +226,7 @@ The accuracy is the sum of all correctly predicted rows divided by the total num
 * Hover over the plot
 
 <div id="htmlwidget-163eff99ee64e6949613" style="width:50%;height:50%;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-163eff99ee64e6949613">{"x":{"data":[{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.133333333333333,0.133333333333333,0.133333333333333,0.2,0.2,0.2,0.2,0.266666666666667,0.266666666666667,0.333333333333333,0.4,0.4,0.466666666666667,0.466666666666667,0.533333333333333,0.6,0.666666666666667,0.733333333333333,0.8,0.866666666666667,0.933333333333333,1,1],"y":[0,0.0434782608695652,0.0869565217391304,0.130434782608696,0.173913043478261,0.217391304347826,0.260869565217391,0.304347826086957,0.347826086956522,0.391304347826087,0.434782608695652,0.478260869565217,0.521739130434783,0.521739130434783,0.565217391304348,0.608695652173913,0.652173913043478,0.652173913043478,0.695652173913043,0.739130434782609,0.739130434782609,0.782608695652174,0.826086956521739,0.869565217391304,0.869565217391304,0.91304347826087,0.91304347826087,0.91304347826087,0.956521739130435,0.956521739130435,1,1,1,1,1,1,1,1,1,1],"text":["1 - specificity: 0.00000000<br />sensitivity: 0.00000000","1 - specificity: 0.00000000<br />sensitivity: 0.04347826","1 - specificity: 0.00000000<br />sensitivity: 0.08695652","1 - specificity: 0.00000000<br />sensitivity: 0.13043478","1 - specificity: 0.00000000<br />sensitivity: 0.17391304","1 - specificity: 0.00000000<br />sensitivity: 0.21739130","1 - specificity: 0.00000000<br />sensitivity: 0.26086957","1 - specificity: 0.00000000<br />sensitivity: 0.30434783","1 - specificity: 0.00000000<br />sensitivity: 0.34782609","1 - specificity: 0.00000000<br />sensitivity: 0.39130435","1 - specificity: 0.00000000<br />sensitivity: 0.43478261","1 - specificity: 0.00000000<br />sensitivity: 0.47826087","1 - specificity: 0.00000000<br />sensitivity: 0.52173913","1 - specificity: 0.06666667<br />sensitivity: 0.52173913","1 - specificity: 0.06666667<br />sensitivity: 0.56521739","1 - specificity: 0.06666667<br />sensitivity: 0.60869565","1 - specificity: 0.06666667<br />sensitivity: 0.65217391","1 - specificity: 0.13333333<br />sensitivity: 0.65217391","1 - specificity: 0.13333333<br />sensitivity: 0.69565217","1 - specificity: 0.13333333<br />sensitivity: 0.73913043","1 - specificity: 0.20000000<br />sensitivity: 0.73913043","1 - specificity: 0.20000000<br />sensitivity: 0.78260870","1 - specificity: 0.20000000<br />sensitivity: 0.82608696","1 - specificity: 0.20000000<br />sensitivity: 0.86956522","1 - specificity: 0.26666667<br />sensitivity: 0.86956522","1 - specificity: 0.26666667<br />sensitivity: 0.91304348","1 - specificity: 0.33333333<br />sensitivity: 0.91304348","1 - specificity: 0.40000000<br />sensitivity: 0.91304348","1 - specificity: 0.40000000<br />sensitivity: 0.95652174","1 - specificity: 0.46666667<br />sensitivity: 0.95652174","1 - specificity: 0.46666667<br />sensitivity: 1.00000000","1 - specificity: 0.53333333<br />sensitivity: 1.00000000","1 - specificity: 0.60000000<br />sensitivity: 1.00000000","1 - specificity: 0.66666667<br />sensitivity: 1.00000000","1 - specificity: 0.73333333<br />sensitivity: 1.00000000","1 - specificity: 0.80000000<br />sensitivity: 1.00000000","1 - specificity: 0.86666667<br />sensitivity: 1.00000000","1 - specificity: 0.93333333<br />sensitivity: 1.00000000","1 - specificity: 1.00000000<br />sensitivity: 1.00000000","1 - specificity: 1.00000000<br />sensitivity: 1.00000000"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.133333333333333,0.133333333333333,0.133333333333333,0.2,0.2,0.2,0.2,0.266666666666667,0.266666666666667,0.333333333333333,0.4,0.4,0.466666666666667,0.466666666666667,0.533333333333333,0.6,0.666666666666667,0.733333333333333,0.8,0.866666666666667,0.933333333333333,1,1],"y":[0,0.0434782608695652,0.0869565217391304,0.130434782608696,0.173913043478261,0.217391304347826,0.260869565217391,0.304347826086957,0.347826086956522,0.391304347826087,0.434782608695652,0.478260869565217,0.521739130434783,0.521739130434783,0.565217391304348,0.608695652173913,0.652173913043478,0.652173913043478,0.695652173913043,0.739130434782609,0.739130434782609,0.782608695652174,0.826086956521739,0.869565217391304,0.869565217391304,0.91304347826087,0.91304347826087,0.91304347826087,0.956521739130435,0.956521739130435,1,1,1,1,1,1,1,1,1,1],"text":["Cutoff: -Inf<br />1 - specificity: 0.00000000<br />sensitivity: 0.00000000","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.04347826","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.08695652","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.13043478","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.17391304","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.21739130","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.26086957","Cutoff: 0.02<br />1 - specificity: 0.00000000<br />sensitivity: 0.30434783","Cutoff: 0.02<br />1 - specificity: 0.00000000<br />sensitivity: 0.34782609","Cutoff: 0.03<br />1 - specificity: 0.00000000<br />sensitivity: 0.39130435","Cutoff: 0.09<br />1 - specificity: 0.00000000<br />sensitivity: 0.43478261","Cutoff: 0.09<br />1 - specificity: 0.00000000<br />sensitivity: 0.47826087","Cutoff: 0.1<br />1 - specificity: 0.00000000<br />sensitivity: 0.52173913","Cutoff: 0.1<br />1 - specificity: 0.06666667<br />sensitivity: 0.52173913","Cutoff: 0.11<br />1 - specificity: 0.06666667<br />sensitivity: 0.56521739","Cutoff: 0.13<br />1 - specificity: 0.06666667<br />sensitivity: 0.60869565","Cutoff: 0.18<br />1 - specificity: 0.06666667<br />sensitivity: 0.65217391","Cutoff: 0.19<br />1 - specificity: 0.13333333<br />sensitivity: 0.65217391","Cutoff: 0.23<br />1 - specificity: 0.13333333<br />sensitivity: 0.69565217","Cutoff: 0.24<br />1 - specificity: 0.13333333<br />sensitivity: 0.73913043","Cutoff: 0.36<br />1 - specificity: 0.20000000<br />sensitivity: 0.73913043","Cutoff: 0.4<br />1 - specificity: 0.20000000<br />sensitivity: 0.78260870","Cutoff: 0.43<br />1 - specificity: 0.20000000<br />sensitivity: 0.82608696","Cutoff: 0.44<br />1 - specificity: 0.20000000<br />sensitivity: 0.86956522","Cutoff: 0.51<br />1 - specificity: 0.26666667<br />sensitivity: 0.86956522","Cutoff: 0.54<br />1 - specificity: 0.26666667<br />sensitivity: 0.91304348","Cutoff: 0.63<br />1 - specificity: 0.33333333<br />sensitivity: 0.91304348","Cutoff: 0.64<br />1 - specificity: 0.40000000<br />sensitivity: 0.91304348","Cutoff: 0.64<br />1 - specificity: 0.40000000<br />sensitivity: 0.95652174","Cutoff: 0.7<br />1 - specificity: 0.46666667<br />sensitivity: 0.95652174","Cutoff: 0.71<br />1 - specificity: 0.46666667<br />sensitivity: 1.00000000","Cutoff: 0.86<br />1 - specificity: 0.53333333<br />sensitivity: 1.00000000","Cutoff: 0.88<br />1 - specificity: 0.60000000<br />sensitivity: 1.00000000","Cutoff: 0.93<br />1 - specificity: 0.66666667<br />sensitivity: 1.00000000","Cutoff: 0.93<br />1 - specificity: 0.73333333<br />sensitivity: 1.00000000","Cutoff: 0.95<br />1 - specificity: 0.80000000<br />sensitivity: 1.00000000","Cutoff: 0.95<br />1 - specificity: 0.86666667<br />sensitivity: 1.00000000","Cutoff: 0.97<br />1 - specificity: 0.93333333<br />sensitivity: 1.00000000","Cutoff: 1<br />1 - specificity: 1.00000000<br />sensitivity: 1.00000000","Cutoff: Inf<br />1 - specificity: 1.00000000<br />sensitivity: 1.00000000"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":0,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.05,1.05],"y":[-0.05,1.05],"text":"intercept: 0<br />slope: 1","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":35.1780821917808,"r":7.30593607305936,"b":49.1324200913242,"l":48.9497716894977},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"1 - specificity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"sensitivity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"117d408980fa":{"x":{},"y":{},"type":"scatter"},"117d372be30":{"text":{},"x":{},"y":{}},"117d62244314":{"intercept":{},"slope":{}}},"cur_data":"117d408980fa","visdat":{"117d408980fa":["function (y) ","x"],"117d372be30":["function (y) ","x"],"117d62244314":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-163eff99ee64e6949613">{"x":{"data":[{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.133333333333333,0.133333333333333,0.133333333333333,0.2,0.2,0.2,0.2,0.266666666666667,0.266666666666667,0.333333333333333,0.4,0.4,0.466666666666667,0.466666666666667,0.533333333333333,0.6,0.666666666666667,0.733333333333333,0.8,0.866666666666667,0.933333333333333,1,1],"y":[0,0.0434782608695652,0.0869565217391304,0.130434782608696,0.173913043478261,0.217391304347826,0.260869565217391,0.304347826086957,0.347826086956522,0.391304347826087,0.434782608695652,0.478260869565217,0.521739130434783,0.521739130434783,0.565217391304348,0.608695652173913,0.652173913043478,0.652173913043478,0.695652173913043,0.739130434782609,0.739130434782609,0.782608695652174,0.826086956521739,0.869565217391304,0.869565217391304,0.91304347826087,0.91304347826087,0.91304347826087,0.956521739130435,0.956521739130435,1,1,1,1,1,1,1,1,1,1],"text":["1 - specificity: 0.00000000<br />sensitivity: 0.00000000","1 - specificity: 0.00000000<br />sensitivity: 0.04347826","1 - specificity: 0.00000000<br />sensitivity: 0.08695652","1 - specificity: 0.00000000<br />sensitivity: 0.13043478","1 - specificity: 0.00000000<br />sensitivity: 0.17391304","1 - specificity: 0.00000000<br />sensitivity: 0.21739130","1 - specificity: 0.00000000<br />sensitivity: 0.26086957","1 - specificity: 0.00000000<br />sensitivity: 0.30434783","1 - specificity: 0.00000000<br />sensitivity: 0.34782609","1 - specificity: 0.00000000<br />sensitivity: 0.39130435","1 - specificity: 0.00000000<br />sensitivity: 0.43478261","1 - specificity: 0.00000000<br />sensitivity: 0.47826087","1 - specificity: 0.00000000<br />sensitivity: 0.52173913","1 - specificity: 0.06666667<br />sensitivity: 0.52173913","1 - specificity: 0.06666667<br />sensitivity: 0.56521739","1 - specificity: 0.06666667<br />sensitivity: 0.60869565","1 - specificity: 0.06666667<br />sensitivity: 0.65217391","1 - specificity: 0.13333333<br />sensitivity: 0.65217391","1 - specificity: 0.13333333<br />sensitivity: 0.69565217","1 - specificity: 0.13333333<br />sensitivity: 0.73913043","1 - specificity: 0.20000000<br />sensitivity: 0.73913043","1 - specificity: 0.20000000<br />sensitivity: 0.78260870","1 - specificity: 0.20000000<br />sensitivity: 0.82608696","1 - specificity: 0.20000000<br />sensitivity: 0.86956522","1 - specificity: 0.26666667<br />sensitivity: 0.86956522","1 - specificity: 0.26666667<br />sensitivity: 0.91304348","1 - specificity: 0.33333333<br />sensitivity: 0.91304348","1 - specificity: 0.40000000<br />sensitivity: 0.91304348","1 - specificity: 0.40000000<br />sensitivity: 0.95652174","1 - specificity: 0.46666667<br />sensitivity: 0.95652174","1 - specificity: 0.46666667<br />sensitivity: 1.00000000","1 - specificity: 0.53333333<br />sensitivity: 1.00000000","1 - specificity: 0.60000000<br />sensitivity: 1.00000000","1 - specificity: 0.66666667<br />sensitivity: 1.00000000","1 - specificity: 0.73333333<br />sensitivity: 1.00000000","1 - specificity: 0.80000000<br />sensitivity: 1.00000000","1 - specificity: 0.86666667<br />sensitivity: 1.00000000","1 - specificity: 0.93333333<br />sensitivity: 1.00000000","1 - specificity: 1.00000000<br />sensitivity: 1.00000000","1 - specificity: 1.00000000<br />sensitivity: 1.00000000"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.0666666666666667,0.133333333333333,0.133333333333333,0.133333333333333,0.2,0.2,0.2,0.2,0.266666666666667,0.266666666666667,0.333333333333333,0.4,0.4,0.466666666666667,0.466666666666667,0.533333333333333,0.6,0.666666666666667,0.733333333333333,0.8,0.866666666666667,0.933333333333333,1,1],"y":[0,0.0434782608695652,0.0869565217391304,0.130434782608696,0.173913043478261,0.217391304347826,0.260869565217391,0.304347826086957,0.347826086956522,0.391304347826087,0.434782608695652,0.478260869565217,0.521739130434783,0.521739130434783,0.565217391304348,0.608695652173913,0.652173913043478,0.652173913043478,0.695652173913043,0.739130434782609,0.739130434782609,0.782608695652174,0.826086956521739,0.869565217391304,0.869565217391304,0.91304347826087,0.91304347826087,0.91304347826087,0.956521739130435,0.956521739130435,1,1,1,1,1,1,1,1,1,1],"text":["Cutoff: -Inf<br />1 - specificity: 0.00000000<br />sensitivity: 0.00000000","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.04347826","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.08695652","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.13043478","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.17391304","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.21739130","Cutoff: 0<br />1 - specificity: 0.00000000<br />sensitivity: 0.26086957","Cutoff: 0.02<br />1 - specificity: 0.00000000<br />sensitivity: 0.30434783","Cutoff: 0.02<br />1 - specificity: 0.00000000<br />sensitivity: 0.34782609","Cutoff: 0.03<br />1 - specificity: 0.00000000<br />sensitivity: 0.39130435","Cutoff: 0.09<br />1 - specificity: 0.00000000<br />sensitivity: 0.43478261","Cutoff: 0.09<br />1 - specificity: 0.00000000<br />sensitivity: 0.47826087","Cutoff: 0.1<br />1 - specificity: 0.00000000<br />sensitivity: 0.52173913","Cutoff: 0.1<br />1 - specificity: 0.06666667<br />sensitivity: 0.52173913","Cutoff: 0.11<br />1 - specificity: 0.06666667<br />sensitivity: 0.56521739","Cutoff: 0.13<br />1 - specificity: 0.06666667<br />sensitivity: 0.60869565","Cutoff: 0.18<br />1 - specificity: 0.06666667<br />sensitivity: 0.65217391","Cutoff: 0.19<br />1 - specificity: 0.13333333<br />sensitivity: 0.65217391","Cutoff: 0.23<br />1 - specificity: 0.13333333<br />sensitivity: 0.69565217","Cutoff: 0.24<br />1 - specificity: 0.13333333<br />sensitivity: 0.73913043","Cutoff: 0.36<br />1 - specificity: 0.20000000<br />sensitivity: 0.73913043","Cutoff: 0.4<br />1 - specificity: 0.20000000<br />sensitivity: 0.78260870","Cutoff: 0.43<br />1 - specificity: 0.20000000<br />sensitivity: 0.82608696","Cutoff: 0.44<br />1 - specificity: 0.20000000<br />sensitivity: 0.86956522","Cutoff: 0.51<br />1 - specificity: 0.26666667<br />sensitivity: 0.86956522","Cutoff: 0.54<br />1 - specificity: 0.26666667<br />sensitivity: 0.91304348","Cutoff: 0.63<br />1 - specificity: 0.33333333<br />sensitivity: 0.91304348","Cutoff: 0.64<br />1 - specificity: 0.40000000<br />sensitivity: 0.91304348","Cutoff: 0.64<br />1 - specificity: 0.40000000<br />sensitivity: 0.95652174","Cutoff: 0.7<br />1 - specificity: 0.46666667<br />sensitivity: 0.95652174","Cutoff: 0.71<br />1 - specificity: 0.46666667<br />sensitivity: 1.00000000","Cutoff: 0.86<br />1 - specificity: 0.53333333<br />sensitivity: 1.00000000","Cutoff: 0.88<br />1 - specificity: 0.60000000<br />sensitivity: 1.00000000","Cutoff: 0.93<br />1 - specificity: 0.66666667<br />sensitivity: 1.00000000","Cutoff: 0.93<br />1 - specificity: 0.73333333<br />sensitivity: 1.00000000","Cutoff: 0.95<br />1 - specificity: 0.80000000<br />sensitivity: 1.00000000","Cutoff: 0.95<br />1 - specificity: 0.86666667<br />sensitivity: 1.00000000","Cutoff: 0.97<br />1 - specificity: 0.93333333<br />sensitivity: 1.00000000","Cutoff: 1<br />1 - specificity: 1.00000000<br />sensitivity: 1.00000000","Cutoff: Inf<br />1 - specificity: 1.00000000<br />sensitivity: 1.00000000"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":0,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-0.05,1.05],"y":[-0.05,1.05],"text":"intercept: 0<br />slope: 1","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":35.1780821917808,"r":7.30593607305936,"b":49.1324200913242,"l":48.9497716894977},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"1 - specificity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.65296803652968,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"sensitivity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"123d7ca5d974":{"x":{},"y":{},"type":"scatter"},"123d6c678e9a":{"text":{},"x":{},"y":{}},"123d2c35810":{"intercept":{},"slope":{}}},"cur_data":"123d7ca5d974","visdat":{"123d7ca5d974":["function (y) ","x"],"123d6c678e9a":["function (y) ","x"],"123d2c35810":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -229,11 +236,191 @@ The accuracy is the sum of all correctly predicted rows divided by the total num
 
 * `\(AUC\)` is the percentage of the plot that is under the curve. For example:
 
-&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-18-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-17-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
 
 * The more points are located in the top left quadrant, the higher the overall accuracy of our model
 
 * 90% of the space of the plot is under the curve.
+
+---
+# Decision trees
+
+* Decision trees are tree-like diagrams. 
+* They work by defining `yes-or-no` rules based on the data and assign the most common value for each respondent within their final branch.
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-18-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Decision trees
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-19-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Decision trees
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-20-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Decision trees
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-21-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Decision trees
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-22-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Decision trees
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-23-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Decision trees
+
+* How do we fit in R?
+
+
+```r
+# Define the decision tree and tell it the the dependent
+# variable is continuous ('mode' = 'regression')
+mod1 &lt;- decision_tree(mode = "regression") %&gt;% set_engine("rpart")
+
+tflow &lt;-
+  # Plug the data
+  pisa %&gt;%
+  # Begin the tidyflow
+  tidyflow(seed = 23151) %&gt;%
+  # Separate the data into training/testing
+  plug_split(initial_split) %&gt;%
+  # Plug the formula
+  plug_formula(math_score ~ FISCED + HISEI + REPEAT) %&gt;%
+  # Plug the model
+  plug_model(mod1)
+
+vanilla_fit &lt;- fit(tflow)
+```
+
+---
+# Decision trees
+
+* All `plug_*` functions serve to build your machine learning workflow 
+
+* `tidyflow`: receives the data and seed
+
+* `plug_split`: add the training/testing
+
+* `plug_formula`/`plug_recipe`: model definition
+
+* `plug_model`: the model used
+
+---
+# Bad things about Decision trees
+
+* They overfit a lot
+
+
+```r
+# We can recicle the entire `tflow` from above and just replace the formula:
+tflow &lt;- tflow %&gt;% replace_formula(ST102Q01TA ~ .)
+fit_complex &lt;- fit(tflow)
+rpart.plot(pull_tflow_fit(fit_complex)$fit)
+```
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-25-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Bad things about Decision trees
+
+How can you address this?
+
+* Not straight forward
+* `min_n` and `tree_depth` are sometimes useful
+
+
+```r
+dectree &lt;- update(mod1, min_n = 200, tree_depth = 3)
+tflow &lt;- tflow %&gt;% replace_model(dectree)
+fit_complex &lt;- fit(tflow)
+rpart.plot(pull_tflow_fit(fit_complex)$fit)
+```
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-26-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Tuning decision trees
+
+* Model tuning can help select the best `min_n` and `tree_depth`
+
+
+```r
+tflow &lt;-
+  tflow %&gt;%
+  plug_resample(vfold_cv, v = 5) %&gt;%
+  plug_grid(expand.grid, tree_depth = c(1, 3, 9), min_n = c(50, 100)) %&gt;%
+  replace_model(update(dectree, min_n = tune(), tree_depth = tune()))
+
+fit_tuned &lt;- fit(tflow)
+fit_tuned %&gt;% pull_tflow_fit_tuning() %&gt;% show_best(metric = "rmse")
+```
+
+```
+# A tibble: 5 x 7
+  tree_depth min_n .metric .estimator  mean     n std_err
+       &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1          9    50 rmse    standard   0.459     5  0.0126
+2          9   100 rmse    standard   0.459     5  0.0126
+3          3    50 rmse    standard   0.518     5  0.0116
+4          3   100 rmse    standard   0.518     5  0.0116
+5          1    50 rmse    standard   0.649     5  0.0102
+```
+
+---
+# Tuning decision trees
+
+&lt;img src="03_loss_trees_files/figure-html/unnamed-chunk-28-1.png" width="95%" height="950%" style="display: block; margin: auto;" /&gt;
+
+---
+# Best tuned decision tree
+
+* Best model
+
+
+```r
+final_model &lt;- complete_tflow(fit_tuned,
+                              metric = "rmse",
+                              tree_depth,
+                              method = "select_by_one_std_err")
+
+train_err &lt;-
+  final_model %&gt;%
+  predict_training() %&gt;%
+  rmse(ST102Q01TA, .pred)
+
+test_err &lt;-
+  final_model %&gt;%
+  predict_testing() %&gt;%
+  rmse(ST102Q01TA, .pred)
+
+c("Testing error" = test_err$.estimate,
+  "Training error" = train_err$.estimate)
+```
+
+```
+ Testing error Training error 
+     0.4644939      0.4512248 
+```
+
+---
+# Exercises
+
+Exercises 1-4
+
+.center[
+https://cimentadaj.github.io/ml_socsci/tree-based-methods.html#exercises-1
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
