@@ -139,14 +139,6 @@ All `plug_*` functions serve to build your machine learning workflow and the mod
 I've told all the good things about decision trees but they have important disadvantages. There are two that we'll discuss in this chapter. The first one is that decision trees tend to overfit a lot. Just for the sake of exemplifying this, let's switch to another example. Let's say we're trying to understand which variables are related to whether teachers set goals in the classroom. Substantially, this example might not make a lot of sense, but but let's follow along just to show how much trees can overfit the data. This variable is named `ST102Q01TA`. Let's plug it into our `tidyflow` and visualize the tree:
 
 ```{r}
-
-## ST100Q01TA
-## ST102Q01TA
-## IC009Q07NA
-## ST011Q03TA
-## ST011Q05TA
-## ST011Q10TA
-
 # We can recicle the entire `tflow` from above and just
 # replace the formula:
 tflow <-
