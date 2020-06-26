@@ -173,7 +173,7 @@ In any case, this method is inherently exploratory. It serves as way to understa
 
 Having said this, for predictive tasks there is an objective measure on how many principal components to use: the ones that improve predictions the most. Using our previous example, we could perform a grid search on a number of components to see which one maximizes predictive accuracy. Let's run a random forest by regressing the variable `math_score` on all variables in the dataset. While we do that, let's try models with different number of principal components:
 
-```{r, eval = FALSE}
+```{r}
 # Set the number of components `num_comp`
 # to be tuned
 rcp <-
@@ -395,19 +395,6 @@ Althought some people might think that these methods have no value in the social
 We don't seem problems in a way that can be answered with these techniques because we don't think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster. 
 
 A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there's no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we've been trained in a particular paradigm that is difficult to break.
-
-## Hierarchical Clustering
-
-```{r}
-dt <- USArrests
-
-dt %>%
-  ggplot(aes(Assault, Rape)) +
-  geom_point()
-
-
-plot(hclust(dist(dt[c("Assault", "Rape")])))
-```
 
 ## Exercises
 

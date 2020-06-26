@@ -470,7 +470,7 @@ pisa_small$id <- 1:5
 pisa_small
 ```
 
-This is the same `pisa` dataset but only with the first five rows, and id column for each respondent and some columns. Bootstraping is a statistical technique that randomly picks observations from the sample. This means that some observations might get picked while others might no. In fact, some observations might even get picked many times! We can do this manually in R:
+This is the same `pisa` dataset but only with the first five rows, and id column for each respondent and some columns. Bootstraping is a statistical technique that randomly picks observations from the sample. This means that some observations might get picked while others might not. In fact, some observations might even get picked many times! We can do this manually in R:
 
 ```{r}
 # Sample from the number of rows in `pisa_small`
@@ -789,7 +789,7 @@ When there are **only** a few very strong predictors (let's say, two), then you 
 
 Based on this intuition, if we increase the number of variables used at each split, we should see an increase in predictive error. Why? Because it means the `scie_score` and `read_score` will have greater probability of being included at each split. Let's try something close to $1/3$ of the number of variables (this is `150` variables):
 
-```{r, eval = FALSE}
+```{r}
 rf_mod <-
   rand_forest(mode = "regression", mtry = 150) %>%
   set_engine("ranger")
