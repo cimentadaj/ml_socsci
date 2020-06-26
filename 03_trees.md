@@ -360,7 +360,7 @@ pisa_small
 ## 5   469.1545 76.65      0     1   535.9487  5
 ```
 
-This is the same `pisa` dataset but only with the first five rows, and id column for each respondent and some columns. Bootstraping is a statistical technique that randomly picks observations from the sample. This means that some observations might get picked while others might no. In fact, some observations might even get picked many times! We can do this manually in R:
+This is the same `pisa` dataset but only with the first five rows, and id column for each respondent and some columns. Bootstraping is a statistical technique that randomly picks observations from the sample. This means that some observations might get picked while others might not. In fact, some observations might even get picked many times! We can do this manually in R:
 
 
 ```r
@@ -740,6 +740,13 @@ rf_fitted %>%
   rmse(math_score, .pred)
 ```
 
+```
+## # A tibble: 1 x 3
+##   .metric .estimator .estimate
+##   <chr>   <chr>          <dbl>
+## 1 rmse    standard        11.4
+```
+
 The predictive error is reduced to be the same as the one from the bagged decision tree. However, time wise this model is superior than `bag_tree` because each decision tree uses less variables in total. 
 
 You might be asking youself: if bagged decision trees have a lot of correlated trees and the random forest decorrelates the trees, why is it performing just as well and not better? It's not entirely clear. Random Forests are considered to be a bit of a 'black box' and they might work well in certain cases and bad in others. However, having the intuition of how random forests work can help us to approximate a likely explanation. 
@@ -1095,7 +1102,7 @@ boot_res <- fit(tflow)
 ```
 
 ```
-## [09:28:54] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+## [14:08:30] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r

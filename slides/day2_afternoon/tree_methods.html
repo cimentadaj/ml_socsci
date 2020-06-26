@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Machine Learning for Social Scientists</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jorge Cimentada" />
+    <meta name="date" content="2020-06-26" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Machine Learning for Social Scientists
+## Tree based methods
+### Jorge Cimentada
+### 2020-06-26
+
+---
+
+
+layout: true
+
+&lt;!-- background-image: url(./figs/upf.png) --&gt;
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+
+
+---
+
+# Load the data
+
+
+```r
+library(tidymodels)
+library(tidyflow)
+library(vip)
+library(rpart.plot)
+library(baguette)
+
+data_link &lt;- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa &lt;- read.csv(data_link)
+```
+
+---
+
+# Bagging
+
+* Decision trees can be very susceptible to the exact composition of the data
+
+&lt;img src="tree_methods_files/figure-html/manydtrees-1.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bagging
+
+* Bagging is a generalization of decision trees but using bootstrapped trees
+
+* What is bootstrapping?
+
+
+```r
+sel_cols &lt;- c("math_score", "HISEI", "REPEAT", "IMMIG", "read_score")
+pisa_small &lt;- pisa[1:5, sel_cols]
+pisa_small$id &lt;- 1:5
+pisa_small
+```
+
+```
+  math_score HISEI REPEAT IMMIG read_score id
+1   512.7125 28.60      0     1   544.2085  1
+2   427.3615 59.89      0     1   432.2518  2
+3   449.9545 39.02      0     1   503.9496  3
+4   474.5553 26.60      0     1   437.7777  4
+5   469.1545 76.65      0     1   535.9487  5
+```
+
+---
+
+# Bagging
+
+* Bootstraping randomly picks observations from the sample. 
+
+* Some observations might get picked while others might not. 
+
+* Some observations might even get picked many times!
+
+
+```r
+# Sample from the number of rows in `pisa_small`
+# and allow certain numbers to be replaced.
+set.seed(23551)
+row_index &lt;- sample(nrow(pisa_small), replace = TRUE)
+pisa_small[row_index, ]
+```
+
+```
+    math_score HISEI REPEAT IMMIG read_score id
+1     512.7125 28.60      0     1   544.2085  1
+4     474.5553 26.60      0     1   437.7777  4
+4.1   474.5553 26.60      0     1   437.7777  4
+3     449.9545 39.02      0     1   503.9496  3
+5     469.1545 76.65      0     1   535.9487  5
+```
+
+---
+
+# Bagging
+
+* We can run this many times and get many **resamples** of our data:
+
+
+```r
+lapply(1:2, function(x) {
+  row_index &lt;- sample(nrow(pisa_small), replace = TRUE)
+  pisa_small[row_index, ]
+})
+```
+
+```
+[[1]]
+    math_score HISEI REPEAT IMMIG read_score id
+3     449.9545 39.02      0     1   503.9496  3
+5     469.1545 76.65      0     1   535.9487  5
+3.1   449.9545 39.02      0     1   503.9496  3
+1     512.7125 28.60      0     1   544.2085  1
+3.2   449.9545 39.02      0     1   503.9496  3
+
+[[2]]
+    math_score HISEI REPEAT IMMIG read_score id
+1     512.7125  28.6      0     1   544.2085  1
+4     474.5553  26.6      0     1   437.7777  4
+4.1   474.5553  26.6      0     1   437.7777  4
+4.2   474.5553  26.6      0     1   437.7777  4
+4.3   474.5553  26.6      0     1   437.7777  4
+```
+
+
+---
+
+# Bagging
+
+* Bagging works by bootstraping your data `\(N\)` times and fitting `\(N\)` decision trees. 
+
+* Each of decision tree has a lot of variance because we allow the tree to overfit the data
+
+* The trick with bagging is that we **average** over the predictions of all the `\(N\)` decision trees
+
+* This improves the high variability of each single decision tree. 
+
+
+```r
+pisa$id &lt;- 1:nrow(pisa)
+bootstrap_pisa &lt;-
+  lapply(1:20, function(x) {
+    row_index &lt;- sample(nrow(pisa) * .6, replace = TRUE)
+    pisa[row_index, ]
+  })
+```
+
+---
+
+# Bagging
+
+* Loop over these 20 datasets, fit a decision tree to each one and predict on the original `pisa` data. 
+
+
+```r
+tflow &lt;-
+  tidyflow() %&gt;%
+  plug_formula(math_score ~ .) %&gt;%
+  plug_model(decision_tree(mode = "regression") %&gt;% set_engine("rpart"))
+
+all_pred_models &lt;-
+  lapply(bootstrap_pisa, function(x) {
+    small_model &lt;-
+      tflow %&gt;%
+      plug_data(x) %&gt;%
+      fit()
+
+    cbind(
+      pisa["id"],
+      predict(small_model, new_data = pisa)
+    )
+  })
+```
+
+---
+
+# Bagging
+
+* The first slot contains predictions for all respondents. Let's confirm that:
+
+
+```r
+head(all_pred_models[[1]])
+```
+
+```
+  id    .pred
+1  1 493.6071
+2  2 378.5172
+3  3 440.5835
+4  4 440.5835
+5  5 493.6071
+6  6 440.5835
+```
+
+* Let's confirm the same thing for the second slot:
+
+
+```r
+head(all_pred_models[[2]])
+```
+
+```
+  id    .pred
+1  1 486.7747
+2  2 432.6909
+3  3 432.6909
+4  4 432.6909
+5  5 486.7747
+6  6 486.7747
+```
+
+---
+
+# Bagging
+
+
+* Bagging compensates the high level of variance by averaging the predictions of all the small trees:
+
+
+```r
+# Combine all the 20 predictions into one data frame
+all_combined &lt;- all_pred_models[[1]]
+for (i in seq_along(all_pred_models)[-1]) {
+  all_combined &lt;- cbind(all_combined, all_pred_models[[i]][-1])
+}
+
+# Average over the 20 predictions
+res &lt;- data.frame(id = all_combined[1], final_pred = rowMeans(all_combined[-1]))
+
+# Final prediction for each respondent
+head(res)
+```
+
+```
+  id final_pred
+1  1   494.1934
+2  2   403.6330
+3  3   436.1936
+4  4   443.5922
+5  5   491.6506
+6  6   457.9670
+```
+
+---
+
+# Bagging
+
+* 20 trees is a small number
+
+* The higher the number of trees, the better.
+
+&lt;img src="../../img/bagging_sim.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bagging
+
+* How do we fit this in R?
+
+
+```r
+btree &lt;- bag_tree(mode = "regression") %&gt;% set_engine("rpart", times = 50)
+tflow &lt;-
+  tidyflow(pisa, seed = 566521) %&gt;%
+  plug_split(initial_split) %&gt;%
+  plug_formula(math_score ~ .) %&gt;%
+  plug_model(btree)
+
+tflow
+```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 502 columns
+Split: initial_split w/ default args
+Formula: math_score ~ .
+Resample: None
+Grid: None
+Model:
+Bagged Decision Tree Model Specification (regression)
+
+Main Arguments:
+  cost_complexity = 0
+  min_n = 2
+
+Engine-Specific Arguments:
+  times = 50
+
+Computational engine: rpart 
+```
+
+---
+
+# Bagging
+
+* Let's fit both a simple decision tree and the bagged decision tree, predict on the training set and record the average `\(RMSE\)` for both:
+
+
+```r
+res_btree &lt;- tflow %&gt;% fit()
+res_dtree &lt;- tflow %&gt;% replace_model(decision_tree() %&gt;% set_engine("rpart")) %&gt;% fit()
+
+rmse_dtree &lt;- res_dtree %&gt;% predict_training() %&gt;% rmse(math_score, .pred)
+rmse_btree &lt;- res_btree %&gt;% predict_training() %&gt;% rmse(math_score, .pred)
+
+c("Decision tree" = rmse_dtree$.estimate,
+  "Bagged decision tree" = rmse_btree$.estimate)
+```
+
+```
+       Decision tree Bagged decision tree 
+            33.85131             11.33018 
+```
+
+---
+
+# Disadvantages of bagging
+
+* Less interpretability
+
+* Alternative, VIP plots:
+
+
+```r
+res_btree %&gt;%
+  pull_tflow_fit() %&gt;%
+  .[['fit']] %&gt;%
+  var_imp()
+```
+
+```
+# A tibble: 501 x 4
+   term           value std.error  used
+   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;
+ 1 scie_score 23363949.    75426.    50
+ 2 read_score 17033482.    69939.    50
+ 3 ST166Q03HA  5913918.    66479.    50
+ 4 METASPAM    5671665.    68871.    50
+ 5 IC152Q08HA  3850699.   304274.    49
+ 6 PISADIFF    3046729.   362250.    50
+ 7 IC010Q06NA  2691482.   355147.    50
+ 8 ST013Q01TA   433681.   142604.    50
+ 9 ESCS         329367.    16981.    50
+10 HOMEPOS      258437.    11440.    50
+# … with 491 more rows
+```
+
+---
+
+# Disadvantages of bagging
+
+* Works well only for models which are very unstable. 
+
+* For example, linear regression and logistic regression are models with very little variance
+
+* With enough sample size, running a bagged linear regression should return very similar estimates as a single fitted model. 
+
+---
+
+# Random Forests
+
+* Excluded `scie_score` and `read_score` from tree simulations
+
+* Why did I do that? Because they are extremely correlated to `math_score`
+
+* They dominate the entire tree:
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-15-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random Forests
+
+* For estimating the split of `HISEI &lt; 56`, decision trees evaluate splits in all variables in the data:
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-16-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random Forests
+
+* Repeats the same for each node
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-17-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random Forests
+
+* Random forests sample `N` variables at each split
+
+&gt; For example, to determine the best split for the left branch, it randomly samples 251 variables from the total of 502
+
+* On average, all variables will be present across all splits for all trees
+
+* This approach serves to **decorrelate** the trees
+
+---
+
+# Random Forests
+
+* How many columns should we randomly sample at each split?
+
+* This argument called `mtry` and the defaults are:
+
+&lt;br&gt;
+
+`\(\sqrt{Total\text{ }number\text{ }of\text{ }variables}\)`
+
+&lt;br&gt;
+
+`\(\frac{Total\text{ }number\text{ }of\text{ }variables}{3}\)`
+
+---
+
+# Random Forests
+
+* How do we run it in R?
+
+
+```r
+# Define the random forest
+rf_mod &lt;- rand_forest(mode = "regression") %&gt;% set_engine("ranger", importance = "impurity")
+
+# Define the `tidyflow` with the random forest model
+# and include all variables (including scie_score and read_score)
+tflow &lt;-
+  pisa %&gt;%
+  tidyflow(seed = 23151) %&gt;%
+  plug_formula(math_score ~ .) %&gt;%
+  plug_split(initial_split) %&gt;%
+  plug_model(rf_mod)
+
+rf_fitted &lt;- tflow %&gt;% fit()
+```
+
+---
+
+# Random Forests
+
+* `scie_score` and `read_score` seem to be the most relevant variables.
+
+* They both are **seven times** more important than the next most strongest variable
+
+
+```r
+rf_fitted %&gt;%
+  pull_tflow_fit() %&gt;%
+  .[['fit']] %&gt;%
+  vip() +
+  theme_minimal()
+```
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-19-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Disadvantages of random forests
+
+* When there are **only** a few very strong predictors, then you might have trees which are very week 
+
+* Based on our example, if `scie_score` and `read_score` are excluded, the predictions might be bad
+
+
+```r
+rf_fitted %&gt;%
+  predict_training() %&gt;%
+  rmse(math_score, .pred)
+```
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        16.3
+```
+
+* Performs worse than bagging, which was around `11` math points!
+
+---
+
+# Disadvantages of random forests
+
+* If we increase the number of variables used at each split, we should see a decrease in error
+
+* Why? Because it means that `scie_score` and `read_score` will have greater probability of being included at each split.
+
+
+```r
+rf_mod &lt;- rand_forest(mode = "regression", mtry = 150) %&gt;% set_engine("ranger")
+rf_fitted &lt;- tflow %&gt;% replace_model(rf_mod) %&gt;% fit()
+
+rf_fitted %&gt;%
+  predict_training() %&gt;%
+  rmse(math_score, .pred)
+```
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        11.4
+```
+
+* The predictive error is reduced to be the same as the one from the bagged decision tree
+
+* However, it's much faster than bagged decision trees!
+
+---
+
+# Advantages of random forests
+
+* Quite good for off-the-shelf predictions
+
+* Works equally well for continuous and binary variables
+
+---
+
+# Tuning random forests
+
+* Random Forests also have other values to tune.
+
+* `mtry`: number of variables
+
+* `min_n`: minimum number of observations in each node
+
+* `trees`: number of trees fitted
+
+See https://bradleyboehmke.github.io/HOML/random-forest.html
+
+---
+
+# Tuning random forests
+
+* A template
+
+
+```r
+rf_mod &lt;-
+  rand_forest(mode = "regression",
+              mtry = tune(),
+              trees = tune(),
+              min_n = tune()) %&gt;%
+  set_engine("ranger")
+
+tflow &lt;-
+  pisa %&gt;%
+  tidyflow(seed = 2151) %&gt;%
+  plug_split(initial_split) %&gt;%
+  plug_resample(vfold_cv) %&gt;%
+  plug_grid(grid_random, levels = 10) %&gt;%
+  plug_formula(math_score ~ .) %&gt;%
+  plug_model(rf_mode)
+
+res &lt;- rf_mod %&gt;% fit()
+res
+```
+
+---
+
+# Tuning random forests
+
+Exercises 5-8
+
+.center[
+https://cimentadaj.github.io/ml_socsci/tree-based-methods.html#exercises-1
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

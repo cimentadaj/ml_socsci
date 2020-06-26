@@ -227,6 +227,15 @@ res_rf %>%
   filter(.metric == "rmse")
 ```
 
+```
+## # A tibble: 3 x 6
+##   num_comp .metric .estimator  mean     n std_err
+##      <int> <chr>   <chr>      <dbl> <int>   <dbl>
+## 1        1 rmse    standard    40.8    10   0.402
+## 2        2 rmse    standard    40.8    10   0.438
+## 3        3 rmse    standard    40.8    10   0.422
+```
+
 These are the average results of running a 10-fold cross-validation trying out models with one, two and three principal components respectively. As we can see from the `mean` column, there is little difference between the average $RMSE$ of these different models. If there are important reasons to include these variables in the model and we want to reduce the number of variables in the model for simplicity, we could just keep the model with one principal component. 
 
 However, there's also an alternative approach. `step_pca` allows you to specify the minimum explanatory power of the principal components. As discussed in the documentation of `step_pca`, *you specify the fraction of the total variance that should be covered by the components. For example, `threshold = .75` means that `step_pca` should generate enough components to capture 75\% of the variance.*
@@ -418,9 +427,9 @@ res$centers
 
 ```
 ##          ESCS     BSMJ
-## 1  0.01219057 55.53109
-## 2  0.12278091 75.46021
-## 3 -0.29322474 28.82504
+## 1 -0.19107621 38.51749
+## 2  0.17401028 81.60611
+## 3  0.06654444 66.44577
 ```
 
 Althought some people might think that these methods have no value in the social sciences, I like to think this is because they've been trained with a particular hammer, and thus every problem seems like a nail. 
@@ -428,25 +437,6 @@ Althought some people might think that these methods have no value in the social
 We don't seem problems in a way that can be answered with these techniques because we don't think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster. 
 
 A traditional social scientist might think of answering these questions by feeding all variables into a linear model but this defies the whole purpose of clustering: there's no need for a dependent variable. We can understand the relationship between the variables as a first step towards understanding clustering patterns. These are questions that require creativity from the social science discipline because we've been trained in a particular paradigm that is difficult to break.
-
-## Hierarchical Clustering
-
-
-```r
-dt <- USArrests
-
-dt %>%
-  ggplot(aes(Assault, Rape)) +
-  geom_point()
-```
-
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-28-1.png" width="672" />
-
-```r
-plot(hclust(dist(dt[c("Assault", "Rape")])))
-```
-
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-28-2.png" width="672" />
 
 ## Exercises
 
@@ -622,7 +612,7 @@ autoplot(res_pc,
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-30-1.png" width="672" />
 
 </details>
 
@@ -667,7 +657,7 @@ sum_dt %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-32-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 
 ```r
 ############################# Two clusters ####################################
@@ -686,7 +676,7 @@ sum_dt %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-32-2.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-2.png" width="672" />
 
 </details>
 
