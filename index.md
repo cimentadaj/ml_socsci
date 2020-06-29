@@ -1,7 +1,7 @@
 --- 
 title: "Machine Learning for Social Scientists"
 author: "Jorge Cimentada"
-date: "2020-06-26"
+date: "2020-06-29"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib]
@@ -24,6 +24,6 @@ Day 2 - Morning: [Slides](./slides/day2_morning/03_loss_trees.html)
 
 Day 2 - Afternoon: [Slides](./slides/day2_afternoon/tree_methods.html)
 
-Day 3 - Morning: Slides
+Day 3 - Morning: [Slides](./slides/day3_morning/boosting_pca.html)
 
 Day 3 - Afternoon: Slides

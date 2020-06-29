@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Machine Learning for Social Scientists</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jorge Cimentada" />
+    <meta name="date" content="2020-06-29" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Machine Learning for Social Scientists
+## Tree based methods and PCA
+### Jorge Cimentada
+### 2020-06-29
+
+---
+
+
+layout: true
+
+&lt;!-- background-image: url(./figs/upf.png) --&gt;
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+
+
+---
+
+# Load the data
+
+
+```r
+library(tidymodels)
+library(tidyflow)
+library(ggfortify)
+library(rpart.plot)
+
+data_link &lt;- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa &lt;- read.csv(data_link)
+```
+
+---
+
+# Boosting
+
+* Tree based methods we've seen use decision trees as baseline models
+
+* They use ensemble approaches to calculate the average predictions of all decision trees
+
+* Boosting also uses decision trees as the baseline model but the ensemble strategy is fundamentally different
+
+* Manual example: let's fit a very weak decision tree 
+
+---
+# Boosting
+
+
+```r
+dt_tree &lt;-
+  decision_tree(mode = "regression", tree_depth = 1, min_n = 10) %&gt;%
+  set_engine("rpart")
+
+pisa_tr &lt;- training(initial_split(pisa))
+tflow &lt;-
+  tidyflow(pisa_tr, seed = 51231) %&gt;%
+  plug_formula(math_score ~ scie_score) %&gt;%
+  plug_model(dt_tree)
+
+mod1 &lt;- fit(tflow)
+mod1 %&gt;% pull_tflow_fit() %&gt;% .[['fit']] %&gt;% rpart.plot()
+```
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Boosting
+
+* Weak model with `tree_depth = 1`
+
+* What is the `\(RMSE\)`?
+
+
+```r
+res_mod1 &lt;-
+  pisa_tr %&gt;% 
+  cbind(., predict(mod1, new_data = .))
+
+res_mod1 %&gt;% 
+  rmse(math_score, .pred)
+```
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        55.6
+```
+
+* Not a good nor robust model. 
+
+---
+# Boosting
+
+* Let's look at the residuals: we should see a very strong pattern
+
+
+```r
+res_mod1 &lt;- res_mod1 %&gt;%  mutate(.resid = math_score - .pred)
+res_mod1 %&gt;% 
+  ggplot(aes(scie_score, .resid)) +
+  geom_point(alpha = 1/3) +
+  scale_x_continuous(name = "Science scores") +
+  scale_y_continuous(name = "Residuals") +  
+  theme_minimal()
+```
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Boosting
+
+* Boosting works by predicting the residuals of previous decision trees.
+
+1. Fit a first model and calculated the residuals 
+2. Fit a second model but the dependent variable should now be the residuals of the first model
+3. Recursively fit `\(N\)` trees following this pattern
+
+
+```r
+# Convert `math_score` to be the residuals of model 1
+res_mod1 &lt;- mutate(res_mod1, math_score = .resid)
+# Replace the new data in our `tflow` In the data `res_mod1`, `math_score` is
+# now the residuals of the first model
+mod2 &lt;- tflow %&gt;% replace_data(res_mod1) %&gt;% fit()
+mod2 %&gt;% pull_tflow_fit() %&gt;% .[['fit']] %&gt;% rpart.plot()
+```
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+# Boosting
+
+* Let's visualize the residuals from the **second** model:
+
+
+```r
+res_mod2 &lt;- pisa_tr %&gt;% cbind(., predict(mod2, new_data = .)) %&gt;% mutate(.resid = math_score - .pred)
+res_mod2 %&gt;% 
+  ggplot(aes(scie_score, .resid)) +
+  geom_point(alpha = 1/3) +
+  scale_x_continuous(name = "Science scores") +
+  scale_y_continuous(name = "Residuals") +  
+  theme_minimal()
+```
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-7-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+
+* Pattern seems to have changed although it's not clear that it's closer to a random pattern
+
+---
+# Boosting
+
+* If we repeat the same for 20 trees, residuals approximate randomness:
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-8-1.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Boosting
+
+* Boosting is a way for each model to boost the last model's performance:
+ + Focuses mostly on observations which had big residuals
+
+* After having 20 predictions for each respondent, can you take the average?
+
+
+```r
+mod1_pred &lt;- predict(mod1, new_data = pisa_tr)
+names(mod1_pred) &lt;- "pred_mod1"
+mod2_pred &lt;- predict(mod2, new_data = pisa_tr)
+names(mod2_pred) &lt;- "pred_mod2"
+resid_pred &lt;- cbind(mod1_pred, mod2_pred)
+head(resid_pred)
+```
+
+```
+  pred_mod1 pred_mod2
+1  540.4000 -10.33052
+2  407.1443 -10.33052
+3  407.1443 -10.33052
+4  407.1443 -10.33052
+5  407.1443 -10.33052
+6  540.4000 -10.33052
+```
+
+---
+# Boosting
+
+* The first model has the correct metric but all the remaining models are residuals
+
+* Final prediction is the **sum** of all predictions
+
+* For our small-scale example, we can do that with `rowSums`:
+
+
+```r
+resid_pred$final_pred &lt;- rowSums(resid_pred)
+head(resid_pred)
+```
+
+```
+  pred_mod1 pred_mod2 final_pred
+1  540.4000 -10.33052   530.0695
+2  407.1443 -10.33052   396.8138
+3  407.1443 -10.33052   396.8138
+4  407.1443 -10.33052   396.8138
+5  407.1443 -10.33052   396.8138
+6  540.4000 -10.33052   530.0695
+```
+
+* We have a final prediction for each respondent. 
+
+---
+
+# Boosting
+
+
+* Let's fit our trademark model of `math_score` regressed on all variables with `xgboost`
+
+
+```r
+boost_mod &lt;- boost_tree(mode = "regression", trees = 500) %&gt;% set_engine("xgboost")
+tflow &lt;-
+  pisa %&gt;%
+  tidyflow(seed = 51231) %&gt;%
+  plug_formula(math_score ~ .) %&gt;%
+  plug_split(initial_split) %&gt;%
+  plug_model(boost_mod)
+
+boot_res &lt;- fit(tflow)
+```
+
+```
+[16:51:19] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+```
+
+```r
+rmse_gb_train &lt;-
+  boot_res %&gt;%
+  predict_training() %&gt;%
+  rmse(math_score, .pred)
+
+rmse_gb_train
+```
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard    0.000679
+```
+
+---
+# Boosting
+
+* Let's check how it performs on the testing data:
+
+
+```r
+gb_rmse &lt;-
+  boot_res %&gt;%
+  predict_testing() %&gt;%
+  rmse(math_score, .pred) %&gt;%
+  pull(.estimate)
+
+c("Extreme Gradient Boosting" = gb_rmse)
+```
+
+```
+Extreme Gradient Boosting 
+                 27.02214 
+```
+
+* Boosting outperforms all others considerably
+
+* Boosting and `xgboost` are considered to be among the best predictive models
+
+* They can achieve great accuracy even with default values
+
+---
+# Disadvantages of boosting
+
+* Increasing the number of trees in a boosting algorithm **can** increase overfitting
+
+* For the random forest, increasing the number of trees has no impact on overfitting 
+
+* You might reach a point that adding more trees will just try to explain residuals which are random, resulting in overfitting. 
+
+* `stop_iter` signals that after `\(N\)` number trees have passed without any improvement, the algorithm should stop. This approach often runs less trees than the user requested.
+
+---
+# Boosting
+
+There are other tuning parameters available in `boost_tree` which you can use to improve your model:
+
+* `trees`: the number of trees that will be ran
+
+* `mtry`: just as in random forests
+
+* `min_n`: minimum number in each node
+
+* `tree_depth`: how complex the tree is grown
+
+* `learn_rate`: controls how much we regularize each tree
+
+* `loss_reduction`: signals the amount of reduction in your loss function (for example, `\(RMSE\)`) that will allow each split in a decision tree to continue to grow. You can see this as cost-effective step: only if the tree improves it's prediction by `\(X\)`, we allow the tree to produce another split. 
+
+* `sample_size`: controls the percentage of the data used in each iteration of the decision tree. This is similar to the bagging approach where we perform bootstraps on each iteration.
+
+
+---
+
+# Unsupervised regression
+
+* No dependent variables
+
+* Methods are certainly less advanced (finding similarities with no dependent variables)
+
+* True AI is dependent-variable-free
+
+* Humans are excelent unsupervised models
+
+* In the course: `\(PCA\)` and `\(K-Means\)` Clustering
+
+---
+
+# PCA
+
+* **P**rincipal **C**omponent **A**nalysis or `\(PCA\)` 
+
+* Summarizes many columns into a very small subset that captures the greatest variability of the original columns. 
+
+`\(PCA\)` works by creating several components which are the normalized linear combination of the variables of interest.
+
+---
+
+# PCA
+
+In the `pisa` data there are a six variables which asks the students whether they've suffered negative behavior from their friends in the past 12 months:
+
+* Other students left them out of things on purpose
+
+* Other students made fun of them
+
+* They were threatened by other students
+
+* Other students took away or destroyed things that belonged to them
+
+* They got hit or pushed around by other students
+
+* Other students spread nasty rumours about them
+
+Scale ranges from 1 to 4, the higher the number, the more negative their response.
+
+---
+
+# PCA
+
+
+```r
+pisa &lt;-
+  rename(
+    pisa,
+    past12_left_out = ST038Q03NA, past12_madefun_of_me = ST038Q04NA,
+    past12_threatened = ST038Q05NA, past12_destroyed_personal = ST038Q06NA,
+    past12_got_hit = ST038Q07NA, past12_spread_rumours = ST038Q08NA
+  )
+
+pisa_selected &lt;- pisa %&gt;%  select(starts_with("past12"))
+cor(pisa_selected)
+```
+
+```
+                          past12_left_out past12_madefun_of_me
+past12_left_out                 1.0000000            0.6073982
+past12_madefun_of_me            0.6073982            1.0000000
+past12_threatened               0.4454125            0.4712083
+past12_destroyed_personal       0.4037351            0.4165931
+past12_got_hit                  0.3918129            0.4480862
+past12_spread_rumours           0.4746302            0.5069299
+                          past12_threatened past12_destroyed_personal
+past12_left_out                   0.4454125                 0.4037351
+past12_madefun_of_me              0.4712083                 0.4165931
+past12_threatened                 1.0000000                 0.5685773
+past12_destroyed_personal         0.5685773                 1.0000000
+past12_got_hit                    0.5807617                 0.6206485
+past12_spread_rumours             0.5513099                 0.4543380
+                          past12_got_hit past12_spread_rumours
+past12_left_out                0.3918129             0.4746302
+past12_madefun_of_me           0.4480862             0.5069299
+past12_threatened              0.5807617             0.5513099
+past12_destroyed_personal      0.6206485             0.4543380
+past12_got_hit                 1.0000000             0.4451408
+past12_spread_rumours          0.4451408             1.0000000
+```
+
+* Most correlations lie between `0.4` and `0.6`
+
+---
+
+# PCA
+
+* `\(PCA\)` works by receiving as input `\(P\)` variables (in this case six) 
+
+* `\(--&gt;\)` Calculate the normalized linear combination of the `\(P\)` variables. 
+
+* `\(--&gt;\)` This new variable is the linear combination of the six variables that captures the greatest variance out of all of them. 
+
+* `\(--&gt;\)` `\(PCA\)` continues to calculate other normalized linear combinations **but** uncorrelated
+
+* Constructs as many principal components as possible (achieve 100% variability)
+
+* Each PC is assessed by how much variance it explains
+
+---
+
+# PCA
+
+* We need to center and scale the independent variables, however, our variables are in the same scale
+
+* Let's pass in our six variables to the function `prcomp`, which estimates these principal components based on our six variables.
+
+
+```r
+pc &lt;- prcomp(pisa_selected)
+all_pcs &lt;- as.data.frame(pc$x)
+head(all_pcs)
+```
+
+```
+           PC1        PC2         PC3          PC4          PC5          PC6
+1 -2.836172297 -0.7549602 -1.91065434 -0.232647114 -0.368981283 -1.885607656
+2 -1.478020766  0.6622561  0.94113153  0.181451711  0.149387648  0.678384471
+3  1.025953306  0.1602906 -0.03806864 -0.008994148  0.009439987 -0.002391996
+4 -0.002173173 -0.7902197 -0.10112894 -0.197389118  0.013521080 -0.002718289
+5 -4.832075955  0.1996595  0.39221922 -0.256660522 -1.178883084  0.150399629
+6 -1.132036976 -1.8534154 -0.68913950  0.914561923  0.065907346  0.087208533
+```
+
+* The result of all of this is a dataframe with six new columns. 
+
+* They are variables that summarize the relationship of these six variables. 
+
+---
+
+# PCA
+
+* We judge by how much variance each 'component' explains
+
+
+```r
+tidy(pc, "pcs")
+```
+
+```
+# A tibble: 6 x 4
+     PC std.dev percent cumulative
+  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
+1     1   1.34   0.591       0.591
+2     2   0.640  0.135       0.726
+3     3   0.530  0.0929      0.819
+4     4   0.522  0.0899      0.909
+5     5   0.394  0.0513      0.960
+6     6   0.347  0.0397      1    
+```
+
+* First principal component explains about 58% of the variance
+
+* Second principal component explains an additional 13.7%
+
+* Total of 71.4%
+
+---
+
+# PCA
+
+* They are supposed to be uncorrelated
+
+
+```r
+cor(all_pcs[c("PC1", "PC2")])
+```
+
+```
+                        PC1                     PC2
+PC1  1.00000000000000000000 -0.00000000000001545012
+PC2 -0.00000000000001545012  1.00000000000000000000
+```
+
+* As expected, the correlation between these two variables is 0. 
+
+* Social Scientist would make sure that their expected explanatory power of the two components is high enough. 
+* If it is, they would include these two columns in their statistical models instead of the six variables. 
+
+---
+
+# PCA
+
+* `\(PCA\)` is all about exploratory data analysis. 
+
+* We might want to go further and explore how the original six variables are related to these principal components. 
+
+* These two principal components are a bit of a black box at this point. Which variables do they represent? We can check that with the initial output of `prcomp`:
+
+
+```r
+pc$rotation[, 1:2]
+```
+
+```
+                                 PC1        PC2
+past12_left_out           -0.4631946 -0.4189125
+past12_madefun_of_me      -0.5649319 -0.5315979
+past12_threatened         -0.3446963  0.4025682
+past12_destroyed_personal -0.2694606  0.3405411
+past12_got_hit            -0.2987481  0.3715999
+past12_spread_rumours     -0.4308453  0.3546832
+```
+
+* First PC: all correlations are negative. 
+
+* Informally, we could call this variable a 'negative-peer index'.
+
+---
+
+# PCA
+
+
+```r
+pc$rotation[, 1:2]
+```
+
+```
+                                 PC1        PC2
+past12_left_out           -0.4631946 -0.4189125
+past12_madefun_of_me      -0.5649319 -0.5315979
+past12_threatened         -0.3446963  0.4025682
+past12_destroyed_personal -0.2694606  0.3405411
+past12_got_hit            -0.2987481  0.3715999
+past12_spread_rumours     -0.4308453  0.3546832
+```
+
+* Second PC: four of these six variables correlate positively 
+
+* The principal components tend capture the exact opposite relationship. 
+
+* This is a 'positive-peer index'
+
+---
+
+# PCA
+
+* This plot shows how the variables cluster between the principal components
+
+* Mean 0 for both variables
+
+
+```r
+set.seed(6652)
+autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE, alpha = 1/6) +
+  theme_minimal()
+```
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# PCA
+
+* The two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# PCA
+
+* The other four variables from the correlation showed negative correlations with PC1 and positive correlations with PC2. 
+
+* This means that these variables should cluster **below** the average of PC1 and **higher** than the average of PC2. 
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# PCA
+
+* The remaining four variables cluster at lower values of PC1 and at higher values of PC1:
+
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# PCA
+
+* You might reject to focus on the first two principal components and explore this same plot for PC1 and PC3 or PC2 and PC4. 
+
+* There's no clear cut rule for the number of principal components to use. 
+
+* Exploratorion is **key**
+
+&gt; In any case, this method is inherently exploratory. It serves as way to understand whether we can reduce correlated variables into a small subset of variables that represent them. For a social science point of view, this method is often used for reducing the number of variables. However, there is still room for using it as a clustering method to understand whether certain variables can help us summarize our understanding into simpler concepts.
+
+---
+
+# PCA
+
+* Grid search of number of components using a random forest:
+
+
+```r
+rcp &lt;- ~ recipe(.x, math_score ~ .) %&gt;% step_pca(starts_with("past12_"), num_comp = tune())
+tflow &lt;-
+  tidyflow(pisa, seed = 25131) %&gt;%
+  plug_split(initial_split) %&gt;%
+  plug_recipe(rcp) %&gt;%
+  plug_model(set_engine(rand_forest(mode = "regression"), "ranger")) %&gt;%
+  plug_resample(vfold_cv) %&gt;%
+  plug_grid(expand.grid, num_comp = 1:3)
+```
+
+
+```r
+res_rf &lt;- fit(tflow)
+pull_tflow_fit_tuning(res_rf) %&gt;% collect_metrics() %&gt;% filter(.metric == "rmse")
+```
+
+
+```
+# A tibble: 3 x 6
+  num_comp .metric .estimator  mean     n std_err
+     &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+1        1 rmse    standard    40.8    10   0.402
+2        2 rmse    standard    40.8    10   0.456
+3        3 rmse    standard    40.9    10   0.394
+```
+---
+
+# PCA
+
+* Alternative approach: 
+ + `step_pca` allows you to specify the minimum explanatory power of the principal components. 
+ 
+ &gt; As discussed in the documentation of `step_pca`, *you specify the fraction of the total variance that should be covered by the components. For example, `threshold = .75` means that `step_pca` should generate enough components to capture 75\% of the variance.*
+
+
+```r
+rcp &lt;- ~ recipe(.x, math_score ~ .) %&gt;% step_pca(starts_with("past12_"), threshold = .90)
+tflow &lt;- tflow %&gt;% replace_recipe(rcp) %&gt;% drop_grid()
+res_rf &lt;- fit(tflow)
+res_cv &lt;- res_rf %&gt;% pull_tflow_fit_tuning() %&gt;% collect_metrics()
+res_cv
+```
+
+* `\(PCA\)` is a very useful method for summarizing information
+
+* However, it is based on the notion that the variables to be summarized are best summarized through a linear combination.
+
+
+---
+
+# Exercises
+
+Finish up exercises from https://cimentadaj.github.io/ml_socsci/tree-based-methods.html#exercises-1
+
+Exercises `1:2` at https://cimentadaj.github.io/ml_socsci/unsupervised-methods.html#exercises-2
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

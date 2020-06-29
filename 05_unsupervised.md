@@ -264,14 +264,18 @@ res_cv <-
   pull_tflow_fit_tuning() %>%
   collect_metrics()
 
-round(res_cv$mean[1], 2)
-
 res_cv
 ```
 
+```
+## # A tibble: 2 x 5
+##   .metric .estimator   mean     n std_err
+##   <chr>   <chr>       <dbl> <int>   <dbl>
+## 1 rmse    standard   40.8      10 0.377  
+## 2 rsq     standard    0.835    10 0.00392
+```
 
-
-This approach offers a very similar $RMSE$ of MISSING CALCULATION. Althought not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
+This approach offers a very similar $RMSE$ of 40.8. Althought not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
 
 Although $PCA$ is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.
 

@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-06-26" />
+<meta name="date" content="2020-06-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -396,10 +396,13 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <span id="cb146-18"><a href="unsupervised-methods.html#cb146-18"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
 <span id="cb146-19"><a href="unsupervised-methods.html#cb146-19"></a><span class="st">  </span><span class="kw">collect_metrics</span>()</span>
 <span id="cb146-20"><a href="unsupervised-methods.html#cb146-20"></a></span>
-<span id="cb146-21"><a href="unsupervised-methods.html#cb146-21"></a><span class="kw">round</span>(res_cv<span class="op">$</span>mean[<span class="dv">1</span>], <span class="dv">2</span>)</span>
-<span id="cb146-22"><a href="unsupervised-methods.html#cb146-22"></a></span>
-<span id="cb146-23"><a href="unsupervised-methods.html#cb146-23"></a>res_cv</span></code></pre></div>
-<p>This approach offers a very similar <span class="math inline">\(RMSE\)</span> of MISSING CALCULATION. Althought not possible at this moment, <code>tidymodels</code> is expected to allow the <code>threshold</code> parameter to be <code>tune</code> such that you can perform a grid search of this value as well (for those interested, see <a href="https://github.com/tidymodels/recipes/issues/534">here</a>).</p>
+<span id="cb146-21"><a href="unsupervised-methods.html#cb146-21"></a>res_cv</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   .metric .estimator   mean     n std_err
+##   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1 rmse    standard   40.8      10 0.377  
+## 2 rsq     standard    0.835    10 0.00392</code></pre>
+<p>This approach offers a very similar <span class="math inline">\(RMSE\)</span> of 40.8. Althought not possible at this moment, <code>tidymodels</code> is expected to allow the <code>threshold</code> parameter to be <code>tune</code> such that you can perform a grid search of this value as well (for those interested, see <a href="https://github.com/tidymodels/recipes/issues/534">here</a>).</p>
 <p>Although <span class="math inline">\(PCA\)</span> is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.</p>
 </div>
 <div id="k-means-clustering" class="section level2">
@@ -414,25 +417,25 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <p><img src="img/km3.png" width="30%" style="display: block; margin: auto;" /></p>
 <p>Remember that we assigned the cluster colors to the points randomly? Then the mean of X and Y for the three different colors should be more or less the same. We find that’s the case, as the three ‘average big points’ are located at the center of the plot overlapping among each other. So far, everything that has happened is random. There’s no capturing of real knowledge here. The next step is where the substantive part comes in. We need to calculate something called the Euclidian distance between each point and the three centroids. This is not so difficult. Let’s work it out manually.</p>
 <p>Suppose that the three centroids are located with these X and Y values:</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="unsupervised-methods.html#cb147-1"></a>centroids_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>), <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)),</span>
-<span id="cb147-2"><a href="unsupervised-methods.html#cb147-2"></a>                           <span class="dt">x =</span> <span class="kw">c</span>(.<span class="dv">54</span>, <span class="fl">.56</span>, <span class="fl">.52</span>),</span>
-<span id="cb147-3"><a href="unsupervised-methods.html#cb147-3"></a>                           <span class="dt">y =</span> <span class="kw">c</span>(.<span class="dv">553</span>, <span class="fl">.55</span>, <span class="fl">.56</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="unsupervised-methods.html#cb148-1"></a>centroids_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>), <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)),</span>
+<span id="cb148-2"><a href="unsupervised-methods.html#cb148-2"></a>                           <span class="dt">x =</span> <span class="kw">c</span>(.<span class="dv">54</span>, <span class="fl">.56</span>, <span class="fl">.52</span>),</span>
+<span id="cb148-3"><a href="unsupervised-methods.html#cb148-3"></a>                           <span class="dt">y =</span> <span class="kw">c</span>(.<span class="dv">553</span>, <span class="fl">.55</span>, <span class="fl">.56</span>))</span></code></pre></div>
 <p>We can visualize them:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="unsupervised-methods.html#cb148-1"></a>centroids_df <span class="op">%&gt;%</span></span>
-<span id="cb148-2"><a href="unsupervised-methods.html#cb148-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y, <span class="dt">color =</span> type)) <span class="op">+</span></span>
-<span id="cb148-3"><a href="unsupervised-methods.html#cb148-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb148-4"><a href="unsupervised-methods.html#cb148-4"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
-<span id="cb148-5"><a href="unsupervised-methods.html#cb148-5"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb148-6"><a href="unsupervised-methods.html#cb148-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="unsupervised-methods.html#cb149-1"></a>centroids_df <span class="op">%&gt;%</span></span>
+<span id="cb149-2"><a href="unsupervised-methods.html#cb149-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y, <span class="dt">color =</span> type)) <span class="op">+</span></span>
+<span id="cb149-3"><a href="unsupervised-methods.html#cb149-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb149-4"><a href="unsupervised-methods.html#cb149-4"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
+<span id="cb149-5"><a href="unsupervised-methods.html#cb149-5"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb149-6"><a href="unsupervised-methods.html#cb149-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="05_unsupervised_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Now suppose we add an additional random point in the plot:</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="unsupervised-methods.html#cb149-1"></a>centroids_df <span class="op">%&gt;%</span></span>
-<span id="cb149-2"><a href="unsupervised-methods.html#cb149-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
-<span id="cb149-3"><a href="unsupervised-methods.html#cb149-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> type), <span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb149-4"><a href="unsupervised-methods.html#cb149-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.75</span>)) <span class="op">+</span></span>
-<span id="cb149-5"><a href="unsupervised-methods.html#cb149-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
-<span id="cb149-6"><a href="unsupervised-methods.html#cb149-6"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb149-7"><a href="unsupervised-methods.html#cb149-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="unsupervised-methods.html#cb150-1"></a>centroids_df <span class="op">%&gt;%</span></span>
+<span id="cb150-2"><a href="unsupervised-methods.html#cb150-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y)) <span class="op">+</span></span>
+<span id="cb150-3"><a href="unsupervised-methods.html#cb150-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color =</span> type), <span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb150-4"><a href="unsupervised-methods.html#cb150-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.75</span>)) <span class="op">+</span></span>
+<span id="cb150-5"><a href="unsupervised-methods.html#cb150-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
+<span id="cb150-6"><a href="unsupervised-methods.html#cb150-6"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb150-7"><a href="unsupervised-methods.html#cb150-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="05_unsupervised_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>How do we calculate the Euclidean distance between this point and the three clusters? We use this formula:</p>
 <p><span class="math display">\[\sqrt{(x_2 - x_1) + (y_2 - y_1)}\]</span></p>
@@ -443,13 +446,13 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <li>Green <span class="math display">\[\sqrt{(0.52 - 0.25) + (0.560 - 0.75)} = 0.2828427 \]</span></li>
 </ul>
 <p>Since each of these calculations is done on the random point and the three centroids, the only numbers that change between each formula is the location of the centroids. From these results, the random point is closest to the green centroid, as the distance is the smallest (0.28). Let’s assign it to that cluster:</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="unsupervised-methods.html#cb150-1"></a>centroids_df <span class="op">%&gt;%</span></span>
-<span id="cb150-2"><a href="unsupervised-methods.html#cb150-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y, <span class="dt">color =</span> type)) <span class="op">+</span></span>
-<span id="cb150-3"><a href="unsupervised-methods.html#cb150-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb150-4"><a href="unsupervised-methods.html#cb150-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">factor</span>(<span class="st">&quot;green&quot;</span>), <span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.75</span>)) <span class="op">+</span></span>
-<span id="cb150-5"><a href="unsupervised-methods.html#cb150-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
-<span id="cb150-6"><a href="unsupervised-methods.html#cb150-6"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb150-7"><a href="unsupervised-methods.html#cb150-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="unsupervised-methods.html#cb151-1"></a>centroids_df <span class="op">%&gt;%</span></span>
+<span id="cb151-2"><a href="unsupervised-methods.html#cb151-2"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(x, y, <span class="dt">color =</span> type)) <span class="op">+</span></span>
+<span id="cb151-3"><a href="unsupervised-methods.html#cb151-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
+<span id="cb151-4"><a href="unsupervised-methods.html#cb151-4"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> <span class="kw">data.frame</span>(<span class="dt">type =</span> <span class="kw">factor</span>(<span class="st">&quot;green&quot;</span>), <span class="dt">x =</span> <span class="fl">0.25</span>, <span class="dt">y =</span> <span class="fl">0.75</span>)) <span class="op">+</span></span>
+<span id="cb151-5"><a href="unsupervised-methods.html#cb151-5"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;orange&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;green&quot;</span>)) <span class="op">+</span></span>
+<span id="cb151-6"><a href="unsupervised-methods.html#cb151-6"></a><span class="st">  </span><span class="kw">lims</span>(<span class="dt">x =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">y =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb151-7"><a href="unsupervised-methods.html#cb151-7"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="05_unsupervised_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>The K-Means clustering algorithm applies this calculation for <strong>each point</strong>:</p>
 <p><img src="img/km4.png" width="30%" style="display: block; margin: auto;" /></p>
@@ -474,22 +477,22 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <p>Clustering methods have in general some problems which are important to address. For example, in some instances, centering and scaling variables might be more appropriate, and this can have important implications for the resulting clusters. In addition, outliers can have a big impact on the cluster assignment in general. In addition, small changes in the data can have big impacts on the final clusters.</p>
 <p>You might ask yourelf, how can we fit this in <code>R</code>? Let’s suppose that we have reasons to believe that there are different clusters between the socio-economic status of a family and a student’s expected socio-economic status. For example, we might argue that students from low socio-economic status might not have great aspirations, students from middle socio-economic status have average aspirations while students from high socio-economic status might have great aspirations.</p>
 <p>The function <code>kmeans</code> is used to calculate the clusters. It accepts two arguments: the dataframe with the <span class="math inline">\(P\)</span> columns and how many clusters the user wants. Let’s pass that to <code>kmeans</code> and visualize the clusters</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="unsupervised-methods.html#cb151-1"></a>res &lt;-</span>
-<span id="cb151-2"><a href="unsupervised-methods.html#cb151-2"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
-<span id="cb151-3"><a href="unsupervised-methods.html#cb151-3"></a><span class="st">  </span><span class="kw">select</span>(ESCS, BSMJ) <span class="op">%&gt;%</span></span>
-<span id="cb151-4"><a href="unsupervised-methods.html#cb151-4"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">3</span>)</span>
-<span id="cb151-5"><a href="unsupervised-methods.html#cb151-5"></a></span>
-<span id="cb151-6"><a href="unsupervised-methods.html#cb151-6"></a>pisa<span class="op">$</span>clust &lt;-<span class="st"> </span><span class="kw">factor</span>(res<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb151-7"><a href="unsupervised-methods.html#cb151-7"></a></span>
-<span id="cb151-8"><a href="unsupervised-methods.html#cb151-8"></a>pisa <span class="op">%&gt;%</span></span>
-<span id="cb151-9"><a href="unsupervised-methods.html#cb151-9"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(ESCS, BSMJ, <span class="dt">color =</span> clust)) <span class="op">+</span></span>
-<span id="cb151-10"><a href="unsupervised-methods.html#cb151-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb151-11"><a href="unsupervised-methods.html#cb151-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="st">&quot;Index of economic, social and cultural status of family&quot;</span>) <span class="op">+</span></span>
-<span id="cb151-12"><a href="unsupervised-methods.html#cb151-12"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Students expected occupational status&quot;</span>) <span class="op">+</span></span>
-<span id="cb151-13"><a href="unsupervised-methods.html#cb151-13"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="unsupervised-methods.html#cb152-1"></a>res &lt;-</span>
+<span id="cb152-2"><a href="unsupervised-methods.html#cb152-2"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
+<span id="cb152-3"><a href="unsupervised-methods.html#cb152-3"></a><span class="st">  </span><span class="kw">select</span>(ESCS, BSMJ) <span class="op">%&gt;%</span></span>
+<span id="cb152-4"><a href="unsupervised-methods.html#cb152-4"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">3</span>)</span>
+<span id="cb152-5"><a href="unsupervised-methods.html#cb152-5"></a></span>
+<span id="cb152-6"><a href="unsupervised-methods.html#cb152-6"></a>pisa<span class="op">$</span>clust &lt;-<span class="st"> </span><span class="kw">factor</span>(res<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb152-7"><a href="unsupervised-methods.html#cb152-7"></a></span>
+<span id="cb152-8"><a href="unsupervised-methods.html#cb152-8"></a>pisa <span class="op">%&gt;%</span></span>
+<span id="cb152-9"><a href="unsupervised-methods.html#cb152-9"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(ESCS, BSMJ, <span class="dt">color =</span> clust)) <span class="op">+</span></span>
+<span id="cb152-10"><a href="unsupervised-methods.html#cb152-10"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb152-11"><a href="unsupervised-methods.html#cb152-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="st">&quot;Index of economic, social and cultural status of family&quot;</span>) <span class="op">+</span></span>
+<span id="cb152-12"><a href="unsupervised-methods.html#cb152-12"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Students expected occupational status&quot;</span>) <span class="op">+</span></span>
+<span id="cb152-13"><a href="unsupervised-methods.html#cb152-13"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="05_unsupervised_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Substantively, this example might not make a lot of sense, but it serves to exemplify that the K-Means can find clusters <strong>even</strong> when there aren’t any clusters. From this particular plot, it doesn’t seem to be a clear cut distinction between the three clusters. We can inspect the actual values of the centrois, for example:</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="unsupervised-methods.html#cb152-1"></a>res<span class="op">$</span>centers</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="unsupervised-methods.html#cb153-1"></a>res<span class="op">$</span>centers</span></code></pre></div>
 <pre><code>##          ESCS     BSMJ
 ## 1 -0.19107621 38.51749
 ## 2  0.17401028 81.60611
@@ -516,10 +519,10 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <li><code>year</code>: the year of each ranking</li>
 </ul>
 <p>We can read in the data with the code below:</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="unsupervised-methods.html#cb154-1"></a>dt_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv&quot;</span>)</span>
-<span id="cb154-2"><a href="unsupervised-methods.html#cb154-2"></a></span>
-<span id="cb154-3"><a href="unsupervised-methods.html#cb154-3"></a><span class="co"># Have a look with:</span></span>
-<span id="cb154-4"><a href="unsupervised-methods.html#cb154-4"></a><span class="kw">head</span>(dt_all)</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="unsupervised-methods.html#cb155-1"></a>dt_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv&quot;</span>)</span>
+<span id="cb155-2"><a href="unsupervised-methods.html#cb155-2"></a></span>
+<span id="cb155-3"><a href="unsupervised-methods.html#cb155-3"></a><span class="co"># Have a look with:</span></span>
+<span id="cb155-4"><a href="unsupervised-methods.html#cb155-4"></a><span class="kw">head</span>(dt_all)</span></code></pre></div>
 <pre><code>##                             institution world_rank        country national_rank
 ## 1                    Harvard University          1            USA             1
 ## 2 Massachusetts Institute of Technology          2            USA             2
@@ -557,13 +560,13 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <li>All in all, these ranking variables seem to correlated to a reasonable degree together.</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="unsupervised-methods.html#cb156-1"></a>dt &lt;-</span>
-<span id="cb156-2"><a href="unsupervised-methods.html#cb156-2"></a><span class="st">  </span>dt_all <span class="op">%&gt;%</span></span>
-<span id="cb156-3"><a href="unsupervised-methods.html#cb156-3"></a><span class="st">  </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2015</span>)</span>
-<span id="cb156-4"><a href="unsupervised-methods.html#cb156-4"></a></span>
-<span id="cb156-5"><a href="unsupervised-methods.html#cb156-5"></a>dt <span class="op">%&gt;%</span></span>
-<span id="cb156-6"><a href="unsupervised-methods.html#cb156-6"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>country, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb156-7"><a href="unsupervised-methods.html#cb156-7"></a><span class="st">  </span><span class="kw">cor</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="unsupervised-methods.html#cb157-1"></a>dt &lt;-</span>
+<span id="cb157-2"><a href="unsupervised-methods.html#cb157-2"></a><span class="st">  </span>dt_all <span class="op">%&gt;%</span></span>
+<span id="cb157-3"><a href="unsupervised-methods.html#cb157-3"></a><span class="st">  </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2015</span>)</span>
+<span id="cb157-4"><a href="unsupervised-methods.html#cb157-4"></a></span>
+<span id="cb157-5"><a href="unsupervised-methods.html#cb157-5"></a>dt <span class="op">%&gt;%</span></span>
+<span id="cb157-6"><a href="unsupervised-methods.html#cb157-6"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>country, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb157-7"><a href="unsupervised-methods.html#cb157-7"></a><span class="st">  </span><span class="kw">cor</span>()</span></code></pre></div>
 <pre><code>##                      quality_of_education alumni_employment quality_of_faculty
 ## quality_of_education            1.0000000         0.4736529          0.6859886
 ## alumni_employment               0.4736529         1.0000000          0.3906046
@@ -603,12 +606,12 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <li>Overall, there doesn’t seem to be great consistency between the principal components and the variables.</li>
 </ul></li>
 </ul>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="unsupervised-methods.html#cb158-1"></a>res_pc &lt;-</span>
-<span id="cb158-2"><a href="unsupervised-methods.html#cb158-2"></a><span class="st">  </span>dt <span class="op">%&gt;%</span></span>
-<span id="cb158-3"><a href="unsupervised-methods.html#cb158-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>country, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span></span>
-<span id="cb158-4"><a href="unsupervised-methods.html#cb158-4"></a><span class="st">  </span><span class="kw">prcomp</span>(<span class="dt">scale =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb158-5"><a href="unsupervised-methods.html#cb158-5"></a></span>
-<span id="cb158-6"><a href="unsupervised-methods.html#cb158-6"></a><span class="kw">tidy</span>(res_pc, <span class="st">&quot;pcs&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="unsupervised-methods.html#cb159-1"></a>res_pc &lt;-</span>
+<span id="cb159-2"><a href="unsupervised-methods.html#cb159-2"></a><span class="st">  </span>dt <span class="op">%&gt;%</span></span>
+<span id="cb159-3"><a href="unsupervised-methods.html#cb159-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>country, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span></span>
+<span id="cb159-4"><a href="unsupervised-methods.html#cb159-4"></a><span class="st">  </span><span class="kw">prcomp</span>(<span class="dt">scale =</span> <span class="ot">TRUE</span>, <span class="dt">center =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb159-5"><a href="unsupervised-methods.html#cb159-5"></a></span>
+<span id="cb159-6"><a href="unsupervised-methods.html#cb159-6"></a><span class="kw">tidy</span>(res_pc, <span class="st">&quot;pcs&quot;</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7 x 4
 ##      PC std.dev percent cumulative
 ##   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;
@@ -619,7 +622,7 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 ## 5     5   0.551  0.0434      0.950
 ## 6     6   0.457  0.0299      0.979
 ## 7     7   0.380  0.0206      1</code></pre>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="unsupervised-methods.html#cb160-1"></a>res_pc<span class="op">$</span>rotation</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="unsupervised-methods.html#cb161-1"></a>res_pc<span class="op">$</span>rotation</span></code></pre></div>
 <pre><code>##                            PC1        PC2         PC3        PC4         PC5
 ## quality_of_education 0.3587429  0.5760826  0.16579182 -0.1095131  0.69777431
 ## alumni_employment    0.3040826  0.3183726 -0.82359376  0.3051580 -0.16374091
@@ -636,12 +639,12 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 ## influence             0.33664464 -0.72278433
 ## citations            -0.77984564  0.11110425
 ## patents              -0.13447189 -0.08587055</code></pre>
-<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="unsupervised-methods.html#cb162-1"></a><span class="kw">autoplot</span>(res_pc,</span>
-<span id="cb162-2"><a href="unsupervised-methods.html#cb162-2"></a>         <span class="dt">loadings =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb162-3"><a href="unsupervised-methods.html#cb162-3"></a>         <span class="dt">loadings.label =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb162-4"><a href="unsupervised-methods.html#cb162-4"></a>         <span class="dt">loadings.label.repel =</span> <span class="ot">TRUE</span>,</span>
-<span id="cb162-5"><a href="unsupervised-methods.html#cb162-5"></a>         <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>) <span class="op">+</span></span>
-<span id="cb162-6"><a href="unsupervised-methods.html#cb162-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="unsupervised-methods.html#cb163-1"></a><span class="kw">autoplot</span>(res_pc,</span>
+<span id="cb163-2"><a href="unsupervised-methods.html#cb163-2"></a>         <span class="dt">loadings =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb163-3"><a href="unsupervised-methods.html#cb163-3"></a>         <span class="dt">loadings.label =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb163-4"><a href="unsupervised-methods.html#cb163-4"></a>         <span class="dt">loadings.label.repel =</span> <span class="ot">TRUE</span>,</span>
+<span id="cb163-5"><a href="unsupervised-methods.html#cb163-5"></a>         <span class="dt">alpha =</span> <span class="dv">1</span><span class="op">/</span><span class="dv">6</span>) <span class="op">+</span></span>
+<span id="cb163-6"><a href="unsupervised-methods.html#cb163-6"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="05_unsupervised_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 </details>
 </div>
@@ -664,40 +667,40 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 </ul>
 An extension of this could hypothesize that we should collect information in terms of growth of labor market and population of students in order to check whether they also cluster on these variables.</li>
 </ul>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="unsupervised-methods.html#cb163-1"></a><span class="co">############################# Three clusters ##################################</span></span>
-<span id="cb163-2"><a href="unsupervised-methods.html#cb163-2"></a><span class="co">###############################################################################</span></span>
-<span id="cb163-3"><a href="unsupervised-methods.html#cb163-3"></a>sum_dt &lt;-<span class="st"> </span></span>
-<span id="cb163-4"><a href="unsupervised-methods.html#cb163-4"></a><span class="st">  </span>dt <span class="op">%&gt;%</span></span>
-<span id="cb163-5"><a href="unsupervised-methods.html#cb163-5"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span></span>
-<span id="cb163-6"><a href="unsupervised-methods.html#cb163-6"></a><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span></span>
-<span id="cb163-7"><a href="unsupervised-methods.html#cb163-7"></a><span class="st">  </span><span class="kw">summarize_all</span>(mean)</span>
-<span id="cb163-8"><a href="unsupervised-methods.html#cb163-8"></a></span>
-<span id="cb163-9"><a href="unsupervised-methods.html#cb163-9"></a><span class="kw">set.seed</span>(<span class="dv">523131</span>)</span>
-<span id="cb163-10"><a href="unsupervised-methods.html#cb163-10"></a>res_km &lt;-</span>
-<span id="cb163-11"><a href="unsupervised-methods.html#cb163-11"></a><span class="st">  </span>sum_dt <span class="op">%&gt;%</span></span>
-<span id="cb163-12"><a href="unsupervised-methods.html#cb163-12"></a><span class="st">  </span><span class="kw">select</span>(quality_of_education, alumni_employment) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb163-13"><a href="unsupervised-methods.html#cb163-13"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">50</span>)</span>
-<span id="cb163-14"><a href="unsupervised-methods.html#cb163-14"></a></span>
-<span id="cb163-15"><a href="unsupervised-methods.html#cb163-15"></a>sum_dt<span class="op">$</span>.cluster_three &lt;-<span class="st"> </span><span class="kw">factor</span>(res_km<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
-<span id="cb163-16"><a href="unsupervised-methods.html#cb163-16"></a>sum_dt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb163-17"><a href="unsupervised-methods.html#cb163-17"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(quality_of_education, alumni_employment, <span class="dt">color =</span> .cluster_three)) <span class="op">+</span></span>
-<span id="cb163-18"><a href="unsupervised-methods.html#cb163-18"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> country)) <span class="op">+</span></span>
-<span id="cb163-19"><a href="unsupervised-methods.html#cb163-19"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
-<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
-<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="unsupervised-methods.html#cb164-1"></a><span class="co">############################# Two clusters ####################################</span></span>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="unsupervised-methods.html#cb164-1"></a><span class="co">############################# Three clusters ##################################</span></span>
 <span id="cb164-2"><a href="unsupervised-methods.html#cb164-2"></a><span class="co">###############################################################################</span></span>
-<span id="cb164-3"><a href="unsupervised-methods.html#cb164-3"></a></span>
-<span id="cb164-4"><a href="unsupervised-methods.html#cb164-4"></a><span class="kw">set.seed</span>(<span class="dv">523131</span>)</span>
-<span id="cb164-5"><a href="unsupervised-methods.html#cb164-5"></a>res_km &lt;-</span>
-<span id="cb164-6"><a href="unsupervised-methods.html#cb164-6"></a><span class="st">  </span>sum_dt <span class="op">%&gt;%</span></span>
-<span id="cb164-7"><a href="unsupervised-methods.html#cb164-7"></a><span class="st">  </span><span class="kw">select</span>(quality_of_education, alumni_employment) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb164-8"><a href="unsupervised-methods.html#cb164-8"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">2</span>, <span class="dt">nstart =</span> <span class="dv">50</span>)</span>
-<span id="cb164-9"><a href="unsupervised-methods.html#cb164-9"></a></span>
-<span id="cb164-10"><a href="unsupervised-methods.html#cb164-10"></a>sum_dt<span class="op">$</span>.cluster_two &lt;-<span class="st"> </span><span class="kw">factor</span>(res_km<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)</span>
-<span id="cb164-11"><a href="unsupervised-methods.html#cb164-11"></a>sum_dt <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb164-12"><a href="unsupervised-methods.html#cb164-12"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(quality_of_education, alumni_employment, <span class="dt">color =</span> .cluster_two)) <span class="op">+</span></span>
-<span id="cb164-13"><a href="unsupervised-methods.html#cb164-13"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> country)) <span class="op">+</span></span>
-<span id="cb164-14"><a href="unsupervised-methods.html#cb164-14"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<span id="cb164-3"><a href="unsupervised-methods.html#cb164-3"></a>sum_dt &lt;-<span class="st"> </span></span>
+<span id="cb164-4"><a href="unsupervised-methods.html#cb164-4"></a><span class="st">  </span>dt <span class="op">%&gt;%</span></span>
+<span id="cb164-5"><a href="unsupervised-methods.html#cb164-5"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>world_rank, <span class="op">-</span>institution, <span class="op">-</span>national_rank, <span class="op">-</span>year) <span class="op">%&gt;%</span></span>
+<span id="cb164-6"><a href="unsupervised-methods.html#cb164-6"></a><span class="st">  </span><span class="kw">group_by</span>(country) <span class="op">%&gt;%</span></span>
+<span id="cb164-7"><a href="unsupervised-methods.html#cb164-7"></a><span class="st">  </span><span class="kw">summarize_all</span>(mean)</span>
+<span id="cb164-8"><a href="unsupervised-methods.html#cb164-8"></a></span>
+<span id="cb164-9"><a href="unsupervised-methods.html#cb164-9"></a><span class="kw">set.seed</span>(<span class="dv">523131</span>)</span>
+<span id="cb164-10"><a href="unsupervised-methods.html#cb164-10"></a>res_km &lt;-</span>
+<span id="cb164-11"><a href="unsupervised-methods.html#cb164-11"></a><span class="st">  </span>sum_dt <span class="op">%&gt;%</span></span>
+<span id="cb164-12"><a href="unsupervised-methods.html#cb164-12"></a><span class="st">  </span><span class="kw">select</span>(quality_of_education, alumni_employment) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb164-13"><a href="unsupervised-methods.html#cb164-13"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">50</span>)</span>
+<span id="cb164-14"><a href="unsupervised-methods.html#cb164-14"></a></span>
+<span id="cb164-15"><a href="unsupervised-methods.html#cb164-15"></a>sum_dt<span class="op">$</span>.cluster_three &lt;-<span class="st"> </span><span class="kw">factor</span>(res_km<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
+<span id="cb164-16"><a href="unsupervised-methods.html#cb164-16"></a>sum_dt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb164-17"><a href="unsupervised-methods.html#cb164-17"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(quality_of_education, alumni_employment, <span class="dt">color =</span> .cluster_three)) <span class="op">+</span></span>
+<span id="cb164-18"><a href="unsupervised-methods.html#cb164-18"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> country)) <span class="op">+</span></span>
+<span id="cb164-19"><a href="unsupervised-methods.html#cb164-19"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="unsupervised-methods.html#cb165-1"></a><span class="co">############################# Two clusters ####################################</span></span>
+<span id="cb165-2"><a href="unsupervised-methods.html#cb165-2"></a><span class="co">###############################################################################</span></span>
+<span id="cb165-3"><a href="unsupervised-methods.html#cb165-3"></a></span>
+<span id="cb165-4"><a href="unsupervised-methods.html#cb165-4"></a><span class="kw">set.seed</span>(<span class="dv">523131</span>)</span>
+<span id="cb165-5"><a href="unsupervised-methods.html#cb165-5"></a>res_km &lt;-</span>
+<span id="cb165-6"><a href="unsupervised-methods.html#cb165-6"></a><span class="st">  </span>sum_dt <span class="op">%&gt;%</span></span>
+<span id="cb165-7"><a href="unsupervised-methods.html#cb165-7"></a><span class="st">  </span><span class="kw">select</span>(quality_of_education, alumni_employment) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb165-8"><a href="unsupervised-methods.html#cb165-8"></a><span class="st">  </span><span class="kw">kmeans</span>(<span class="dt">centers =</span> <span class="dv">2</span>, <span class="dt">nstart =</span> <span class="dv">50</span>)</span>
+<span id="cb165-9"><a href="unsupervised-methods.html#cb165-9"></a></span>
+<span id="cb165-10"><a href="unsupervised-methods.html#cb165-10"></a>sum_dt<span class="op">$</span>.cluster_two &lt;-<span class="st"> </span><span class="kw">factor</span>(res_km<span class="op">$</span>cluster, <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)</span>
+<span id="cb165-11"><a href="unsupervised-methods.html#cb165-11"></a>sum_dt <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb165-12"><a href="unsupervised-methods.html#cb165-12"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(quality_of_education, alumni_employment, <span class="dt">color =</span> .cluster_two)) <span class="op">+</span></span>
+<span id="cb165-13"><a href="unsupervised-methods.html#cb165-13"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> country)) <span class="op">+</span></span>
+<span id="cb165-14"><a href="unsupervised-methods.html#cb165-14"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="05_unsupervised_files/figure-html/unnamed-chunk-31-2.png" width="672" /></p>
 </details>
 
