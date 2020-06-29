@@ -206,7 +206,7 @@ However, there's also an alternative approach. `step_pca` allows you to specify 
 
 We can try our previous models with a 90\% threshold. Since we will not perform a grid search, we will drop the grid and only keep the cross-validation to get uncertain estimates of our loss function $RMSE$:
 
-```{r, eval = FALSE}
+```{r}
 # Define a new recipe
 # where threshold is .90
 rcp <-
