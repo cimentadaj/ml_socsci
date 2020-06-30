@@ -1,0 +1,361 @@
+---
+title: "Machine Learning for Social Scientists"
+subtitle: "K-Means clustering and competition"
+author: "Jorge Cimentada"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # css: [./upf.css, "rutgers-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+layout: true
+
+<!-- background-image: url(./figs/upf.png) -->
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE, 
+                      fig.width = 10.5,
+                      fig.height = 4, 
+                      comment = NA,
+                      rows.print = 16)
+
+size_img <- "25%"
+```
+
+---
+
+# Load the data
+
+```{r, message = FALSE}
+library(dplyr)
+library(ggplot2)
+
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
+
+---
+
+## K-Means Clustering
+
+* K-Means is a method for finding clusters in a dataset of $P$ variables
+
+* K-Means clustering is particularly useful for exploration in the social sciences
+
+Suppose we have a scatterplot of two variables:
+
+```{r, echo = FALSE, out.width = size_img, fig.align = 'center'}
+knitr::include_graphics("../../img/km1.png")
+```
+
+---
+## K-Means Clustering
+
+* How does K-Means identify clusters? 
+
+* **Randomly** assigning each point a cluster
+
+```{r, echo = FALSE, out.width = size_img, fig.align = 'center'}
+knitr::include_graphics("../../img/km2.png")
+```
+
+* Each point has now an associated color. However, these colors were randomly assigned. 
+
+---
+## K-Means Clustering
+
+* K-Means clustering works by creating something called 'centroids'
+
+* These represent the center of the different clusters
+
+* The centroid is the **mean of the $P$ variables**
+
+```{r, echo = FALSE, out.width = size_img, fig.align = 'center'}
+knitr::include_graphics("../../img/km3.png")
+```
+
+* So far, everything is random!
+
+---
+
+## K-Means Clustering
+
+* Let's work this out manually:
+
+```{r, fig.align = 'center'}
+centroids_df <- data.frame(type = factor(c("orange", "purple", "green"), levels = c("orange", "purple", "green")), x = c(.54, .56, .52), y = c(.553, .55, .56))
+
+ggplot(centroids_df, aes(x, y, color = type)) +
+  geom_point(size = 4) +
+  scale_color_manual(values = c("orange", "purple", "green")) +
+  lims(x = c(0, 1), y = c(0, 1)) +
+  theme_minimal()
+```
+
+---
+
+## K-Means Clustering
+
+* Suppose we add a random point
+
+```{r, fig.align = 'center'}
+centroids_df %>%
+  ggplot(aes(x, y)) +
+  geom_point(aes(color = type), size = 4) +
+  geom_point(data = data.frame(x = 0.25, y = 0.75)) +
+  scale_color_manual(values = c("orange", "purple", "green")) +
+  lims(x = c(0, 1), y = c(0, 1)) +
+  theme_minimal()
+```
+
+* How do we assign that point a cluster?
+
+---
+
+## K-Means Clustering
+
+* We calculate the Euclidean distance:
+
+$\sqrt{(x_2 - x_1) + (y_2 - y_1)}$
+
+
+* Applied to our problem:
+
+  + Orange: $\sqrt{(0.54 - 0.25) + (0.553 - 0.75)} = 0.304959$
+  
+  + Purple: $\sqrt{(0.56 - 0.25) + (0.550 - 0.75)} = 0.3316625$
+  
+  + Green: $\sqrt{(0.52 - 0.25) + (0.560 - 0.75)} = 0.2828427$
+
+---
+
+## K-Means Clustering
+
+The random point is closest to the green centroid, as the distance is the smallest (0.28). Let's assign it to that cluster:
+
+```{r, fig.align = 'center'}
+centroids_df %>%
+  ggplot(aes(x, y, color = type)) +
+  geom_point(size = 4) +
+  geom_point(data = data.frame(type = factor("green"), x = 0.25, y = 0.75)) +
+  scale_color_manual(values = c("orange", "purple", "green")) +
+  lims(x = c(0, 1), y = c(0, 1)) +
+  theme_minimal()
+```
+
+---
+## K-Means Clustering
+
+The K-Means clustering algorithm applies this calculation for **each point**:
+
+```{r, echo = FALSE, out.width = size_img, fig.align = 'center'}
+knitr::include_graphics("../../img/km4.png")
+```
+
+where each point is assigned the color of the closest centroid. 
+
+* The centroids are still positioned in the center, reflecting the random allocation of the initial points
+
+---
+## K-Means Clustering
+
+* Calculates new centroids based on the average of the X and Y of the newly new assigned points:
+
+```{r, echo = FALSE, out.width = size_img, fig.align = 'center'}
+knitr::include_graphics("../../img/km5.png")
+```
+
+* Repeat exactly the same strategy again:
+
+  + Calculate the distance between each point and all corresponding clusters
+  + Reassign all points to the cluster of the closest centroid
+  + Recalculate the centroid
+
+---
+## K-Means Clustering
+
+* After $N$ iterations, each point will be allocated to a particular centroid and it **will stop being reassigned**:
+
+```{r, echo = FALSE, out.width = size_img, fig.align = 'center'}
+knitr::include_graphics("../../img/km6.png")
+```
+
+* Minimize within-cluster variance
+* Maximize between-cluster variance
+
+> Respondents are very similar within each cluster with respect to the $P$ variables and very different between clusters
+
+---
+## Disadvantages K-Means Clustering
+
+* You need to provide the number of cluster that you want
+
+* K-Means will **always** calculate the number of supplied clusters
+
+* The clusters need to make substantive sense rather than statistical sense.
+
+* K-Means also has a stability problem
+
+```{r, echo = FALSE, out.width = "35%", fig.align = 'center'}
+knitr::include_graphics("../../img/km7.png")
+```
+
+---
+## Caveats K-Means Clustering
+
+* Exploratory
+
+* Should make substantive sense
+
+* Robustness
+
+* Replicability
+
+* Centering and scaling might be appropriate
+
+* Outliers
+
+---
+## K-Means Clustering
+
+* How can we fit this in `R`? 
+
+* Suppose that there are different clusters between the socio-economic status of a family and a student's expected socio-economic status:
+
+  + Low socio-economic status might not have great aspirations
+  
+  + Students from middle socio-economic status have average aspirations 
+  
+  + Students from high socio-economic status might have great aspirations.
+
+* We fit this using `kmeans` and passing a data frame with the columns
+
+---
+## K-Means Clustering
+
+* K-Means can find clusters **even** when there aren't any clusters. 
+
+```{r, fig.align = 'center'}
+res <- pisa %>% select(ESCS, BSMJ) %>% kmeans(centers = 3)
+pisa$clust <- factor(res$cluster, levels = 1:3, ordered = TRUE)
+ggplot(pisa, aes(ESCS, BSMJ, color = clust)) +
+  geom_point(alpha = 1/3) +
+  scale_x_continuous("Index of economic, social and cultural status of family") +
+  scale_y_continuous("Students expected occupational status") +
+  theme_minimal()
+```
+
+---
+
+## No free lunch
+
+<br>
+<br>
+<br>
+<br>
+
+.center[
+.middle[
+> The 'No free lunch' theorem is a simple axiom that states that since every predictive algorithm has different assumptions, no single model is known to perform better than all others *a priori*
+]
+]
+<br>
+<br>
+
+**Lucky for us: social scientists are not only interested in predictive accuracy**
+
+---
+
+## Causal Inference
+
+* Growing interest from the social science literature on achieving causal inference using tree-based methods:
+
+  + Athey, Susan, and Guido Imbens. "Recursive partitioning for heterogeneous causal effects." Proceedings of the National Academy of Sciences 113.27 (2016): 7353-7360
+  
+  + Brand, Jennie E., et al. "Uncovering Sociological Effect Heterogeneity using Machine Learning." arXiv preprint arXiv:1909.09138 (2019)
+
+
+* Tease out heterogeneity in variation to achieve causal inference
+
+* Explore interactions in a causal fashion
+
+---
+
+## Inference
+
+* We can use machine learning methods for exploring new hypothesis in the data
+
+* Avoid overfitting by train/testing and resampling
+
+* Tree-based methods and regularized regressions can help us understand variables which are very good for prediction but that we weren't aware of:
+
+  + Arpino, B., Le Moglie, M., and Mencarini, L. (2018). Machine-Learning techniques for family demography: An application of random forests to the analysis of divorce determinants in Germany
+
+* Understand the role of interactions from a more intuitive point of view through exploration
+
+* This includes unsupervised methods such as $PCA$ and K-Means clustering.
+
+---
+
+## Prediction
+
+If prediction is the aim, then there's evidence that some models consistently achieve greater accuracy is different settings:
+
+* Tree based methods
+  + Random Forests 
+  + Gradient Boosting
+  
+* Neural Networks
+* Support Vector Machines
+
+> Don't forget our training: we need to explore our data and understand it. This can help a lot in figuring out why some models work more than others.
+
+---
+
+## Prediction challenge
+
+* 2019 Summer Institute In Computational Social Science (SICSS)
+  + Mark Verhagen
+  
+  + Christopher Barrie
+  
+  + Arun Frey
+  
+  + Pablo Beytía
+  
+  + Arran Davis
+  
+  + Jorge Cimentada
+
+* All metadata on counties in the United States
+
+* Counties with different poverty levels have varying edits and pageviews
+
+---
+
+## Prediction challenge
+
+* Your task: **build a predictive model of the number of edits**
+
+* Can help identify which sites are not being capture by poverty/metadata indicators
+
+* 150 columns, including Wiki data on the website and characteristics of the county
+
+* Ideas
+  + Does it make sense to reduce the number of correlated variables into a few principal components?
+  + Do some counties cluster on very correlated variables? Is it fesiable to summarize some of these variables through predicting the cluster membership?
+  + Do we really need to use all variables?
+  + Does regularized regression or tree-based methods do better?
+
+Read: https://cimentadaj.github.io/ml_socsci/no-free-lunch.html#prediction-challenge
+
+You have 45 minutes, start!

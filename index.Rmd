@@ -26,4 +26,4 @@ Day 2 - Afternoon: [Slides](./slides/day2_afternoon/tree_methods.html)
 
 Day 3 - Morning: [Slides](./slides/day3_morning/boosting_pca.html)
 
-Day 3 - Afternoon: Slides
+Day 3 - Afternoon: [Slides](./slides/day3_afternoon/kmeans_competition.html)
