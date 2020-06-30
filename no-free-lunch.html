@@ -185,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="no-free-lunch.html"><a href="no-free-lunch.html"><i class="fa fa-check"></i><b>6</b> No free lunch</a><ul>
 <li class="chapter" data-level="6.1" data-path="no-free-lunch.html"><a href="no-free-lunch.html#causal-inference"><i class="fa fa-check"></i><b>6.1</b> Causal Inference</a></li>
-<li class="chapter" data-level="6.2" data-path="no-free-lunch.html"><a href="no-free-lunch.html#explanaining-complex-models"><i class="fa fa-check"></i><b>6.2</b> Explanaining complex models</a></li>
+<li class="chapter" data-level="6.2" data-path="no-free-lunch.html"><a href="no-free-lunch.html#explaining-complex-models"><i class="fa fa-check"></i><b>6.2</b> Explaining complex models</a></li>
 <li class="chapter" data-level="6.3" data-path="no-free-lunch.html"><a href="no-free-lunch.html#inference"><i class="fa fa-check"></i><b>6.3</b> Inference</a></li>
 <li class="chapter" data-level="6.4" data-path="no-free-lunch.html"><a href="no-free-lunch.html#prediction"><i class="fa fa-check"></i><b>6.4</b> Prediction</a></li>
 <li class="chapter" data-level="6.5" data-path="no-free-lunch.html"><a href="no-free-lunch.html#prediction-challenge"><i class="fa fa-check"></i><b>6.5</b> Prediction challenge</a></li>
@@ -225,8 +225,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">6.1</span> Causal Inference</h2>
 <p>There is growing interest from the social science literature on achieving causal inference using tree-based methods <span class="citation">(Athey and Imbens <a href="#ref-athey2016" role="doc-biblioref">2016</a>)</span>. By definition, this type of analysis is not interested in predictive accuracy alone. This means that we would not try several different models and test each one against their predictive accuracy. Instead, we need to carefully understand how tree-based methods work and how they can help us estimate a causal effect. For this type of area, machine learning servers as a tool for exploration and for estimation of point estimates of causal effects rather than for predictive accuracy.</p>
 </div>
-<div id="explanaining-complex-models" class="section level2">
-<h2><span class="header-section-number">6.2</span> Explanaining complex models</h2>
+<div id="explaining-complex-models" class="section level2">
+<h2><span class="header-section-number">6.2</span> Explaining complex models</h2>
 <p>In business settings, there are scenarios where interpretability is often needed more than accuracy. This is also the case for the social sciences. For example, explaining a complex model to key stakeholders can be challenging. It is sometimes better to have a simple model that performs worse than more complex model at the expense of interpretability. I’ve experienced situations like this one where we used simple decision trees that performed worse than other tree-based methods simply because it was much more important that the stakeholder understand how we achieved at a final prediction and which variables were the most important ones.</p>
 </div>
 <div id="inference" class="section level2">
@@ -242,7 +242,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">6.5</span> Prediction challenge</h2>
 <p>As part of the end of the course, we will have a prediction competition. This means you’ll get to use all the methods we’ve discussed so far and compare your predictions to your fellow class mates.</p>
 <p>At the 2019 Summer Institute In Computational Social Science (SICSS), Mark Verhagen, Christopher Barrie, Arun Frey, Pablo Beytía, Arran Davis and me collected data on the number of people that visit the Wikipedia website of all counties in the United States. This data can be used to understand whether counties with different poverty levels get more edits from the Wikipedia community. This can help assess whether there is a fundamental bias in Wikipedia contribution to richer counties.</p>
-<p>We will use this data to predict the total number of edits of each county in Wikipedia. We’ve matched this Wikipedia data with census-level indicators for each county, including indicators on poverty level, racial composition and general metadata on the counties Wikipedia page. This amouns to a total of 150 columns. The variable you will be trying to predict is <code>revisions</code>. This is the total number of edits for each countie all along it’s history since 2001. Below is the complete codebook:</p>
+<p>We will use this data to predict the total number of edits of each county in Wikipedia. We’ve matched this Wikipedia data with census-level indicators for each county, including indicators on poverty level, racial composition and general metadata on the counties Wikipedia page. This amounts to a total of 150 columns. The variable you will be trying to predict is <code>revisions</code>. This is the total number of edits for each county all along it’s history since 2001. Below is the complete codebook:</p>
 <ul>
 <li><code>county_fips</code>: the county code</li>
 <li><code>longitude/latitude</code>: the location of the county</li>
@@ -295,7 +295,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Here are some ideas you can try in your analysis:</p>
 <ul>
 <li><p>Does it make sense to reduce the number of correlated variables into a few principal components?</p></li>
-<li><p>Do some counties cluster on very correlated variables? Is it fesiable to summarize some of these variables through predicting the cluster membership?</p></li>
+<li><p>Do some counties cluster on very correlated variables? Is it feasible to summarize some of these variables through predicting the cluster membership?</p></li>
 <li><p>Do we really need to use all variables?</p></li>
 <li><p>Does regularized regression or tree-based methods do better?</p></li>
 </ul>

@@ -29,7 +29,7 @@ $PCA$ works by creating several components which are the normalized linear combi
 * They were threatened by other students
 * Other students took away or destroyed things that belonged to them
 * They got hit or pushed around by other students
-* Other students spread nasty rumours about them
+* Other students spread nasty rumors about them
 
 For each of these variables, the scale ranges from 1 to 4 where 4 is 'Once a week or more' and 1 is 'Never or almost never'. In other words, the higher the number, the more negative their response.
 
@@ -79,7 +79,7 @@ cor(pisa_selected)
 ## past12_spread_rumours          0.4451408             1.0000000
 ```
 
-Most correlations lie between `0.4` and `0.6`, a somewhat acceptable threshold for assesing whether they can be reduced into fewer variables. $PCA$ works by receiving as input $P$ variables (in this case six) and calculating the normalized linear combination of the $P$ variables. This new variable is the linear combination of the six variables that captures the greatest variance out of all of them. $PCA$ continues to calculate other normalized linear combinations **but** with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.
+Most correlations lie between `0.4` and `0.6`, a somewhat acceptable threshold for assessing whether they can be reduced into fewer variables. $PCA$ works by receiving as input $P$ variables (in this case six) and calculating the normalized linear combination of the $P$ variables. This new variable is the linear combination of the six variables that captures the greatest variance out of all of them. $PCA$ continues to calculate other normalized linear combinations **but** with the constraint that they need to be completely uncorrelated to all the other normalized linear combinations.
 
 This approach has the advantage that it constructs as many principal components (new variables) as it can, as long as they all capture 100\% of the variability of the original $P$ variables, and each of these new variables are completely uncorrelated between each other. 
 
@@ -179,7 +179,7 @@ pc %>%
 
 <img src="05_unsupervised_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
-Let's distill this plot. On the `X` axis we have the actual column of the first principal component (PC1) (this is literaly the same column we saw in the object `all_pcs`; if it serves to refresh your memory, check it out with `head(all_pcs)`). As you can see, the label of the `X` axis already tells us that this component explains nearly 60\% of the variance of these six variables. On the `Y` axis we have the actual column of the second principal component (PC2) (same as before, you can see this with `head(all_pcs)`). This principal component explains an additional 13.5\% of the variance of the six variables. 
+Let's distill this plot. On the `X` axis we have the actual column of the first principal component (PC1) (this is literally the same column we saw in the object `all_pcs`; if it serves to refresh your memory, check it out with `head(all_pcs)`). As you can see, the label of the `X` axis already tells us that this component explains nearly 60\% of the variance of these six variables. On the `Y` axis we have the actual column of the second principal component (PC2) (same as before, you can see this with `head(all_pcs)`). This principal component explains an additional 13.5\% of the variance of the six variables. 
 
 What this plot is trying to show is where these six variables are clustered between these two principal components. Since these two variables were centered and scaled to have a mean of zero, the red lines always begin at the intersection of the zero in PC1 and PC2. In other words, we can see more clearly the correlations we saw earlier. For example, remember that the first two variables were both negatively correlated with both PC1 and PC2. These two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:
 
@@ -275,13 +275,13 @@ res_cv
 ## 2 rsq     standard    0.835    10 0.00392
 ```
 
-This approach offers a very similar $RMSE$ of 40.8. Althought not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
+This approach offers a very similar $RMSE$ of 40.8. Although not possible at this moment, `tidymodels` is expected to allow the `threshold` parameter to be `tune` such that you can perform a grid search of this value as well (for those interested, see [here](https://github.com/tidymodels/recipes/issues/534)).
 
 Although $PCA$ is a very useful method for summarizing information, it is based on the notion that the variables to be summarized are best summarized through a linear combination. In other instances, non-linear methods can also prove useful as exploratory means.
 
 ## K-Means Clustering
 
-K-Means is a method for finding clusters in a dataset of $P$ variables. It is somewhat different from $PCA$ because it attemps to find non-overlapping clusters of respondents using $P$ variables. In terms of interpretation and transparency, K-Means clustering is particularly useful for exploration in the social sciences.
+K-Means is a method for finding clusters in a dataset of $P$ variables. It is somewhat different from $PCA$ because it attempts to find non-overlapping clusters of respondents using $P$ variables. In terms of interpretation and transparency, K-Means clustering is particularly useful for exploration in the social sciences.
 
 Suppose we have a scatterplot of two variables:
 
@@ -383,7 +383,7 @@ Mathematically, it can proved that after $N$ iterations, each point will be allo
 
 This approach looks to minimize within-cluster variance and maximize between-cluster variance. That is, respondents are very similar within each cluster with respect to the $P$ variables and very different between clusters.
 
-Althought K-Means clustering is a very fast, interpretable and flexible method, it has important drawbacks. First, K-Means will **always** calculate the number of supplied clusters. That is, if the user supplies three clusters, it will calculate three clusters. If the user supplies, ten clusters, it will also calculate ten clusters. In other words, the clusters calculate by the K-Means algorithm should be interpreted as exploratory and be contrasted with a theoretical description of the problem at hand. The clusters need to make substantive sense rather than statistical sense.
+Although K-Means clustering is a very fast, interpretable and flexible method, it has important drawbacks. First, K-Means will **always** calculate the number of supplied clusters. That is, if the user supplies three clusters, it will calculate three clusters. If the user supplies, ten clusters, it will also calculate ten clusters. In other words, the clusters calculate by the K-Means algorithm should be interpreted as exploratory and be contrasted with a theoretical description of the problem at hand. The clusters need to make substantive sense rather than statistical sense.
 
 K-Means also has a stability problem. That is, it is completely dependent on the **initial random assignment of the clusters**. Remember how we assigned each point a random cluster in our manual example?
 
@@ -399,7 +399,7 @@ This does not mean that the method is useless. It can be very useful to determin
 
 Clustering methods have in general some problems which are important to address. For example, in some instances, centering and scaling variables might be more appropriate, and this can have important implications for the resulting clusters. In addition, outliers can have a big impact on the cluster assignment in general. In addition, small changes in the data can have big impacts on the final clusters.
 
-You might ask yourelf, how can we fit this in `R`? Let's suppose that we have reasons to believe that there are different clusters between the socio-economic status of a family and a student's expected socio-economic status. For example, we might argue that students from low socio-economic status might not have great aspirations, students from middle socio-economic status have average aspirations while students from high socio-economic status might have great aspirations.
+You might ask yourself, how can we fit this in `R`? Let's suppose that we have reasons to believe that there are different clusters between the socio-economic status of a family and a student's expected socio-economic status. For example, we might argue that students from low socio-economic status might not have great aspirations, students from middle socio-economic status have average aspirations while students from high socio-economic status might have great aspirations.
 
 The function `kmeans` is used to calculate the clusters. It accepts two arguments: the dataframe with the $P$ columns and how many clusters the user wants. Let's pass that to `kmeans` and visualize the clusters
 
@@ -422,7 +422,7 @@ pisa %>%
 
 <img src="05_unsupervised_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
-Substantively, this example might not make a lot of sense, but it serves to exemplify that the K-Means can find clusters **even** when there aren't any clusters. From this particular plot, it doesn't seem to be a clear cut distinction between the three clusters. We can inspect the actual values of the centrois, for example:
+Substantively, this example might not make a lot of sense, but it serves to exemplify that the K-Means can find clusters **even** when there aren't any clusters. From this particular plot, it doesn't seem to be a clear cut distinction between the three clusters. We can inspect the actual values of the centroids, for example:
 
 
 ```r
@@ -436,7 +436,7 @@ res$centers
 ## 3  0.06654444 66.44577
 ```
 
-Althought some people might think that these methods have no value in the social sciences, I like to think this is because they've been trained with a particular hammer, and thus every problem seems like a nail. 
+Although some people might think that these methods have no value in the social sciences, I like to think this is because they've been trained with a particular hammer, and thus every problem seems like a nail. 
 
 We don't seem problems in a way that can be answered with these techniques because we don't think about problems with these type of approaches. For example, social scientists working on labor market and technology might want to try to understand why companies cluster into certain cities. K-Means might be a first step towards understanding the variables that discriminate where different types of companies cluster. 
 
@@ -550,7 +550,7 @@ dt %>%
 * Explore what each principal component measures with respect to the original seven variables. This can be done by accessing the object `rotation` with the `$` of the result of the `prcomp`
 * With the package `ggfortify`, use the function `autoplot` to plot the principal components
 
-How many principal componenets were created? How much variance do the first two and three components explain? What does PC1 measure? What does PC2 measure?
+How many principal components were created? How much variance do the first two and three components explain? What does PC1 measure? What does PC2 measure?
 
 <details>
   <summary><strong>> Answer </strong></summary>
@@ -632,7 +632,7 @@ Try several `centers`. Is there a substantive cluster among these countries?
 <details>
   <summary><strong>> Answer </strong></summary>
 
-  * Some of these clusters don't seem to captury substantial differences. However, the top-left group of countries seems to cluster continually with different centroids.
+  * Some of these clusters don't seem to capture substantial differences. However, the top-left group of countries seems to cluster continually with different centroids.
   * This cluster is continually composed of countries such as France, Spain, Egypt, Argentina, etc...
   * Do we have reasons to believe that they are very similar in `quality_of_education` and `alumno_employment`?
   

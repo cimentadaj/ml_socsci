@@ -21,7 +21,7 @@ We will end the course with a prediction challenge that will put to test all of 
   + Inference vs Prediction
   + Can inference and prediction complement each other?
   + Bias-variance / Interpretability-prediction tradeoffs
-  + Resampling for understtanding your model
+  + Resampling for understanding your model
   + "[The Fragile Families Challenge](http://www.fragilefamilieschallenge.org/)"
 
 **Readings**:  
@@ -198,7 +198,7 @@ We will be using the R software together with the Rstudio interface. No laptop i
 
 - The course assumes that the student is familiar with R and should be familiar with reading, manipulating and cleaning data frames. Ideally, the student has conducted some type of research using the software.
 
-- Students should have solid knowledge of basic statistics such as linear and logistic regression, ideally with more advanced concepts such as multilevel modelling.
+- Students should have solid knowledge of basic statistics such as linear and logistic regression, ideally with more advanced concepts such as multilevel modeling.
 
 ## About the author
 

@@ -68,7 +68,7 @@ This is the case because it comes first in the tree. Substantially, this might b
 
 Did you notice that we haven't interpreted any coefficients? That's right. Decision trees have no coefficients and many other machine learning algorithms also don't produce coefficients. Although for the case of decision trees this is because the model produces information in another way (through the visualization of trees), lack of coefficients is common in machine learning models because they are too complex to generate coefficients for single predictors. These models are non-linear, non-parametric in nature, producing very complex relationships that are difficult to summarize as coefficients. Instead, they produce predictions. We'll be delving into this topic in future sections in detail.
 
-These examples show that decision trees are a great tool for exploratory analysis and I strongly believe they have an inmense potential for exploring interactions in social science research. In case you didn't notice it, we literally just interpreted an interaction term that social scientists would routinely use in linear models. Without having to worry about statistical significance or plotting marginal effects, social scientists can use decision trees as an exploratory medium to understand interactions in an intuitive way. 
+These examples show that decision trees are a great tool for exploratory analysis and I strongly believe they have an immense potential for exploring interactions in social science research. In case you didn't notice it, we literally just interpreted an interaction term that social scientists would routinely use in linear models. Without having to worry about statistical significance or plotting marginal effects, social scientists can use decision trees as an exploratory medium to understand interactions in an intuitive way. 
 
 You might be asking yourself, how do we fit these models and visualize them? `tidyflow` and `tidymodels` have got you covered. For example, for fitting the model from above, we can begin our `tidyflow`, add a split, a formula and define the decision tree:
 
@@ -103,7 +103,7 @@ I've told all the good things about decision trees but they have important disad
 
 
 ```r
-# We can recicle the entire `tflow` from above and just
+# We can recycle the entire `tflow` from above and just
 # replace the formula:
 tflow <-
   tflow %>%
@@ -120,7 +120,7 @@ The tree is quite big compared to our previous example and makes the interpretat
 
 <img src="03_trees_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
-What would happen if a tiny $1\%$ of those **leaf nodes** respondend **slightly** different? It is possible we get a complete different tree. Decision trees are not well known for being robust. In fact, it is one of its main weaknesses. However, decision trees have an argument called `min_n` that force the tree to discard any **node** that has a number of observations below your specified minimum. Let's run the model above and set the minimum number of observation per **node** to be $200$:
+What would happen if a tiny $1\%$ of those **leaf nodes** responded **slightly** different? It is possible we get a complete different tree. Decision trees are not well known for being robust. In fact, it is one of its main weaknesses. However, decision trees have an argument called `min_n` that force the tree to discard any **node** that has a number of observations below your specified minimum. Let's run the model above and set the minimum number of observation per **node** to be $200$:
 
 
 ```r
@@ -138,7 +138,7 @@ rpart.plot(tree)
 
 The tree was reduced considerably now. There are fewer **leaf nodes** and all nodes have a greater sample size than before. 
 
-You might be wondering: what should the minimum sample size be? There is no easy answer for this. The rule of thumb should be relative to your data and research question. In particular, the identification of small nodes should be analyzed with care. Perhaps there **is** a group of outliers that consitute a node and it's not a problem of statistical noise. By increasing the minimum sample size for each node you would be destroying that statistical finding. 
+You might be wondering: what should the minimum sample size be? There is no easy answer for this. The rule of thumb should be relative to your data and research question. In particular, the identification of small nodes should be analyzed with care. Perhaps there **is** a group of outliers that constitute a node and it's not a problem of statistical noise. By increasing the minimum sample size for each node you would be destroying that statistical finding. 
 
 For example, suppose we are studying welfare social expenditure as the dependent variable and then we had other independent variables, among which are country names. Scandinavian countries might group pretty well into a solitary node because they are super powers in welfare spending (these are Denmark, Norway, Sweden and Finland). If we increased the minimum sample size to $10$, we might group them with Germany and France, which are completely different in substantive terms. The best rule of thumb I can recommend is no other than to study your problem at hand with great care and make decisions accordingly. It might make sense to increase the sample or it might not depending on the research question, the sample size, whether you're exploring the data or whether you're interested in predicting on new data.
 
@@ -162,7 +162,7 @@ rpart.plot(tree)
 
 <img src="03_trees_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
-The tree was reduced considerably now in combination with the minimun number of respondents within each node. In fact, there is only one node that has a sample size lower than $3\%$. The `min_n` and  `tree_depth` can help you reduce the overfitting of your tree, but don't think these are easy fixes. Decision trees are simply to easy to overfit the data and as we'll see, there are more advanced tree methods that can help to fix this.
+The tree was reduced considerably now in combination with the minimum number of respondents within each node. In fact, there is only one node that has a sample size lower than $3\%$. The `min_n` and  `tree_depth` can help you reduce the overfitting of your tree, but don't think these are easy fixes. Decision trees are simply to easy to overfit the data and as we'll see, there are more advanced tree methods that can help to fix this.
 
 Note that we've been interpreting decision trees in a 'subjective' fashion. That is, we've been cutting the nodes of the trees from subjective criteria that makes sense to our research problem. This is how we social scientists would analyze the data. The tree should model our theoretical problem and make substantive sense. However, for machine learning, we have other criteria: how well it predicts. Let's check how our model predicts at this point:
 
@@ -648,7 +648,7 @@ Secondly, bagging might seem like a deal breaker for **any** type of model (you 
 
 In section \@ref(advancedsplit) we worked out a simple example on how decision trees choose where to split. If you remember correctly, decision trees evaluate several cutoff points for all the variables in the data. This is done recursively such that in each split, this iteration is performed again for all variables inside the split. This strategy is clever but fails spectacularly whenever some variables are very correlated with the outcome of the decision tree. 
 
-I did not present the code for the simulation in figure \@ref(fig:manydtrees) but I purposedly excluded the variables `scie_score` and `read_score` from the data. That's why they're never in any of the trees. Why did I do that? Because they are extremely correlated to `math_score` and dominate the entire tree. Here's the same simulation **including** `scie_score` and `read_score`:
+I did not present the code for the simulation in figure \@ref(fig:manydtrees) but I purposely excluded the variables `scie_score` and `read_score` from the data. That's why they're never in any of the trees. Why did I do that? Because they are extremely correlated to `math_score` and dominate the entire tree. Here's the same simulation **including** `scie_score` and `read_score`:
 
 <img src="03_trees_files/figure-html/unnamed-chunk-44-1.png" width="672" />
 
@@ -656,7 +656,7 @@ Regardless of how much the data composition changes between every decision tree,
 
 When performing bagged decision trees this can be a problem given that the whole idea behind bagging is to average predictions from very different trees. If we have a variable that is constantly repeated in every single tree, then the predictions will be very similar. Random Forests are an extension of bagged decision trees because they randomly sample $N$ variables in each split. More specifically, instead of considering all variables in the data, for calculating a given split, random forests pick a random sample of $N$ variables to be considered for that split. 
 
-This intuition can be much more accesible through a manual example. Let's refer back to the first plot of this chapter:
+This intuition can be much more accessible through a manual example. Let's refer back to the first plot of this chapter:
 
 <img src="03_trees_files/figure-html/unnamed-chunk-45-1.png" width="672" />
 
@@ -723,7 +723,7 @@ rf_fitted %>%
 
 `scie_score` and `read_score` seem to be the most relevant variables. But not only are they the most relevant ones, they are disproportionately the strongest: they both are **seven times** more important than the next most strongest variable. 
 
-When there are **only** a few very strong predictors (let's say, two), then you might have a lot of trees which don't offer a lot of good predictions. In the model we ran above, the total number of variables used at each split was 22 meaning that if `scie_score` and `read_score` are the only important variables that predict `math_score`, they might be excluded from a lot of the splits. This means that out of the `500` default trees that are repated, you might get trees which are not better at predicting `math_score` than random luck. 
+When there are **only** a few very strong predictors (let's say, two), then you might have a lot of trees which don't offer a lot of good predictions. In the model we ran above, the total number of variables used at each split was 22 meaning that if `scie_score` and `read_score` are the only important variables that predict `math_score`, they might be excluded from a lot of the splits. This means that out of the `500` default trees that are repeated, you might get trees which are not better at predicting `math_score` than random luck. 
 
 Based on this intuition, if we increase the number of variables used at each split, we should see an increase in predictive error. Why? Because it means the `scie_score` and `read_score` will have greater probability of being included at each split. Let's try something close to $1/3$ of the number of variables (this is `150` variables):
 
@@ -749,7 +749,7 @@ rf_fitted %>%
 
 The predictive error is reduced to be the same as the one from the bagged decision tree. However, time wise this model is superior than `bag_tree` because each decision tree uses less variables in total. 
 
-You might be asking youself: if bagged decision trees have a lot of correlated trees and the random forest decorrelates the trees, why is it performing just as well and not better? It's not entirely clear. Random Forests are considered to be a bit of a 'black box' and they might work well in certain cases and bad in others. However, having the intuition of how random forests work can help us to approximate a likely explanation. 
+You might be asking yourself: if bagged decision trees have a lot of correlated trees and the random forest decorrelates the trees, why is it performing just as well and not better? It's not entirely clear. Random Forests are considered to be a bit of a 'black box' and they might work well in certain cases and bad in others. However, having the intuition of how random forests work can help us to approximate a likely explanation. 
 
 If `scie_score` and `read_score` are the most important variables for predicting `math_score` and no other variables have strong correlations with `math_score`, then **excluding** these two variables from a model, might produce trees which just don't predict `math_score` well. The value of a random forest over bagged decision trees is that each individual tree must have some sort of **predictive power** despite excluding the strongest predictors. 
 
@@ -951,7 +951,7 @@ res_mod2 %>%
 
 <img src="03_trees_files/figure-html/unnamed-chunk-58-1.png" width="672" />
 
-The pattern seems to have changed although it's not clear that it's closer to a random pattern. In the small-scale example we just did, we only fitted two models (or in machine learning jargon, **two trees**). If we fitted 20 trees, each using the previous model's residuals as the dependent variable, we can start to see how the residuals are converging towards randonmness:
+The pattern seems to have changed although it's not clear that it's closer to a random pattern. In the small-scale example we just did, we only fitted two models (or in machine learning jargon, **two trees**). If we fitted 20 trees, each using the previous model's residuals as the dependent variable, we can start to see how the residuals are converging towards randomness:
 
 <img src="03_trees_files/figure-html/unnamed-chunk-59-1.png" width="672" />
 
@@ -1006,7 +1006,7 @@ head(resid_pred)
 
 We have a final prediction for each respondent. How can we use these models to predict on new data? We follow the same logic. We allow each tree to predict on this new data and then sum the predictions of all the trees. 
 
-In case you wanted to build some code that applies our manual proceedure automatically, I have written the code below to do it for you. It fits $N$ models on the same data but after the first model, the dependent variable of the decision tree becomes the residuals of the previous model:
+In case you wanted to build some code that applies our manual procedure automatically, I have written the code below to do it for you. It fits $N$ models on the same data but after the first model, the dependent variable of the decision tree becomes the residuals of the previous model:
 
 
 ```r
@@ -1102,7 +1102,7 @@ boot_res <- fit(tflow)
 ```
 
 ```
-## [09:13:57] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+## [10:46:09] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r
@@ -1288,7 +1288,7 @@ Compared to the examples in the main sections, is the $RMSE$ acceptable? How cou
 
 * The $RMSE$ of the model is quite low compared to the main examples. It's almost twice as large as estimates from the main material.
 
-* We could improve the error rate in many ways. First, we could search for the top 10 or 20 variables and run the model only using those. That way we can a get much simpler model and check whethere it gives very similar results. Additionally, we can try many more tuning values with the `levels` argument of `plug_grid`. Further stratigies could explore whether certain variables need to be recoded to capture meaningful variation or whether some variables need transformations.
+* We could improve the error rate in many ways. First, we could search for the top 10 or 20 variables and run the model only using those. That way we can a get much simpler model and check whether it gives very similar results. Additionally, we can try many more tuning values with the `levels` argument of `plug_grid`. Further strategies could explore whether certain variables need to be recoded to capture meaningful variation or whether some variables need transformations.
 
 
 ```r
@@ -1354,7 +1354,7 @@ btree_mod %>%
 * Fit the model
 * Calculate the $RMSE$ of the model
 
-How far is the $RMSE$ of 'optimized' model from the previous model? Is it worth chosing this model over the other one? Why didn't we run `times = 100` for the previous model?
+How far is the $RMSE$ of 'optimized' model from the previous model? Is it worth choosing this model over the other one? Why didn't we run `times = 100` for the previous model?
 
 <details>
   <summary><strong>> Answer </strong></summary>
