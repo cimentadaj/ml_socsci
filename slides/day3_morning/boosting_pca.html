@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-06-29" />
+    <meta name="date" content="2020-06-30" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Tree based methods and PCA
 ### Jorge Cimentada
-### 2020-06-29
+### 2020-06-30
 
 ---
 
@@ -97,7 +97,7 @@ res_mod1 %&gt;%
 # A tibble: 1 x 3
   .metric .estimator .estimate
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-1 rmse    standard        55.6
+1 rmse    standard        55.7
 ```
 
 * Not a good nor robust model. 
@@ -189,12 +189,12 @@ head(resid_pred)
 
 ```
   pred_mod1 pred_mod2
-1  540.4000 -10.33052
-2  407.1443 -10.33052
-3  407.1443 -10.33052
-4  407.1443 -10.33052
-5  407.1443 -10.33052
-6  540.4000 -10.33052
+1  540.8022 -10.33072
+2  406.8686 -10.33072
+3  406.8686 -10.33072
+4  406.8686 -10.33072
+5  406.8686 -10.33072
+6  540.8022 -10.33072
 ```
 
 ---
@@ -214,12 +214,12 @@ head(resid_pred)
 
 ```
   pred_mod1 pred_mod2 final_pred
-1  540.4000 -10.33052   530.0695
-2  407.1443 -10.33052   396.8138
-3  407.1443 -10.33052   396.8138
-4  407.1443 -10.33052   396.8138
-5  407.1443 -10.33052   396.8138
-6  540.4000 -10.33052   530.0695
+1  540.8022 -10.33072   530.4715
+2  406.8686 -10.33072   396.5379
+3  406.8686 -10.33072   396.5379
+4  406.8686 -10.33072   396.5379
+5  406.8686 -10.33072   396.5379
+6  540.8022 -10.33072   530.4715
 ```
 
 * We have a final prediction for each respondent. 
@@ -245,7 +245,7 @@ boot_res &lt;- fit(tflow)
 ```
 
 ```
-[16:51:19] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+[09:01:20] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r

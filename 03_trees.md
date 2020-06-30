@@ -1102,7 +1102,7 @@ boot_res <- fit(tflow)
 ```
 
 ```
-## [17:03:56] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+## [09:13:57] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r
