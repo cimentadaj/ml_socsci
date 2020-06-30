@@ -65,7 +65,7 @@ rsquare <- function(true, predicted) {
 # observations and a number of features as a proportion to `n_train`,
 # `p_features`. Return R squared for both models on:
 #   - y values of the training set
-#   - y values of a simualted test data set of `n_test` observations
+#   - y values of a simulated test data set of `n_test` observations
 #   - The beta coefficients used to simulate the data
 ols_vs_ridge <- function(n_train, p_features, n_test = 200) {
   ## Simulate datasets
@@ -175,7 +175,7 @@ data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data
 pisa <- read.csv(data_link)
 ```
 
-We will construct our `tidyflow` step by step. We begin with the data and then separate the training and test data. All of our modelling will be performed on the training data and the test data is saved for later (the test data must be completely ignored until you have your final tuned model). The second step is specifying the variables in the model and scaling all of them, as I have explained, we want to normalize all variables such that no variable gets more penalized than other due to their metric. 
+We will construct our `tidyflow` step by step. We begin with the data and then separate the training and test data. All of our modeling will be performed on the training data and the test data is saved for later (the test data must be completely ignored until you have your final tuned model). The second step is specifying the variables in the model and scaling all of them, as I have explained, we want to normalize all variables such that no variable gets more penalized than other due to their metric. 
 
 ```{r}
 
@@ -308,7 +308,7 @@ The Lasso regularization is very similar to the ridge regularization where only 
 RSS + \lambda \sum_{k = 1}^n |\beta_j|
 \end{equation}
 
-Althought it might not be self-evident from this, the lasso reguralization has an important distinction: it can force a coefficient to be exactly zero. This means that lasso does a selection of variables which have big coefficients while not compromising the RSS of the model. The problem with ridge regression is that as the number of variables increases, the training error will almost always improve but the test error will not.
+Although it might not be self-evident from this, the lasso reguralization has an important distinction: it can force a coefficient to be exactly zero. This means that lasso does a selection of variables which have big coefficients while not compromising the RSS of the model. The problem with ridge regression is that as the number of variables increases, the training error will almost always improve but the test error will not.
 
 For example, if we define the same model from above using a lasso, you'll see that it forces coefficients to be **exactly zero** if they don't add anything relative to the RSS of the model. This means that variables which do not add anything to the model will be excluded unless they add explanatory power that compensates the size of their coefficient. Here's the same lasso example:
 
@@ -331,7 +331,7 @@ final_lasso %>%
 
 In contrast to the ridge regression, where coefficients are forced to be close to zero, the lasso penalty actually forces some coefficients **to be zero**. This property means that the lasso makes a **selection of the variables with the higher coefficients** and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).
 
-To check the final model and it's error, we can recicle the code from above and adapt it to the lasso:
+To check the final model and it's error, we can recycle the code from above and adapt it to the lasso:
 
 ```{r}
 train_rmse_lasso <-
@@ -377,7 +377,7 @@ Elastic net regularization is the addition of these two penalties in comparison 
 
 $$RSS + lasso + ridge$$
 
-I think the best explanation for elastic net reguarlization comes from @boehmke2019:
+I think the best explanation for elastic net regularization comes from @boehmke2019:
 
 > Although lasso models perform feature selection, when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically handling correlated features together. Consequently, the advantage of the elastic net penalty is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
 

@@ -8,7 +8,7 @@ To evaluate a model's fit, social scientists use metrics such as the $R^2$, $AIC
 
 In machine learning, metrics such as the $R^2$ and the $AIC$ are called 'loss functions'. Remember that, because you'll see that term popping in everywhere in machine learning. Despite this fancy name, loss functions evaluate the same thing we social scientists evaluate: a model's fit. 
 
-In this chapter we won't focus on loss functions that social scientists are used to such as $R^2$, $BIC$ and $AIC$. Instead, we'll discuss loss functions which are targetted towards prediction. Let's load the packages we'll use in the chapter before we begin:
+In this chapter we won't focus on loss functions that social scientists are used to such as $R^2$, $BIC$ and $AIC$. Instead, we'll discuss loss functions which are targeted towards prediction. Let's load the packages we'll use in the chapter before we begin:
 
 ```{r, message = FALSE}
 library(tidymodels)
@@ -26,7 +26,7 @@ Continuous variables require completely different loss functions than binary var
 
 ### Root Mean Square Error (RMSE)
 
-The most common loss function used for continous variables is the **R**oot **M**ean **S**quared **E**rror, or $RMSE$. The $RMSE$ works by evaluating how far our predictions are from the actual data. More concretely, suppose we have a linear relationship between `X` and `Y`:
+The most common loss function used for continuous variables is the **R**oot **M**ean **S**quared **E**rror, or $RMSE$. The $RMSE$ works by evaluating how far our predictions are from the actual data. More concretely, suppose we have a linear relationship between `X` and `Y`:
 
 ```{r, echo = FALSE}
 res <-
@@ -84,7 +84,7 @@ mod1 <-
   plug_split(initial_split) %>% 
   plug_model(set_engine(linear_reg(), "lm"))
 
-# Model with all varibales except scie_score and read_score
+# Model with all variables except scie_score and read_score
 mod2 <-
   mod1 %>%
   replace_formula(math_score ~ . - scie_score - read_score)
@@ -196,7 +196,7 @@ In our example, the correct predictions are in cell (A) and cell (B). Cell (A) c
 
 * Accuracy: $(3 + 1) / (3 + 1 + 2 + 2) = 50\%$
 
-If you randomly picked a person from this dataset, you can be 50\% confident that you can predict whether they received childcare support. This is not a good accuracy. By chance alone, we could also achieve a predicttion accuracy of 50\% if we made repeated predictions. That is why in certain scenarios, the **sensitivity** and **specificty** of a model is often a more important loss function.
+If you randomly picked a person from this dataset, you can be 50\% confident that you can predict whether they received childcare support. This is not a good accuracy. By chance alone, we could also achieve a prediction accuracy of 50\% if we made repeated predictions. That is why in certain scenarios, the **sensitivity** and **specificity** of a model is often a more important loss function.
 
 The **sensitivity** of a model is a fancy name for the true positive rate. For the accuracy calculations we compared those that were correctly predicted (regardless of whether they received childcare support or whether they didn't). Sensitivity measures the same thing but only focused on the true positive rate:
 
@@ -204,7 +204,7 @@ The **sensitivity** of a model is a fancy name for the true positive rate. For t
 knitr::include_graphics("./img/confusion_matrix_50_sensitivity.svg")
 ```
 
-That is, we take those which were predicted childcare support correctly and divide them by the total number of respondets with childcare support. In substantive terms, it can be interpreted as: out of all the people who received childcare support, how many were classified correctly? With our small confusion matrix we can calculate it manually:
+That is, we take those which were predicted childcare support correctly and divide them by the total number of respondents with childcare support. In substantive terms, it can be interpreted as: out of all the people who received childcare support, how many were classified correctly? With our small confusion matrix we can calculate it manually:
 
 * Sensitivity: $3 / (3 + 1) = 75\%$
 
@@ -222,7 +222,7 @@ We know that the cell (D) contains those which were correctly assigned no childc
 
 The model has a 33\% accuracy for those who didn't receive childcare support. In other words, if you randomly picked someone who didn't receive childcare support, you can be 33\% confident that you can predict their childcare support status. 
 
-The model is biased towards predicting better childcare support and negatively biased towards those that didn't receive childcare support. But this is ok, as long as your research question is aligned with your loss function.
+The model is biased towards predicting better childcare support and negatively biased towards those that didn't receive childcare support. But this is och, as long as your research question is aligned with your loss function.
 
 For example, it might be more costly in terms of time and money for the city of Berlin to fail to give childcare support to a family that needs it and thus we would prefer to improve the sensitivity of this model. Giving childcare support to a family that doesn't need it is better than **not** giving childcare support to a family that needs it. This discussion is just to exemplify that having poor accuracy or poor measures of other types of loss functions depends on your research question rather than the actual value.
 
@@ -262,7 +262,7 @@ res1 <-
   res %>%
   predict_training(type = "prob")
 
-# Calculate the sensitivity and specificty
+# Calculate the sensitivity and specificity
 # of different thresholds
 all_loss <-
   lapply(c(0.3, 0.5, 0.7), function(x) {
@@ -323,7 +323,7 @@ res_loss %>%
   theme_minimal()
 ```
 
-The ideal result from this plot is that most points cluster on the top left quadrant. This would mean that the sensitivity is high (the true positive rate) and the specificity is high (because $1 - specificity$ will switch the direction of the accuracy to the lower values of the `X` axis). Let's add two lines to the plot. One that joins all the dots, such that it's clearer where the imprevements are and a diagonal line:
+The ideal result from this plot is that most points cluster on the top left quadrant. This would mean that the sensitivity is high (the true positive rate) and the specificity is high (because $1 - specificity$ will switch the direction of the accuracy to the lower values of the `X` axis). Let's add two lines to the plot. One that joins all the dots, such that it's clearer where the improvements are and a diagonal line:
 
 ```{r}
 res_loss %>%
