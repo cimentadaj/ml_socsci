@@ -134,6 +134,7 @@ We will end the course with a prediction challenge that will put to test all of 
   
   + Arpino, B., Le Moglie, M., & Mencarini, L. (2018, April). Machine-learning techniques for family demography: an application of random forests to the analysis of divorce determinants in Germany. In ANNUAL MEETING PAA (Vol. 83).
 
+  + Rojo, Pedro Salas, and Juan Gabriel Rodríguez. "The Role of Inheritance on Wealth Inequality: A Machine Learning Approach."
 
 **Session 5**  
 **July 8th 09h-10:45h**
