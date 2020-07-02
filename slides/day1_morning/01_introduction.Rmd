@@ -722,4 +722,8 @@ Testing RMSE will almost always be higher, since we always overfit the data in s
 ---
 class: center, middle
 
+# Pratical examples
+
+https://cimentadaj.github.io/tidyflow/articles/intro_tidyflow.html
+
 ## **Break**
