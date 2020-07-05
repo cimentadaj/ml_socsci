@@ -724,6 +724,6 @@ class: center, middle
 
 # Pratical examples
 
-https://cimentadaj.github.io/tidyflow/articles/intro_tidyflow.html
+https://cimentadaj.github.io/ml_socsci/machine-learning-for-social-scientists.html#an-example
 
 ## **Break**

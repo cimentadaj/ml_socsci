@@ -270,7 +270,29 @@ In reality, what we usually want is something located in the middle of these two
 
 ## An example
 
-Let's combine all the new steps into a complete pipeline of machine learning in R. We can do that by finishing the `tidyflow` we've been developing so far. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. The rectangular data looks like this:
+Let's combine all the new steps into a complete pipeline of machine learning in R. We can do that by finishing the `tidyflow` we've been developing so far. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. Let's load the data and the packages of interest:
+
+```{r}
+library(tidymodels)
+library(tidyflow)
+
+## Generate the data
+rescale <- function(x, to = c(0, 1), from = range(x, na.rm = TRUE, finite = TRUE)) {
+  (x - from[1])/diff(from) * diff(to) + to[1]
+}
+
+set.seed(2313)
+n <- 500
+x <- rnorm(n)
+y <- x^3 + rnorm(n, sd = 3)
+age <- rescale(x, to = c(0, 100))
+income <- rescale(y, to = c(0, 5000))
+
+age_inc <- data.frame(age = age, income = income)
+## End generate data
+```
+
+This is how the data looks like:
 
 ```{r, echo = FALSE}
 age_inc$age <- round(age_inc$age)
@@ -307,7 +329,7 @@ Let's begin running some models. The first model we'd like run is a simple regre
 m1 <-
   ml_flow %>%
   plug_recipe(~ recipe(income ~ age, data = .)) %>%  # Add the formula
-  plug_model(set_engine(linear_reg(), "lm")) %>% # Define the linear regression
+  plug_model(linear_reg() %>% set_engine("lm")) %>% # Define the linear regression
   fit() # Fit model
 
 # Predict on the training data
