@@ -442,7 +442,7 @@ m1_rmse <- predict_training(m1) %>% rmse(noncogn, .pred)
 
 </details>
 
-#### 3. Add a recipe to sacle all of the predictors and rerun the previous model {-#ex3}
+#### 3. Add a recipe to scale all of the predictors and rerun the previous model {-#ex3}
 
 * Drop the formula from the `tidyflow` with `drop_formula`
 

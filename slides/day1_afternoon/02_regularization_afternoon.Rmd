@@ -27,31 +27,11 @@ knitr::opts_chunk$set(warning = FALSE,
                       fig.width = 10.5,
                       fig.height = 4, 
                       comment = NA,
-                      rows.print = 16)
+                      rows.print = 16,
+                      dpi = 300,
+                      out.width = "80%")
 
 ```
-
----
-
-# What is regularization?
-
-Regularization is when you force your estimates towards specific values:
-
-* Bayesian: restrict coefficients based on prior distributions
-<br>
-
-* Machine Learning: restrict coefficents to zero
-
-<br>
-
---
-
-### What is this good for? It depends on your context
-
-* Increasing predictive power
-* Including important confounders in large models
-* Understanding the strength of variables
-* Testing the generalization of your model
 
 ---
 
@@ -76,6 +56,28 @@ Regularization is when you force your estimates towards specific values:
 
 * ML parlance: reduce variance in favor of increasing bias
 * SocSci parlance: make sure your model fits an unseen data as fairly well as this data
+
+---
+
+# What is regularization?
+
+Regularization is when you force your estimates towards specific values:
+
+* Bayesian: restrict coefficients based on prior distributions
+<br>
+
+* Machine Learning: restrict coefficents to zero
+
+<br>
+
+--
+
+### What is this good for? It depends on your context
+
+* Increasing predictive power
+* Including important confounders in large models
+* Understanding the strength of variables
+* Testing the generalization of your model
 
 ---
 
@@ -120,7 +122,7 @@ p1
 
 # A first example: ridge regression
 
-Ridge regression only adds one term:
+Ridge regression adds one term:
 
 \begin{equation}
 RSS + \lambda \sum_{k = 1}^n \beta^2_j
@@ -134,7 +136,7 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 
 In layman words:
 
-> In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization
+> We want the smallest coefficients that don’t affect the fit of the line (RSS).
 
 ---
 
@@ -244,16 +246,31 @@ tflow <-
 tflow
 ```
 
+---
 
 # A first example: ridge regression
 
 ```{r}
-tflow
+(res <- fit(tflow))
 ```
 
+---
 
-```{r }
-res <- fit(tflow)
+# A first example: ridge regression
+
+```{r}
+res %>%
+  pull_tflow_fit_tuning()
+```
+
+---
+
+# A first example: ridge regression
+
+```{r}
+res %>%
+  pull_tflow_fit_tuning() %>%
+  autoplot()
 ```
 
 ---
@@ -341,6 +358,24 @@ res_lasso <- fit(tflow)
 
 # A first example: lasso regression
 
+```{r}
+res_lasso %>% pull_tflow_fit_tuning()
+```
+
+---
+
+# A first example: lasso regression
+
+```{r}
+res_lasso %>%
+  pull_tflow_fit_tuning() %>%
+  autoplot()
+```
+
+---
+
+# A first example: lasso regression
+
 ```{r, fig.align = "center", dpi = 300, out.width = "90%"}
 final_lasso <- complete_tflow(res_lasso, metric = "rmse")
 
@@ -377,21 +412,26 @@ lasso
 
 # A first example: elastic net regression
 
-Elastic Net regression is very similar to ridge but the penalty term is different:
+$ridge = \lambda \sum_{k = 1}^n \beta_j^2$
 
-\begin{equation}
-RSS + \lambda \sum_{k = 1}^n |\beta_j|
-\end{equation}
+$lasso = \lambda \sum_{k = 1}^n |\beta_j|$
 
-The same notes for ridge applies with one caveat:
+Elastic net regularization is the addition of these two penalties in comparison to the RSS:
 
-- The penalty term for elastic net can **completely shrink to 0** meaning that it excludes variables.
+$$RSS + lasso + ridge$$
 
-> Elastic Net excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+Explanation:
+
+> Although lasso models perform feature selection, when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically handling correlated features together. Consequently, the advantage of the elastic net penalty is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+
 
 ---
 
 # A first example: elastic net regression
+
+
+* `tidyflow` will slide through several values of `mixture` ranging from 0 to 1
+* Instead of `mixture` of `0` (ridge) or `1` (lasso)
 
 <br>
 <br>
@@ -413,7 +453,26 @@ tflow <-
   replace_model(elnet_mod) %>%
   replace_grid(grid_regular)
 
+tflow
+```
+
+---
+
+# A first example: elastic net regression
+
+```{r}
 res_elnet <- fit(tflow)
+res_elnet %>% pull_tflow_fit_tuning()
+```
+
+---
+
+# A first example: elastic net regression
+
+```{r}
+res_elnet %>%
+  pull_tflow_fit_tuning() %>%
+  autoplot()
 ```
 
 ---

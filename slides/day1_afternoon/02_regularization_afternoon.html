@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-07-02" />
+    <meta name="date" content="2020-07-05" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Regularization
 ### Jorge Cimentada
-### 2020-07-02
+### 2020-07-05
 
 ---
 
@@ -27,28 +27,6 @@ background-position: 100% 0%, 100% 0%, 50% 100%
 background-size: 10%, 10%, 10%
 
 
-
----
-
-# What is regularization?
-
-Regularization is when you force your estimates towards specific values:
-
-* Bayesian: restrict coefficients based on prior distributions
-&lt;br&gt;
-
-* Machine Learning: restrict coefficents to zero
-
-&lt;br&gt;
-
---
-
-### What is this good for? It depends on your context
-
-* Increasing predictive power
-* Including important confounders in large models
-* Understanding the strength of variables
-* Testing the generalization of your model
 
 ---
 
@@ -76,6 +54,28 @@ Regularization is when you force your estimates towards specific values:
 
 ---
 
+# What is regularization?
+
+Regularization is when you force your estimates towards specific values:
+
+* Bayesian: restrict coefficients based on prior distributions
+&lt;br&gt;
+
+* Machine Learning: restrict coefficents to zero
+
+&lt;br&gt;
+
+--
+
+### What is this good for? It depends on your context
+
+* Increasing predictive power
+* Including important confounders in large models
+* Understanding the strength of variables
+* Testing the generalization of your model
+
+---
+
 # A first example: ridge regression
 
 * OLS minimizes the Residual Sum of Squares (RSS)
@@ -93,7 +93,7 @@ RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
 
 # A first example: ridge regression
 
-Ridge regression only adds one term:
+Ridge regression adds one term:
 
 `\begin{equation}
 RSS + \lambda \sum_{k = 1}^n \beta^2_j
@@ -107,7 +107,7 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 
 In layman words:
 
-&gt; In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization
+&gt; We want the smallest coefficients that don’t affect the fit of the line (RSS).
 
 ---
 
@@ -296,16 +296,17 @@ Main Arguments:
 Computational engine: glmnet 
 ```
 
+---
 
 # A first example: ridge regression
 
 
 ```r
-tflow
+(res &lt;- fit(tflow))
 ```
 
 ```
-══ Tidyflow ════════════════════════════════════════════════════════════════════
+══ Tidyflow [tuned] ════════════════════════════════════════════════════════════
 Data: 4.84K rows x 501 columns
 Split: initial_split w/ default args
 Recipe: available
@@ -319,13 +320,62 @@ Main Arguments:
   mixture = 0
 
 Computational engine: glmnet 
+
+══ Results ═════════════════════════════════════════════════════════════════════
+
+Tuning results: 
+
+# A tibble: 5 x 4
+  splits             id     .metrics           .notes          
+  &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;          
+1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+
+... and 5 more lines.
 ```
 
+---
+
+# A first example: ridge regression
 
 
 ```r
-res &lt;- fit(tflow)
+res %&gt;%
+  pull_tflow_fit_tuning()
 ```
+
+```
+#  10-fold cross-validation 
+# A tibble: 10 x 4
+   splits             id     .metrics           .notes          
+   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;          
+ 1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 6 &lt;split [3.3K/363]&gt; Fold06 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 7 &lt;split [3.3K/363]&gt; Fold07 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 8 &lt;split [3.3K/363]&gt; Fold08 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 9 &lt;split [3.3K/363]&gt; Fold09 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+10 &lt;split [3.3K/362]&gt; Fold10 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+```
+
+---
+
+# A first example: ridge regression
+
+
+```r
+res %&gt;%
+  pull_tflow_fit_tuning() %&gt;%
+  autoplot()
+```
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-11-1.png" width="80%" /&gt;
 
 ---
 
@@ -341,7 +391,7 @@ final_ridge %&gt;%
   plot(xvar = "lambda", label = TRUE)
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -425,6 +475,45 @@ res_lasso &lt;- fit(tflow)
 
 
 ```r
+res_lasso %&gt;% pull_tflow_fit_tuning()
+```
+
+```
+#  10-fold cross-validation 
+# A tibble: 10 x 4
+   splits             id     .metrics           .notes          
+   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;          
+ 1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 6 &lt;split [3.3K/363]&gt; Fold06 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 7 &lt;split [3.3K/363]&gt; Fold07 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 8 &lt;split [3.3K/363]&gt; Fold08 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+ 9 &lt;split [3.3K/363]&gt; Fold09 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+10 &lt;split [3.3K/362]&gt; Fold10 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+```
+
+---
+
+# A first example: lasso regression
+
+
+```r
+res_lasso %&gt;%
+  pull_tflow_fit_tuning() %&gt;%
+  autoplot()
+```
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-16-1.png" width="80%" /&gt;
+
+---
+
+# A first example: lasso regression
+
+
+```r
 final_lasso &lt;- complete_tflow(res_lasso, metric = "rmse")
 
 final_lasso %&gt;%
@@ -433,7 +522,7 @@ final_lasso %&gt;%
   plot(xvar = "lambda", label = TRUE)
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-14-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -469,21 +558,26 @@ lasso
 
 # A first example: elastic net regression
 
-Elastic Net regression is very similar to ridge but the penalty term is different:
+`\(ridge = \lambda \sum_{k = 1}^n \beta_j^2\)`
 
-`\begin{equation}
-RSS + \lambda \sum_{k = 1}^n |\beta_j|
-\end{equation}`
+`\(lasso = \lambda \sum_{k = 1}^n |\beta_j|\)`
 
-The same notes for ridge applies with one caveat:
+Elastic net regularization is the addition of these two penalties in comparison to the RSS:
 
-- The penalty term for elastic net can **completely shrink to 0** meaning that it excludes variables.
+`$$RSS + lasso + ridge$$`
 
-&gt; Elastic Net excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+Explanation:
+
+&gt; Although lasso models perform feature selection, when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically handling correlated features together. Consequently, the advantage of the elastic net penalty is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+
 
 ---
 
 # A first example: elastic net regression
+
+
+* `tidyflow` will slide through several values of `mixture` ranging from 0 to 1
+* Instead of `mixture` of `0` (ridge) or `1` (lasso)
 
 &lt;br&gt;
 &lt;br&gt;
@@ -506,8 +600,65 @@ tflow &lt;-
   replace_model(elnet_mod) %&gt;%
   replace_grid(grid_regular)
 
-res_elnet &lt;- fit(tflow)
+tflow
 ```
+
+```
+══ Tidyflow ════════════════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: grid_regular w/ default args
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = tune()
+  mixture = tune()
+
+Computational engine: glmnet 
+```
+
+---
+
+# A first example: elastic net regression
+
+
+```r
+res_elnet &lt;- fit(tflow)
+res_elnet %&gt;% pull_tflow_fit_tuning()
+```
+
+```
+#  10-fold cross-validation 
+# A tibble: 10 x 4
+   splits             id     .metrics          .notes          
+   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;            &lt;list&gt;          
+ 1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 6 &lt;split [3.3K/363]&gt; Fold06 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 7 &lt;split [3.3K/363]&gt; Fold07 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 8 &lt;split [3.3K/363]&gt; Fold08 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+ 9 &lt;split [3.3K/363]&gt; Fold09 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+10 &lt;split [3.3K/362]&gt; Fold10 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+```
+
+---
+
+# A first example: elastic net regression
+
+
+```r
+res_elnet %&gt;%
+  pull_tflow_fit_tuning() %&gt;%
+  autoplot()
+```
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-21-1.png" width="80%" /&gt;
 
 ---
 
@@ -523,7 +674,7 @@ final_elnet %&gt;%
   plot(xvar = "lambda", label = TRUE)
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-22-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 

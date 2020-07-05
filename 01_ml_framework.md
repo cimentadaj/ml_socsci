@@ -242,7 +242,30 @@ In reality, what we usually want is something located in the middle of these two
 
 ## An example
 
-Let's combine all the new steps into a complete pipeline of machine learning in R. We can do that by finishing the `tidyflow` we've been developing so far. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. The rectangular data looks like this:
+Let's combine all the new steps into a complete pipeline of machine learning in R. We can do that by finishing the `tidyflow` we've been developing so far. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. Let's load the data and the packages of interest:
+
+
+```r
+library(tidymodels)
+library(tidyflow)
+
+## Generate the data
+rescale <- function(x, to = c(0, 1), from = range(x, na.rm = TRUE, finite = TRUE)) {
+  (x - from[1])/diff(from) * diff(to) + to[1]
+}
+
+set.seed(2313)
+n <- 500
+x <- rnorm(n)
+y <- x^3 + rnorm(n, sd = 3)
+age <- rescale(x, to = c(0, 100))
+income <- rescale(y, to = c(0, 5000))
+
+age_inc <- data.frame(age = age, income = income)
+## End generate data
+```
+
+This is how the data looks like:
 
 <!--html_preserve--><div id="htmlwidget-4c09a4ce4c01f2b64aad" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-4c09a4ce4c01f2b64aad">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],[44,29,66,66,57,39],[2203,2162,2441,2938,2574,2091]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>income<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
@@ -258,7 +281,7 @@ age_inc %>%
   theme_linedraw()
 ```
 
-<img src="./figs/unnamed-chunk-21-1.png" width="80%" height="90%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-22-1.png" width="80%" height="90%" style="display: block; margin: auto;" />
 
 Since `ml_flow` is a series of steps, it allows you to remove any of them. Let's remove the cross-validation step with `drop_resample`:
 
@@ -289,7 +312,7 @@ Let's begin running some models. The first model we'd like run is a simple regre
 m1 <-
   ml_flow %>%
   plug_recipe(~ recipe(income ~ age, data = .)) %>%  # Add the formula
-  plug_model(set_engine(linear_reg(), "lm")) %>% # Define the linear regression
+  plug_model(linear_reg() %>% set_engine("lm")) %>% # Define the linear regression
   fit() # Fit model
 
 # Predict on the training data
@@ -332,7 +355,7 @@ m1_res %>%
   theme_linedraw()
 ```
 
-<img src="./figs/unnamed-chunk-24-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-25-1.png" width="80%" style="display: block; margin: auto;" />
 
 
 
@@ -428,7 +451,7 @@ res_m2 %>%
   theme_linedraw()
 ```
 
-<img src="./figs/unnamed-chunk-29-1.png" width="80%" height="80%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-30-1.png" width="80%" height="80%" style="display: block; margin: auto;" />
 
 
 
@@ -447,7 +470,7 @@ res_m2 %>%
   theme_linedraw()
 ```
 
-<img src="./figs/unnamed-chunk-31-1.png" width="80%" height="70%" style="display: block; margin: auto;" />
+<img src="./figs/unnamed-chunk-32-1.png" width="80%" height="70%" style="display: block; margin: auto;" />
 
 
 
