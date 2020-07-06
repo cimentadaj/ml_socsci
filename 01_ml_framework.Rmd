@@ -81,14 +81,16 @@ library(tidymodels)
 Since the main objective in machine learning is to predict data accurately, all of their strategies are geared towards avoiding overfitting/underfitting the data. In other words, they want to capture all the signal and ignore the noise:
 
 ```{r overfitplots, out.width = "99%", fig.cap = "Different ways of fitting your data"}
+
+## Data creation
 set.seed(2313)
 n <- 500
 x <- rnorm(n)
 y <- x^3 + rnorm(n, sd = 3)
 age <- rescale(x, to = c(0, 100))
 income <- rescale(y, to = c(0, 5000))
-
 age_inc <- data.frame(age = age, income = income)
+## Data creation
 
 y_axis <- scale_y_continuous(labels = dollar_format(suffix = "€", prefix = ""),
                              limits = c(0, 5000),
@@ -266,11 +268,13 @@ fig_svg <-
 plot(fig_svg)
 ```
 
-In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too inflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data. Even experienced machine learning practitioners can build models that overfit the data (one notable example is the results from the Fragile Families Challenge, see **HEREEE** put the plot of the paper where overfitting is huge).
+In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too inflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data. Even experienced machine learning practitioners can build models that overfit the data considerably (one notable example are the results from the Fragile Families Challenge, which tried to predict life outcomes using machine learning and ended up overfitting the data a lot. See @salganik2020).
+
+<!-- If you want to make this even better, put the plot of the overfitting part of the paper. That would be a great addition. -->
 
 ## An example
 
-Let's combine all the new steps into a complete pipeline of machine learning in R. We can do that by finishing the `tidyflow` we've been developing so far. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. Let's load the data and the packages of interest:
+Let's combine all the new steps into a complete pipeline of machine learning in R. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. Let's load the data and the packages of interest:
 
 ```{r}
 library(tidymodels)
@@ -310,13 +314,13 @@ age_inc %>%
   theme_linedraw()
 ```
 
-Since `ml_flow` is a series of steps, it allows you to remove any of them. Let's remove the cross-validation step with `drop_resample`:
+Let's construct our tidyflow and add a split with `plug_split`. This will separate the data into training and testing:
 
 ```{r }
-
 ml_flow <-
-  ml_flow %>%
-  drop_resample()
+  age_inc %>%
+  tidyflow(seed = 2313) %>%
+  plug_split(initial_split)
 
 ml_flow
 ```

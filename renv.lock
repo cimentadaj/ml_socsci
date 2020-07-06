@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.0.1",
+    "Version": "4.0.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -1356,8 +1356,13 @@
     "rpart": {
       "Package": "rpart",
       "Version": "4.1-15",
-      "Source": "Repository",
+      "Source": "CRAN",
       "Repository": "CRAN",
+      "RemoteType": "standard",
+      "RemoteRef": "rpart",
+      "RemoteRepos": "https://cloud.r-project.org",
+      "RemotePkgType": "source",
+      "RemoteSha": "4.1-15",
       "Hash": "9787c1fcb680e655d062e7611cadf78e"
     },
     "rpart.plot": {
