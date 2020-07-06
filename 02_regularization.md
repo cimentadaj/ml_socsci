@@ -387,6 +387,9 @@ First, read in the data with:
 
 
 ```r
+library(tidymodels)
+library(tidyflow)
+
 data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
 pisa <- read.csv(data_link)
 ```
@@ -459,10 +462,6 @@ How does the $R^2$ and $RMSE$ change? Was there an impact in change?
 ```r
 rcp <-
   ~ recipe(noncogn ~ ., data = .) %>%
-    # We need to remove these two variables because they are
-    # character variables. We can't scale and center a
-    # character variable
-    step_rm(STRATUM, VER_DAT) %>%
     step_scale(all_predictors())
 
 tflow <-
@@ -561,6 +560,7 @@ m5 %>%
   autoplot()
 
 # Additional plot with standard error
+library(tidyr)
 m5 %>%
   pull_tflow_fit_tuning() %>%
   collect_metrics() %>%
@@ -627,6 +627,7 @@ final_res %>%
   theme_minimal()
 
 ## BONUS
-# Fit a linear regression and compare the four models
+## Fit a linear regression and compare the four models
+## What is the best model to pick considering both accuracy and simplicity?
 ```
 </details>

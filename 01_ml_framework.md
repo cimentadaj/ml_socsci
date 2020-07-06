@@ -59,14 +59,15 @@ Since the main objective in machine learning is to predict data accurately, all 
 
 
 ```r
+## Data creation
 set.seed(2313)
 n <- 500
 x <- rnorm(n)
 y <- x^3 + rnorm(n, sd = 3)
 age <- rescale(x, to = c(0, 100))
 income <- rescale(y, to = c(0, 5000))
-
 age_inc <- data.frame(age = age, income = income)
+## Data creation
 
 y_axis <- scale_y_continuous(labels = dollar_format(suffix = "€", prefix = ""),
                              limits = c(0, 5000),
@@ -238,11 +239,13 @@ or in other words:
 
 <img src="./figs/unnamed-chunk-19-1.png" width="50%" style="display: block; margin: auto;" />
 
-In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too inflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data. Even experienced machine learning practitioners can build models that overfit the data (one notable example is the results from the Fragile Families Challenge, see **HEREEE** put the plot of the paper where overfitting is huge).
+In reality, what we usually want is something located in the middle of these two extremes: we want a model that is neither too flexible that overfits the data nor too inflexible that misses the signal. There is really no magical recipe to achieving the perfect model and our best approach is to understand our model's performance using techniques such as cross-validation to assess how much our model is overfitting/underfitting the data. Even experienced machine learning practitioners can build models that overfit the data considerably (one notable example are the results from the Fragile Families Challenge, which tried to predict life outcomes using machine learning and ended up overfitting the data a lot. See @salganik2020).
+
+<!-- If you want to make this even better, put the plot of the overfitting part of the paper. That would be a great addition. -->
 
 ## An example
 
-Let's combine all the new steps into a complete pipeline of machine learning in R. We can do that by finishing the `tidyflow` we've been developing so far. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. Let's load the data and the packages of interest:
+Let's combine all the new steps into a complete pipeline of machine learning in R. Let's use the data `age_inc` which has the age of a person and their income. We want to predict their income based on their age. Let's load the data and the packages of interest:
 
 
 ```r
@@ -283,13 +286,14 @@ age_inc %>%
 
 <img src="./figs/unnamed-chunk-22-1.png" width="80%" height="90%" style="display: block; margin: auto;" />
 
-Since `ml_flow` is a series of steps, it allows you to remove any of them. Let's remove the cross-validation step with `drop_resample`:
+Let's construct our tidyflow and add a split with `plug_split`. This will separate the data into training and testing:
 
 
 ```r
 ml_flow <-
-  ml_flow %>%
-  drop_resample()
+  age_inc %>%
+  tidyflow(seed = 2313) %>%
+  plug_split(initial_split)
 
 ml_flow
 ```
@@ -327,16 +331,16 @@ m1_res
 ## # A tibble: 375 x 3
 ##      age income .pred
 ##    <dbl>  <dbl> <dbl>
-##  1 56.9   2574. 2650.
-##  2 38.9   2091. 2298.
-##  3 62.8   2328. 2767.
-##  4 84.9   3548. 3200.
-##  5 65.3   2440. 2815.
-##  6 93.8   3866. 3374.
-##  7  7.92  1511. 1692.
-##  8 78.3   3134. 3070.
-##  9 55.7   2777. 2628.
-## 10 42.2   2918. 2362.
+##  1    57   2574 2652.
+##  2    39   2091 2301.
+##  3    63   2328 2769.
+##  4    85   3548 3199.
+##  5    65   2440 2808.
+##  6    94   3866 3374.
+##  7     8   1511 1696.
+##  8    78   3134 3062.
+##  9    56   2777 2633.
+## 10    42   2918 2359.
 ## # … with 365 more rows
 ```
 
@@ -363,7 +367,7 @@ It seems we're underfitting the relationship. To measure the **fit** of the mode
 
 $$ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{N}}} $$
 
-Without going into too many details, it is the average difference between each dot from the plot from the value same value in the fitted line. The current $RMSE$ of our model is 379.59. This means that on average our predictions are off by around 379.59 euros. The fitted line is underfitting the relationship because it cannot capture the non-linear trend in the data. How do we increase the fit? We could add non-linear terms to the model, for example $age^2$, $age^3$, ..., $age^{10}$. 
+Without going into too many details, it is the average difference between each dot from the plot from the value same value in the fitted line. The current $RMSE$ of our model is 380.56. This means that on average our predictions are off by around 380.56 euros. The fitted line is underfitting the relationship because it cannot capture the non-linear trend in the data. How do we increase the fit? We could add non-linear terms to the model, for example $age^2$, $age^3$, ..., $age^{10}$. 
 
 However, remember, by fitting very high non-linear terms to the data, we might get lower error from the model on the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data but that's because the model is **learning** the <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> data so much that it starts to capture noise rather than the signal.  This means that when we predict on the **unseen** <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> data, our model would not know how to identify the signal in the data and have a higher $RMSE$ error. How can we be sure we're picking the best model specification?
 
@@ -455,7 +459,7 @@ res_m2 %>%
 
 
 
-The $RMSE$ on the **<b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b>** data for the three polynomial model is 279.87. We need to compare that to our **<b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b>** $RMSE$.
+The $RMSE$ on the **<b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b>** data for the three polynomial model is 280.47. We need to compare that to our **<b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b>** $RMSE$.
 
 
 ```r
@@ -474,7 +478,7 @@ res_m2 %>%
 
 
 
-* <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> $RMSE$ is 279.87
-* <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> $RMSE$ is 311.03
+* <b><span style='color: red; -webkit-text-stroke: 0.3px black;'>training</span></b> $RMSE$ is 280.47
+* <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> $RMSE$ is 312.29
 
 <b><span style='color: #D4FF2A; -webkit-text-stroke: 0.3px black;'>testing</span></b> $RMSE$ will almost always be higher, since we always overfit the data in some way through cross-validation.

@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-07-05" />
+<meta name="date" content="2020-07-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -242,27 +242,27 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 <p>The strength of the ridge regression comes from the fact that it compromises fitting the training data really well for improved generalization. In other words, we increase <strong>bias</strong> (because we force the coefficients to be smaller) for lower <strong>variance</strong> (making our predictions more robust). In other words, the whole gist behind ridge regression is penalizing very large coefficients for better generalization on new data.</p>
 <p>Having that intuition in mind, there is one important thing to keep in mind: the predictors of the ridge regression need to be standardized. Why is this the case? Because due to the scale of a predictor, its coefficient can be more penalized than other predictors. Suppose that you have the income of a particular person (measured in thousands per months) and time spent with their families (measured in seconds) and you’re trying to predict happiness. A one unit increase in salary could be penalized much more than a one unit increase in time spent with their families <strong>just</strong> because a one unit increase in salary can be much bigger due to it’s metric.</p>
 <p>In R, you can fit a ridge regression using <code>tidymodels</code> and <code>tidyflow</code>. Let’s load the packages that we will work with and read the data:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="regularization.html#cb19-1"></a><span class="kw">library</span>(tidymodels)</span>
-<span id="cb19-2"><a href="regularization.html#cb19-2"></a><span class="kw">library</span>(tidyflow)</span>
-<span id="cb19-3"><a href="regularization.html#cb19-3"></a></span>
-<span id="cb19-4"><a href="regularization.html#cb19-4"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
-<span id="cb19-5"><a href="regularization.html#cb19-5"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="regularization.html#cb21-1"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb21-2"><a href="regularization.html#cb21-2"></a><span class="kw">library</span>(tidyflow)</span>
+<span id="cb21-3"><a href="regularization.html#cb21-3"></a></span>
+<span id="cb21-4"><a href="regularization.html#cb21-4"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
+<span id="cb21-5"><a href="regularization.html#cb21-5"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
 <p>We will construct our <code>tidyflow</code> step by step. We begin with the data and then separate the training and test data. All of our modeling will be performed on the training data and the test data is saved for later (the test data must be completely ignored until you have your final tuned model). The second step is specifying the variables in the model and scaling all of them, as I have explained, we want to normalize all variables such that no variable gets more penalized than other due to their metric.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="regularization.html#cb20-1"></a><span class="co"># Specify all variables and scale</span></span>
-<span id="cb20-2"><a href="regularization.html#cb20-2"></a>rcp &lt;-</span>
-<span id="cb20-3"><a href="regularization.html#cb20-3"></a><span class="st">  </span><span class="co"># Define dependent (math_score) and independent variables</span></span>
-<span id="cb20-4"><a href="regularization.html#cb20-4"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(math_score <span class="op">~</span><span class="st"> </span>MISCED <span class="op">+</span><span class="st"> </span>FISCED <span class="op">+</span><span class="st"> </span>HISEI <span class="op">+</span><span class="st"> </span>REPEAT <span class="op">+</span><span class="st"> </span>IMMIG <span class="op">+</span><span class="st"> </span>DURECEC <span class="op">+</span><span class="st"> </span>BSMJ, <span class="dt">data =</span> .) <span class="op">%&gt;%</span></span>
-<span id="cb20-5"><a href="regularization.html#cb20-5"></a><span class="st">  </span><span class="co"># Scale all predictors (already knows it&#39;s the independent variables)</span></span>
-<span id="cb20-6"><a href="regularization.html#cb20-6"></a><span class="st">    </span><span class="kw">step_scale</span>(<span class="kw">all_predictors</span>())</span>
-<span id="cb20-7"><a href="regularization.html#cb20-7"></a></span>
-<span id="cb20-8"><a href="regularization.html#cb20-8"></a>tflow &lt;-</span>
-<span id="cb20-9"><a href="regularization.html#cb20-9"></a><span class="st">  </span><span class="kw">tidyflow</span>(<span class="dt">seed =</span> <span class="dv">231141</span>) <span class="op">%&gt;%</span></span>
-<span id="cb20-10"><a href="regularization.html#cb20-10"></a><span class="st">  </span><span class="kw">plug_data</span>(pisa) <span class="op">%&gt;%</span></span>
-<span id="cb20-11"><a href="regularization.html#cb20-11"></a><span class="st">  </span><span class="kw">plug_split</span>(initial_split, <span class="dt">prop =</span> <span class="fl">.7</span>) <span class="op">%&gt;%</span></span>
-<span id="cb20-12"><a href="regularization.html#cb20-12"></a><span class="st">  </span><span class="co"># Add the recipe with all variables and scale</span></span>
-<span id="cb20-13"><a href="regularization.html#cb20-13"></a><span class="st">  </span><span class="kw">plug_recipe</span>(rcp)</span>
-<span id="cb20-14"><a href="regularization.html#cb20-14"></a></span>
-<span id="cb20-15"><a href="regularization.html#cb20-15"></a>tflow</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="regularization.html#cb22-1"></a><span class="co"># Specify all variables and scale</span></span>
+<span id="cb22-2"><a href="regularization.html#cb22-2"></a>rcp &lt;-</span>
+<span id="cb22-3"><a href="regularization.html#cb22-3"></a><span class="st">  </span><span class="co"># Define dependent (math_score) and independent variables</span></span>
+<span id="cb22-4"><a href="regularization.html#cb22-4"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(math_score <span class="op">~</span><span class="st"> </span>MISCED <span class="op">+</span><span class="st"> </span>FISCED <span class="op">+</span><span class="st"> </span>HISEI <span class="op">+</span><span class="st"> </span>REPEAT <span class="op">+</span><span class="st"> </span>IMMIG <span class="op">+</span><span class="st"> </span>DURECEC <span class="op">+</span><span class="st"> </span>BSMJ, <span class="dt">data =</span> .) <span class="op">%&gt;%</span></span>
+<span id="cb22-5"><a href="regularization.html#cb22-5"></a><span class="st">  </span><span class="co"># Scale all predictors (already knows it&#39;s the independent variables)</span></span>
+<span id="cb22-6"><a href="regularization.html#cb22-6"></a><span class="st">    </span><span class="kw">step_scale</span>(<span class="kw">all_predictors</span>())</span>
+<span id="cb22-7"><a href="regularization.html#cb22-7"></a></span>
+<span id="cb22-8"><a href="regularization.html#cb22-8"></a>tflow &lt;-</span>
+<span id="cb22-9"><a href="regularization.html#cb22-9"></a><span class="st">  </span><span class="kw">tidyflow</span>(<span class="dt">seed =</span> <span class="dv">231141</span>) <span class="op">%&gt;%</span></span>
+<span id="cb22-10"><a href="regularization.html#cb22-10"></a><span class="st">  </span><span class="kw">plug_data</span>(pisa) <span class="op">%&gt;%</span></span>
+<span id="cb22-11"><a href="regularization.html#cb22-11"></a><span class="st">  </span><span class="kw">plug_split</span>(initial_split, <span class="dt">prop =</span> <span class="fl">.7</span>) <span class="op">%&gt;%</span></span>
+<span id="cb22-12"><a href="regularization.html#cb22-12"></a><span class="st">  </span><span class="co"># Add the recipe with all variables and scale</span></span>
+<span id="cb22-13"><a href="regularization.html#cb22-13"></a><span class="st">  </span><span class="kw">plug_recipe</span>(rcp)</span>
+<span id="cb22-14"><a href="regularization.html#cb22-14"></a></span>
+<span id="cb22-15"><a href="regularization.html#cb22-15"></a>tflow</span></code></pre></div>
 <pre><code>## ══ Tidyflow ════════════════════════════════════════════════════════════════════
 ## Data: 4.84K rows x 501 columns
 ## Split: initial_split w/ prop = ~0.7
@@ -271,43 +271,43 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 ## Grid: None
 ## Model: None</code></pre>
 <p>The argument <code>prop</code> controls the proportion of the sample that will be in the training data. Here we specify it to be <code>.7</code>, 70% of the data. The third step is specifying the <strong>tuning</strong> parameters. The ridge regression has a parameter called <code>penalty</code> which needs to be set by us. <code>penalty</code> is the “weight” term in the ridge equation, which controls how much weight do we want to give to the “shrinkage penalty” (this is the <span class="math inline">\(\lambda\)</span> from the equation). If this penalty is set to 0, it means we attach <strong>no</strong> weight to the penalty term and we will get the same result over OLS. Let’s try that:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="regularization.html#cb22-1"></a><span class="co">############################# Ridge regression ################################</span></span>
-<span id="cb22-2"><a href="regularization.html#cb22-2"></a><span class="co">###############################################################################</span></span>
-<span id="cb22-3"><a href="regularization.html#cb22-3"></a>regularized_reg &lt;-</span>
-<span id="cb22-4"><a href="regularization.html#cb22-4"></a><span class="st">  </span><span class="kw">set_engine</span>(</span>
-<span id="cb22-5"><a href="regularization.html#cb22-5"></a>    <span class="co"># mixture specifies the type of penalized regression: 0 is ridge regression</span></span>
-<span id="cb22-6"><a href="regularization.html#cb22-6"></a>    <span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="dv">0</span>, <span class="dt">mixture =</span> <span class="dv">0</span>),</span>
-<span id="cb22-7"><a href="regularization.html#cb22-7"></a>    <span class="st">&quot;glmnet&quot;</span></span>
-<span id="cb22-8"><a href="regularization.html#cb22-8"></a>  )</span>
-<span id="cb22-9"><a href="regularization.html#cb22-9"></a></span>
-<span id="cb22-10"><a href="regularization.html#cb22-10"></a>model1 &lt;-</span>
-<span id="cb22-11"><a href="regularization.html#cb22-11"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb22-12"><a href="regularization.html#cb22-12"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
-<span id="cb22-13"><a href="regularization.html#cb22-13"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb22-14"><a href="regularization.html#cb22-14"></a></span>
-<span id="cb22-15"><a href="regularization.html#cb22-15"></a><span class="co"># Get ridge coefficients</span></span>
-<span id="cb22-16"><a href="regularization.html#cb22-16"></a>mod &lt;-<span class="st"> </span>model1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="st">&quot;fit&quot;</span>]]</span>
-<span id="cb22-17"><a href="regularization.html#cb22-17"></a>ridge_coef &lt;-<span class="st"> </span><span class="kw">predict</span>(mod, <span class="dt">s =</span> <span class="dv">0</span>, <span class="dt">type =</span> <span class="st">&quot;coefficients&quot;</span>)</span>
-<span id="cb22-18"><a href="regularization.html#cb22-18"></a></span>
-<span id="cb22-19"><a href="regularization.html#cb22-19"></a><span class="co">############################# Linear model ####################################</span></span>
-<span id="cb22-20"><a href="regularization.html#cb22-20"></a><span class="co">###############################################################################</span></span>
-<span id="cb22-21"><a href="regularization.html#cb22-21"></a></span>
-<span id="cb22-22"><a href="regularization.html#cb22-22"></a>model2 &lt;-</span>
-<span id="cb22-23"><a href="regularization.html#cb22-23"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb22-24"><a href="regularization.html#cb22-24"></a><span class="st">  </span><span class="kw">plug_model</span>(<span class="kw">set_engine</span>(<span class="kw">linear_reg</span>(), <span class="st">&quot;lm&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb22-25"><a href="regularization.html#cb22-25"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb22-26"><a href="regularization.html#cb22-26"></a></span>
-<span id="cb22-27"><a href="regularization.html#cb22-27"></a>lm_coef &lt;-<span class="st"> </span>model2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="st">&quot;fit&quot;</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">coef</span>()</span>
-<span id="cb22-28"><a href="regularization.html#cb22-28"></a></span>
-<span id="cb22-29"><a href="regularization.html#cb22-29"></a><span class="co">############################# Comparing model #################################</span></span>
-<span id="cb22-30"><a href="regularization.html#cb22-30"></a><span class="co">###############################################################################</span></span>
-<span id="cb22-31"><a href="regularization.html#cb22-31"></a></span>
-<span id="cb22-32"><a href="regularization.html#cb22-32"></a>comparison &lt;-</span>
-<span id="cb22-33"><a href="regularization.html#cb22-33"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">coefs =</span> <span class="kw">names</span>(lm_coef),</span>
-<span id="cb22-34"><a href="regularization.html#cb22-34"></a>             <span class="st">`</span><span class="dt">Linear coefficients</span><span class="st">`</span> =<span class="st"> </span><span class="kw">unname</span>(<span class="kw">round</span>(lm_coef, <span class="dv">2</span>)),</span>
-<span id="cb22-35"><a href="regularization.html#cb22-35"></a>             <span class="st">`</span><span class="dt">Ridge coefficients</span><span class="st">`</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">as.vector</span>(ridge_coef), <span class="dv">2</span>))</span>
-<span id="cb22-36"><a href="regularization.html#cb22-36"></a></span>
-<span id="cb22-37"><a href="regularization.html#cb22-37"></a>knitr<span class="op">::</span><span class="kw">kable</span>(comparison)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="regularization.html#cb24-1"></a><span class="co">############################# Ridge regression ################################</span></span>
+<span id="cb24-2"><a href="regularization.html#cb24-2"></a><span class="co">###############################################################################</span></span>
+<span id="cb24-3"><a href="regularization.html#cb24-3"></a>regularized_reg &lt;-</span>
+<span id="cb24-4"><a href="regularization.html#cb24-4"></a><span class="st">  </span><span class="kw">set_engine</span>(</span>
+<span id="cb24-5"><a href="regularization.html#cb24-5"></a>    <span class="co"># mixture specifies the type of penalized regression: 0 is ridge regression</span></span>
+<span id="cb24-6"><a href="regularization.html#cb24-6"></a>    <span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="dv">0</span>, <span class="dt">mixture =</span> <span class="dv">0</span>),</span>
+<span id="cb24-7"><a href="regularization.html#cb24-7"></a>    <span class="st">&quot;glmnet&quot;</span></span>
+<span id="cb24-8"><a href="regularization.html#cb24-8"></a>  )</span>
+<span id="cb24-9"><a href="regularization.html#cb24-9"></a></span>
+<span id="cb24-10"><a href="regularization.html#cb24-10"></a>model1 &lt;-</span>
+<span id="cb24-11"><a href="regularization.html#cb24-11"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb24-12"><a href="regularization.html#cb24-12"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
+<span id="cb24-13"><a href="regularization.html#cb24-13"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb24-14"><a href="regularization.html#cb24-14"></a></span>
+<span id="cb24-15"><a href="regularization.html#cb24-15"></a><span class="co"># Get ridge coefficients</span></span>
+<span id="cb24-16"><a href="regularization.html#cb24-16"></a>mod &lt;-<span class="st"> </span>model1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="st">&quot;fit&quot;</span>]]</span>
+<span id="cb24-17"><a href="regularization.html#cb24-17"></a>ridge_coef &lt;-<span class="st"> </span><span class="kw">predict</span>(mod, <span class="dt">s =</span> <span class="dv">0</span>, <span class="dt">type =</span> <span class="st">&quot;coefficients&quot;</span>)</span>
+<span id="cb24-18"><a href="regularization.html#cb24-18"></a></span>
+<span id="cb24-19"><a href="regularization.html#cb24-19"></a><span class="co">############################# Linear model ####################################</span></span>
+<span id="cb24-20"><a href="regularization.html#cb24-20"></a><span class="co">###############################################################################</span></span>
+<span id="cb24-21"><a href="regularization.html#cb24-21"></a></span>
+<span id="cb24-22"><a href="regularization.html#cb24-22"></a>model2 &lt;-</span>
+<span id="cb24-23"><a href="regularization.html#cb24-23"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb24-24"><a href="regularization.html#cb24-24"></a><span class="st">  </span><span class="kw">plug_model</span>(<span class="kw">set_engine</span>(<span class="kw">linear_reg</span>(), <span class="st">&quot;lm&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb24-25"><a href="regularization.html#cb24-25"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb24-26"><a href="regularization.html#cb24-26"></a></span>
+<span id="cb24-27"><a href="regularization.html#cb24-27"></a>lm_coef &lt;-<span class="st"> </span>model2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span><span class="st"> </span>.[[<span class="st">&quot;fit&quot;</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">coef</span>()</span>
+<span id="cb24-28"><a href="regularization.html#cb24-28"></a></span>
+<span id="cb24-29"><a href="regularization.html#cb24-29"></a><span class="co">############################# Comparing model #################################</span></span>
+<span id="cb24-30"><a href="regularization.html#cb24-30"></a><span class="co">###############################################################################</span></span>
+<span id="cb24-31"><a href="regularization.html#cb24-31"></a></span>
+<span id="cb24-32"><a href="regularization.html#cb24-32"></a>comparison &lt;-</span>
+<span id="cb24-33"><a href="regularization.html#cb24-33"></a><span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">coefs =</span> <span class="kw">names</span>(lm_coef),</span>
+<span id="cb24-34"><a href="regularization.html#cb24-34"></a>             <span class="st">`</span><span class="dt">Linear coefficients</span><span class="st">`</span> =<span class="st"> </span><span class="kw">unname</span>(<span class="kw">round</span>(lm_coef, <span class="dv">2</span>)),</span>
+<span id="cb24-35"><a href="regularization.html#cb24-35"></a>             <span class="st">`</span><span class="dt">Ridge coefficients</span><span class="st">`</span> =<span class="st"> </span><span class="kw">round</span>(<span class="kw">as.vector</span>(ridge_coef), <span class="dv">2</span>))</span>
+<span id="cb24-36"><a href="regularization.html#cb24-36"></a></span>
+<span id="cb24-37"><a href="regularization.html#cb24-37"></a>knitr<span class="op">::</span><span class="kw">kable</span>(comparison)</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -360,57 +360,57 @@ RSS + \lambda \sum_{k = 1}^n \beta^2_j
 </tbody>
 </table>
 <p>Coming from a social science background, it might seem counterintuitive that the researcher has to specify tuning parameters for the model. In traditional social science statistics, models usually estimate similar values internally and the user doesn’t have to think about them. However, there are strategies already implemented to explore the combination of many possible values. With our previous example, we have to add <code>tune()</code> to the <code>penalty</code> argument and add a grid for the model to search for the best one:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="regularization.html#cb23-1"></a><span class="co"># Here we add the cross-validation and grid</span></span>
-<span id="cb23-2"><a href="regularization.html#cb23-2"></a>tflow &lt;-</span>
-<span id="cb23-3"><a href="regularization.html#cb23-3"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb23-4"><a href="regularization.html#cb23-4"></a><span class="st">  </span><span class="co"># Cross-validation</span></span>
-<span id="cb23-5"><a href="regularization.html#cb23-5"></a><span class="st">  </span><span class="kw">plug_resample</span>(vfold_cv, <span class="dt">v =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></span>
-<span id="cb23-6"><a href="regularization.html#cb23-6"></a><span class="st">  </span><span class="co"># Grid</span></span>
-<span id="cb23-7"><a href="regularization.html#cb23-7"></a><span class="st">  </span><span class="kw">plug_grid</span>(grid_regular)</span>
-<span id="cb23-8"><a href="regularization.html#cb23-8"></a></span>
-<span id="cb23-9"><a href="regularization.html#cb23-9"></a>regularized_reg &lt;-<span class="st"> </span><span class="kw">update</span>(regularized_reg, <span class="dt">penalty =</span> <span class="kw">tune</span>())</span>
-<span id="cb23-10"><a href="regularization.html#cb23-10"></a></span>
-<span id="cb23-11"><a href="regularization.html#cb23-11"></a>res &lt;-</span>
-<span id="cb23-12"><a href="regularization.html#cb23-12"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb23-13"><a href="regularization.html#cb23-13"></a><span class="st">  </span><span class="co"># Update the model to specify that `penalty` will be tuned</span></span>
-<span id="cb23-14"><a href="regularization.html#cb23-14"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
-<span id="cb23-15"><a href="regularization.html#cb23-15"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb23-16"><a href="regularization.html#cb23-16"></a></span>
-<span id="cb23-17"><a href="regularization.html#cb23-17"></a>final_ridge &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(res, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
-<span id="cb23-18"><a href="regularization.html#cb23-18"></a></span>
-<span id="cb23-19"><a href="regularization.html#cb23-19"></a>final_ridge <span class="op">%&gt;%</span></span>
-<span id="cb23-20"><a href="regularization.html#cb23-20"></a><span class="st">  </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span></span>
-<span id="cb23-21"><a href="regularization.html#cb23-21"></a><span class="st">  </span>.[[<span class="st">&quot;fit&quot;</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb23-22"><a href="regularization.html#cb23-22"></a><span class="st">  </span><span class="kw">plot</span>(<span class="dt">xvar =</span> <span class="st">&quot;lambda&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="regularization.html#cb25-1"></a><span class="co"># Here we add the cross-validation and grid</span></span>
+<span id="cb25-2"><a href="regularization.html#cb25-2"></a>tflow &lt;-</span>
+<span id="cb25-3"><a href="regularization.html#cb25-3"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb25-4"><a href="regularization.html#cb25-4"></a><span class="st">  </span><span class="co"># Cross-validation</span></span>
+<span id="cb25-5"><a href="regularization.html#cb25-5"></a><span class="st">  </span><span class="kw">plug_resample</span>(vfold_cv, <span class="dt">v =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb25-6"><a href="regularization.html#cb25-6"></a><span class="st">  </span><span class="co"># Grid</span></span>
+<span id="cb25-7"><a href="regularization.html#cb25-7"></a><span class="st">  </span><span class="kw">plug_grid</span>(grid_regular)</span>
+<span id="cb25-8"><a href="regularization.html#cb25-8"></a></span>
+<span id="cb25-9"><a href="regularization.html#cb25-9"></a>regularized_reg &lt;-<span class="st"> </span><span class="kw">update</span>(regularized_reg, <span class="dt">penalty =</span> <span class="kw">tune</span>())</span>
+<span id="cb25-10"><a href="regularization.html#cb25-10"></a></span>
+<span id="cb25-11"><a href="regularization.html#cb25-11"></a>res &lt;-</span>
+<span id="cb25-12"><a href="regularization.html#cb25-12"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb25-13"><a href="regularization.html#cb25-13"></a><span class="st">  </span><span class="co"># Update the model to specify that `penalty` will be tuned</span></span>
+<span id="cb25-14"><a href="regularization.html#cb25-14"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
+<span id="cb25-15"><a href="regularization.html#cb25-15"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb25-16"><a href="regularization.html#cb25-16"></a></span>
+<span id="cb25-17"><a href="regularization.html#cb25-17"></a>final_ridge &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(res, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb25-18"><a href="regularization.html#cb25-18"></a></span>
+<span id="cb25-19"><a href="regularization.html#cb25-19"></a>final_ridge <span class="op">%&gt;%</span></span>
+<span id="cb25-20"><a href="regularization.html#cb25-20"></a><span class="st">  </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span></span>
+<span id="cb25-21"><a href="regularization.html#cb25-21"></a><span class="st">  </span>.[[<span class="st">&quot;fit&quot;</span>]] <span class="op">%&gt;%</span></span>
+<span id="cb25-22"><a href="regularization.html#cb25-22"></a><span class="st">  </span><span class="kw">plot</span>(<span class="dt">xvar =</span> <span class="st">&quot;lambda&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p><img src="figs/unnamed-chunk-5-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>Here we can see how our coefficients are affected by increasing the weight of the <code>penalty</code> parameter. Each of those lines are the coefficients for the variables. The <code>x</code> axis contains the penalty values and we can see how as the penalty increases, the size of the coefficients is shrinking to be close to zero. By around the log of <code>penalty</code> around 8 nearly all coefficients are shrinked very close to zero. This plot is just an exercise to understand how the ridge regression works. In other words, we can figure out the best lambda automatically:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="regularization.html#cb24-1"></a>best_tune &lt;-</span>
-<span id="cb24-2"><a href="regularization.html#cb24-2"></a><span class="st">  </span>res <span class="op">%&gt;%</span></span>
-<span id="cb24-3"><a href="regularization.html#cb24-3"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
-<span id="cb24-4"><a href="regularization.html#cb24-4"></a><span class="st">  </span><span class="kw">select_best</span>(<span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
-<span id="cb24-5"><a href="regularization.html#cb24-5"></a></span>
-<span id="cb24-6"><a href="regularization.html#cb24-6"></a>best_tune</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="regularization.html#cb26-1"></a>best_tune &lt;-</span>
+<span id="cb26-2"><a href="regularization.html#cb26-2"></a><span class="st">  </span>res <span class="op">%&gt;%</span></span>
+<span id="cb26-3"><a href="regularization.html#cb26-3"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb26-4"><a href="regularization.html#cb26-4"></a><span class="st">  </span><span class="kw">select_best</span>(<span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb26-5"><a href="regularization.html#cb26-5"></a></span>
+<span id="cb26-6"><a href="regularization.html#cb26-6"></a>best_tune</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##        penalty
 ##          &lt;dbl&gt;
 ## 1 0.0000000001</code></pre>
 <p>However, there’s no need to calculate this, as <code>complete_tflow</code> figures it out for you (as you can see in the code chunk above, <code>complete_tflow</code> extracts this automatically and fits the best model). We can calculate the <span class="math inline">\(RMSE\)</span> of the training data from the best model and compare it to the predictions on the testing data:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="regularization.html#cb26-1"></a>train_rmse_ridge &lt;-</span>
-<span id="cb26-2"><a href="regularization.html#cb26-2"></a><span class="st">  </span>final_ridge <span class="op">%&gt;%</span></span>
-<span id="cb26-3"><a href="regularization.html#cb26-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
-<span id="cb26-4"><a href="regularization.html#cb26-4"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
-<span id="cb26-5"><a href="regularization.html#cb26-5"></a></span>
-<span id="cb26-6"><a href="regularization.html#cb26-6"></a>holdout_ridge &lt;-</span>
-<span id="cb26-7"><a href="regularization.html#cb26-7"></a><span class="st">  </span>final_ridge <span class="op">%&gt;%</span></span>
-<span id="cb26-8"><a href="regularization.html#cb26-8"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
-<span id="cb26-9"><a href="regularization.html#cb26-9"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
-<span id="cb26-10"><a href="regularization.html#cb26-10"></a></span>
-<span id="cb26-11"><a href="regularization.html#cb26-11"></a>train_rmse_ridge<span class="op">$</span>type &lt;-<span class="st"> &quot;training&quot;</span></span>
-<span id="cb26-12"><a href="regularization.html#cb26-12"></a>holdout_ridge<span class="op">$</span>type &lt;-<span class="st"> &quot;testing&quot;</span></span>
-<span id="cb26-13"><a href="regularization.html#cb26-13"></a></span>
-<span id="cb26-14"><a href="regularization.html#cb26-14"></a>ridge &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(train_rmse_ridge, holdout_ridge))</span>
-<span id="cb26-15"><a href="regularization.html#cb26-15"></a>ridge<span class="op">$</span>model &lt;-<span class="st"> &quot;ridge&quot;</span></span>
-<span id="cb26-16"><a href="regularization.html#cb26-16"></a>ridge</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="regularization.html#cb28-1"></a>train_rmse_ridge &lt;-</span>
+<span id="cb28-2"><a href="regularization.html#cb28-2"></a><span class="st">  </span>final_ridge <span class="op">%&gt;%</span></span>
+<span id="cb28-3"><a href="regularization.html#cb28-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb28-4"><a href="regularization.html#cb28-4"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
+<span id="cb28-5"><a href="regularization.html#cb28-5"></a></span>
+<span id="cb28-6"><a href="regularization.html#cb28-6"></a>holdout_ridge &lt;-</span>
+<span id="cb28-7"><a href="regularization.html#cb28-7"></a><span class="st">  </span>final_ridge <span class="op">%&gt;%</span></span>
+<span id="cb28-8"><a href="regularization.html#cb28-8"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
+<span id="cb28-9"><a href="regularization.html#cb28-9"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
+<span id="cb28-10"><a href="regularization.html#cb28-10"></a></span>
+<span id="cb28-11"><a href="regularization.html#cb28-11"></a>train_rmse_ridge<span class="op">$</span>type &lt;-<span class="st"> &quot;training&quot;</span></span>
+<span id="cb28-12"><a href="regularization.html#cb28-12"></a>holdout_ridge<span class="op">$</span>type &lt;-<span class="st"> &quot;testing&quot;</span></span>
+<span id="cb28-13"><a href="regularization.html#cb28-13"></a></span>
+<span id="cb28-14"><a href="regularization.html#cb28-14"></a>ridge &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(train_rmse_ridge, holdout_ridge))</span>
+<span id="cb28-15"><a href="regularization.html#cb28-15"></a>ridge<span class="op">$</span>model &lt;-<span class="st"> &quot;ridge&quot;</span></span>
+<span id="cb28-16"><a href="regularization.html#cb28-16"></a>ridge</span></code></pre></div>
 <pre><code>##   .metric .estimator .estimate     type model
 ## 1    rmse   standard  76.64458 training ridge
 ## 2    rmse   standard  78.21517  testing ridge</code></pre>
@@ -424,44 +424,44 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 \end{equation}\]</span></p>
 <p>Although it might not be self-evident from this, the lasso reguralization has an important distinction: it can force a coefficient to be exactly zero. This means that lasso does a selection of variables which have big coefficients while not compromising the RSS of the model. The problem with ridge regression is that as the number of variables increases, the training error will almost always improve but the test error will not.</p>
 <p>For example, if we define the same model from above using a lasso, you’ll see that it forces coefficients to be <strong>exactly zero</strong> if they don’t add anything relative to the RSS of the model. This means that variables which do not add anything to the model will be excluded unless they add explanatory power that compensates the size of their coefficient. Here’s the same lasso example:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="regularization.html#cb28-1"></a>regularized_reg &lt;-<span class="st"> </span><span class="kw">update</span>(regularized_reg, <span class="dt">mixture =</span> <span class="dv">1</span>)</span>
-<span id="cb28-2"><a href="regularization.html#cb28-2"></a></span>
-<span id="cb28-3"><a href="regularization.html#cb28-3"></a>res &lt;-</span>
-<span id="cb28-4"><a href="regularization.html#cb28-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb28-5"><a href="regularization.html#cb28-5"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
-<span id="cb28-6"><a href="regularization.html#cb28-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb28-7"><a href="regularization.html#cb28-7"></a></span>
-<span id="cb28-8"><a href="regularization.html#cb28-8"></a>final_lasso &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(res, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
-<span id="cb28-9"><a href="regularization.html#cb28-9"></a></span>
-<span id="cb28-10"><a href="regularization.html#cb28-10"></a>final_lasso <span class="op">%&gt;%</span></span>
-<span id="cb28-11"><a href="regularization.html#cb28-11"></a><span class="st">  </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span></span>
-<span id="cb28-12"><a href="regularization.html#cb28-12"></a><span class="st">  </span>.[[<span class="st">&quot;fit&quot;</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb28-13"><a href="regularization.html#cb28-13"></a><span class="st">  </span><span class="kw">plot</span>(<span class="dt">xvar =</span> <span class="st">&quot;lambda&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="regularization.html#cb30-1"></a>regularized_reg &lt;-<span class="st"> </span><span class="kw">update</span>(regularized_reg, <span class="dt">mixture =</span> <span class="dv">1</span>)</span>
+<span id="cb30-2"><a href="regularization.html#cb30-2"></a></span>
+<span id="cb30-3"><a href="regularization.html#cb30-3"></a>res &lt;-</span>
+<span id="cb30-4"><a href="regularization.html#cb30-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb30-5"><a href="regularization.html#cb30-5"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
+<span id="cb30-6"><a href="regularization.html#cb30-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb30-7"><a href="regularization.html#cb30-7"></a></span>
+<span id="cb30-8"><a href="regularization.html#cb30-8"></a>final_lasso &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(res, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb30-9"><a href="regularization.html#cb30-9"></a></span>
+<span id="cb30-10"><a href="regularization.html#cb30-10"></a>final_lasso <span class="op">%&gt;%</span></span>
+<span id="cb30-11"><a href="regularization.html#cb30-11"></a><span class="st">  </span><span class="kw">pull_tflow_fit</span>() <span class="op">%&gt;%</span></span>
+<span id="cb30-12"><a href="regularization.html#cb30-12"></a><span class="st">  </span>.[[<span class="st">&quot;fit&quot;</span>]] <span class="op">%&gt;%</span></span>
+<span id="cb30-13"><a href="regularization.html#cb30-13"></a><span class="st">  </span><span class="kw">plot</span>(<span class="dt">xvar =</span> <span class="st">&quot;lambda&quot;</span>, <span class="dt">label =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p><img src="figs/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /></p>
 <p>In contrast to the ridge regression, where coefficients are forced to be close to zero, the lasso penalty actually forces some coefficients <strong>to be zero</strong>. This property means that the lasso makes a <strong>selection of the variables with the higher coefficients</strong> and eliminates those which do not have a strong relationship. Lasso is usually better at model interpretation because it removes redundant variables while ridge can be useful if you want to keep a number of variables in the model, despite them being weak predictors (as controls, for example).</p>
 <p>To check the final model and it’s error, we can recycle the code from above and adapt it to the lasso:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="regularization.html#cb29-1"></a>train_rmse_lasso &lt;-</span>
-<span id="cb29-2"><a href="regularization.html#cb29-2"></a><span class="st">  </span>final_lasso <span class="op">%&gt;%</span></span>
-<span id="cb29-3"><a href="regularization.html#cb29-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
-<span id="cb29-4"><a href="regularization.html#cb29-4"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
-<span id="cb29-5"><a href="regularization.html#cb29-5"></a></span>
-<span id="cb29-6"><a href="regularization.html#cb29-6"></a>holdout_lasso &lt;-</span>
-<span id="cb29-7"><a href="regularization.html#cb29-7"></a><span class="st">  </span>final_lasso <span class="op">%&gt;%</span></span>
-<span id="cb29-8"><a href="regularization.html#cb29-8"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
-<span id="cb29-9"><a href="regularization.html#cb29-9"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
-<span id="cb29-10"><a href="regularization.html#cb29-10"></a></span>
-<span id="cb29-11"><a href="regularization.html#cb29-11"></a>train_rmse_lasso<span class="op">$</span>type &lt;-<span class="st"> &quot;training&quot;</span></span>
-<span id="cb29-12"><a href="regularization.html#cb29-12"></a>holdout_lasso<span class="op">$</span>type &lt;-<span class="st"> &quot;testing&quot;</span></span>
-<span id="cb29-13"><a href="regularization.html#cb29-13"></a></span>
-<span id="cb29-14"><a href="regularization.html#cb29-14"></a>lasso &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(train_rmse_lasso, holdout_lasso))</span>
-<span id="cb29-15"><a href="regularization.html#cb29-15"></a>lasso<span class="op">$</span>model &lt;-<span class="st"> &quot;lasso&quot;</span></span>
-<span id="cb29-16"><a href="regularization.html#cb29-16"></a>lasso</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="regularization.html#cb31-1"></a>train_rmse_lasso &lt;-</span>
+<span id="cb31-2"><a href="regularization.html#cb31-2"></a><span class="st">  </span>final_lasso <span class="op">%&gt;%</span></span>
+<span id="cb31-3"><a href="regularization.html#cb31-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb31-4"><a href="regularization.html#cb31-4"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
+<span id="cb31-5"><a href="regularization.html#cb31-5"></a></span>
+<span id="cb31-6"><a href="regularization.html#cb31-6"></a>holdout_lasso &lt;-</span>
+<span id="cb31-7"><a href="regularization.html#cb31-7"></a><span class="st">  </span>final_lasso <span class="op">%&gt;%</span></span>
+<span id="cb31-8"><a href="regularization.html#cb31-8"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
+<span id="cb31-9"><a href="regularization.html#cb31-9"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
+<span id="cb31-10"><a href="regularization.html#cb31-10"></a></span>
+<span id="cb31-11"><a href="regularization.html#cb31-11"></a>train_rmse_lasso<span class="op">$</span>type &lt;-<span class="st"> &quot;training&quot;</span></span>
+<span id="cb31-12"><a href="regularization.html#cb31-12"></a>holdout_lasso<span class="op">$</span>type &lt;-<span class="st"> &quot;testing&quot;</span></span>
+<span id="cb31-13"><a href="regularization.html#cb31-13"></a></span>
+<span id="cb31-14"><a href="regularization.html#cb31-14"></a>lasso &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(train_rmse_lasso, holdout_lasso))</span>
+<span id="cb31-15"><a href="regularization.html#cb31-15"></a>lasso<span class="op">$</span>model &lt;-<span class="st"> &quot;lasso&quot;</span></span>
+<span id="cb31-16"><a href="regularization.html#cb31-16"></a>lasso</span></code></pre></div>
 <pre><code>##   .metric .estimator .estimate     type model
 ## 1    rmse   standard  76.63928 training lasso
 ## 2    rmse   standard  78.23457  testing lasso</code></pre>
 <p>So far, we can check which model is performing better:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="regularization.html#cb31-1"></a>model_comparison &lt;-<span class="st"> </span><span class="kw">rbind</span>(ridge, lasso)</span>
-<span id="cb31-2"><a href="regularization.html#cb31-2"></a>model_comparison</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="regularization.html#cb33-1"></a>model_comparison &lt;-<span class="st"> </span><span class="kw">rbind</span>(ridge, lasso)</span>
+<span id="cb33-2"><a href="regularization.html#cb33-2"></a>model_comparison</span></code></pre></div>
 <pre><code>##   .metric .estimator .estimate     type model
 ## 1    rmse   standard  76.64458 training ridge
 ## 2    rmse   standard  78.21517  testing ridge
@@ -484,44 +484,44 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 </blockquote>
 <p>Essentially, you now have two tuning parameters. In the grid of values, instead of specifying a <code>mixture</code> of <code>0</code> (ridge) or <code>1</code> (lasso), <code>tidyflow</code> will slide through several values of <code>mixture</code> ranging from 0 to 1 and compare that to several values of <code>lambda</code>. This is formally called a <strong>grid search</strong>.</p>
 <p>We can recycle the same code from above:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="regularization.html#cb33-1"></a>regularized_reg &lt;-<span class="st"> </span><span class="kw">update</span>(regularized_reg, <span class="dt">mixture =</span> <span class="kw">tune</span>())</span>
-<span id="cb33-2"><a href="regularization.html#cb33-2"></a></span>
-<span id="cb33-3"><a href="regularization.html#cb33-3"></a>res &lt;-</span>
-<span id="cb33-4"><a href="regularization.html#cb33-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb33-5"><a href="regularization.html#cb33-5"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
-<span id="cb33-6"><a href="regularization.html#cb33-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb33-7"><a href="regularization.html#cb33-7"></a></span>
-<span id="cb33-8"><a href="regularization.html#cb33-8"></a>final_elnet &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(res, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
-<span id="cb33-9"><a href="regularization.html#cb33-9"></a></span>
-<span id="cb33-10"><a href="regularization.html#cb33-10"></a>train_rmse_elnet &lt;-</span>
-<span id="cb33-11"><a href="regularization.html#cb33-11"></a><span class="st">  </span>final_elnet <span class="op">%&gt;%</span></span>
-<span id="cb33-12"><a href="regularization.html#cb33-12"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
-<span id="cb33-13"><a href="regularization.html#cb33-13"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
-<span id="cb33-14"><a href="regularization.html#cb33-14"></a></span>
-<span id="cb33-15"><a href="regularization.html#cb33-15"></a>holdout_elnet &lt;-</span>
-<span id="cb33-16"><a href="regularization.html#cb33-16"></a><span class="st">  </span>final_elnet <span class="op">%&gt;%</span></span>
-<span id="cb33-17"><a href="regularization.html#cb33-17"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
-<span id="cb33-18"><a href="regularization.html#cb33-18"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
-<span id="cb33-19"><a href="regularization.html#cb33-19"></a></span>
-<span id="cb33-20"><a href="regularization.html#cb33-20"></a>train_rmse_elnet<span class="op">$</span>type &lt;-<span class="st"> &quot;training&quot;</span></span>
-<span id="cb33-21"><a href="regularization.html#cb33-21"></a>holdout_elnet<span class="op">$</span>type &lt;-<span class="st"> &quot;testing&quot;</span></span>
-<span id="cb33-22"><a href="regularization.html#cb33-22"></a></span>
-<span id="cb33-23"><a href="regularization.html#cb33-23"></a>elnet &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(train_rmse_elnet, holdout_elnet))</span>
-<span id="cb33-24"><a href="regularization.html#cb33-24"></a>elnet<span class="op">$</span>model &lt;-<span class="st"> &quot;elnet&quot;</span></span>
-<span id="cb33-25"><a href="regularization.html#cb33-25"></a>elnet</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="regularization.html#cb35-1"></a>regularized_reg &lt;-<span class="st"> </span><span class="kw">update</span>(regularized_reg, <span class="dt">mixture =</span> <span class="kw">tune</span>())</span>
+<span id="cb35-2"><a href="regularization.html#cb35-2"></a></span>
+<span id="cb35-3"><a href="regularization.html#cb35-3"></a>res &lt;-</span>
+<span id="cb35-4"><a href="regularization.html#cb35-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb35-5"><a href="regularization.html#cb35-5"></a><span class="st">  </span><span class="kw">plug_model</span>(regularized_reg) <span class="op">%&gt;%</span></span>
+<span id="cb35-6"><a href="regularization.html#cb35-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb35-7"><a href="regularization.html#cb35-7"></a></span>
+<span id="cb35-8"><a href="regularization.html#cb35-8"></a>final_elnet &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(res, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb35-9"><a href="regularization.html#cb35-9"></a></span>
+<span id="cb35-10"><a href="regularization.html#cb35-10"></a>train_rmse_elnet &lt;-</span>
+<span id="cb35-11"><a href="regularization.html#cb35-11"></a><span class="st">  </span>final_elnet <span class="op">%&gt;%</span></span>
+<span id="cb35-12"><a href="regularization.html#cb35-12"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb35-13"><a href="regularization.html#cb35-13"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
+<span id="cb35-14"><a href="regularization.html#cb35-14"></a></span>
+<span id="cb35-15"><a href="regularization.html#cb35-15"></a>holdout_elnet &lt;-</span>
+<span id="cb35-16"><a href="regularization.html#cb35-16"></a><span class="st">  </span>final_elnet <span class="op">%&gt;%</span></span>
+<span id="cb35-17"><a href="regularization.html#cb35-17"></a><span class="st">  </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
+<span id="cb35-18"><a href="regularization.html#cb35-18"></a><span class="st">  </span><span class="kw">rmse</span>(math_score, .pred)</span>
+<span id="cb35-19"><a href="regularization.html#cb35-19"></a></span>
+<span id="cb35-20"><a href="regularization.html#cb35-20"></a>train_rmse_elnet<span class="op">$</span>type &lt;-<span class="st"> &quot;training&quot;</span></span>
+<span id="cb35-21"><a href="regularization.html#cb35-21"></a>holdout_elnet<span class="op">$</span>type &lt;-<span class="st"> &quot;testing&quot;</span></span>
+<span id="cb35-22"><a href="regularization.html#cb35-22"></a></span>
+<span id="cb35-23"><a href="regularization.html#cb35-23"></a>elnet &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(train_rmse_elnet, holdout_elnet))</span>
+<span id="cb35-24"><a href="regularization.html#cb35-24"></a>elnet<span class="op">$</span>model &lt;-<span class="st"> &quot;elnet&quot;</span></span>
+<span id="cb35-25"><a href="regularization.html#cb35-25"></a>elnet</span></code></pre></div>
 <pre><code>##   .metric .estimator .estimate     type model
 ## 1    rmse   standard  76.63928 training elnet
 ## 2    rmse   standard  78.23457  testing elnet</code></pre>
 <p>The RMSE of the elastic net is somewhat lower than then ridge and lasso but also probably within the margin of error. Let’s compare it visually:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="regularization.html#cb35-1"></a>model_comparison &lt;-<span class="st"> </span><span class="kw">rbind</span>(model_comparison, elnet)</span>
-<span id="cb35-2"><a href="regularization.html#cb35-2"></a></span>
-<span id="cb35-3"><a href="regularization.html#cb35-3"></a>model_comparison <span class="op">%&gt;%</span></span>
-<span id="cb35-4"><a href="regularization.html#cb35-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(model, .estimate, <span class="dt">color =</span> type, <span class="dt">group =</span> type)) <span class="op">+</span></span>
-<span id="cb35-5"><a href="regularization.html#cb35-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="op">+</span></span>
-<span id="cb35-6"><a href="regularization.html#cb35-6"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
-<span id="cb35-7"><a href="regularization.html#cb35-7"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;RMSE&quot;</span>) <span class="op">+</span></span>
-<span id="cb35-8"><a href="regularization.html#cb35-8"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">name =</span> <span class="st">&quot;Models&quot;</span>) <span class="op">+</span></span>
-<span id="cb35-9"><a href="regularization.html#cb35-9"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="regularization.html#cb37-1"></a>model_comparison &lt;-<span class="st"> </span><span class="kw">rbind</span>(model_comparison, elnet)</span>
+<span id="cb37-2"><a href="regularization.html#cb37-2"></a></span>
+<span id="cb37-3"><a href="regularization.html#cb37-3"></a>model_comparison <span class="op">%&gt;%</span></span>
+<span id="cb37-4"><a href="regularization.html#cb37-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(model, .estimate, <span class="dt">color =</span> type, <span class="dt">group =</span> type)) <span class="op">+</span></span>
+<span id="cb37-5"><a href="regularization.html#cb37-5"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position =</span> <span class="st">&quot;dodge&quot;</span>) <span class="op">+</span></span>
+<span id="cb37-6"><a href="regularization.html#cb37-6"></a><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb37-7"><a href="regularization.html#cb37-7"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">name =</span> <span class="st">&quot;RMSE&quot;</span>) <span class="op">+</span></span>
+<span id="cb37-8"><a href="regularization.html#cb37-8"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">name =</span> <span class="st">&quot;Models&quot;</span>) <span class="op">+</span></span>
+<span id="cb37-9"><a href="regularization.html#cb37-9"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
 <p><img src="figs/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="exercises" class="section level2">
@@ -537,8 +537,11 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 <p>The scale of the index goes from 1 to 4, where in 4 the student strongly agrees and 1 is they completely disagree. In other words, this index shows that the higher the value, the higher the non cognitive skills. You can check out the complete PISA codebook <a href="https://docs.google.com/spreadsheets/d/12--3vD737rcu6olviKutRLEiyKNZ2bynXcJ4CpwtNsQ/edit?usp=sharing">here</a>.</p>
 <p>In these series of exercises you will have to try different models that predict this index of non-cognitive skills, perform a grid search for the three models and compare the predictions of the three models.</p>
 <p>First, read in the data with:</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="regularization.html#cb36-1"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
-<span id="cb36-2"><a href="regularization.html#cb36-2"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="regularization.html#cb38-1"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb38-2"><a href="regularization.html#cb38-2"></a><span class="kw">library</span>(tidyflow)</span>
+<span id="cb38-3"><a href="regularization.html#cb38-3"></a></span>
+<span id="cb38-4"><a href="regularization.html#cb38-4"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
+<span id="cb38-5"><a href="regularization.html#cb38-5"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
 <div id="ex1" class="section level4 unnumbered">
 <h4>1. Create a <code>tidyflow</code> with a split</h4>
 <ul>
@@ -548,12 +551,12 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 <p>Remember to set the seed to <code>2341</code> so that everyone can compare their results.</p>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="regularization.html#cb37-1"></a>tflow &lt;-</span>
-<span id="cb37-2"><a href="regularization.html#cb37-2"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
-<span id="cb37-3"><a href="regularization.html#cb37-3"></a><span class="st">  </span><span class="kw">tidyflow</span>(<span class="dt">seed =</span> <span class="dv">2341</span>) <span class="op">%&gt;%</span></span>
-<span id="cb37-4"><a href="regularization.html#cb37-4"></a><span class="st">  </span><span class="kw">plug_split</span>(initial_split)</span>
-<span id="cb37-5"><a href="regularization.html#cb37-5"></a></span>
-<span id="cb37-6"><a href="regularization.html#cb37-6"></a>tflow</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="regularization.html#cb39-1"></a>tflow &lt;-</span>
+<span id="cb39-2"><a href="regularization.html#cb39-2"></a><span class="st">  </span>pisa <span class="op">%&gt;%</span></span>
+<span id="cb39-3"><a href="regularization.html#cb39-3"></a><span class="st">  </span><span class="kw">tidyflow</span>(<span class="dt">seed =</span> <span class="dv">2341</span>) <span class="op">%&gt;%</span></span>
+<span id="cb39-4"><a href="regularization.html#cb39-4"></a><span class="st">  </span><span class="kw">plug_split</span>(initial_split)</span>
+<span id="cb39-5"><a href="regularization.html#cb39-5"></a></span>
+<span id="cb39-6"><a href="regularization.html#cb39-6"></a>tflow</span></code></pre></div>
 </details>
 </div>
 <div id="ex2" class="section level4 unnumbered">
@@ -566,17 +569,17 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 </ul>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="regularization.html#cb38-1"></a>ridge_mod &lt;-<span class="st"> </span><span class="kw">set_engine</span>(<span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="fl">0.001</span>, <span class="dt">mixture =</span> <span class="dv">0</span>), <span class="st">&quot;glmnet&quot;</span>)</span>
-<span id="cb38-2"><a href="regularization.html#cb38-2"></a></span>
-<span id="cb38-3"><a href="regularization.html#cb38-3"></a>tflow &lt;-</span>
-<span id="cb38-4"><a href="regularization.html#cb38-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb38-5"><a href="regularization.html#cb38-5"></a><span class="st">  </span><span class="kw">plug_formula</span>(noncogn <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb38-6"><a href="regularization.html#cb38-6"></a><span class="st">  </span><span class="kw">plug_model</span>(ridge_mod)</span>
-<span id="cb38-7"><a href="regularization.html#cb38-7"></a></span>
-<span id="cb38-8"><a href="regularization.html#cb38-8"></a>m1 &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb38-9"><a href="regularization.html#cb38-9"></a></span>
-<span id="cb38-10"><a href="regularization.html#cb38-10"></a>m1_rsq &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m1) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rsq</span>(noncogn, .pred)</span>
-<span id="cb38-11"><a href="regularization.html#cb38-11"></a>m1_rmse &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m1) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rmse</span>(noncogn, .pred)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="regularization.html#cb40-1"></a>ridge_mod &lt;-<span class="st"> </span><span class="kw">set_engine</span>(<span class="kw">linear_reg</span>(<span class="dt">penalty =</span> <span class="fl">0.001</span>, <span class="dt">mixture =</span> <span class="dv">0</span>), <span class="st">&quot;glmnet&quot;</span>)</span>
+<span id="cb40-2"><a href="regularization.html#cb40-2"></a></span>
+<span id="cb40-3"><a href="regularization.html#cb40-3"></a>tflow &lt;-</span>
+<span id="cb40-4"><a href="regularization.html#cb40-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb40-5"><a href="regularization.html#cb40-5"></a><span class="st">  </span><span class="kw">plug_formula</span>(noncogn <span class="op">~</span><span class="st"> </span>.) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-6"><a href="regularization.html#cb40-6"></a><span class="st">  </span><span class="kw">plug_model</span>(ridge_mod)</span>
+<span id="cb40-7"><a href="regularization.html#cb40-7"></a></span>
+<span id="cb40-8"><a href="regularization.html#cb40-8"></a>m1 &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb40-9"><a href="regularization.html#cb40-9"></a></span>
+<span id="cb40-10"><a href="regularization.html#cb40-10"></a>m1_rsq &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m1) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rsq</span>(noncogn, .pred)</span>
+<span id="cb40-11"><a href="regularization.html#cb40-11"></a>m1_rmse &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m1) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rmse</span>(noncogn, .pred)</span></code></pre></div>
 </details>
 </div>
 <div id="ex3" class="section level4 unnumbered">
@@ -589,23 +592,19 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 <p>How does the <span class="math inline">\(R^2\)</span> and <span class="math inline">\(RMSE\)</span> change? Was there an impact in change?</p>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="regularization.html#cb39-1"></a>rcp &lt;-</span>
-<span id="cb39-2"><a href="regularization.html#cb39-2"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(noncogn <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> .) <span class="op">%&gt;%</span></span>
-<span id="cb39-3"><a href="regularization.html#cb39-3"></a><span class="st">    </span><span class="co"># We need to remove these two variables because they are</span></span>
-<span id="cb39-4"><a href="regularization.html#cb39-4"></a><span class="st">    </span><span class="co"># character variables. We can&#39;t scale and center a</span></span>
-<span id="cb39-5"><a href="regularization.html#cb39-5"></a><span class="st">    </span><span class="co"># character variable</span></span>
-<span id="cb39-6"><a href="regularization.html#cb39-6"></a><span class="st">    </span><span class="kw">step_rm</span>(STRATUM, VER_DAT) <span class="op">%&gt;%</span></span>
-<span id="cb39-7"><a href="regularization.html#cb39-7"></a><span class="st">    </span><span class="kw">step_scale</span>(<span class="kw">all_predictors</span>())</span>
-<span id="cb39-8"><a href="regularization.html#cb39-8"></a></span>
-<span id="cb39-9"><a href="regularization.html#cb39-9"></a>tflow &lt;-</span>
-<span id="cb39-10"><a href="regularization.html#cb39-10"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb39-11"><a href="regularization.html#cb39-11"></a><span class="st">  </span><span class="kw">drop_formula</span>() <span class="op">%&gt;%</span></span>
-<span id="cb39-12"><a href="regularization.html#cb39-12"></a><span class="st">  </span><span class="kw">plug_recipe</span>(rcp)</span>
-<span id="cb39-13"><a href="regularization.html#cb39-13"></a></span>
-<span id="cb39-14"><a href="regularization.html#cb39-14"></a>m2 &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb39-15"><a href="regularization.html#cb39-15"></a></span>
-<span id="cb39-16"><a href="regularization.html#cb39-16"></a>m2_rsq &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m2) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rsq</span>(noncogn, .pred)</span>
-<span id="cb39-17"><a href="regularization.html#cb39-17"></a>m2_rmse &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m2) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rmse</span>(noncogn, .pred)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="regularization.html#cb41-1"></a>rcp &lt;-</span>
+<span id="cb41-2"><a href="regularization.html#cb41-2"></a><span class="st">  </span><span class="er">~</span><span class="st"> </span><span class="kw">recipe</span>(noncogn <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> .) <span class="op">%&gt;%</span></span>
+<span id="cb41-3"><a href="regularization.html#cb41-3"></a><span class="st">    </span><span class="kw">step_scale</span>(<span class="kw">all_predictors</span>())</span>
+<span id="cb41-4"><a href="regularization.html#cb41-4"></a></span>
+<span id="cb41-5"><a href="regularization.html#cb41-5"></a>tflow &lt;-</span>
+<span id="cb41-6"><a href="regularization.html#cb41-6"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-7"><a href="regularization.html#cb41-7"></a><span class="st">  </span><span class="kw">drop_formula</span>() <span class="op">%&gt;%</span></span>
+<span id="cb41-8"><a href="regularization.html#cb41-8"></a><span class="st">  </span><span class="kw">plug_recipe</span>(rcp)</span>
+<span id="cb41-9"><a href="regularization.html#cb41-9"></a></span>
+<span id="cb41-10"><a href="regularization.html#cb41-10"></a>m2 &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb41-11"><a href="regularization.html#cb41-11"></a></span>
+<span id="cb41-12"><a href="regularization.html#cb41-12"></a>m2_rsq &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m2) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rsq</span>(noncogn, .pred)</span>
+<span id="cb41-13"><a href="regularization.html#cb41-13"></a>m2_rmse &lt;-<span class="st"> </span><span class="kw">predict_training</span>(m2) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rmse</span>(noncogn, .pred)</span></code></pre></div>
 </details>
 </div>
 <div id="ex4" class="section level4 unnumbered">
@@ -620,19 +619,19 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 <p>Is there a pattern with the improvement/decrease of the metrics of fit with respect to the <code>penalty</code>?</p>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="regularization.html#cb40-1"></a>ridge_mod &lt;-<span class="st"> </span><span class="kw">update</span>(ridge_mod, <span class="dt">penalty =</span> <span class="kw">tune</span>())</span>
-<span id="cb40-2"><a href="regularization.html#cb40-2"></a></span>
-<span id="cb40-3"><a href="regularization.html#cb40-3"></a>tflow &lt;-</span>
-<span id="cb40-4"><a href="regularization.html#cb40-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb40-5"><a href="regularization.html#cb40-5"></a><span class="st">  </span><span class="kw">replace_model</span>(ridge_mod) <span class="op">%&gt;%</span></span>
-<span id="cb40-6"><a href="regularization.html#cb40-6"></a><span class="st">  </span><span class="kw">plug_resample</span>(vfold_cv) <span class="op">%&gt;%</span></span>
-<span id="cb40-7"><a href="regularization.html#cb40-7"></a><span class="st">  </span><span class="kw">plug_grid</span>(grid_regular, <span class="dt">levels =</span> <span class="dv">10</span>)</span>
-<span id="cb40-8"><a href="regularization.html#cb40-8"></a></span>
-<span id="cb40-9"><a href="regularization.html#cb40-9"></a>m3 &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
-<span id="cb40-10"><a href="regularization.html#cb40-10"></a></span>
-<span id="cb40-11"><a href="regularization.html#cb40-11"></a>m3 <span class="op">%&gt;%</span></span>
-<span id="cb40-12"><a href="regularization.html#cb40-12"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
-<span id="cb40-13"><a href="regularization.html#cb40-13"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="regularization.html#cb42-1"></a>ridge_mod &lt;-<span class="st"> </span><span class="kw">update</span>(ridge_mod, <span class="dt">penalty =</span> <span class="kw">tune</span>())</span>
+<span id="cb42-2"><a href="regularization.html#cb42-2"></a></span>
+<span id="cb42-3"><a href="regularization.html#cb42-3"></a>tflow &lt;-</span>
+<span id="cb42-4"><a href="regularization.html#cb42-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb42-5"><a href="regularization.html#cb42-5"></a><span class="st">  </span><span class="kw">replace_model</span>(ridge_mod) <span class="op">%&gt;%</span></span>
+<span id="cb42-6"><a href="regularization.html#cb42-6"></a><span class="st">  </span><span class="kw">plug_resample</span>(vfold_cv) <span class="op">%&gt;%</span></span>
+<span id="cb42-7"><a href="regularization.html#cb42-7"></a><span class="st">  </span><span class="kw">plug_grid</span>(grid_regular, <span class="dt">levels =</span> <span class="dv">10</span>)</span>
+<span id="cb42-8"><a href="regularization.html#cb42-8"></a></span>
+<span id="cb42-9"><a href="regularization.html#cb42-9"></a>m3 &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span>
+<span id="cb42-10"><a href="regularization.html#cb42-10"></a></span>
+<span id="cb42-11"><a href="regularization.html#cb42-11"></a>m3 <span class="op">%&gt;%</span></span>
+<span id="cb42-12"><a href="regularization.html#cb42-12"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb42-13"><a href="regularization.html#cb42-13"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
 </details>
 </div>
 <div id="ex5" class="section level4 unnumbered">
@@ -645,16 +644,16 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 <p>Which model is performing better? Ridge or Lasso? Can you comment on the pattern of the penalty between ridge and lasso?</p>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="regularization.html#cb41-1"></a>lasso_mod &lt;-<span class="st"> </span><span class="kw">update</span>(ridge_mod, <span class="dt">mixture =</span> <span class="dv">1</span>)</span>
-<span id="cb41-2"><a href="regularization.html#cb41-2"></a></span>
-<span id="cb41-3"><a href="regularization.html#cb41-3"></a>m4 &lt;-</span>
-<span id="cb41-4"><a href="regularization.html#cb41-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb41-5"><a href="regularization.html#cb41-5"></a><span class="st">  </span><span class="kw">replace_model</span>(lasso_mod) <span class="op">%&gt;%</span></span>
-<span id="cb41-6"><a href="regularization.html#cb41-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb41-7"><a href="regularization.html#cb41-7"></a></span>
-<span id="cb41-8"><a href="regularization.html#cb41-8"></a>m4 <span class="op">%&gt;%</span></span>
-<span id="cb41-9"><a href="regularization.html#cb41-9"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
-<span id="cb41-10"><a href="regularization.html#cb41-10"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="regularization.html#cb43-1"></a>lasso_mod &lt;-<span class="st"> </span><span class="kw">update</span>(ridge_mod, <span class="dt">mixture =</span> <span class="dv">1</span>)</span>
+<span id="cb43-2"><a href="regularization.html#cb43-2"></a></span>
+<span id="cb43-3"><a href="regularization.html#cb43-3"></a>m4 &lt;-</span>
+<span id="cb43-4"><a href="regularization.html#cb43-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb43-5"><a href="regularization.html#cb43-5"></a><span class="st">  </span><span class="kw">replace_model</span>(lasso_mod) <span class="op">%&gt;%</span></span>
+<span id="cb43-6"><a href="regularization.html#cb43-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb43-7"><a href="regularization.html#cb43-7"></a></span>
+<span id="cb43-8"><a href="regularization.html#cb43-8"></a>m4 <span class="op">%&gt;%</span></span>
+<span id="cb43-9"><a href="regularization.html#cb43-9"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb43-10"><a href="regularization.html#cb43-10"></a><span class="st">  </span><span class="kw">autoplot</span>()</span></code></pre></div>
 </details>
 </div>
 <div id="ex6" class="section level4 unnumbered">
@@ -667,28 +666,29 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 </ul>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="regularization.html#cb42-1"></a>elnet_mod &lt;-<span class="st"> </span><span class="kw">update</span>(lasso_mod, <span class="dt">mixture =</span> <span class="kw">tune</span>())</span>
-<span id="cb42-2"><a href="regularization.html#cb42-2"></a></span>
-<span id="cb42-3"><a href="regularization.html#cb42-3"></a>m5 &lt;-</span>
-<span id="cb42-4"><a href="regularization.html#cb42-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
-<span id="cb42-5"><a href="regularization.html#cb42-5"></a><span class="st">  </span><span class="kw">replace_model</span>(elnet_mod) <span class="op">%&gt;%</span></span>
-<span id="cb42-6"><a href="regularization.html#cb42-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
-<span id="cb42-7"><a href="regularization.html#cb42-7"></a></span>
-<span id="cb42-8"><a href="regularization.html#cb42-8"></a>m5 <span class="op">%&gt;%</span></span>
-<span id="cb42-9"><a href="regularization.html#cb42-9"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
-<span id="cb42-10"><a href="regularization.html#cb42-10"></a><span class="st">  </span><span class="kw">autoplot</span>()</span>
-<span id="cb42-11"><a href="regularization.html#cb42-11"></a></span>
-<span id="cb42-12"><a href="regularization.html#cb42-12"></a><span class="co"># Additional plot with standard error</span></span>
-<span id="cb42-13"><a href="regularization.html#cb42-13"></a>m5 <span class="op">%&gt;%</span></span>
-<span id="cb42-14"><a href="regularization.html#cb42-14"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
-<span id="cb42-15"><a href="regularization.html#cb42-15"></a><span class="st">  </span><span class="kw">collect_metrics</span>() <span class="op">%&gt;%</span></span>
-<span id="cb42-16"><a href="regularization.html#cb42-16"></a><span class="st">  </span><span class="kw">pivot_longer</span>(penalty<span class="op">:</span>mixture) <span class="op">%&gt;%</span></span>
-<span id="cb42-17"><a href="regularization.html#cb42-17"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">low =</span> mean <span class="op">-</span><span class="st"> </span>(std_err <span class="op">*</span><span class="st"> </span><span class="dv">2</span>),</span>
-<span id="cb42-18"><a href="regularization.html#cb42-18"></a>         <span class="dt">high =</span> mean <span class="op">+</span><span class="st"> </span>(std_err <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb42-19"><a href="regularization.html#cb42-19"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(value, mean)) <span class="op">+</span></span>
-<span id="cb42-20"><a href="regularization.html#cb42-20"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb42-21"><a href="regularization.html#cb42-21"></a><span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> low, <span class="dt">ymax =</span> high)) <span class="op">+</span></span>
-<span id="cb42-22"><a href="regularization.html#cb42-22"></a><span class="st">  </span><span class="kw">facet_grid</span>(.metric <span class="op">~</span><span class="st"> </span>name)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="regularization.html#cb44-1"></a>elnet_mod &lt;-<span class="st"> </span><span class="kw">update</span>(lasso_mod, <span class="dt">mixture =</span> <span class="kw">tune</span>())</span>
+<span id="cb44-2"><a href="regularization.html#cb44-2"></a></span>
+<span id="cb44-3"><a href="regularization.html#cb44-3"></a>m5 &lt;-</span>
+<span id="cb44-4"><a href="regularization.html#cb44-4"></a><span class="st">  </span>tflow <span class="op">%&gt;%</span></span>
+<span id="cb44-5"><a href="regularization.html#cb44-5"></a><span class="st">  </span><span class="kw">replace_model</span>(elnet_mod) <span class="op">%&gt;%</span></span>
+<span id="cb44-6"><a href="regularization.html#cb44-6"></a><span class="st">  </span><span class="kw">fit</span>()</span>
+<span id="cb44-7"><a href="regularization.html#cb44-7"></a></span>
+<span id="cb44-8"><a href="regularization.html#cb44-8"></a>m5 <span class="op">%&gt;%</span></span>
+<span id="cb44-9"><a href="regularization.html#cb44-9"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb44-10"><a href="regularization.html#cb44-10"></a><span class="st">  </span><span class="kw">autoplot</span>()</span>
+<span id="cb44-11"><a href="regularization.html#cb44-11"></a></span>
+<span id="cb44-12"><a href="regularization.html#cb44-12"></a><span class="co"># Additional plot with standard error</span></span>
+<span id="cb44-13"><a href="regularization.html#cb44-13"></a><span class="kw">library</span>(tidyr)</span>
+<span id="cb44-14"><a href="regularization.html#cb44-14"></a>m5 <span class="op">%&gt;%</span></span>
+<span id="cb44-15"><a href="regularization.html#cb44-15"></a><span class="st">  </span><span class="kw">pull_tflow_fit_tuning</span>() <span class="op">%&gt;%</span></span>
+<span id="cb44-16"><a href="regularization.html#cb44-16"></a><span class="st">  </span><span class="kw">collect_metrics</span>() <span class="op">%&gt;%</span></span>
+<span id="cb44-17"><a href="regularization.html#cb44-17"></a><span class="st">  </span><span class="kw">pivot_longer</span>(penalty<span class="op">:</span>mixture) <span class="op">%&gt;%</span></span>
+<span id="cb44-18"><a href="regularization.html#cb44-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">low =</span> mean <span class="op">-</span><span class="st"> </span>(std_err <span class="op">*</span><span class="st"> </span><span class="dv">2</span>),</span>
+<span id="cb44-19"><a href="regularization.html#cb44-19"></a>         <span class="dt">high =</span> mean <span class="op">+</span><span class="st"> </span>(std_err <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb44-20"><a href="regularization.html#cb44-20"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(value, mean)) <span class="op">+</span></span>
+<span id="cb44-21"><a href="regularization.html#cb44-21"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb44-22"><a href="regularization.html#cb44-22"></a><span class="st">  </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> low, <span class="dt">ymax =</span> high)) <span class="op">+</span></span>
+<span id="cb44-23"><a href="regularization.html#cb44-23"></a><span class="st">  </span><span class="kw">facet_grid</span>(.metric <span class="op">~</span><span class="st"> </span>name)</span></code></pre></div>
 </details>
 </div>
 <div id="ex7" class="section level4 unnumbered">
@@ -703,45 +703,46 @@ RSS + \lambda \sum_{k = 1}^n |\beta_j|
 </ul>
 <details>
 <p><summary><strong>&gt; Answer </strong></summary></p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="regularization.html#cb43-1"></a><span class="co"># Since we will be repeating the same process many times</span></span>
-<span id="cb43-2"><a href="regularization.html#cb43-2"></a><span class="co"># let&#39;s write a function to predict on the training/testing</span></span>
-<span id="cb43-3"><a href="regularization.html#cb43-3"></a><span class="co"># and combine them. This function will accept a single</span></span>
-<span id="cb43-4"><a href="regularization.html#cb43-4"></a><span class="co"># model and produce a data frame with the RMSE error for</span></span>
-<span id="cb43-5"><a href="regularization.html#cb43-5"></a><span class="co"># training and testing. This way, we can reuse the code</span></span>
-<span id="cb43-6"><a href="regularization.html#cb43-6"></a><span class="co"># without having to copy everything many times</span></span>
-<span id="cb43-7"><a href="regularization.html#cb43-7"></a>calculate_err &lt;-<span class="st"> </span><span class="cf">function</span>(final_model, <span class="dt">type_model =</span> <span class="ot">NULL</span>) {</span>
-<span id="cb43-8"><a href="regularization.html#cb43-8"></a>  final_model &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(final_model, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
-<span id="cb43-9"><a href="regularization.html#cb43-9"></a>  err_train &lt;-</span>
-<span id="cb43-10"><a href="regularization.html#cb43-10"></a><span class="st">    </span>final_model <span class="op">%&gt;%</span></span>
-<span id="cb43-11"><a href="regularization.html#cb43-11"></a><span class="st">    </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
-<span id="cb43-12"><a href="regularization.html#cb43-12"></a><span class="st">    </span><span class="kw">rmse</span>(noncogn, .pred)</span>
-<span id="cb43-13"><a href="regularization.html#cb43-13"></a>  </span>
-<span id="cb43-14"><a href="regularization.html#cb43-14"></a>  err_test &lt;-</span>
-<span id="cb43-15"><a href="regularization.html#cb43-15"></a><span class="st">    </span>final_model <span class="op">%&gt;%</span></span>
-<span id="cb43-16"><a href="regularization.html#cb43-16"></a><span class="st">    </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
-<span id="cb43-17"><a href="regularization.html#cb43-17"></a><span class="st">    </span><span class="kw">rmse</span>(noncogn, .pred)</span>
-<span id="cb43-18"><a href="regularization.html#cb43-18"></a></span>
-<span id="cb43-19"><a href="regularization.html#cb43-19"></a>  err_train<span class="op">$</span>type &lt;-<span class="st"> &quot;train&quot;</span></span>
-<span id="cb43-20"><a href="regularization.html#cb43-20"></a>  err_test<span class="op">$</span>type &lt;-<span class="st"> &quot;test&quot;</span></span>
-<span id="cb43-21"><a href="regularization.html#cb43-21"></a>  res &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(err_train, err_test))</span>
-<span id="cb43-22"><a href="regularization.html#cb43-22"></a>  res<span class="op">$</span>model &lt;-<span class="st"> </span>type_model</span>
-<span id="cb43-23"><a href="regularization.html#cb43-23"></a>  res</span>
-<span id="cb43-24"><a href="regularization.html#cb43-24"></a>}</span>
-<span id="cb43-25"><a href="regularization.html#cb43-25"></a></span>
-<span id="cb43-26"><a href="regularization.html#cb43-26"></a>final_res &lt;-</span>
-<span id="cb43-27"><a href="regularization.html#cb43-27"></a><span class="st">  </span><span class="kw">rbind</span>(</span>
-<span id="cb43-28"><a href="regularization.html#cb43-28"></a>    <span class="kw">calculate_err</span>(m3, <span class="st">&quot;ridge&quot;</span>),</span>
-<span id="cb43-29"><a href="regularization.html#cb43-29"></a>    <span class="kw">calculate_err</span>(m4, <span class="st">&quot;lasso&quot;</span>),</span>
-<span id="cb43-30"><a href="regularization.html#cb43-30"></a>    <span class="kw">calculate_err</span>(m5, <span class="st">&quot;elnet&quot;</span>)</span>
-<span id="cb43-31"><a href="regularization.html#cb43-31"></a>  )</span>
-<span id="cb43-32"><a href="regularization.html#cb43-32"></a></span>
-<span id="cb43-33"><a href="regularization.html#cb43-33"></a>final_res <span class="op">%&gt;%</span></span>
-<span id="cb43-34"><a href="regularization.html#cb43-34"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(model, .estimate, <span class="dt">color =</span> type)) <span class="op">+</span></span>
-<span id="cb43-35"><a href="regularization.html#cb43-35"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb43-36"><a href="regularization.html#cb43-36"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span>
-<span id="cb43-37"><a href="regularization.html#cb43-37"></a></span>
-<span id="cb43-38"><a href="regularization.html#cb43-38"></a><span class="co">## BONUS</span></span>
-<span id="cb43-39"><a href="regularization.html#cb43-39"></a><span class="co"># Fit a linear regression and compare the four models</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="regularization.html#cb45-1"></a><span class="co"># Since we will be repeating the same process many times</span></span>
+<span id="cb45-2"><a href="regularization.html#cb45-2"></a><span class="co"># let&#39;s write a function to predict on the training/testing</span></span>
+<span id="cb45-3"><a href="regularization.html#cb45-3"></a><span class="co"># and combine them. This function will accept a single</span></span>
+<span id="cb45-4"><a href="regularization.html#cb45-4"></a><span class="co"># model and produce a data frame with the RMSE error for</span></span>
+<span id="cb45-5"><a href="regularization.html#cb45-5"></a><span class="co"># training and testing. This way, we can reuse the code</span></span>
+<span id="cb45-6"><a href="regularization.html#cb45-6"></a><span class="co"># without having to copy everything many times</span></span>
+<span id="cb45-7"><a href="regularization.html#cb45-7"></a>calculate_err &lt;-<span class="st"> </span><span class="cf">function</span>(final_model, <span class="dt">type_model =</span> <span class="ot">NULL</span>) {</span>
+<span id="cb45-8"><a href="regularization.html#cb45-8"></a>  final_model &lt;-<span class="st"> </span><span class="kw">complete_tflow</span>(final_model, <span class="dt">metric =</span> <span class="st">&quot;rmse&quot;</span>)</span>
+<span id="cb45-9"><a href="regularization.html#cb45-9"></a>  err_train &lt;-</span>
+<span id="cb45-10"><a href="regularization.html#cb45-10"></a><span class="st">    </span>final_model <span class="op">%&gt;%</span></span>
+<span id="cb45-11"><a href="regularization.html#cb45-11"></a><span class="st">    </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
+<span id="cb45-12"><a href="regularization.html#cb45-12"></a><span class="st">    </span><span class="kw">rmse</span>(noncogn, .pred)</span>
+<span id="cb45-13"><a href="regularization.html#cb45-13"></a>  </span>
+<span id="cb45-14"><a href="regularization.html#cb45-14"></a>  err_test &lt;-</span>
+<span id="cb45-15"><a href="regularization.html#cb45-15"></a><span class="st">    </span>final_model <span class="op">%&gt;%</span></span>
+<span id="cb45-16"><a href="regularization.html#cb45-16"></a><span class="st">    </span><span class="kw">predict_testing</span>() <span class="op">%&gt;%</span></span>
+<span id="cb45-17"><a href="regularization.html#cb45-17"></a><span class="st">    </span><span class="kw">rmse</span>(noncogn, .pred)</span>
+<span id="cb45-18"><a href="regularization.html#cb45-18"></a></span>
+<span id="cb45-19"><a href="regularization.html#cb45-19"></a>  err_train<span class="op">$</span>type &lt;-<span class="st"> &quot;train&quot;</span></span>
+<span id="cb45-20"><a href="regularization.html#cb45-20"></a>  err_test<span class="op">$</span>type &lt;-<span class="st"> &quot;test&quot;</span></span>
+<span id="cb45-21"><a href="regularization.html#cb45-21"></a>  res &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">rbind</span>(err_train, err_test))</span>
+<span id="cb45-22"><a href="regularization.html#cb45-22"></a>  res<span class="op">$</span>model &lt;-<span class="st"> </span>type_model</span>
+<span id="cb45-23"><a href="regularization.html#cb45-23"></a>  res</span>
+<span id="cb45-24"><a href="regularization.html#cb45-24"></a>}</span>
+<span id="cb45-25"><a href="regularization.html#cb45-25"></a></span>
+<span id="cb45-26"><a href="regularization.html#cb45-26"></a>final_res &lt;-</span>
+<span id="cb45-27"><a href="regularization.html#cb45-27"></a><span class="st">  </span><span class="kw">rbind</span>(</span>
+<span id="cb45-28"><a href="regularization.html#cb45-28"></a>    <span class="kw">calculate_err</span>(m3, <span class="st">&quot;ridge&quot;</span>),</span>
+<span id="cb45-29"><a href="regularization.html#cb45-29"></a>    <span class="kw">calculate_err</span>(m4, <span class="st">&quot;lasso&quot;</span>),</span>
+<span id="cb45-30"><a href="regularization.html#cb45-30"></a>    <span class="kw">calculate_err</span>(m5, <span class="st">&quot;elnet&quot;</span>)</span>
+<span id="cb45-31"><a href="regularization.html#cb45-31"></a>  )</span>
+<span id="cb45-32"><a href="regularization.html#cb45-32"></a></span>
+<span id="cb45-33"><a href="regularization.html#cb45-33"></a>final_res <span class="op">%&gt;%</span></span>
+<span id="cb45-34"><a href="regularization.html#cb45-34"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(model, .estimate, <span class="dt">color =</span> type)) <span class="op">+</span></span>
+<span id="cb45-35"><a href="regularization.html#cb45-35"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb45-36"><a href="regularization.html#cb45-36"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span>
+<span id="cb45-37"><a href="regularization.html#cb45-37"></a></span>
+<span id="cb45-38"><a href="regularization.html#cb45-38"></a><span class="co">## BONUS</span></span>
+<span id="cb45-39"><a href="regularization.html#cb45-39"></a><span class="co">## Fit a linear regression and compare the four models</span></span>
+<span id="cb45-40"><a href="regularization.html#cb45-40"></a><span class="co">## What is the best model to pick considering both accuracy and simplicity?</span></span></code></pre></div>
 </details>
 
 </div>

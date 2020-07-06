@@ -291,6 +291,14 @@ final_ridge %>%
 # A first example: ridge regression
 
 ```{r}
+final_ridge
+```
+
+---
+
+# A first example: ridge regression
+
+```{r}
 train_rmse_ridge <-
   final_ridge %>%
   predict_training() %>%
@@ -383,6 +391,13 @@ final_lasso %>%
   pull_tflow_fit() %>%
   .[['fit']] %>%
   plot(xvar = "lambda", label = TRUE)
+```
+
+---
+# A first example: lasso regression
+
+```{r}
+final_lasso
 ```
 
 ---
@@ -486,6 +501,14 @@ final_elnet %>%
   pull_tflow_fit() %>%
   .[['fit']] %>%
   plot(xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: elastic net regression
+
+```{r}
+final_elnet
 ```
 
 ---

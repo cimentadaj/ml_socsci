@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-07-05" />
+    <meta name="date" content="2020-07-06" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Regularization
 ### Jorge Cimentada
-### 2020-07-05
+### 2020-07-06
 
 ---
 
@@ -399,6 +399,58 @@ final_ridge %&gt;%
 
 
 ```r
+final_ridge
+```
+
+```
+══ Tidyflow [trained] ══════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: expand.grid w/ penalty = ~seq(0, 3, length.out = 300)
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = 0
+  mixture = 0
+
+Computational engine: glmnet 
+
+══ Results ═════════════════════════════════════════════════════════════════════
+
+Tuning results: 
+
+# A tibble: 5 x 4
+  splits             id     .metrics           .notes          
+  &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;          
+1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+
+... and 5 more lines.
+
+
+Fitted model:
+
+Call:  glmnet::glmnet(x = as.matrix(x), y = y, family = "gaussian",      alpha = ~0) 
+
+    Df     %Dev  Lambda
+1    7 0.000000 27820.0
+
+...
+and 99 more lines.
+```
+
+---
+
+# A first example: ridge regression
+
+
+```r
 train_rmse_ridge &lt;-
   final_ridge %&gt;%
   predict_training() %&gt;%
@@ -506,7 +558,7 @@ res_lasso %&gt;%
   autoplot()
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-16-1.png" width="80%" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-17-1.png" width="80%" /&gt;
 
 ---
 
@@ -522,7 +574,58 @@ final_lasso %&gt;%
   plot(xvar = "lambda", label = TRUE)
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+# A first example: lasso regression
+
+
+```r
+final_lasso
+```
+
+```
+══ Tidyflow [trained] ══════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: expand.grid w/ penalty = ~seq(0, 3, length.out = 300)
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = 0.180602006688963
+  mixture = 1
+
+Computational engine: glmnet 
+
+══ Results ═════════════════════════════════════════════════════════════════════
+
+Tuning results: 
+
+# A tibble: 5 x 4
+  splits             id     .metrics           .notes          
+  &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;             &lt;list&gt;          
+1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [600 × 4]&gt; &lt;tibble [0 × 1]&gt;
+
+... and 5 more lines.
+
+
+Fitted model:
+
+Call:  glmnet::glmnet(x = as.matrix(x), y = y, family = "gaussian",      alpha = ~1) 
+
+   Df    %Dev  Lambda
+1   0 0.00000 27.8200
+
+...
+and 59 more lines.
+```
 
 ---
 
@@ -658,7 +761,7 @@ res_elnet %&gt;%
   autoplot()
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-21-1.png" width="80%" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-23-1.png" width="80%" /&gt;
 
 ---
 
@@ -674,7 +777,59 @@ final_elnet %&gt;%
   plot(xvar = "lambda", label = TRUE)
 ```
 
-&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-22-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-24-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A first example: elastic net regression
+
+
+```r
+final_elnet
+```
+
+```
+══ Tidyflow [trained] ══════════════════════════════════════════════════════════
+Data: 4.84K rows x 501 columns
+Split: initial_split w/ default args
+Recipe: available
+Resample: vfold_cv w/ default args
+Grid: grid_regular w/ default args
+Model:
+Linear Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = 1
+  mixture = 0.05
+
+Computational engine: glmnet 
+
+══ Results ═════════════════════════════════════════════════════════════════════
+
+Tuning results: 
+
+# A tibble: 5 x 4
+  splits             id     .metrics          .notes          
+  &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;            &lt;list&gt;          
+1 &lt;split [3.3K/363]&gt; Fold01 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+2 &lt;split [3.3K/363]&gt; Fold02 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+3 &lt;split [3.3K/363]&gt; Fold03 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+4 &lt;split [3.3K/363]&gt; Fold04 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+5 &lt;split [3.3K/363]&gt; Fold05 &lt;tibble [18 × 5]&gt; &lt;tibble [0 × 1]&gt;
+
+... and 5 more lines.
+
+
+Fitted model:
+
+Call:  glmnet::glmnet(x = as.matrix(x), y = y, family = "gaussian",      alpha = ~0.05) 
+
+   Df     %Dev Lambda
+1   0 0.000000 556.40
+
+...
+and 72 more lines.
+```
 
 ---
 
