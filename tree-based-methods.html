@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-07-06" />
+<meta name="date" content="2020-07-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -957,7 +957,7 @@ Figure 3.1: Visualization of many trees from the sample with varying composition
 <span id="cb102-10"><a href="tree-based-methods.html#cb102-10"></a><span class="st">  </span><span class="kw">plug_model</span>(boost_mod)</span>
 <span id="cb102-11"><a href="tree-based-methods.html#cb102-11"></a></span>
 <span id="cb102-12"><a href="tree-based-methods.html#cb102-12"></a>boot_res &lt;-<span class="st"> </span><span class="kw">fit</span>(tflow)</span></code></pre></div>
-<pre><code>## [16:28:25] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
+<pre><code>## [15:43:05] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="tree-based-methods.html#cb104-1"></a>rmse_gb_train &lt;-</span>
 <span id="cb104-2"><a href="tree-based-methods.html#cb104-2"></a><span class="st">  </span>boot_res <span class="op">%&gt;%</span></span>
 <span id="cb104-3"><a href="tree-based-methods.html#cb104-3"></a><span class="st">  </span><span class="kw">predict_training</span>() <span class="op">%&gt;%</span></span>
@@ -1001,8 +1001,13 @@ Figure 3.1: Visualization of many trees from the sample with varying composition
 <div id="exercises-1" class="section level2">
 <h2><span class="header-section-number">3.5</span> Exercises</h2>
 <p>In these exercises we’ll continue try to predict the mathematics test score (<code>math_score</code>) from <code>pisa</code>. First, read in the data with:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="tree-based-methods.html#cb108-1"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
-<span id="cb108-2"><a href="tree-based-methods.html#cb108-2"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="tree-based-methods.html#cb108-1"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb108-2"><a href="tree-based-methods.html#cb108-2"></a><span class="kw">library</span>(tidyflow)</span>
+<span id="cb108-3"><a href="tree-based-methods.html#cb108-3"></a><span class="kw">library</span>(rpart.plot)</span>
+<span id="cb108-4"><a href="tree-based-methods.html#cb108-4"></a><span class="kw">library</span>(baguette)</span>
+<span id="cb108-5"><a href="tree-based-methods.html#cb108-5"></a></span>
+<span id="cb108-6"><a href="tree-based-methods.html#cb108-6"></a>data_link &lt;-<span class="st"> &quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv&quot;</span></span>
+<span id="cb108-7"><a href="tree-based-methods.html#cb108-7"></a>pisa &lt;-<span class="st"> </span><span class="kw">read.csv</span>(data_link)</span></code></pre></div>
 <div id="ex1" class="section level4 unnumbered">
 <h4>1. Fit a decision tree of <code>math_score</code> on all variables and visualize</h4>
 <ul>

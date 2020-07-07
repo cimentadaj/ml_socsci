@@ -463,6 +463,10 @@ We can read in the data with the code below:
 
 
 ```r
+library(tidymodels)
+library(tidyflow)
+library(ggfortify)
+
 dt_all <- read.csv("https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv")
 
 # Have a look with:

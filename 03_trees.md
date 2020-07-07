@@ -1102,7 +1102,7 @@ boot_res <- fit(tflow)
 ```
 
 ```
-## [16:28:25] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+## [15:43:05] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r
@@ -1177,6 +1177,11 @@ In these exercises we'll continue try to predict the mathematics test score (`ma
 
 
 ```r
+library(tidymodels)
+library(tidyflow)
+library(rpart.plot)
+library(baguette)
+
 data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
 pisa <- read.csv(data_link)
 ```

@@ -24,7 +24,7 @@
 <meta name="author" content="Jorge Cimentada" />
 
 
-<meta name="date" content="2020-07-06" />
+<meta name="date" content="2020-07-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -519,10 +519,14 @@ However, <span class="math inline">\(PCA\)</span> is all about exploratory data 
 <li><code>year</code>: the year of each ranking</li>
 </ul>
 <p>We can read in the data with the code below:</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="unsupervised-methods.html#cb158-1"></a>dt_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv&quot;</span>)</span>
-<span id="cb158-2"><a href="unsupervised-methods.html#cb158-2"></a></span>
-<span id="cb158-3"><a href="unsupervised-methods.html#cb158-3"></a><span class="co"># Have a look with:</span></span>
-<span id="cb158-4"><a href="unsupervised-methods.html#cb158-4"></a><span class="kw">head</span>(dt_all)</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="unsupervised-methods.html#cb158-1"></a><span class="kw">library</span>(tidymodels)</span>
+<span id="cb158-2"><a href="unsupervised-methods.html#cb158-2"></a><span class="kw">library</span>(tidyflow)</span>
+<span id="cb158-3"><a href="unsupervised-methods.html#cb158-3"></a><span class="kw">library</span>(ggfortify)</span>
+<span id="cb158-4"><a href="unsupervised-methods.html#cb158-4"></a></span>
+<span id="cb158-5"><a href="unsupervised-methods.html#cb158-5"></a>dt_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/university_ranking_final.csv&quot;</span>)</span>
+<span id="cb158-6"><a href="unsupervised-methods.html#cb158-6"></a></span>
+<span id="cb158-7"><a href="unsupervised-methods.html#cb158-7"></a><span class="co"># Have a look with:</span></span>
+<span id="cb158-8"><a href="unsupervised-methods.html#cb158-8"></a><span class="kw">head</span>(dt_all)</span></code></pre></div>
 <pre><code>##                             institution world_rank        country national_rank
 ## 1                    Harvard University          1            USA             1
 ## 2 Massachusetts Institute of Technology          2            USA             2
