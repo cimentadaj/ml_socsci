@@ -1244,6 +1244,11 @@ Note that throughout this entire chapter, all examples and explanations have foc
 In these exercises we'll continue try to predict the mathematics test score (`math_score`) from `pisa`. First, read in the data with:
 
 ```{r, eval = FALSE}
+library(tidymodels)
+library(tidyflow)
+library(rpart.plot)
+library(baguette)
+
 data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
 pisa <- read.csv(data_link)
 ```
