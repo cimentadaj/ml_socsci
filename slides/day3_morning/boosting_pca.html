@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-06-29" />
+    <meta name="date" content="2020-07-08" />
     <script src="libs/header-attrs-2.2/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
@@ -16,7 +16,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Tree based methods and PCA
 ### Jorge Cimentada
-### 2020-06-29
+### 2020-07-08
 
 ---
 
@@ -98,7 +98,7 @@ res_mod1 %&gt;%
 # A tibble: 1 x 3
   .metric .estimator .estimate
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-1 rmse    standard        55.0
+1 rmse    standard        55.7
 ```
 
 * Not a good nor robust model. 
@@ -190,12 +190,12 @@ head(resid_pred)
 
 ```
   pred_mod1 pred_mod2
-1  537.8368 -9.852883
-2  404.9616 -9.852883
-3  404.9616 -9.852883
-4  404.9616 -9.852883
-5  404.9616 -9.852883
-6  537.8368 -9.852883
+1  541.0269 -9.983329
+2  407.2148 -9.983329
+3  407.2148 -9.983329
+4  407.2148 -9.983329
+5  407.2148 -9.983329
+6  541.0269 -9.983329
 ```
 
 ---
@@ -215,12 +215,12 @@ head(resid_pred)
 
 ```
   pred_mod1 pred_mod2 final_pred
-1  537.8368 -9.852883   527.9839
-2  404.9616 -9.852883   395.1087
-3  404.9616 -9.852883   395.1087
-4  404.9616 -9.852883   395.1087
-5  404.9616 -9.852883   395.1087
-6  537.8368 -9.852883   527.9839
+1  541.0269 -9.983329   531.0436
+2  407.2148 -9.983329   397.2315
+3  407.2148 -9.983329   397.2315
+4  407.2148 -9.983329   397.2315
+5  407.2148 -9.983329   397.2315
+6  541.0269 -9.983329   531.0436
 ```
 
 * We have a final prediction for each respondent. 
@@ -482,6 +482,12 @@ tidy(pc, "pcs")
 
 # PCA
 
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# PCA
+
 * They are supposed to be uncorrelated
 
 
@@ -569,7 +575,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
   theme_minimal()
 ```
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-20-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -577,7 +583,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
 
 * The two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -587,7 +593,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
 
 * This means that these variables should cluster **below** the average of PC1 and **higher** than the average of PC2. 
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -595,7 +601,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
 
 * The remaining four variables cluster at lower values of PC1 and at higher values of PC1:
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---

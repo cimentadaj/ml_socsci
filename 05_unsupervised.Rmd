@@ -80,6 +80,21 @@ tidy(pc, "pcs")
 
 This output shows how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59\% of the variance of the six variables. The second principal component explains an additional 13.5\%, for a total of 72.6\% between the two. This is certainly better. It means that the first two variables seem to have some power in summarizing the original six variables.
 
+We can visualize these results using something called an 'elbow' plot:
+
+```{r }
+pc %>%
+  tidy("pcs") %>%
+  ggplot(aes(PC, percent)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous("Principal Components") +
+  scale_y_continuous("Proportion of variance explained (%)", limits = c(0, 1)) +
+  theme_minimal()
+```
+
+This plot is called an 'elbow' plot because the first components always explain the majority of the variance and thus the decrease in explanatory power looks like an 'elbow'.
+
 Let's focus on the first two principal components. They are supposed to be completely uncorrelated, so let's check that ourselves:
 
 ```{r}
@@ -394,7 +409,7 @@ A traditional social scientist might think of answering these questions by feedi
 
 ## Exercises
 
-In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from https://www.kaggle.com/mylesoneill/world-university-rankings/data) contains the name of each university, together with their world ranking, the country where they're located and several other variables that show the respective ranking in each area. The respective columns are:
+In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from https://www.kaggle.com/mylesoneill/world-university-rankings/data) contains the name of each university, together with their world ranking, the country where they're located and several other variables that show their respective ranking in each academic area. The respective columns are:
 
 * `institution`: the name of the university
 * `world_rank`: the overall ranking of the university
@@ -408,6 +423,8 @@ In 2016, the Data Science website Kaggle published a dataset which combines the 
 * `citations`: the ranking in the overall number of citations
 * `patents`: the ranking in the number of patents
 * `year`: the year of each ranking
+
+Each of these variables contains the ranking of the university for a particular area. For example, `publications` contains the ranking of each university in the area of `publications`. This means that the higher the number, the worst the ranking: having a 1 means that is the university ranked as first in `publications` and having a ranking of 2200 means the university has the worst ranking.
 
 We can read in the data with the code below:
 
@@ -424,7 +441,7 @@ head(dt_all)
 
 #### 1. Explore whether there is room for reducing the number of variables {-#ex1}
 
-Many of these ranking variables (except `world_rank`) should be very correlated. It could be that universities that score well in quality of faculty, they also score high on the ranking of publications. Explore these ranking variables by using a Principal Component Approach:
+Many of these ranking variables (except `world_rank`) should be very correlated. It could be that universities that score well in quality of faculty also score high on the ranking of publications. Explore these ranking variables by using a Principal Component approach:
 
 * Limit the data to year 2015
 * Explore the correlation of the variables `quality_of_education`, `alumni_employment`, `quality_of_faculty`, `publications`, `influence`, `citations` and `patents` with the function `cor`.
@@ -465,10 +482,14 @@ How many principal components were created? How much variance do the first two a
 <details>
   <summary><strong>> Answer </strong></summary>
 
-  * Seven principal components were created by `prcomp`. This is quite a high number, considering that provided seven variables.
+  * Seven principal components were created by `prcomp`. This is quite a high number, considering that we already provided seven variables.
+  
   * The first two components, as expected, explain the majority of the variance of the original six variables with a total of 73\%.
-  * As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because 1st is the best university and 2000 is the worst university within the ranking).
+  
+  * As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because a university with a 1 is the best university and with 2200 is the worst university within the ranking).
+  
   * As PC2 increases, `publications`, `influence`, `citations` and `patents` decrease (meaning better university rankings) while the remaining four increase.
+  
   * Overall, there doesn't seem to be great consistency between the principal components and the variables.
 
 ```{r }
@@ -491,7 +512,7 @@ autoplot(res_pc,
 
 </details>
 
-#### 3. Apply the kmeans to the set of ranking variables {-#ex3}
+#### 3. Apply kmeans to the set of ranking variables {-#ex3}
 
 * Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
 * Calculate the average `quality_of_education` and `alumni_employment` by country

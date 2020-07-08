@@ -346,6 +346,8 @@ If prediction is the aim, then there's evidence that some models consistently ac
 
 * Your task: **build a predictive model of the number of edits**
 
+* Dependent variable is `revisions`
+
 * Can help identify which sites are not being capture by poverty/metadata indicators
 
 * 150 columns, including Wiki data on the website and characteristics of the county
@@ -356,6 +358,8 @@ If prediction is the aim, then there's evidence that some models consistently ac
   + Do we really need to use all variables?
   + Does regularized regression or tree-based methods do better?
 
-Read: https://cimentadaj.github.io/ml_socsci/no-free-lunch.html#prediction-challenge
+Let's see the variables and data:
+
+> https://cimentadaj.github.io/ml_socsci/no-free-lunch.html#prediction-challenge
 
 You have 45 minutes, start!
