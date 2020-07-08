@@ -127,6 +127,24 @@ tidy(pc, "pcs")
 
 This output shows how well each principal component is explaining the original six variables. For example, the first principal component (1st row) explains about 59\% of the variance of the six variables. The second principal component explains an additional 13.5\%, for a total of 72.6\% between the two. This is certainly better. It means that the first two variables seem to have some power in summarizing the original six variables.
 
+We can visualize these results using something called an 'elbow' plot:
+
+
+```r
+pc %>%
+  tidy("pcs") %>%
+  ggplot(aes(PC, percent)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous("Principal Components") +
+  scale_y_continuous("Proportion of variance explained (%)", limits = c(0, 1)) +
+  theme_minimal()
+```
+
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+
+This plot is called an 'elbow' plot because the first components always explain the majority of the variance and thus the decrease in explanatory power looks like an 'elbow'.
+
 Let's focus on the first two principal components. They are supposed to be completely uncorrelated, so let's check that ourselves:
 
 
@@ -177,21 +195,21 @@ pc %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 Let's distill this plot. On the `X` axis we have the actual column of the first principal component (PC1) (this is literally the same column we saw in the object `all_pcs`; if it serves to refresh your memory, check it out with `head(all_pcs)`). As you can see, the label of the `X` axis already tells us that this component explains nearly 60\% of the variance of these six variables. On the `Y` axis we have the actual column of the second principal component (PC2) (same as before, you can see this with `head(all_pcs)`). This principal component explains an additional 13.5\% of the variance of the six variables. 
 
 What this plot is trying to show is where these six variables are clustered between these two principal components. Since these two variables were centered and scaled to have a mean of zero, the red lines always begin at the intersection of the zero in PC1 and PC2. In other words, we can see more clearly the correlations we saw earlier. For example, remember that the first two variables were both negatively correlated with both PC1 and PC2. These two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-10-1.png" width="672" />
 
 There is nothing new here. This is the same thing we interpreted from the correlation but from a more intuitive visualization. If you remember the other four variables from the correlation, they showed negative correlations with PC1 and positive correlations with PC2. This means that these variables should cluster **below** the average of PC1 and **higher** than the average of PC2. We can see that more clearly if we first add a line showing the zero values for both variables:
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-11-1.png" width="672" />
 
 Any values to the **left** of the the vertical line are low values of PC1 while all values **above** the horizontal line are high values for PC2. Building on this intuition, we should find that the remaining four variables cluster at lower values of PC1 and at higher values of PC1:
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
 Depending on these correlations, you might reject to focus on the first two principal components and explore this same plot for PC1 and PC3 or PC2 and PC4. There's no clear cut rule for the number of principal components to use. The user should instead explore these plots to understand whether there are interesting findings from clustering many variables into fewer variables. Depending on this, you might reject the idea entirely of using principal components. Or you might use these principal components to represent some interesting findings for your theoretical model.
 
@@ -320,7 +338,7 @@ centroids_df %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 
 Now suppose we add an additional random point in the plot:
@@ -336,7 +354,7 @@ centroids_df %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
 How do we calculate the Euclidean distance between this point and the three clusters? We use this formula:
 
@@ -361,7 +379,7 @@ centroids_df %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 
 The K-Means clustering algorithm applies this calculation for **each point**:
 
@@ -420,7 +438,7 @@ pisa %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-27-1.png" width="672" />
 
 Substantively, this example might not make a lot of sense, but it serves to exemplify that the K-Means can find clusters **even** when there aren't any clusters. From this particular plot, it doesn't seem to be a clear cut distinction between the three clusters. We can inspect the actual values of the centroids, for example:
 
@@ -444,7 +462,7 @@ A traditional social scientist might think of answering these questions by feedi
 
 ## Exercises
 
-In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from https://www.kaggle.com/mylesoneill/world-university-rankings/data) contains the name of each university, together with their world ranking, the country where they're located and several other variables that show the respective ranking in each area. The respective columns are:
+In 2016, the Data Science website Kaggle published a dataset which combines the rankings of more than 2000 universities. This data (which comes from https://www.kaggle.com/mylesoneill/world-university-rankings/data) contains the name of each university, together with their world ranking, the country where they're located and several other variables that show their respective ranking in each academic area. The respective columns are:
 
 * `institution`: the name of the university
 * `world_rank`: the overall ranking of the university
@@ -458,6 +476,8 @@ In 2016, the Data Science website Kaggle published a dataset which combines the 
 * `citations`: the ranking in the overall number of citations
 * `patents`: the ranking in the number of patents
 * `year`: the year of each ranking
+
+Each of these variables contains the ranking of the university for a particular area. For example, `publications` contains the ranking of each university in the area of `publications`. This means that the higher the number, the worst the ranking: having a 1 means that is the university ranked as first in `publications` and having a ranking of 2200 means the university has the worst ranking.
 
 We can read in the data with the code below:
 
@@ -499,7 +519,7 @@ head(dt_all)
 
 #### 1. Explore whether there is room for reducing the number of variables {-#ex1}
 
-Many of these ranking variables (except `world_rank`) should be very correlated. It could be that universities that score well in quality of faculty, they also score high on the ranking of publications. Explore these ranking variables by using a Principal Component Approach:
+Many of these ranking variables (except `world_rank`) should be very correlated. It could be that universities that score well in quality of faculty also score high on the ranking of publications. Explore these ranking variables by using a Principal Component approach:
 
 * Limit the data to year 2015
 * Explore the correlation of the variables `quality_of_education`, `alumni_employment`, `quality_of_faculty`, `publications`, `influence`, `citations` and `patents` with the function `cor`.
@@ -559,10 +579,14 @@ How many principal components were created? How much variance do the first two a
 <details>
   <summary><strong>> Answer </strong></summary>
 
-  * Seven principal components were created by `prcomp`. This is quite a high number, considering that provided seven variables.
+  * Seven principal components were created by `prcomp`. This is quite a high number, considering that we already provided seven variables.
+  
   * The first two components, as expected, explain the majority of the variance of the original six variables with a total of 73\%.
-  * As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because 1st is the best university and 2000 is the worst university within the ranking).
+  
+  * As PC1 increases, so does the rankings of each institution. This means that higher values of PC1 will reflect university with poorer rankings (because a university with a 1 is the best university and with 2200 is the worst university within the ranking).
+  
   * As PC2 increases, `publications`, `influence`, `citations` and `patents` decrease (meaning better university rankings) while the remaining four increase.
+  
   * Overall, there doesn't seem to be great consistency between the principal components and the variables.
 
 
@@ -620,11 +644,11 @@ autoplot(res_pc,
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" />
 
 </details>
 
-#### 3. Apply the kmeans to the set of ranking variables {-#ex3}
+#### 3. Apply kmeans to the set of ranking variables {-#ex3}
 
 * Exclude the columns `world_rank`, `institution`, `country`, `national_rank`, `year` from the data
 * Calculate the average `quality_of_education` and `alumni_employment` by country
@@ -665,7 +689,7 @@ sum_dt %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-1.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-32-1.png" width="672" />
 
 ```r
 ############################# Two clusters ####################################
@@ -684,7 +708,7 @@ sum_dt %>%
   theme_minimal()
 ```
 
-<img src="05_unsupervised_files/figure-html/unnamed-chunk-31-2.png" width="672" />
+<img src="05_unsupervised_files/figure-html/unnamed-chunk-32-2.png" width="672" />
 
 </details>
 

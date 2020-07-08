@@ -4,7 +4,7 @@
     <title>Machine Learning for Social Scientists</title>
     <meta charset="utf-8" />
     <meta name="author" content="Jorge Cimentada" />
-    <meta name="date" content="2020-07-07" />
+    <meta name="date" content="2020-07-08" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Machine Learning for Social Scientists
 ## Tree based methods and PCA
 ### Jorge Cimentada
-### 2020-07-07
+### 2020-07-08
 
 ---
 
@@ -245,7 +245,7 @@ boot_res &lt;- fit(tflow)
 ```
 
 ```
-[15:31:44] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
+[13:11:49] WARNING: amalgamation/../src/objective/regression_obj.cu:170: reg:linear is now deprecated in favor of reg:squarederror.
 ```
 
 ```r
@@ -488,6 +488,12 @@ tidy(pc, "pcs")
 
 # PCA
 
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-16-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# PCA
+
 * They are supposed to be uncorrelated
 
 
@@ -575,7 +581,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
   theme_minimal()
 ```
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-19-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-20-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -583,7 +589,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
 
 * The two variables are located in the bottom left of the plot, showing that for both principal components both variables are associated with lower values of PC1 and PC2:
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -593,7 +599,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
 
 * This means that these variables should cluster **below** the average of PC1 and **higher** than the average of PC2. 
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -601,7 +607,7 @@ autoplot(pc, loadings = TRUE, loadings.label = TRUE, loadings.label.repel = TRUE
 
 * The remaining four variables cluster at lower values of PC1 and at higher values of PC1:
 
-&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="boosting_pca_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---

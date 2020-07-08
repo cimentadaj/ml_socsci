@@ -467,6 +467,21 @@ tidy(pc, "pcs")
 
 # PCA
 
+```{r, echo = FALSE, dpi = 300, out.width = "80%", fig.align = 'center'}
+pc %>%
+  tidy("pcs") %>%
+  ggplot(aes(PC, percent)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous("Principal Components") +
+  scale_y_continuous("Proportion of variance explained (%)", limits = c(0, 1)) +
+  theme_minimal()
+```
+
+---
+
+# PCA
+
 * They are supposed to be uncorrelated
 
 ```{r}
