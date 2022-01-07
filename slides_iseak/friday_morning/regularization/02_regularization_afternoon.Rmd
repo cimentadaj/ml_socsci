@@ -1,0 +1,580 @@
+---
+title: "Machine Learning for Social Scientists"
+subtitle: "Regularization"
+author: "Jorge Cimentada"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # css: [./upf.css, "rutgers-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+layout: true
+
+<!-- background-image: url(./figs/upf.png) -->
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+```{r, echo = FALSE}
+library(here)
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE,
+                      echo = FALSE,
+                      fig.width = 10.5,
+                      fig.height = 4,
+                      comment = NA,
+                      rows.print = 16,
+                      dpi = 300,
+                      out.width = "80%")
+
+```
+
+---
+
+# What is regularization?
+
+* Machine Learning is almost always about prediction
+
+* **It is important to make sure that out-of-sample accuracy is high**
+
+* Overfitting is our weak spot by including redundant or unimportant variables
+
+* Correct theoretical model is not always the aim
+
+--
+
+<br>
+<br>
+
+> How do we make sure our model does good predictions on unseen data? We regularize how much it overfits the data. How do we do that? Forcing unimportant coefficients towards zero.
+
+<br>
+
+* ML parlance: reduce variance in favor of increasing bias
+* SocSci parlance: make sure your model fits an unseen data as fairly well as this data
+
+---
+
+# What is regularization?
+
+Regularization is when you force your estimates towards specific values:
+
+* Bayesian: restrict coefficients based on prior distributions
+<br>
+
+* Machine Learning: restrict coefficents to zero
+
+<br>
+
+--
+
+### What is this good for? It depends on your context
+
+* Increasing predictive power
+* Including important confounders in large models
+* Understanding the strength of variables
+* Testing the generalization of your model
+
+---
+
+### Why regularization?
+
+.center[
+```{r, echo = FALSE, out.width = "80%"}
+knitr::include_graphics(here("img/ridge_example.png"))
+```
+]
+
+---
+
+# A first example: ridge regression
+
+* OLS minimizes the Residual Sum of Squares (RSS)
+* Fit N lines that minimize the RSS and keep the one with the best fit
+
+\begin{equation}
+RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
+\end{equation}
+
+.center[
+```{r echo = FALSE, dpi = 300, out.width = "80%"}
+library(tidymodels)
+library(tidyflow)
+
+res <-
+  tidyflow(mtcars) %>%
+  plug_formula(qsec ~ mpg) %>%
+  plug_model(set_engine(linear_reg(), "lm")) %>%
+  fit() %>%
+  predict(new_data = pull_tflow_rawdata(.))
+
+mtcars$.pred <- res$.pred
+
+p1 <-
+  mtcars %>%
+  ggplot(aes(mpg, qsec)) +
+  geom_point() +
+  scale_x_continuous(name = "X") +
+  scale_y_continuous(name = "Y") +
+  geom_line(aes(y = .pred), color = "blue", size = 1) +
+  geom_linerange(aes(ymin = .pred, ymax = qsec), color = "red", alpha = 1/2) +
+  theme_minimal()
+
+p1
+```
+]
+
+---
+
+# A first example: ridge regression
+
+Ridge regression adds one term:
+
+\begin{equation}
+RSS + \lambda \sum_{k = 1}^n \beta^2_j
+\end{equation}
+
+**The regularization term** or **penalty term**
+
+* $RSS$ estimates how the model fits the data
+* $\sum_{k = 1}^n \beta^2_j$ limits how much you overfit the data.
+* $\lambda$ is the weight given to the penalty term (called **lambda**): the higher the weight the bigger the shrinkage term of the equation.
+
+In layman terms:
+
+> We want the smallest coefficients that don’t affect the fit of the line (RSS).
+
+---
+
+# Deep dive into lambda
+
+- Lambda is a **tuning** parameter: that means you try different values and grab the best one
+
+- Usually called a shrinkage penalty
+  * When 0, lambda is just classical OLS
+  * Selecting a good value of lambda is critical for it to be effective
+  * As lambda goes to infinity, each coefficient get less weight
+
+- Never applied to the intercept, only to variable coefficients
+
+<br>
+
+- The reason of being of ridge is the problem of N < P
+  * In layman terms:
+  > When you have more predictors than observations, avoiding overfitting is crucial
+
+---
+
+# A first example: ridge regression
+
+Some caveats:
+
+* Since we're penalizing coefficients, their scale *matter*.
+
+> Suppose that you have the income of a particular person (measured in thousands per months) and time spent with their families (measured in seconds) and you're trying to predict happiness. A one unit increase in salary could be penalized much more than a one unit increase in time spent with their families **just** because a one unit increase in salary can be much bigger due to it's metric.
+
+<br>
+<br>
+
+.center[
+### **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: ridge regression
+
+A look at the data:
+
+```{r, echo = FALSE}
+library(tidymodels)
+library(tidyflow)
+
+# Read the PISA data
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)[c('math_score', 'MISCED', 'FISCED',  'HISEI', 'REPEAT', 'IMMIG', 'DURECEC', 'BSMJ')]
+head(pisa, n = 10)
+```
+
+---
+
+# A first example: ridge regression
+
+Next we take the usual steps that we expect to have in the machine learning pipeline:
+
+- Split into training and testing. Perform all analysis on the training set.
+- Perform any variable recodification / scaling (important for regularization)
+- Split training into a K fold data set for tuning parameters:
+
+```{r, echo = FALSE}
+tflow <-
+  pisa %>%
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split)
+
+rcp <-
+  ~ recipe(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ, data = .x) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())
+
+tflow <-
+  tflow %>%
+  plug_recipe(rcp)
+
+tflow <-
+  tflow %>%
+  plug_resample(vfold_cv)
+
+
+# mixture 0 is the same as ridge regression
+regularized_reg <- linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet")
+tflow <- tflow %>% plug_model(regularized_reg)
+
+tflow <-
+  tflow %>%
+  plug_grid(expand.grid, penalty = seq(0, 3, length.out = 300))
+
+res <- fit(tflow)
+
+# Print it just so they can look at it
+vfold_cv(training(initial_split(pisa)))
+```
+
+---
+
+
+# A first example: ridge regression
+
+.center[
+```{r}
+res %>%
+  pull_tflow_fit_tuning() %>%
+  autoplot()
+```
+]
+
+---
+
+# A first example: ridge regression
+
+```{r, fig.align = "center", dpi = 300, out.width = "90%"}
+final_ridge <- complete_tflow(res, metric = "rmse")
+
+final_ridge %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  plot(xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: ridge regression
+
+- Take your previous model, refit it only with the testing dataset and compare:
+
+.center[
+```{r}
+train_rmse_ridge <-
+  final_ridge %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+
+test_ridge <-
+  final_ridge %>%
+  predict_testing() %>%
+  rmse(math_score, .pred)
+
+train_rmse_ridge$type <- "training"
+test_ridge$type <- "testing"
+
+ridge <- as.data.frame(rbind(train_rmse_ridge, test_ridge))
+ridge$model <- "ridge"
+ridge
+```
+]
+
+---
+
+# A first example: lasso regression
+
+Lasso regression is very similar to ridge but the penalty term is different:
+
+\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}
+
+The same notes for ridge applies with one caveat:
+
+- The penalty term for lasso can **completely shrink to 0** meaning that it excludes variables.
+
+> Lasso excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+
+---
+
+# A first example: lasso regression
+
+- The fact that lasso performs feature selection is a somewhat new concept to the SocSci world. Why is this important?
+
+- When having hundreds of variables, it allows for greater explainability.
+- When few observations, it allows for greater flexibility by having more degrees of freedom
+- It dramatically decreases the risk of overfitting by removing redundant variables
+
+.center[
+```{r, echo = FALSE, out.width = "90%"}
+knitr::include_graphics(here("img/overfitting_graph.png"))
+```
+]
+
+```{r, echo = FALSE}
+# mixture = 1 is lasso
+lasso_mod <- update(regularized_reg, mixture = 1)
+
+tflow <-
+  tflow %>%
+  replace_model(lasso_mod)
+
+res_lasso <- fit(tflow)
+```
+
+---
+
+# A first example: lasso regression
+
+<br>
+<br>
+<br>
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: lasso regression
+
+Next we take the usual steps that we expect to have in the machine learning pipeline:
+
+- Split into training and testing. Perform all analysis on the training set.
+- Perform any variable recodification / scaling (important for regularization)
+- Split training into a K fold data set for tuning parameters
+- Run N models with N tuning parameters
+
+---
+
+# A first example: lasso regression
+
+.center[
+```{r}
+res_lasso %>%
+  pull_tflow_fit_tuning() %>%
+  autoplot()
+```
+]
+
+---
+
+# A first example: lasso regression
+
+```{r, fig.align = "center", dpi = 300, out.width = "90%"}
+final_lasso <- complete_tflow(res_lasso, metric = "rmse")
+
+final_lasso %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  plot(xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: lasso regression
+
+- Take your previous model, refit it only with the testing dataset and compare:
+
+
+.center[
+```{r}
+train_rmse_lasso <-
+  final_lasso %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+
+holdout_lasso <-
+  final_lasso %>%
+  predict_testing() %>%
+  rmse(math_score, .pred)
+
+train_rmse_lasso$type <- "training"
+holdout_lasso$type <- "testing"
+
+lasso <- as.data.frame(rbind(train_rmse_lasso, holdout_lasso))
+lasso$model <- "lasso"
+lasso
+```
+]
+
+---
+
+# When to use ridge or lasso?
+
+- Both are very similar but perform differently
+
+- Lasso usually works well when we know there are a handful of strong coefficients and the remaining variables have very small effects
+
+- Ridge will usually be better when all predictors aren't weak
+
+> A priori we don't know, that's why we use cross-validation: to test which models with which penalty terms work better
+
+- Interpretability is important or not
+
+---
+
+# Regularization and bias - variance trade off
+
+- MSE error (pink)
+- Bias (green): the more shrinkage, reduce bias (overfitting)
+- Variance (black): the more shrinkage, increases generalizability
+
+.center[
+```{r, echo = FALSE, out.width = "40%"}
+knitr::include_graphics(here("img/bias-variance-tradeoff.png"))
+```
+]
+
+---
+
+
+# A first example: elastic net regression
+
+$ridge = \lambda \sum_{k = 1}^n \beta_j^2$
+
+$lasso = \lambda \sum_{k = 1}^n |\beta_j|$
+
+Elastic net regularization is the addition of these two penalties in comparison to the RSS:
+
+$$RSS + lasso + ridge$$
+
+Explanation:
+
+> Although lasso models perform feature selection, when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically handling correlated features together. Consequently, the advantage of the elastic net penalty is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+
+**Now you have two parameters to tune**
+
+---
+
+# A first example: elastic net regression
+
+
+<br>
+<br>
+<br>
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+
+---
+
+# Usual workflow
+
+Next we take the usual steps that we expect to have in the machine learning pipeline:
+
+- Split into training and testing. Perform all analysis on the training set.
+- Perform any variable recodification / scaling (important for regularization)
+- Split training into a K fold data set for tuning parameters:
+
+  * Fit first model with first ridge parameter and first lasso ridge parameter
+
+  <br>
+
+  * Fit first model with first ridge parameter and second lasso ridge parameter
+
+  <br>
+  
+  * Fit first model with first ridge parameter and third lasso ridge parameter
+  
+  <br>
+  
+  * Fit first model with ... ridge parameter and ... lasso ridge parameter
+
+
+```{r}
+elnet_mod <- update(lasso_mod, mixture = tune())
+
+tflow <-
+  tflow %>%
+  replace_model(elnet_mod) %>%
+  replace_grid(grid_regular)
+
+```
+
+---
+
+# A first example: elastic net regression
+
+.center[
+```{r}
+res_elnet <- fit(tflow)
+tst <-
+  res_elnet %>%
+  pull_tflow_fit_tuning()
+
+tst$.metrics[[1]] %>%
+  select(-.estimator) %>%
+  tidyr::pivot_wider(names_from = '.metric', values_from = '.estimate')
+```
+]
+
+---
+
+# A first example: elastic net regression
+
+```{r, fig.align = "center", dpi = 300, out.width = "90%"}
+final_elnet <- complete_tflow(res_elnet, metric = "rmse")
+
+final_elnet %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  plot(xvar = "lambda", label = TRUE)
+```
+
+---
+
+# A first example: elastic net regression
+
+- Run our model on the testing dataset and compare with the training model:
+
+.center[
+```{r}
+train_rmse_elnet <-
+  final_elnet %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+
+holdout_elnet <-
+  final_elnet %>%
+  predict_testing() %>%
+  rmse(math_score, .pred)
+
+train_rmse_elnet$type <- "training"
+holdout_elnet$type <- "testing"
+
+elnet <- as.data.frame(rbind(train_rmse_elnet, holdout_elnet))
+elnet$model <- "elnet"
+elnet
+```
+]
+
+---
+
+# Alternative: forward-selection
+
+
+---
+
+# Alternative: backward-selection

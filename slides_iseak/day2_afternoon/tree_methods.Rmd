@@ -1,0 +1,504 @@
+---
+title: "Machine Learning for Social Scientists"
+subtitle: "Tree based methods"
+author: "Jorge Cimentada"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    # css: [./upf.css, "rutgers-fonts"]
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+---
+
+layout: true
+
+<!-- background-image: url(./figs/upf.png) -->
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+```{r, echo = FALSE}
+
+knitr::opts_chunk$set(warning = FALSE,
+                      message = FALSE, 
+                      fig.width = 10.5,
+                      fig.height = 4, 
+                      comment = NA,
+                      rows.print = 16)
+
+```
+
+---
+
+# Load the data
+
+```{r, message = FALSE}
+library(tidymodels)
+library(tidyflow)
+library(vip)
+library(rpart.plot)
+library(baguette)
+
+data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
+pisa <- read.csv(data_link)
+```
+
+---
+
+# Bagging
+
+* Decision trees can be very susceptible to the exact composition of the data
+
+```{r manydtrees, echo = FALSE, dpi = 300, out.width = "100%", out.height = "100%", fig.align = 'center'}
+mod1 <- decision_tree(mode = "regression") %>% set_engine("rpart")
+
+tflow <-
+  pisa %>% 
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split) %>%
+  plug_formula(math_score ~ . - scie_score - read_score) %>%
+  plug_model(mod1)
+
+all_mods <-
+  lapply(c(.15, .55, .3, .75, .65, .5), function(size) {
+    set.seed(23511)
+    pisa_sim <- pisa %>% sample_frac(size, replace = TRUE)
+    res <- tflow %>% replace_data(pisa_sim) %>% fit()
+    pull_tflow_fit(res)$fit
+  })
+
+par(mfrow=c(2,3)) 
+for (i in all_mods) rpart.plot(i)
+```
+
+---
+
+# Bagging
+
+* Bagging is a generalization of decision trees but using bootstrapped trees
+
+* What is bootstrapping?
+
+```{r}
+sel_cols <- c("math_score", "HISEI", "REPEAT", "IMMIG", "read_score")
+pisa_small <- pisa[1:5, sel_cols]
+pisa_small$id <- 1:5
+pisa_small
+```
+
+---
+
+# Bagging
+
+* Bootstraping randomly picks observations from the sample. 
+
+* Some observations might get picked while others might not. 
+
+* Some observations might even get picked many times!
+
+```{r}
+# Sample from the number of rows in `pisa_small`
+# and allow certain numbers to be replaced.
+set.seed(23551)
+row_index <- sample(nrow(pisa_small), replace = TRUE)
+pisa_small[row_index, ]
+```
+
+---
+
+# Bagging
+
+* We can run this many times and get many **resamples** of our data:
+
+```{r}
+lapply(1:2, function(x) {
+  row_index <- sample(nrow(pisa_small), replace = TRUE)
+  pisa_small[row_index, ]
+})
+```
+
+
+---
+
+# Bagging
+
+* Bagging works by bootstraping your data $N$ times and fitting $N$ decision trees. 
+
+* Each of decision tree has a lot of variance because we allow the tree to overfit the data
+
+* The trick with bagging is that we **average** over the predictions of all the $N$ decision trees
+
+* This improves the high variability of each single decision tree. 
+
+```{r}
+pisa$id <- 1:nrow(pisa)
+bootstrap_pisa <-
+  lapply(1:20, function(x) {
+    row_index <- sample(nrow(pisa) * .6, replace = TRUE)
+    pisa[row_index, ]
+  })
+```
+
+---
+
+# Bagging
+
+* Loop over these 20 datasets, fit a decision tree to each one and predict on the original `pisa` data. 
+
+```{r }
+tflow <-
+  tidyflow() %>%
+  plug_formula(math_score ~ .) %>%
+  plug_model(decision_tree(mode = "regression") %>% set_engine("rpart"))
+
+all_pred_models <-
+  lapply(bootstrap_pisa, function(x) {
+    small_model <-
+      tflow %>%
+      plug_data(x) %>%
+      fit()
+
+    cbind(
+      pisa["id"],
+      predict(small_model, new_data = pisa)
+    )
+  })
+```
+
+---
+
+# Bagging
+
+* The first slot contains predictions for all respondents. Let's confirm that:
+
+```{r}
+head(all_pred_models[[1]])
+```
+
+* Let's confirm the same thing for the second slot:
+
+```{r}
+head(all_pred_models[[2]])
+```
+
+---
+
+# Bagging
+
+
+* Bagging compensates the high level of variance by averaging the predictions of all the small trees:
+
+```{r}
+# Combine all the 20 predictions into one data frame
+all_combined <- all_pred_models[[1]]
+for (i in seq_along(all_pred_models)[-1]) {
+  all_combined <- cbind(all_combined, all_pred_models[[i]][-1])
+}
+
+# Average over the 20 predictions
+res <- data.frame(id = all_combined[1], final_pred = rowMeans(all_combined[-1]))
+
+# Final prediction for each respondent
+head(res)
+```
+
+---
+
+# Bagging
+
+* 20 trees is a small number
+
+* The higher the number of trees, the better.
+
+```{r, echo = FALSE, out.width = "40%", fig.align = 'center'}
+knitr::include_graphics("../../img/bagging_sim.png")
+```
+
+---
+
+# Bagging
+
+* How do we fit this in R?
+
+```{r}
+btree <- bag_tree(mode = "regression") %>% set_engine("rpart", times = 50)
+tflow <-
+  tidyflow(pisa, seed = 566521) %>%
+  plug_split(initial_split) %>%
+  plug_formula(math_score ~ .) %>%
+  plug_model(btree)
+
+tflow
+```
+
+---
+
+# Bagging
+
+* Let's fit both a simple decision tree and the bagged decision tree, predict on the training set and record the average $RMSE$ for both:
+
+```{r }
+res_btree <- tflow %>% fit()
+res_dtree <- tflow %>% replace_model(decision_tree() %>% set_engine("rpart")) %>% fit()
+
+rmse_dtree <- res_dtree %>% predict_training() %>% rmse(math_score, .pred)
+rmse_btree <- res_btree %>% predict_training() %>% rmse(math_score, .pred)
+
+c("Decision tree" = rmse_dtree$.estimate,
+  "Bagged decision tree" = rmse_btree$.estimate)
+```
+
+---
+
+# Disadvantages of bagging
+
+* Less interpretability
+
+* Alternative, VIP plots:
+
+```{r, dpi = 300, out.width = "100%", out.height = "100%", fig.align = 'center'}
+res_btree %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  var_imp()
+```
+
+---
+
+# Disadvantages of bagging
+
+* Works well only for models which are very unstable. 
+
+* For example, linear regression and logistic regression are models with very little variance
+
+* With enough sample size, running a bagged linear regression should return very similar estimates as a single fitted model. 
+
+---
+
+# Random Forests
+
+* Excluded `scie_score` and `read_score` from tree simulations
+
+* Why did I do that? Because they are extremely correlated to `math_score`
+
+* They dominate the entire tree:
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+mod1 <- decision_tree(mode = "regression") %>% set_engine("rpart")
+
+tflow <-
+  pisa %>% 
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split) %>%
+  plug_formula(math_score ~ .) %>%
+  plug_model(mod1)
+
+all_mods <-
+  lapply(c(.15, .55, .3, .75, .65, .5), function(size) {
+    set.seed(23511)
+    pisa_sim <- pisa %>% sample_frac(size, replace = TRUE)
+    res <- tflow %>% replace_data(pisa_sim) %>% fit()
+    pull_tflow_fit(res)$fit
+  })
+
+par(mfrow=c(2,3)) 
+for (i in all_mods) rpart.plot(i)
+```
+
+---
+
+# Random Forests
+
+* For estimating the split of `HISEI < 56`, decision trees evaluate splits in all variables in the data:
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+mod1 <- decision_tree(mode = "regression") %>% set_engine("rpart")
+
+tflow <-
+  pisa %>%
+  tidyflow(seed = 23151) %>%
+  plug_split(initial_split) %>%
+  plug_formula(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ) %>% 
+  plug_model(mod1)
+
+vanilla_fit <- fit(tflow)
+tree <- pull_tflow_fit(vanilla_fit)$fit
+cols <- c("black", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+
+# Random Forests
+
+* Repeats the same for each node
+
+```{r, echo = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+cols <- c("black", "black", "grey", "grey", "black", "grey", "grey", "grey", "grey", "grey", "grey")
+rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
+```
+
+---
+
+# Random Forests
+
+* Random forests sample `N` variables at each split
+
+> For example, to determine the best split for the left branch, it randomly samples `r floor(ncol(pisa) / 2)` variables from the total of `r ncol(pisa)`
+
+* On average, all variables will be present across all splits for all trees
+
+* This approach serves to **decorrelate** the trees
+
+---
+
+# Random Forests
+
+* How many columns should we randomly sample at each split?
+
+* This argument called `mtry` and the defaults are:
+
+<br>
+
+$\sqrt{Total\text{ }number\text{ }of\text{ }variables}$
+
+<br>
+
+$\frac{Total\text{ }number\text{ }of\text{ }variables}{3}$
+
+---
+
+# Random Forests
+
+* How do we run it in R?
+
+```{r}
+# Define the random forest
+rf_mod <- rand_forest(mode = "regression") %>% set_engine("ranger", importance = "impurity")
+
+# Define the `tidyflow` with the random forest model
+# and include all variables (including scie_score and read_score)
+tflow <-
+  pisa %>%
+  tidyflow(seed = 23151) %>%
+  plug_formula(math_score ~ .) %>%
+  plug_split(initial_split) %>%
+  plug_model(rf_mod)
+
+rf_fitted <- tflow %>% fit()
+```
+
+---
+
+# Random Forests
+
+* `scie_score` and `read_score` seem to be the most relevant variables.
+
+* They both are **seven times** more important than the next most strongest variable
+
+```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+rf_fitted %>%
+  pull_tflow_fit() %>%
+  .[['fit']] %>%
+  vip() +
+  theme_minimal()
+```
+
+---
+
+# Disadvantages of random forests
+
+* When there are **only** a few very strong predictors, then you might have trees which are very week 
+
+* Based on our example, if `scie_score` and `read_score` are excluded, the predictions might be bad
+
+```{r }
+rf_fitted %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+```
+
+* Performs worse than bagging, which was around `11` math points!
+
+---
+
+# Disadvantages of random forests
+
+* If we increase the number of variables used at each split, we should see a decrease in error
+
+* Why? Because it means that `scie_score` and `read_score` will have greater probability of being included at each split.
+
+```{r}
+rf_mod <- rand_forest(mode = "regression", mtry = 150) %>% set_engine("ranger")
+rf_fitted <- tflow %>% replace_model(rf_mod) %>% fit()
+
+rf_fitted %>%
+  predict_training() %>%
+  rmse(math_score, .pred)
+```
+
+* The predictive error is reduced to be the same as the one from the bagged decision tree
+
+* However, it's much faster than bagged decision trees!
+
+---
+
+# Advantages of random forests
+
+* Quite good for off-the-shelf predictions
+
+* Works equally well for continuous and binary variables
+
+---
+
+# Tuning random forests
+
+* Random Forests also have other values to tune.
+
+* `mtry`: number of variables
+
+* `min_n`: minimum number of observations in each node
+
+* `trees`: number of trees fitted
+
+See https://bradleyboehmke.github.io/HOML/random-forest.html
+
+---
+
+# Tuning random forests
+
+* A template
+
+```{r, eval = FALSE}
+rf_mod <-
+  rand_forest(mode = "regression",
+              mtry = tune(),
+              trees = tune(),
+              min_n = tune()) %>%
+  set_engine("ranger")
+
+tflow <-
+  pisa %>%
+  tidyflow(seed = 2151) %>%
+  plug_split(initial_split) %>%
+  plug_resample(vfold_cv) %>%
+  plug_grid(grid_random, levels = 10) %>%
+  plug_formula(math_score ~ .) %>%
+  plug_model(rf_mode)
+
+res <- rf_mod %>% fit()
+res
+```
+
+---
+
+# Tuning random forests
+
+Exercises 5-8
+
+.center[
+https://cimentadaj.github.io/ml_socsci/tree-based-methods.html#exercises-1
+]
