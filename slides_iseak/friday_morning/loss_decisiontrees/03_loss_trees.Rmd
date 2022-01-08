@@ -20,22 +20,18 @@ layout: true
 background-position: 100% 0%, 100% 0%, 50% 100%
 background-size: 10%, 10%, 10%
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, results = 'hide'}
 
 knitr::opts_chunk$set(warning = FALSE,
-                      message = FALSE, 
+                      message = FALSE,
                       fig.width = 10.5,
-                      fig.height = 4, 
+                      fig.height = 4,
                       comment = NA,
-                      rows.print = 16)
+                      rows.print = 16,
+                      echo = FALSE)
 
-```
+options(htmltools.preserve.raw = FALSE)
 
----
-
-# Load the data
-
-```{r, message = FALSE}
 library(tidymodels)
 library(tidyflow)
 library(rpart.plot)
@@ -44,15 +40,16 @@ library(plotly)
 
 data_link <- "https://raw.githubusercontent.com/cimentadaj/ml_socsci/master/data/pisa_us_2018.csv"
 pisa <- read.csv(data_link)
+
 ```
 
 ---
 
 # What are loss functions?
 
-* Social Scientists use metrics such as the $R^2$, $AIC$, $Log\text{ }likelihood$ or $BIC$. 
+* Social Scientists use metrics such as the $R^2$, $AIC$, $Log\text{ }likelihood$ or $BIC$.
 
-* We almost always use these metrics and their purpose is to inform some of our modeling choices. 
+* We almost always use these metrics and their purpose is to inform some of our modeling choices.
 
 * In machine learning, metrics such as the $R^2$ and the $AIC$ are called 'loss functions'
 
@@ -104,7 +101,7 @@ $$RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y_{i}} - y_{i})^2}{N}}}$$
 
 * This approach doesn't penalize any values and just takes the absolute error of the predictions.
 
-* Fundamentally simpler to interpret than the $RMSE$ since it's just the average absolute error. 
+* Fundamentally simpler to interpret than the $RMSE$ since it's just the average absolute error.
 
 ```{r, echo = FALSE, dpi = 300, out.width = "70%", fig.align = 'center'}
 p3
@@ -116,7 +113,7 @@ $$MAE = \sum_{i = 1}^n{\frac{|\hat{y_{i}} - y_{i}|}{N}}$$
 
 # Confusion Matrices
 
-* The city of Berlin is working on developing an 'early warning' system that is aimed at predicting whether a family is in need of childcare support. 
+* The city of Berlin is working on developing an 'early warning' system that is aimed at predicting whether a family is in need of childcare support.
 
 * Families which received childcare support are flagged with a 1 and families which didn't received childcare support are flagged with a 0:
 
@@ -128,7 +125,7 @@ knitr::include_graphics("../../img/base_df_lossfunction.svg")
 
 # Confusion Matrices
 
-* Suppose we fit a logistic regression that returns a predicted probability for each family: 
+* Suppose we fit a logistic regression that returns a predicted probability for each family:
 
 ```{r, echo = FALSE, out.width = "35%", fig.align = 'center'}
 knitr::include_graphics("../../img/df_lossfunction_prob.svg")
@@ -174,7 +171,7 @@ knitr::include_graphics("../../img/confusion_matrix_50_sensitivity.svg")
 
 # Confusion Matrices
 
-* The **specificity** of a model measures the true false rate. 
+* The **specificity** of a model measures the true false rate.
 
 * Specificity measures those that were correctly predicted only for the `0`:
 
@@ -194,7 +191,7 @@ knitr::include_graphics("../../img/confusion_matrix_50_specificity.svg")
 <br>
 <br>
 
-* In our previous example, we calculated the sensitivity and specificity assuming that the threshold for being 1 in the probability of each respondent is `0.5`. 
+* In our previous example, we calculated the sensitivity and specificity assuming that the threshold for being 1 in the probability of each respondent is `0.5`.
 
 <br>
 <br>
@@ -217,7 +214,7 @@ names(childcare_support) <- c("dv", paste0("X", 1:3))
 
 # Define the tidyflow with the logistic regression
 tflow <-
-  childcare_support %>% 
+  childcare_support %>%
   tidyflow(seed = 23151) %>%
   plug_split(initial_split) %>%
   plug_formula(dv ~ .) %>%
@@ -238,7 +235,7 @@ all_loss <-
     res <-
       res1 %>%
       mutate(pred = factor(as.numeric(.pred_1 >= x)))
-    
+
     sens <- sensitivity(res, dv, pred)
     speci <- specificity(res, dv, pred)
 
@@ -259,9 +256,9 @@ DT::datatable(res_loss,
 
 * Assigning a 1 if the probability was above `0.3` is associated with a true positive rate (sensitivity) of `0.74`.
 
-* Switching the cutoff to `0.7`, increases the true positive rate to `0.95`, quite an impressive benchmark. 
+* Switching the cutoff to `0.7`, increases the true positive rate to `0.95`, quite an impressive benchmark.
 
-* At the expense of increasing sensitivity, the true false rate decreases from `0.87` to `0.53`. 
+* At the expense of increasing sensitivity, the true false rate decreases from `0.87` to `0.53`.
 
 ---
 
@@ -277,7 +274,7 @@ all_loss <-
     res <-
       res1 %>%
       mutate(pred = factor(as.numeric(.pred_1 >= x)))
-    
+
     sens <- sensitivity(res, dv, pred)
     speci <- specificity(res, dv, pred)
 
@@ -301,7 +298,7 @@ DT::datatable(res_loss,
 
 * This result contains the sensitivity and specificity for many different cutoff points. These results are most easy to understand by visualizing them.
 
-* Cutoffs that improve the specificity does so at the expense of sensitivity. 
+* Cutoffs that improve the specificity does so at the expense of sensitivity.
 
 ```{r, echo = FALSE, dpi = 300, out.width = "90%", fig.align = 'center'}
 res_loss %>%
@@ -327,22 +324,22 @@ res_loss %>%
 
 ```
 
-* Ideal result:  most points cluster on the top left quadrant. 
+* Ideal result:  most points cluster on the top left quadrant.
 
-* Sensitivity is high (the true positive rate) and the specificity is high (because $1 - specificity$ will switch the direction of the accuracy to the lower values of the `X` axis). 
+* Sensitivity is high (the true positive rate) and the specificity is high (because $1 - specificity$ will switch the direction of the accuracy to the lower values of the `X` axis).
 
 ---
 
 # ROC Curves and Area Under the Curve
 
-* There is one thing we're missing: the actual cutoff points! 
+* There is one thing we're missing: the actual cutoff points!
 * Hover over the plot
 
 ```{r, echo = FALSE, out.width = "50%", out.height = "50%"}
 p1 <-
-  res1 %>% 
+  res1 %>%
   roc_curve(dv, .pred_1) %>%
-  mutate(.threshold = round(.threshold, 2)) %>% 
+  mutate(.threshold = round(.threshold, 2)) %>%
   ggplot(aes(1 - specificity, sensitivity)) +
   geom_line() +
   geom_point(aes(text = paste0("Cutoff: ", .threshold)), alpha = 0) +
@@ -356,7 +353,7 @@ ggplotly(p1)
 
 # ROC Curves and Area Under the Curve
 
-* The last loss function we'll discuss is a very small extension of the ROC curve: the **A**rea **U**nder the **C**urve or $AUC$. 
+* The last loss function we'll discuss is a very small extension of the ROC curve: the **A**rea **U**nder the **C**urve or $AUC$.
 
 * $AUC$ is the percentage of the plot that is under the curve. For example:
 
@@ -370,9 +367,50 @@ p1 +
 * 90% of the space of the plot is under the curve.
 
 ---
+
+# Precision and recall
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/precision_recall.png")
+```
+
+---
+
+# Precision and recall
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/precision_recall_plot.png")
+```
+
+---
+
+# Precision and recall
+
+- When to use ROC curves and precision-recall:
+
+<br>
+
+   1. ROC curves should be used when there are roughly equal numbers of observations for each class
+
+<br>
+
+   2. Precision-Recall curves should be used when there is a moderate to large class imbalance
+
+---
+
+<br>
+<br>
+<br>
+
+.center[
+# Decision trees
+]
+
+---
+
 # Decision trees
 
-* Decision trees are tree-like diagrams. 
+* Decision trees are tree-like diagrams.
 * They work by defining `yes-or-no` rules based on the data and assign the most common value for each respondent within their final branch.
 
 ```{r, echo = FALSE, warning = FALSE, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
@@ -382,7 +420,7 @@ tflow <-
   pisa %>%
   tidyflow(seed = 23151) %>%
   plug_split(initial_split) %>%
-  plug_formula(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ) %>% 
+  plug_formula(math_score ~ MISCED + FISCED + HISEI + REPEAT + IMMIG + DURECEC + BSMJ) %>%
   plug_model(mod1)
 
 vanilla_fit <- fit(tflow)
@@ -433,12 +471,7 @@ cols <- c("black", "grey", "grey", "grey", "black", "grey", "grey", "grey", "bla
 rpart.plot(tree, col = cols, branch.col = cols, split.col = cols)
 ```
 
----
-# Decision trees
-
-* How do we fit in R?
-
-```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
+```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center', echo = FALSE}
 # Define the decision tree and tell it the the dependent
 # variable is continuous ('mode' = 'regression')
 mod1 <- decision_tree(mode = "regression") %>% set_engine("rpart")
@@ -459,19 +492,49 @@ vanilla_fit <- fit(tflow)
 ```
 
 ---
-# Decision trees
 
-* All `plug_*` functions serve to build your machine learning workflow 
 
-* `tidyflow`: receives the data and seed
+# How do decision trees work
 
-* `plug_split`: add the training/testing
-
-* `plug_formula`/`plug_recipe`: model definition
-
-* `plug_model`: the model used
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/decision_trees_adv1.png")
+```
 
 ---
+
+# How do decision trees work
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/decision_trees_adv2.png")
+```
+
+---
+
+# How do decision trees work
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/decision_trees_adv3.png")
+```
+
+---
+
+# How do decision trees work
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/decision_trees_adv4.png")
+```
+
+---
+
+# How do decision trees work
+
+```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
+knitr::include_graphics("../../img/decision_trees_adv5.png")
+```
+
+
+---
+
 # Bad things about Decision trees
 
 * They overfit a lot
@@ -490,6 +553,7 @@ How can you address this?
 
 * Not straight forward
 * `min_n` and `tree_depth` are sometimes useful
+* You need to tune these
 
 ```{r, dpi = 300, out.width = "70%", out.height = "70%", fig.align = 'center'}
 dectree <- update(mod1, min_n = 200, tree_depth = 3)
@@ -503,7 +567,7 @@ rpart.plot(pull_tflow_fit(fit_complex)$fit)
 
 * Model tuning can help select the best `min_n` and `tree_depth`
 
-```{r}
+```{r, echo = FALSE}
 tflow <-
   tflow %>%
   plug_resample(vfold_cv, v = 5) %>%
@@ -527,7 +591,7 @@ fit_tuned %>%
          ci_high = mean + (1.96 * std_err),
          tree_depth = factor(paste0("Tree depth: ", tree_depth), levels = tree_depth_lvl),
          min_n = factor(min_n, levels = c("50", "100"))) %>%
-  filter(.metric == "rmse") %>% 
+  filter(.metric == "rmse") %>%
   ggplot(aes(min_n, mean)) +
   geom_point() +
   geom_errorbar(aes(ymin = ci_low, ymax = ci_high), width = .1) +
@@ -540,8 +604,9 @@ fit_tuned %>%
 ---
 # Best tuned decision tree
 
-* Best model
+* As usual, once we have out model, we predict on our test set and compare:
 
+.center[
 ```{r}
 final_model <- complete_tflow(fit_tuned,
                               metric = "rmse",
@@ -561,12 +626,4 @@ test_err <-
 c("Testing error" = test_err$.estimate,
   "Training error" = train_err$.estimate)
 ```
-
----
-# Exercises
-
-Exercises 1-4
-
-.center[
-https://cimentadaj.github.io/ml_socsci/tree-based-methods.html#exercises-1
 ]
