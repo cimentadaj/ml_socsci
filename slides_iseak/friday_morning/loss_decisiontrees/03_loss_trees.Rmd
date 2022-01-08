@@ -118,7 +118,7 @@ $$MAE = \sum_{i = 1}^n{\frac{|\hat{y_{i}} - y_{i}|}{N}}$$
 * Families which received childcare support are flagged with a 1 and families which didn't received childcare support are flagged with a 0:
 
 ```{r, echo = FALSE, out.width = "15%", fig.align = 'center'}
-knitr::include_graphics("../../img/base_df_lossfunction.svg")
+knitr::include_graphics("../../../img/base_df_lossfunction.svg")
 ```
 
 ---
@@ -128,7 +128,7 @@ knitr::include_graphics("../../img/base_df_lossfunction.svg")
 * Suppose we fit a logistic regression that returns a predicted probability for each family:
 
 ```{r, echo = FALSE, out.width = "35%", fig.align = 'center'}
-knitr::include_graphics("../../img/df_lossfunction_prob.svg")
+knitr::include_graphics("../../../img/df_lossfunction_prob.svg")
 ```
 
 ---
@@ -138,7 +138,7 @@ knitr::include_graphics("../../img/df_lossfunction_prob.svg")
 * We could assign a 1 to every respondent who has a probability above `0.5` and a 0 to every respondent with a probability below `0.5`:
 
 ```{r, echo = FALSE, out.width = "45%", fig.align = 'center'}
-knitr::include_graphics("../../img/df_lossfunction_class.svg")
+knitr::include_graphics("../../../img/df_lossfunction_class.svg")
 ```
 
 ---
@@ -148,7 +148,7 @@ knitr::include_graphics("../../img/df_lossfunction_class.svg")
 The accuracy is the sum of all correctly predicted rows divided by the total number of predictions:
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/confusion_matrix_50_accuracy.svg")
+knitr::include_graphics("../../../img/confusion_matrix_50_accuracy.svg")
 ```
 
 * Accuracy: $(3 + 1) / (3 + 1 + 1 + 2) = 50\%$
@@ -162,7 +162,7 @@ knitr::include_graphics("../../img/confusion_matrix_50_accuracy.svg")
 * Sensitivity measures those that were correctly predicted only for the `1`:
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/confusion_matrix_50_sensitivity.svg")
+knitr::include_graphics("../../../img/confusion_matrix_50_sensitivity.svg")
 ```
 
 * Sensitivity: $3 / (3 + 1) = 75\%$
@@ -176,7 +176,7 @@ knitr::include_graphics("../../img/confusion_matrix_50_sensitivity.svg")
 * Specificity measures those that were correctly predicted only for the `0`:
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/confusion_matrix_50_specificity.svg")
+knitr::include_graphics("../../../img/confusion_matrix_50_specificity.svg")
 ```
 
 * Specificity: $1 / (1 + 2) = 33\%$
@@ -371,7 +371,7 @@ p1 +
 # Precision and recall
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/precision_recall.png")
+knitr::include_graphics("../../../img/precision_recall.png")
 ```
 
 ---
@@ -379,7 +379,7 @@ knitr::include_graphics("../../img/precision_recall.png")
 # Precision and recall
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/precision_recall_plot.png")
+knitr::include_graphics("../../../img/precision_recall_plot.png")
 ```
 
 ---
@@ -497,7 +497,7 @@ vanilla_fit <- fit(tflow)
 # How do decision trees work
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/decision_trees_adv1.png")
+knitr::include_graphics("../../../img/decision_trees_adv1.png")
 ```
 
 ---
@@ -505,7 +505,7 @@ knitr::include_graphics("../../img/decision_trees_adv1.png")
 # How do decision trees work
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/decision_trees_adv2.png")
+knitr::include_graphics("../../../img/decision_trees_adv2.png")
 ```
 
 ---
@@ -513,7 +513,7 @@ knitr::include_graphics("../../img/decision_trees_adv2.png")
 # How do decision trees work
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/decision_trees_adv3.png")
+knitr::include_graphics("../../../img/decision_trees_adv3.png")
 ```
 
 ---
@@ -521,7 +521,7 @@ knitr::include_graphics("../../img/decision_trees_adv3.png")
 # How do decision trees work
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/decision_trees_adv4.png")
+knitr::include_graphics("../../../img/decision_trees_adv4.png")
 ```
 
 ---
@@ -529,7 +529,7 @@ knitr::include_graphics("../../img/decision_trees_adv4.png")
 # How do decision trees work
 
 ```{r, echo = FALSE, out.width = "55%", fig.align = 'center'}
-knitr::include_graphics("../../img/decision_trees_adv5.png")
+knitr::include_graphics("../../../img/decision_trees_adv5.png")
 ```
 
 
@@ -626,4 +626,10 @@ test_err <-
 c("Testing error" = test_err$.estimate,
   "Training error" = train_err$.estimate)
 ```
+]
+
+---
+
+.center[
+# Break
 ]
