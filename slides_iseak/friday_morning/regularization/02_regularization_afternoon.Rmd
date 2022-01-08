@@ -495,11 +495,11 @@ Next we take the usual steps that we expect to have in the machine learning pipe
   * Fit first model with first ridge parameter and second lasso ridge parameter
 
   <br>
-  
+
   * Fit first model with first ridge parameter and third lasso ridge parameter
-  
+
   <br>
-  
+
   * Fit first model with ... ridge parameter and ... lasso ridge parameter
 
 
@@ -574,7 +574,56 @@ elnet
 
 # Alternative: forward-selection
 
+.center[
+```{r, echo = FALSE, out.width = "70%"}
+knitr::include_graphics(here("img/forward_selection.png"))
+```
+]
 
 ---
 
 # Alternative: backward-selection
+
+.center[
+```{r, echo = FALSE, out.width = "70%"}
+knitr::include_graphics(here("img/backward_selection.png"))
+```
+]
+
+---
+
+# Comparison [1/2]
+
+- Ridge
+  * Keeps all variables
+  * Might introduce overfitting by keeping all variables
+  * Assumes linearity
+
+- Lasso
+  * Variable selection
+  * Inconsistency (two highly correlated variables, removes one)
+  * Assumes linearity
+
+- Elastic Net (in reality, elastic net usually performs better)
+  * Variable selection, depending on weights from both ridge and lasso (lambda)
+  * Assumes linearity
+
+---
+
+# Comparison [2/2]
+
+- Forward selection
+  * Doesn't work well with n < p models
+  * RSS is biased because models with high P will usually have higher RSS
+  * Computationally intensive
+
+- Backward selection
+  * Doesn't work well with n < p models
+  * RSS is biased because models with high P will usually have higher RSS
+  * Computationally intensive
+
+---
+
+.center[
+# Break
+]
