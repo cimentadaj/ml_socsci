@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Machine Learning for Social Scientists</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jorge Cimentada" />
+    <meta name="date" content="2022-01-09" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Machine Learning for Social Scientists
+## Tree based methods
+### Jorge Cimentada
+### 2022-01-09
+
+---
+
+
+layout: true
+
+&lt;!-- background-image: url(./figs/upf.png) --&gt;
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+
+
+
+
+
+---
+
+# Bagging
+
+* Decision trees can be very susceptible to the exact composition of the data
+
+&lt;img src="tree_methods_files/figure-html/manydtrees-1.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bagging
+
+* Bagging is a generalization of decision trees but using bootstrapped trees
+
+* What is bootstrapping?
+
+.center[
+
+```
+   math_score HISEI REPEAT IMMIG read_score id
+1    512.7125 28.60      0     1   544.2085  1
+2    427.3615 59.89      0     1   432.2518  2
+3    449.9545 39.02      0     1   503.9496  3
+4    474.5553 26.60      0     1   437.7777  4
+5    469.1545 76.65      0     1   535.9487  5
+6    442.6426 29.73      0     1   449.0047  6
+7    426.4296 35.34      0     1   488.4955  7
+8    449.8329 65.01      0     1   528.9468  8
+9    493.6453 48.66      0     1   623.0097  9
+10   341.7272 68.70      1     1   281.6568 10
+```
+]
+
+---
+
+# Bagging
+
+* Bootstraping randomly picks observations from the sample.
+
+* Some observations might get picked while others might not.
+
+* Some observations might even get picked many times!
+
+.center[
+
+```
+    math_score HISEI REPEAT IMMIG read_score id
+1     512.7125 28.60      0     1   544.2085  1
+4     474.5553 26.60      0     1   437.7777  4
+6     442.6426 29.73      0     1   449.0047  6
+3     449.9545 39.02      0     1   503.9496  3
+9     493.6453 48.66      0     1   623.0097  9
+6.1   442.6426 29.73      0     1   449.0047  6
+8     449.8329 65.01      0     1   528.9468  8
+9.1   493.6453 48.66      0     1   623.0097  9
+4.1   474.5553 26.60      0     1   437.7777  4
+4.2   474.5553 26.60      0     1   437.7777  4
+```
+]
+
+---
+
+# Bagging
+
+* We can run this many times and get many **resamples** of our data:
+
+.center[
+
+```
+[[1]]
+    math_score HISEI REPEAT IMMIG read_score id
+4     474.5553 26.60      0     1   437.7777  4
+5     469.1545 76.65      0     1   535.9487  5
+1     512.7125 28.60      0     1   544.2085  1
+2     427.3615 59.89      0     1   432.2518  2
+1.1   512.7125 28.60      0     1   544.2085  1
+
+[[2]]
+    math_score HISEI REPEAT IMMIG read_score id
+4     474.5553 26.60      0     1   437.7777  4
+2     427.3615 59.89      0     1   432.2518  2
+3     449.9545 39.02      0     1   503.9496  3
+1     512.7125 28.60      0     1   544.2085  1
+4.1   474.5553 26.60      0     1   437.7777  4
+```
+]
+
+---
+
+# Bagging
+
+* Bagging works by bootstraping your data `\(N\)` times and fitting `\(N\)` decision trees.
+&lt;br&gt;
+
+* Each of decision tree has a lot of variance because we allow the tree to overfit the data
+&lt;br&gt;
+
+* The trick with bagging is that we **average** over the predictions of all the `\(N\)` decision trees
+&lt;br&gt;
+
+* This improves the high variability of each single decision tree.
+&lt;br&gt;
+
+* Loop over these `\(N\)` datasets, fit a decision tree to each one and predict on the original data.
+
+
+
+
+
+
+---
+
+# Bagging
+
+* The first model contains predictions for all respondents:
+
+.center[
+
+```
+  id    .pred
+1  1 493.7640
+2  2 378.6239
+3  3 440.4848
+4  4 440.4848
+5  5 493.7640
+```
+]
+
+* Second model contains also a set of predictions
+
+.center[
+
+```
+  id    .pred
+1  1 486.7503
+2  2 432.9462
+3  3 432.9462
+4  4 432.9462
+5  5 486.7503
+```
+]
+---
+
+# Bagging
+
+
+* Bagging compensates the high level of variance of each model by averaging the predictions of all the small trees
+
+* Take the `\(N\)` predictions and average over them for each respondent:
+
+.center[
+
+```
+   id pred_1 pred_2 pred_3 pred_N final_pred
+1   1    494    487    495    ...        494
+2   2    379    433    384    ...        403
+3   3    440    433    446    ...        437
+4   4    440    433    446    ...        443
+5   5    494    487    495    ...        492
+6   6    440    487    446    ...        457
+7   7    379    382    384    ...        387
+8   8    494    487    495    ...        492
+9   9    537    525    536    ...        532
+10 10    327    337    330    ...        333
+```
+]
+
+---
+
+# Bagging
+
+* The higher the number of trees, the better.
+
+&lt;img src="../../../img/bagging_sim.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Bagging
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+* Let's fit both a simple decision tree and the bagged decision tree, predict on the training set and record the average `\(RMSE\)` for both:
+
+.center[
+
+```
+       Decision tree Bagged decision tree 
+            33.85131             11.33018 
+```
+]
+
+* The bagged decision tree is considerably more accurate than the simple decision tree
+
+---
+
+# Disadvantages of bagging
+
+* Less interpretability
+
+* Alternative, VIP plots:
+
+.center[
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-13-1.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Disadvantages of bagging
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+* Works well only for models which are very unstable.
+
+* For example, linear regression and logistic regression are models with very little variance
+
+* With enough sample size, running a bagged linear regression should return very similar estimates as a single fitted model.
+
+---
+
+# Random Forests
+
+* Excluded `scie_score` and `read_score` from tree simulations
+
+* Why did I do that? Because they are extremely correlated to `math_score`
+
+* They dominate the entire tree:
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-14-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random Forests
+
+* For estimating the split of `HISEI &lt; 56`, decision trees evaluate splits in all variables in the data:
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-15-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random Forests
+
+* Repeats the same for each node
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-16-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Random Forests
+
+* Random forests sample `N` variables at each split
+
+&gt; For example, to determine the best split for the left branch, it randomly samples 251 variables from the total of 502
+
+* On average, all variables will be present across all splits for all trees
+
+* This approach serves to **decorrelate** the trees
+
+---
+
+# Random Forests
+
+* How many columns should we randomly sample at each split?
+
+* This argument called `mtry` and the defaults are:
+
+&lt;br&gt;
+
+.center[
+`\(\sqrt{Total\text{ }number\text{ }of\text{ }variables}\)`
+]
+
+&lt;br&gt;
+
+.center[
+`\(\frac{Total\text{ }number\text{ }of\text{ }variables}{3}\)`
+]
+
+
+
+
+---
+
+# Random Forests
+
+* `scie_score` and `read_score` seem to be the most relevant variables.
+
+* They both are **seven times** more important than the next most strongest variable
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-18-1.png" width="70%" height="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Disadvantages of random forests
+
+* When there are **only** a few very strong predictors, then you might have trees which are very week
+
+* Based on our example, if `scie_score` and `read_score` are excluded, the predictions might be bad
+
+.center[
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        16.6
+```
+]
+
+* Performs worse than bagging, which was around `11` math points!
+
+---
+
+# Disadvantages of random forests
+
+* If we increase the number of variables used at each split, we should see a decrease in error
+
+* Why? Because it means that `scie_score` and `read_score` will have greater probability of being included at each split.
+
+.center[
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        11.3
+```
+]
+
+* The predictive error is reduced to be the same as the one from the bagged decision tree
+
+* However, it's much faster than bagged decision trees!
+
+* Less interpretable
+
+---
+
+# Advantages of random forests
+
+&lt;br&gt;
+&lt;br&gt;
+
+* Quite good for off-the-shelf predictions
+
+&lt;br&gt;
+
+* Works equally well for continuous and binary variables
+
+&lt;br&gt;
+
+* Usually performs better than linear models by exploring complicated interactions
+
+---
+
+# Tuning random forests
+
+* Random Forests also have other values to tune.
+
+* `mtry`: number of variables
+
+* `min_n`: minimum number of observations in each node
+
+* `trees`: number of trees fitted
+
+See https://bradleyboehmke.github.io/HOML/random-forest.html
+
+---
+
+# Boosting
+
+* Tree based methods we've seen use decision trees as baseline models
+
+* They use *ensemble* approaches to calculate the average predictions of all decision trees
+
+* Boosting also uses decision trees as the baseline model but the ensemble strategy is fundamentally different
+
+* Manual example: let's fit a very weak decision tree
+
+---
+# Boosting
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-21-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Boosting
+
+* Weak model with `tree_depth = 1`
+
+* What is the `\(RMSE\)`?
+
+.center[
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard        55.0
+```
+]
+
+* Neither a good nor a robust model.
+
+---
+# Boosting
+
+* Let's look at the residuals:
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-23-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+* A strong pattern, something we shouldn't see if our models is working well.
+
+---
+
+# Boosting
+
+* Boosting works by predicting the residuals of previous decision trees.
+
+1. Fit a first model and calculated the residuals
+2. Fit a second model but the dependent variable should now be the residuals of the first model
+3. Recursively fit `\(N\)` trees following this pattern
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-24-1.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Boosting
+
+* Let's visualize the residuals from the **second** model:
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-25-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+* Pattern seems to have changed although it's not clear that it's closer to a random pattern
+
+---
+# Boosting
+
+* If we repeat the same for 20 trees, residuals approximate randomness:
+
+
+&lt;img src="tree_methods_files/figure-html/unnamed-chunk-26-1.png" width="100%" height="100%" style="display: block; margin: auto;" /&gt;
+
+---
+# Boosting
+
+* Boosting is a way for each model to boost the last model's performance:
+ + Focuses mostly on observations which had big residuals
+
+* After having 20 predictions for each respondent, can you take the average?
+
+.center[
+
+```
+   pred_mod1  pred_mod2
+1   540.1185   9.693105
+2   407.5742   9.693105
+3   407.5742   9.693105
+4   407.5742   9.693105
+5   407.5742   9.693105
+6   540.1185   9.693105
+7   540.1185   9.693105
+8   407.5742 -59.415496
+9   407.5742   9.693105
+10  407.5742   9.693105
+```
+]
+
+---
+# Boosting
+
+* The first model has the correct metric but all the remaining models are residuals
+
+* Final prediction is the **sum** of all predictions
+
+
+```
+  pred_mod1 pred_mod2 final_pred
+1  540.1185  9.693105   549.8116
+2  407.5742  9.693105   417.2673
+3  407.5742  9.693105   417.2673
+4  407.5742  9.693105   417.2673
+5  407.5742  9.693105   417.2673
+6  540.1185  9.693105   549.8116
+```
+
+* We have a final prediction for each respondent.
+
+---
+
+# Boosting
+
+
+* Let's compare this to our previous models using decision trees and random forests for the training dataset:
+
+
+```
+[12:25:35] WARNING: amalgamation/../src/objective/regression_obj.cu:188: reg:linear is now deprecated in favor of reg:squarederror.
+```
+
+```
+# A tibble: 1 x 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard    0.000630
+```
+
+---
+# Boosting
+
+* Boosting outperforms all others considerably
+
+* Boosting and `xgboost` are considered to be among the best predictive models
+
+* They can achieve great accuracy even with default values
+
+---
+
+# Disadvantages of boosting
+
+* Increasing the number of trees in a boosting algorithm **can** increase overfitting
+
+* For the random forest, increasing the number of trees has no impact on overfitting
+
+* You might reach a point that adding more trees will just try to explain residuals which are random, resulting in overfitting.
+
+* `stop_iter` signals that after `\(N\)` number trees have passed without any improvement, the algorithm should stop. This approach often runs less trees than the user requested.
+
+---
+# Boosting
+
+There are other tuning parameters available in `boost_tree` which you can use to improve your model:
+
+* `trees`: the number of trees that will be ran
+
+* `mtry`: just as in random forests
+
+* `min_n`: minimum number in each node
+
+* `tree_depth`: how complex the tree is grown
+
+* `learn_rate`: controls how much we regularize each tree
+
+* `loss_reduction`: signals the amount of reduction in your loss function (for example, `\(RMSE\)`) that will allow each split in a decision tree to continue to grow. You can see this as cost-effective step: only if the tree improves it's prediction by `\(X\)`, we allow the tree to produce another split.
+
+* `sample_size`: controls the percentage of the data used in each iteration of the decision tree. This is similar to the bagging approach where we perform bootstraps on each iteration.
+
+---
+
+# Comparison of all models
+
+.center[
+
+```
+                 model   train  test
+1     Ridge Regression 76.8700 77.88
+2     Lasso Regression 76.8700 77.86
+3          Elastic Net 76.8700 77.87
+4        Decision tree 33.8500 34.90
+5 Bagged decision tree 11.3300 28.90
+6        Random Forest 11.3000 28.50
+7    Gradient boosting  0.0006 26.80
+```
+]
+
+---
+
+# Explainability
+
+&lt;img src="../../../img/dalex.png" width="60%" style="display: block; margin: auto;" /&gt;
+ 
+---
+
+# Ending remarks
+
+
+
+&lt;img src="../../../img/book_mlsocsci.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+https://cimentadaj.github.io/ml_socsci/
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
