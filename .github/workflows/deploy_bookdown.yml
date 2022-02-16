@@ -42,6 +42,11 @@ jobs:
       - name: Render Slides
         run: Rscript -e 'all_slides <- list.files("slides", recursive = TRUE, pattern = "Rmd", full.names = TRUE); for (i in all_slides) rmarkdown::render(i)'
           
+
+      - name: Render Slides ISEAK
+        run: Rscript -e 'all_slides <- list.files("slides_iseak", recursive = TRUE, pattern = "Rmd", full.names = TRUE); for (i in all_slides) rmarkdown::render(i)'
+          
+
       - name: Print files slides
         run: ls -R slides
                       
@@ -51,6 +56,7 @@ jobs:
       - name: Move slides and img to _book
         run: |
             cp -rf slides/ _book/slides/
+            cp -rf slides_iseak/ _book/slides_iseak/
             cp -rf img/ _book/img/
           
       - uses: actions/upload-artifact@v2
