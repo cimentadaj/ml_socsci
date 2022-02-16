@@ -39,10 +39,10 @@
     },
     "DT": {
       "Package": "DT",
-      "Version": "0.13",
+      "Version": "0.20",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "a16cb2832248c7cff5a6f505e2aea45b"
+      "Hash": "0163cd2ce6c7995005a0fc363d570963"
     },
     "DiceDesign": {
       "Package": "DiceDesign",
@@ -212,10 +212,16 @@
     },
     "bookdown": {
       "Package": "bookdown",
-      "Version": "0.19",
-      "Source": "Repository",
+      "Version": "0.24",
+      "Source": "CRAN",
       "Repository": "CRAN",
-      "Hash": "4f669b7b4f236538e6afc311f32d2c93"
+      "RemoteType": "standard",
+      "RemotePkgRef": "bookdown",
+      "RemoteRef": "bookdown",
+      "RemoteRepos": "https://cran.rstudio.com",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "0.24",
+      "Hash": "3837766a1e1b527af25fa3e2d12a2800"
     },
     "boot": {
       "Package": "boot",
@@ -761,10 +767,16 @@
     },
     "knitr": {
       "Package": "knitr",
-      "Version": "1.28",
-      "Source": "Repository",
+      "Version": "1.37",
+      "Source": "CRAN",
       "Repository": "CRAN",
-      "Hash": "915a6f0134cdbdf016d7778bc80b2eda"
+      "RemoteType": "standard",
+      "RemotePkgRef": "knitr",
+      "RemoteRef": "knitr",
+      "RemoteRepos": "https://cran.rstudio.com",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "1.37",
+      "Hash": "a4ec675eb332a33fe7b7fe26f70e1f98"
     },
     "labeling": {
       "Package": "labeling",
@@ -1195,10 +1207,16 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.10.0",
-      "Source": "Repository",
+      "Version": "0.15.2",
+      "Source": "CRAN",
       "Repository": "CRAN",
-      "Hash": "0d3f1c2b63e70b3d918246b4e2ca59b7"
+      "RemoteType": "standard",
+      "RemotePkgRef": "renv",
+      "RemoteRef": "renv",
+      "RemoteRepos": "https://cran.rstudio.com",
+      "RemotePkgPlatform": "source",
+      "RemoteSha": "0.15.2",
+      "Hash": "206c4ef8b7ad6fb1060d69aa7b9dfe69"
     },
     "reprex": {
       "Package": "reprex",
