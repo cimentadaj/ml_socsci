@@ -49,3 +49,9 @@ Day 2 - Afternoon: [Slides](./slides/day2_afternoon/tree_methods.html)
 Day 3 - Morning: [Slides](./slides/day3_morning/boosting_pca.html)
 
 Day 3 - Afternoon: [Slides](./slides/day3_afternoon/kmeans_competition.html)
+
+Slides for ISEAK:
+Thursday: [Slides]("./slides_iseak/thursday_afternoon/01_introduction.html")
+Friday: [Slides]("./slides_iseak/friday_morning/regularization/02_regularization_afternoon.html")
+Friday: [Slides]("./slides_iseak/friday_morning/loss_decisiontrees/03_loss_trees.html")
+Friday: [Slides]("./slides_iseak/friday_morning/tree_methods/tree_methods.html")
