@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Machine Learning for Social Scientists</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jorge Cimentada" />
+    <meta name="date" content="2020-07-06" />
+    <script src="libs/header-attrs-2.2/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+    <script src="libs/datatables-binding-0.14/datatables.js"></script>
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+    <script src="libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+    <link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+    <script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Machine Learning for Social Scientists
+## Introduction
+### Jorge Cimentada
+### 2020-07-06
+
+---
+
+
+layout: true
+
+&lt;!-- background-image: url(./figs/upf.png) --&gt;
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+
+
+---
+
+# An introduction to the Machine Learning Framework
+
+**What is Machine Learning after all?**
+
+.left-colum[
+.center[
+&gt; Using statistical methods to **learn** the data enough to be able to predict it accurately on new data
+]
+]
+
+--
+
+&lt;br&gt;
+&lt;br&gt;
+
+That sounds somewhat familiar to social scientists 🤔
+
+- Perhaps our goal is not to **predict** it but it is certainly to **learn** it and **understand** it
+
+&lt;br&gt;
+&lt;br&gt;
+
+--
+
+Here comes the catch: 
+&gt; ML doesn't want to **understand** the problem; it wants to learn it enough to **predict** it well.
+
+---
+class: center, middle
+
+# How do social scientists work?
+
+&lt;img src="../../img/socsci_wflow1.svg" width="90%" /&gt;
+
+---
+# Prediction vs Inference
+
+- Social Scientists are concerned with making inferences about their data
+&gt; If a new data source comes along, their results should be able to replicate.
+
+&lt;br&gt;
+
+- Data Scientits are concerned with making predictions about their data
+&gt; If a new data source comes along, they want to be able to predict it accurately.
+
+&lt;br&gt;
+&lt;br&gt;
+
+--
+
+.center[
+.large[
+**What's the common framework?**
+]
+]
+
+---
+name: fat
+class: inverse, top, center
+background-image: url(../../img/bart_replicability.png)
+background-size: cover
+
+---
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-3-1.png" height="90%" /&gt;
+]
+
+
+.center[Very important to ML! (as it should be in Social Science)]
+
+---
+class: center, middle
+
+# Where social scientists have gone wrong
+
+Tell me a strategy that you were taught to make sure your results are replicable on a new dataset
+
+--
+
+**I can tell you several that Machine Learning researchers have thought of**
+
+---
+
+&lt;img src="../../img/socsci_wflow1.svg" width="90%" /&gt;
+
+
+---
+
+&lt;img src="../../img/socsci_wflow2.svg" width="90%" /&gt;
+
+---
+
+&lt;img src="../../img/socsci_wflow3.svg" width="90%" /&gt;
+
+---
+
+&lt;img src="../../img/socsci_wflow4.svg" width="90%" /&gt;
+
+---
+# Difference in workflow
+
+- Machine Learning practioners have renamed stuff statisticians have been doing for 100 years
+
+--
+
+ * Features --&gt; Variables
+ * Feature Engineering --&gt; Creating Variables
+ * Supervised Learning --&gt; Models that have a dependent variable
+ * Unsupervised Learning --&gt; Models that don't have a dependent variable
+
+&gt; I won't discuss the first two approaches, since we have a lot of experience with that. Throughout the course we'll show main models they use for prediction.
+
+--
+
+- Machine Learning practioners have developed extra steps to make sure we don't overfit the data
+
+--
+
+ * Training/Testing data --&gt; Unknown to us
+ * Cross-validation --&gt; Unknown to us
+ * Loss functions --&gt; Model fit --&gt; Known to us but are not predominant (RMSE, `\(R^2\)` etc...)
+
+&gt; These are very useful concepts. Let's focus on those.
+
+---
+# Objective
+
+&lt;!-- hahahahaha, worst idea but I don't want to search how to create the HTML tag, etc... --&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; **Minimize** &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; **Maximize:**
+
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-8-1.png" height="90%" /&gt;
+
+
+---
+## Testing/Training data
+
+.pull-left[
+.center[
+## Data
+
+&lt;img src="../../img/raw_data.svg" width="70%" /&gt;
+
+]
+]
+
+--
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+- Social Scientist would fit the model on this data
+ * How do you know if you're overfitting?
+ * Is there a metric?
+ * Is there a method?
+ 
+&gt; Nothing fancy! Just split the data
+
+]
+
+---
+# Testing/Training data
+
+.center[
+&lt;img src="../../img/train_testing_df.svg" width="80%" /&gt;
+]
+
+---
+
+# Testing/Training data
+
+- Iterative process
+ * Fit your model on the **training** data
+ * Testing different models/specifications
+ * Settle on final model
+ * Fit your model on **testing** data
+ * Compare model fit from **training** and **testing**
+ 
+&gt; If you train/test on the same data you'll inadvertently tweak the model to overfit both training/testing
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+.middle[
+**Too abstract**😕 &lt;br&gt;
+Let's run an example
+]
+]
+
+---
+## Testing/Training data
+
+.pull-left[
+.center[
+&lt;img src="../../img/training_df.svg" width="95%" /&gt;
+]
+&gt; Fit model here, tweak and refit until happy.
+]
+
+.pull-right[
+.center[
+&lt;img src="../../img/testing_df.svg" width="95%" /&gt;
+]
+&gt; Test final model here and compare model fit between training/testing
+]
+
+--
+
+- In the first prediction, this is better because **testing** is "pristine"
+- However, if we repeat the train/testing iteration 2, 3, 4, ... times, we'll start to
+  learn the **testing** data too well (**overfitting**)!
+
+---
+## Hello cross-validation!
+
+
+.pull-left[
+.center[
+&lt;img src="../../img/train_cv1.svg" width="95%" /&gt;
+]
+]
+---
+## Hello cross-validation!
+
+.pull-left[
+.center[
+&lt;img src="../../img/train_cv2.svg" width="95%" /&gt;
+]
+]
+
+---
+## Hello cross-validation!
+
+.pull-left[
+.center[
+&lt;img src="../../img/train_cv3.svg" width="95%" /&gt;
+]
+]
+---
+## Hello cross-validation!
+
+.pull-left[
+.center[
+&lt;img src="../../img/train_cv4.svg" width="95%" /&gt;
+]
+]
+---
+
+## Hello cross-validation!
+
+.pull-left[
+.center[
+&lt;img src="../../img/train_cv4.svg" width="95%" /&gt;
+]
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+- Why is this a good approach?
+&gt; It's the least bad approach we have: there are 10 different chances of pristine checking
+]
+
+---
+
+# Goodbye cross-validation!
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+
+- I know what you're thinking... we'll also overfit on these 10 slots if we repeat this 2, 3, 4, ... times.
+- That's why I said: **it's the least bad approach**
+
+&gt; The model fitted on the training data (in any way, be it the whole data or through cross-validation), will always have a lower error than the testing data.
+
+---
+# Loss functions
+
+&gt; As I told you, machine learning practitioners like to put new names to things that already exist. 
+
+Loss functions are metrics that evaluate your model fit:
+* `\(R^2\)`
+* AIC
+* BIC
+* RMSE
+* etc...
+
+These are familiar to us!
+
+---
+# Loss functions
+
+However, they work with several others that are specific to prediction:
+
+* Confusion matrix
+* Accuracy
+* Precision
+* Specificity
+* etc...
+
+These are the topic of the next class!
+
+---
+# Bias-Variance tradeoff
+
+.pull-left[
+![](../../img/bias_variance.svg)&lt;!-- --&gt;
+]
+
+.pull-right[
+![](01_introduction_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+&lt;br&gt;
+
+![](01_introduction_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+]
+
+---
+# A unified example
+
+Let's combine all the new steps into a complete pipeline of machine learning. Let's say we have the age of a person and their income and we want to predict their income based on the age. The data looks like:
+
+<div id="htmlwidget-4c09a4ce4c01f2b64aad" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4c09a4ce4c01f2b64aad">{"x":{"filter":"none","data":[["1","2","3","4","5","6"],[44,29,66,66,57,39],[2203,2162,2441,2938,2574,2091]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>income<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+
+---
+# A unified example
+
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-23-1.png" height="90%" /&gt;
+
+---
+
+# A unified example
+
+Let's partition our data into training and testing:
+
+
+
+&lt;br&gt;
+
+.pull-left[
+<div id="htmlwidget-5e0e5910c3d189a55fa7" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5e0e5910c3d189a55fa7">{"x":{"filter":"none","caption":"<caption>Training<\/caption>","data":[["1","3","5","7","8","9","10","11","12","13","15","16","17","18","19","20","21","23","24","26","27","30","31","32","33","34","35","36","37","38","39","41","44","45","48","49","50","52","54","55","56","57","58","59","60","61","62","64","65","67","68","69","70","71","72","74","75","76","77","79","80","81","84","85","86","87","89","90","92","93","94","95","98","100","101","102","103","104","105","106","107","108","109","110","111","112","115","117","118","119","120","121","123","124","125","126","127","129","130","131","132","133","135","136","137","138","139","141","142","143","144","146","147","148","150","152","153","156","158","159","160","161","164","168","169","170","171","172","173","174","175","176","177","178","179","180","182","183","184","185","186","187","188","189","191","192","194","196","197","198","199","200","201","202","205","206","207","210","211","213","214","215","217","218","221","223","226","227","228","229","231","232","234","235","236","237","238","239","241","242","243","244","245","246","247","248","249","253","254","255","256","258","260","261","265","266","267","268","269","271","272","273","274","275","276","277","278","279","280","281","282","283","285","286","287","289","290","291","292","293","294","295","297","298","299","301","302","303","304","305","306","307","308","309","310","311","312","313","314","316","317","318","321","322","323","325","327","329","331","332","333","336","337","338","339","340","341","343","344","345","346","348","351","353","354","355","356","357","359","360","362","363","364","368","369","371","374","375","376","377","378","379","380","381","382","385","386","387","388","390","391","392","393","394","395","396","397","398","401","403","404","405","406","407","408","409","410","412","413","414","415","416","418","419","420","422","423","424","426","427","428","429","430","431","433","434","435","436","437","442","443","444","445","446","448","450","452","453","454","456","457","458","459","461","462","463","464","465","466","468","469","471","472","473","474","475","476","477","478","479","480","481","482","483","486","487","488","489","490","492","494","495","496","498","500"],[44,66,57,63,74,85,51,65,44,34,8,78,56,42,59,39,71,62,58,51,58,47,47,89,36,44,55,59,19,63,45,53,63,47,64,33,45,50,59,80,72,90,44,53,27,86,32,91,70,53,43,67,44,66,74,39,55,36,80,53,65,50,70,74,47,50,41,59,41,45,63,71,82,50,51,57,63,41,59,85,83,55,62,75,48,39,24,49,60,45,44,53,46,78,56,62,32,69,65,36,73,52,44,38,25,63,52,48,59,62,45,31,70,17,67,53,34,71,3,48,70,47,39,70,44,92,50,90,51,53,33,29,57,76,57,54,93,49,34,26,63,71,54,62,53,38,36,48,16,57,46,23,33,55,62,47,69,59,56,89,73,40,17,40,66,37,32,55,60,42,47,100,23,46,36,33,43,52,36,40,35,1,59,42,74,34,31,64,52,72,55,41,39,73,49,54,35,74,91,66,67,26,45,8,45,33,33,35,43,51,58,41,48,19,63,27,37,35,40,72,54,29,52,56,73,24,72,87,63,61,54,54,56,54,36,60,66,46,61,31,58,61,51,44,42,59,61,68,57,67,36,38,42,65,68,71,57,37,42,9,30,37,55,53,20,74,30,60,62,48,68,23,35,1,56,68,53,52,63,95,54,56,71,58,34,72,49,46,50,48,66,86,45,47,52,39,54,61,64,12,63,38,28,59,19,29,22,43,48,61,66,30,37,79,22,89,48,61,8,70,52,31,30,56,80,39,64,35,48,37,54,0,41,45,59,58,74,61,20,50,40,59,48,57,41,63,82,73,54,16,87,52,48,44,74,44,52,53,44,60,50,48,45,31,66,60,40,51,56,67,38,39,77,46,35],[2203,2441,2574,2328,2583,3548,2503,2440,2469,2313,1511,3134,2777,2918,2341,2860,2638,2579,2568,3018,2064,2929,2481,3005,2763,2280,2504,2510,1468,2755,2602,2828,2743,3242,2502,2435,2633,2552,2475,2954,2342,4032,2327,2383,2052,3304,2481,3765,2288,2431,2541,2353,2914,2848,2840,2376,2843,2196,2773,2724,2678,2756,2503,2433,2045,2859,3035,2306,2628,2468,2497,2366,2730,2796,2412,2941,2337,2786,2733,3469,2897,2800,2653,3141,2722,2647,2459,2729,2692,2730,2856,2206,2543,2721,2598,2619,2331,2260,2640,2211,2866,2925,2771,2558,1909,2403,2390,2232,3136,2766,2127,2616,2946,1785,2415,2353,2616,3025,302,2070,2445,2814,2503,2239,2482,4007,2614,3508,2507,2095,2433,2917,2811,2843,2998,2427,3840,2432,3161,2060,2619,3262,2768,2199,2584,2432,2422,2743,1986,2719,2334,1891,2585,2517,2472,2259,2938,2789,2608,3381,3283,2559,1482,2440,2589,2542,3297,2448,2306,3198,3099,5000,1647,2495,2765,2565,2161,2905,2102,2238,2746,238,2630,2672,2626,2100,2577,2755,3171,2558,2159,2448,1967,2674,2590,2734,2280,2980,4140,3371,2646,2061,2743,869,2178,2915,2313,2434,2474,3119,2463,2587,2679,2279,2756,2629,2920,2541,2104,2665,2184,2043,2513,2176,2858,2373,3071,3563,3002,2612,2444,2740,2449,2486,2570,2471,2553,2808,3044,2183,2710,2864,2661,3027,2463,2579,2421,2545,2212,3187,3026,2043,2663,2943,2929,2441,2285,3157,2510,909,2605,2400,2335,2687,2491,2723,1879,2708,2304,2119,2229,2557,2454,303,2876,2773,2704,3286,2426,3850,2971,2322,2663,2677,2544,2908,2292,2738,2454,2919,2304,3932,2509,2085,2743,2161,2585,2372,2271,1448,2527,2863,2261,2247,1848,2368,2250,2667,2571,2486,2304,2828,2558,2861,1808,3680,2937,2181,783,2788,2410,2214,2521,2817,2414,2826,2536,2488,2242,2334,1984,0,2858,3075,2829,2771,3197,2325,1740,3080,2455,2696,2833,2301,2399,2579,2909,2493,2614,1514,3567,2838,2980,2593,2828,2591,2546,2450,3042,2098,2208,2585,2392,3070,3268,2684,2632,2662,2350,3082,2230,2144,2243,2694,2591]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>income<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"paging":true,"pageLength":5,"bLengthChange":false,"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+]
+
+.pull-right[
+<div id="htmlwidget-7817a794d018ecd1d7cf" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7817a794d018ecd1d7cf">{"x":{"filter":"none","caption":"<caption>Testing<\/caption>","data":[["2","4","6","14","22","25","28","29","40","42","43","46","47","51","53","63","66","73","78","82","83","88","91","96","97","99","113","114","116","122","128","134","140","145","149","151","154","155","157","162","163","165","166","167","181","190","193","195","203","204","208","209","212","216","219","220","222","224","225","230","233","240","250","251","252","257","259","262","263","264","270","284","288","296","300","315","319","320","324","326","328","330","334","335","342","347","349","350","352","358","361","365","366","367","370","372","373","383","384","389","399","400","402","411","417","421","425","432","438","439","440","441","447","449","451","455","460","467","470","484","485","491","493","497","499"],[29,66,39,94,44,72,62,61,48,83,59,62,59,70,63,63,70,30,62,39,27,61,57,58,27,58,27,40,82,15,55,67,49,77,78,65,40,68,60,64,27,31,28,68,61,23,82,77,46,91,56,54,69,59,42,50,52,51,55,43,63,32,66,68,52,89,73,91,15,65,33,32,45,56,57,56,55,61,57,59,71,29,62,63,53,58,51,49,48,55,63,31,62,66,45,56,56,58,79,69,58,44,52,48,64,65,5,43,65,44,40,84,70,22,28,57,42,52,41,58,34,44,40,56,26],[2162,2938,2091,3866,2635,2424,2665,2265,2792,2844,3026,2294,2711,3182,2592,2646,2640,2452,2679,2577,2567,2961,2878,2513,2055,2530,2040,2130,3297,1205,2877,2631,2082,2855,2941,3221,2572,2710,2190,2518,2164,2219,2144,2595,2070,2147,3327,3257,2513,4023,2467,2626,2825,2585,2972,2387,2368,2836,2596,2621,1882,2410,2377,2958,2066,3811,3090,3996,1067,2575,2942,2469,2381,2656,1997,2989,2068,2404,2343,2083,2624,2908,2717,2615,2731,3227,2815,2649,2347,2659,2964,2515,2434,2374,2282,2588,3437,2871,3238,2955,2698,2257,2993,2681,2459,2559,1237,2749,2516,2742,2349,3223,3009,2287,2161,2706,2382,3013,2369,2681,1821,2936,2167,2032,2508]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>income<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"paging":true,"pageLength":5,"bLengthChange":false,"columnDefs":[{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+]
+
+---
+
+# A unified example
+
+Run a simple regression `income ~ age` on the **training** data and plot predicted values:
+
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-27-1.png" height="80%" /&gt;
+
+---
+
+# A unified example
+
+It seems we're underfitting the relationship. To measure the **fit** of the model, we'll use the Root Mean Square Error (RMSE). Remember it?
+
+$$ RMSE = \sqrt{\sum_{i = 1}^n{\frac{(\hat{y} - y)^2}{N}}} $$
+
+The current `\(RMSE\)` of our model is 388.08. This means that on average our predictions are off by around 388.08 euros.
+
+---
+
+# A unified example
+
+- How do we increase the fit? 
+
+&lt;br&gt;
+
+- It seems that the relationship is non-linear, so we would need to add non-linear terms to the model, for example `\(age^2\)`, `\(age^3\)`, ..., `\(age^{10}\)`. 
+
+&lt;br&gt;
+
+- However, remember, by fitting these non-linear terms repetitevely to the data, we might tweak the model to **learn** the data so much that it starts to capture noise rather than the signal. 
+
+&lt;br&gt;
+
+- This is where cross-validation comes in!
+
+---
+
+# A unified example
+
+.pull-left[
+.center[
+
+```
+# A tibble: 10 x 2
+   training           testing          
+   &lt;list&gt;             &lt;list&gt;           
+ 1 &lt;df[,2] [337 × 2]&gt; &lt;df[,2] [38 × 2]&gt;
+ 2 &lt;df[,2] [337 × 2]&gt; &lt;df[,2] [38 × 2]&gt;
+ 3 &lt;df[,2] [337 × 2]&gt; &lt;df[,2] [38 × 2]&gt;
+ 4 &lt;df[,2] [337 × 2]&gt; &lt;df[,2] [38 × 2]&gt;
+ 5 &lt;df[,2] [337 × 2]&gt; &lt;df[,2] [38 × 2]&gt;
+ 6 &lt;df[,2] [338 × 2]&gt; &lt;df[,2] [37 × 2]&gt;
+ 7 &lt;df[,2] [338 × 2]&gt; &lt;df[,2] [37 × 2]&gt;
+ 8 &lt;df[,2] [338 × 2]&gt; &lt;df[,2] [37 × 2]&gt;
+ 9 &lt;df[,2] [338 × 2]&gt; &lt;df[,2] [37 × 2]&gt;
+10 &lt;df[,2] [338 × 2]&gt; &lt;df[,2] [37 × 2]&gt;
+```
+]
+]
+
+.pull-right[
+.center[
+&lt;img src="../../img/train_cv4.svg" width="95%" /&gt;
+]
+]
+
+---
+# A unified example
+
+
+.center[
+&lt;img src="../../img/train_cv5.svg" width="50%" /&gt;
+]
+
+---
+# A unified example
+.center[
+&lt;img src="../../img/train_cv6.svg" width="50%" /&gt;
+]
+
+---
+
+# A unified example
+.center[
+&lt;img src="../../img/train_cv7.svg" width="50%" /&gt;
+]
+
+---
+# A unified example
+
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-34-1.png" height="80%" /&gt;
+
+---
+# A unified example
+
+We can run the model on the entire **training** data with 3 non-linear terms and check the fit:
+
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-35-1.png" height="80%" /&gt;
+
+The `\(RMSE\)` on the training data for the three polynomial model is 283.32.
+
+---
+# A unified example
+
+Finally, once our model final model has been fit and we're finished, we use the fitted model on the training data to predict on the **testing** data:
+
+.center[
+&lt;img src="01_introduction_files/figure-html/unnamed-chunk-36-1.png" height="70%" /&gt;
+]
+
+* Training RMSE is 283.32
+* Testing RMSE is 304.49
+
+Testing RMSE will almost always be higher, since we always overfit the data in some way through cross-validation.
+
+---
+class: center, middle
+
+# Pratical examples
+
+https://cimentadaj.github.io/ml_socsci/machine-learning-for-social-scientists.html#an-example
+
+## **Break**
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

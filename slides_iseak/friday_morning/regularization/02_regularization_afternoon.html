@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Machine Learning for Social Scientists</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jorge Cimentada" />
+    <meta name="date" content="2022-01-08" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Machine Learning for Social Scientists
+## Regularization
+### Jorge Cimentada
+### 2022-01-08
+
+---
+
+
+layout: true
+
+&lt;!-- background-image: url(./figs/upf.png) --&gt;
+background-position: 100% 0%, 100% 0%, 50% 100%
+background-size: 10%, 10%, 10%
+
+
+
+---
+
+# What is regularization?
+
+* Machine Learning is almost always about prediction
+
+* **It is important to make sure that out-of-sample accuracy is high**
+
+* Overfitting is our weak spot by including redundant or unimportant variables
+
+* Correct theoretical model is not always the aim
+
+--
+
+&lt;br&gt;
+&lt;br&gt;
+
+&gt; How do we make sure our model does good predictions on unseen data? We regularize how much it overfits the data. How do we do that? Forcing unimportant coefficients towards zero.
+
+&lt;br&gt;
+
+* ML parlance: reduce variance in favor of increasing bias
+* SocSci parlance: make sure your model fits an unseen data as fairly well as this data
+
+---
+
+# What is regularization?
+
+Regularization is when you force your estimates towards specific values:
+
+* Bayesian: restrict coefficients based on prior distributions
+&lt;br&gt;
+
+* Machine Learning: restrict coefficents to zero
+
+&lt;br&gt;
+
+--
+
+### What is this good for? It depends on your context
+
+* Increasing predictive power
+* Including important confounders in large models
+* Understanding the strength of variables
+* Testing the generalization of your model
+
+---
+
+### Why regularization?
+
+.center[
+&lt;img src="/home/cimentadaj/repositories/ml_socsci/img/ridge_example.png" width="80%" /&gt;
+]
+
+---
+
+# A first example: ridge regression
+
+* OLS minimizes the Residual Sum of Squares (RSS)
+* Fit N lines that minimize the RSS and keep the one with the best fit
+
+`\begin{equation}
+RSS = \sum_{k = 1}^n(actual_i - predicted_i)^2
+\end{equation}`
+
+.center[
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-3-1.png" width="80%" /&gt;
+]
+
+---
+
+# A first example: ridge regression
+
+Ridge regression adds one term:
+
+`\begin{equation}
+RSS + \lambda \sum_{k = 1}^n \beta^2_j
+\end{equation}`
+
+**The regularization term** or **penalty term**
+
+* `\(RSS\)` estimates how the model fits the data
+* `\(\sum_{k = 1}^n \beta^2_j\)` limits how much you overfit the data.
+* `\(\lambda\)` is the weight given to the penalty term (called **lambda**): the higher the weight the bigger the shrinkage term of the equation.
+
+In layman terms:
+
+&gt; We want the smallest coefficients that don’t affect the fit of the line (RSS).
+
+---
+
+# Deep dive into lambda
+
+- Lambda is a **tuning** parameter: that means you try different values and grab the best one
+
+- Usually called a shrinkage penalty
+  * When 0, lambda is just classical OLS
+  * Selecting a good value of lambda is critical for it to be effective
+  * As lambda goes to infinity, each coefficient get less weight
+
+- Never applied to the intercept, only to variable coefficients
+
+&lt;br&gt;
+
+- The reason of being of ridge is the problem of N &lt; P
+  * In layman terms:
+  &gt; When you have more predictors than observations, avoiding overfitting is crucial
+
+---
+
+# A first example: ridge regression
+
+Some caveats:
+
+* Since we're penalizing coefficients, their scale *matter*.
+
+&gt; Suppose that you have the income of a particular person (measured in thousands per months) and time spent with their families (measured in seconds) and you're trying to predict happiness. A one unit increase in salary could be penalized much more than a one unit increase in time spent with their families **just** because a one unit increase in salary can be much bigger due to it's metric.
+
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+### **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: ridge regression
+
+A look at the data:
+
+
+```
+   math_score MISCED FISCED HISEI REPEAT IMMIG DURECEC    BSMJ
+1    512.7125      5      4 28.60      0     1       2 77.1000
+2    427.3615      4      4 59.89      0     1       2 63.0300
+3    449.9545      4      6 39.02      0     1       2 67.4242
+4    474.5553      2      4 26.60      0     1       2 28.5200
+5    469.1545      5      6 76.65      0     1       2 50.9000
+6    442.6426      4      4 29.73      0     1       2 64.4400
+7    426.4296      2      4 35.34      0     1       1 81.9200
+8    449.8329      6      5 65.01      0     1       2 81.9200
+9    493.6453      5      4 48.66      0     1       2 51.3500
+10   341.7272      6      6 68.70      1     1       2 67.4242
+```
+
+---
+
+# A first example: ridge regression
+
+Next we take the usual steps that we expect to have in the machine learning pipeline:
+
+- Split into training and testing. Perform all analysis on the training set.
+- Perform any variable recodification / scaling (important for regularization)
+- Split training into a K fold data set for tuning parameters:
+
+
+```
+#  10-fold cross-validation 
+# A tibble: 10 x 2
+   splits             id    
+   &lt;list&gt;             &lt;chr&gt; 
+ 1 &lt;split [3.3K/363]&gt; Fold01
+ 2 &lt;split [3.3K/363]&gt; Fold02
+ 3 &lt;split [3.3K/363]&gt; Fold03
+ 4 &lt;split [3.3K/363]&gt; Fold04
+ 5 &lt;split [3.3K/363]&gt; Fold05
+ 6 &lt;split [3.3K/363]&gt; Fold06
+ 7 &lt;split [3.3K/363]&gt; Fold07
+ 8 &lt;split [3.3K/363]&gt; Fold08
+ 9 &lt;split [3.3K/363]&gt; Fold09
+10 &lt;split [3.3K/362]&gt; Fold10
+```
+
+---
+
+
+# A first example: ridge regression
+
+.center[
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-6-1.png" width="80%" /&gt;
+]
+
+---
+
+# A first example: ridge regression
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-7-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A first example: ridge regression
+
+- Take your previous model, refit it only with the testing dataset and compare:
+
+.center[
+
+```
+  .metric .estimator .estimate     type model
+1    rmse   standard  76.87668 training ridge
+2    rmse   standard  77.88607  testing ridge
+```
+]
+
+---
+
+# A first example: lasso regression
+
+Lasso regression is very similar to ridge but the penalty term is different:
+
+`\begin{equation}
+RSS + \lambda \sum_{k = 1}^n |\beta_j|
+\end{equation}`
+
+The same notes for ridge applies with one caveat:
+
+- The penalty term for lasso can **completely shrink to 0** meaning that it excludes variables.
+
+&gt; Lasso excludes variables which are not adding anything useful to the model whereas ridge keeps them close to 0.
+
+---
+
+# A first example: lasso regression
+
+- The fact that lasso performs feature selection is a somewhat new concept to the SocSci world. Why is this important?
+
+- When having hundreds of variables, it allows for greater explainability.
+- When few observations, it allows for greater flexibility by having more degrees of freedom
+- It dramatically decreases the risk of overfitting by removing redundant variables
+
+.center[
+&lt;img src="/home/cimentadaj/repositories/ml_socsci/img/overfitting_graph.png" width="90%" /&gt;
+]
+
+
+
+---
+
+# A first example: lasso regression
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+---
+
+# A first example: lasso regression
+
+Next we take the usual steps that we expect to have in the machine learning pipeline:
+
+- Split into training and testing. Perform all analysis on the training set.
+- Perform any variable recodification / scaling (important for regularization)
+- Split training into a K fold data set for tuning parameters
+- Run N models with N tuning parameters
+
+---
+
+# A first example: lasso regression
+
+.center[
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-11-1.png" width="80%" /&gt;
+]
+
+---
+
+# A first example: lasso regression
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A first example: lasso regression
+
+- Take your previous model, refit it only with the testing dataset and compare:
+
+
+.center[
+
+```
+  .metric .estimator .estimate     type model
+1    rmse   standard  76.87264 training lasso
+2    rmse   standard  77.86454  testing lasso
+```
+]
+
+---
+
+# When to use ridge or lasso?
+
+- Both are very similar but perform differently
+
+- Lasso usually works well when we know there are a handful of strong coefficients and the remaining variables have very small effects
+
+- Ridge will usually be better when all predictors aren't weak
+
+&gt; A priori we don't know, that's why we use cross-validation: to test which models with which penalty terms work better
+
+- Interpretability is important or not
+
+---
+
+# Regularization and bias - variance trade off
+
+- MSE error (pink)
+- Bias (green): the more shrinkage, reduce bias (overfitting)
+- Variance (black): the more shrinkage, increases generalizability
+
+.center[
+&lt;img src="/home/cimentadaj/repositories/ml_socsci/img/bias-variance-tradeoff.png" width="40%" /&gt;
+]
+
+---
+
+
+# A first example: elastic net regression
+
+`\(ridge = \lambda \sum_{k = 1}^n \beta_j^2\)`
+
+`\(lasso = \lambda \sum_{k = 1}^n |\beta_j|\)`
+
+Elastic net regularization is the addition of these two penalties in comparison to the RSS:
+
+`$$RSS + lasso + ridge$$`
+
+Explanation:
+
+&gt; Although lasso models perform feature selection, when two strongly correlated features are pushed towards zero, one may be pushed fully to zero while the other remains in the model. Furthermore, the process of one being in and one being out is not very systematic. In contrast, the ridge regression penalty is a little more effective in systematically handling correlated features together. Consequently, the advantage of the elastic net penalty is that it enables effective regularization via the ridge penalty with the feature selection characteristics of the lasso penalty.
+
+**Now you have two parameters to tune**
+
+---
+
+# A first example: elastic net regression
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+.center[
+## **Always standardize coefficients before running a regularized regression**
+]
+
+
+---
+
+# Usual workflow
+
+Next we take the usual steps that we expect to have in the machine learning pipeline:
+
+- Split into training and testing. Perform all analysis on the training set.
+- Perform any variable recodification / scaling (important for regularization)
+- Split training into a K fold data set for tuning parameters:
+
+  * Fit first model with first ridge parameter and first lasso ridge parameter
+
+  &lt;br&gt;
+
+  * Fit first model with first ridge parameter and second lasso ridge parameter
+
+  &lt;br&gt;
+
+  * Fit first model with first ridge parameter and third lasso ridge parameter
+
+  &lt;br&gt;
+
+  * Fit first model with ... ridge parameter and ... lasso ridge parameter
+
+
+
+
+---
+
+# A first example: elastic net regression
+
+.center[
+
+```
+# A tibble: 9 x 4
+       penalty mixture  rmse   rsq
+         &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 0.0000000001   0.05   79.5 0.207
+2 0.00001        0.05   79.5 0.207
+3 1              0.05   79.5 0.207
+4 0.0000000001   0.525  79.5 0.207
+5 0.00001        0.525  79.5 0.207
+6 1              0.525  79.6 0.206
+7 0.0000000001   1      79.5 0.207
+8 0.00001        1      79.5 0.207
+9 1              1      79.7 0.206
+```
+]
+
+---
+
+# A first example: elastic net regression
+
+&lt;img src="02_regularization_afternoon_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# A first example: elastic net regression
+
+- Run our model on the testing dataset and compare with the training model:
+
+.center[
+
+```
+  .metric .estimator .estimate     type model
+1    rmse   standard  76.87256 training elnet
+2    rmse   standard  77.87192  testing elnet
+```
+]
+
+---
+
+# Alternative: forward-selection
+
+.center[
+&lt;img src="/home/cimentadaj/repositories/ml_socsci/img/forward_selection.png" width="70%" /&gt;
+]
+
+---
+
+# Alternative: backward-selection
+
+.center[
+&lt;img src="/home/cimentadaj/repositories/ml_socsci/img/backward_selection.png" width="70%" /&gt;
+]
+
+---
+
+# Comparison [1/2]
+
+- Ridge
+  * Keeps all variables
+  * Might introduce overfitting by keeping all variables
+  * Assumes linearity
+
+- Lasso
+  * Variable selection
+  * Inconsistency (two highly correlated variables, removes one)
+  * Assumes linearity
+
+- Elastic Net (in reality, elastic net usually performs better)
+  * Variable selection, depending on weights from both ridge and lasso (lambda)
+  * Assumes linearity
+
+---
+
+# Comparison [2/2]
+
+- Forward selection
+  * Doesn't work well with n &lt; p models
+  * RSS is biased because models with high P will usually have higher RSS
+  * Computationally intensive
+
+- Backward selection
+  * Doesn't work well with n &lt; p models
+  * RSS is biased because models with high P will usually have higher RSS
+  * Computationally intensive
+
+---
+
+.center[
+# Break
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
