@@ -21,7 +21,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
           
       - name: Install rmarkdown
-        run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "renv", "ranger", "xgboost"))'
+        run: Rscript -e 'install.packages("pak"); pak::pak(c("rmarkdown","bookdown", "renv", "ranger", "xgboost"))'
           
       - name: Install system deps
         run: brew install imagemagick
