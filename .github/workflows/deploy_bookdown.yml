@@ -24,7 +24,7 @@ jobs:
       #   run: Rscript -e 'install.packages("pak"); pak::pak(c("rmarkdown","bookdown", "renv", "ranger", "xgboost"))'
           
       - name: Install system deps
-        run: brew install imagemagick
+        run: brew install imagemagick librsvg2-dev
           
       - name: Cache packages
         uses: actions/cache@v1
