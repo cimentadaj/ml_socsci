@@ -855,4 +855,6 @@ knitr::include_graphics("../../../img/dalex.png")
 knitr::include_graphics("../../../img/book_mlsocsci.png")
 ```
 
+.center[
 https://cimentadaj.github.io/ml_socsci/
+]
