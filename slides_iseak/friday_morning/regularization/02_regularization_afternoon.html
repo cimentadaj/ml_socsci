@@ -452,16 +452,51 @@ Next we take the usual steps that we expect to have in the machine learning pipe
 # Alternative: forward-selection
 
 .center[
-&lt;img src="../../../img/forward_selection.png" width="70%" /&gt;
+&lt;img src="../../../img/forward_selection.png" width="60%" /&gt;
 ]
+
+If you have three variables and a dependent variable, begin with:
+
+```
+y ~ x1 # highest RMSE
+y ~ x2
+y ~ x3
+```
+
+next step
+
+```
+y ~ x1 + x2
+y ~ x1 + x3 # highest RMSE
+```
 
 ---
 
 # Alternative: backward-selection
 
 .center[
-&lt;img src="../../../img/backward_selection.png" width="70%" /&gt;
+&lt;img src="../../../img/backward_selection.png" width="50%" /&gt;
 ]
+
+If you have three variables and a dependent variable, begin with:
+
+```
+y ~ x2 + x3 # reduction in RMSE not significant
+y ~ x1 + x3
+y ~ x1 + x2
+```
+
+next step
+
+```
+# Excluding either one reduces the RMSE significantly, so we keep both
+y ~ x3
+y ~ x2
+
+# Final model y ~ x2 + x3
+```
+
+
 
 ---
 
