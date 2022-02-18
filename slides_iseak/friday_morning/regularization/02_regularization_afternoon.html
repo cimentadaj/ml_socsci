@@ -451,14 +451,9 @@ Next we take the usual steps that we expect to have in the machine learning pipe
 
 # Alternative: forward-selection
 
-.center[
-&lt;img src="../../../img/forward_selection.png" width="20%" /&gt;
-]
-
 If you have three variables and a dependent variable, begin with:
 
 ```
-# In CV
 y ~ x1 # lowest RMSE
 y ~ x2
 y ~ x3
@@ -467,18 +462,15 @@ y ~ x3
 next step
 
 ```
-# In CV
 y ~ x1 + x2
 y ~ x1 + x3 # lowest RMSE
 ```
 
+Then CV with the best two models
+
 ---
 
 # Alternative: backward-selection
-
-.center[
-&lt;img src="../../../img/backward_selection.png" width="20%" /&gt;
-]
 
 If you have three variables and a dependent variable, begin with:
 
@@ -492,15 +484,12 @@ y ~ x1 + x2
 next step
 
 ```
-# In CV
-# Excluding either one reduces the RMSE significantly, so we keep both
-y ~ x3
+y ~ x3 # lowes RMSE
 y ~ x2
 
-# Final model y ~ x2 + x3
 ```
 
-
+Then CV with the best two models
 
 ---
 
